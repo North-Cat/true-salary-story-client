@@ -9,6 +9,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.3.2"
+    "autoprefixer": "^10.4.14",
+    "nuxt": "^3.3.2",
+    "postcss": "^8.4.22",
+    "postcss-custom-properties": "^13.1.5",
+    "tailwindcss": "^3.3.1"
   }
 }
