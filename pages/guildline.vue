@@ -457,10 +457,8 @@
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
                             <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded "> 
-                                <pre><code>
-&#060;a href&#061;&#034;#&#034;
-class&#061;&#034;caption text-black-6 hover:text-black-10 
-transition duration-150 ease-in-out&#034; &#062;
+                                <pre class="overflow-x-scroll"><code>
+&#060;a href&#061;&#034;#&#034; class&#061;&#034;caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out&#034; &#062;
 服務條款
 &#060;&#047;a&#062;
 

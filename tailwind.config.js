@@ -27,6 +27,12 @@ module.exports = {
       boxShadow: {
         card: '0px 2px 20px rgba(82, 154, 242, 0.5), 0px 0px 4px rgba(82, 154, 242, 0.3)',
         search: '0px 2px 20px rgba(82, 154, 242, 0.5), 0px 0px 4px rgba(82, 154, 242, 0.3)'
+      },
+      padding: {
+        15: '60px'
+      },
+      margin: {
+        15: '60px'
       }
     },
   },
