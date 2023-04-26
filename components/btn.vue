@@ -12,7 +12,7 @@
     >
         <slot></slot>
         <div v-if="cate == 'text-sm'" class="caption">{{content}}</div>
-        <h6 v-else class="h6">{{content}}</h6>
+        <h6 v-else>{{content}}</h6>
     </button> 
 </template>
 

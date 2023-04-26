@@ -1,6 +1,6 @@
 <template>
     <div class="bg-stone-300 text-black-10">
-        <div class="container mx-auto max-w-8xl flex flex-col pt-10">
+        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
             <div class="mb-1 text-stone-600">Style</div>
             <div class="py-10 bg-white px-10">
                 <div class="flex flex-wrap -mx-2">
@@ -76,27 +76,27 @@
                     <div class="w-full sm:w-1/2 px-2">
                         <div class="text-2xl text-blue mb-5">Typography</div>
                         <div class="mb-2">
-                            <h1 class="h1 mb-2 me-4 inline-block">Title / H1</h1>
+                            <h1 class="mb-2 me-4 inline-block">Title / H1</h1>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h1Code"></span>
                         </div>
                         <div class="mb-2">
-                            <h2 class="h2 mb-2 me-4 inline-block">Title / H2</h2>
+                            <h2 class="mb-2 me-4 inline-block">Title / H2</h2>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h2Code"></span>
                         </div>
                         <div class="mb-2">
-                            <h3 class="h3 mb-2 me-4 inline-block">Title / H3</h3>
+                            <h3 class="mb-2 me-4 inline-block">Title / H3</h3>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h3Code"></span>
                         </div>
                         <div class="mb-2">
-                            <h4 class="h4 mb-2 me-4 inline-block">Title / H4</h4>
+                            <h4 class="mb-2 me-4 inline-block">Title / H4</h4>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h4Code"></span>
                         </div>
                         <div class="mb-2">
-                            <h5 class="h5 mb-2 me-4 inline-block">Title / H5</h5>
+                            <h5 class="mb-2 me-4 inline-block">Title / H5</h5>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h5Code"></span>
                         </div>
                         <div class="mb-2">
-                            <h6 class="h6 mb-2 me-4 inline-block">Title / H6</h6>
+                            <h6 class="mb-2 me-4 inline-block">Title / H6</h6>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h6Code"></span>
                         </div>
                         <div class="mb-2">
@@ -111,13 +111,11 @@
                             <div class="caption mb-2 me-4 inline-block">Title / Caption</div>
                             <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="captionCode"></span>
                         </div>
-                        <div class="text-2xl text-blue mb-5">Icon</div>
-                        <a class="underline" href="https://fonts.google.com/icons">Google Fonts</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container mx-auto max-w-8xl flex flex-col pt-10">
+        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
             <div class="mb-1 text-stone-600">Component</div>
             <div class="py-10 bg-white px-10">
                 <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-5">
@@ -125,12 +123,12 @@
                     </div>
                     <div class="w-full sm:w-6/12 px-2">
                         <div class="flex flex-row justify-center ">
-                            <h4 class="h4">Default / Hover / Pressed</h4>
+                            <h4>Default / Hover / Pressed</h4>
                         </div>
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-row justify-center">
-                            <h4 class="h4">使用方法</h4>
+                            <h4>使用方法</h4>
                         </div>
                     </div>
                 </div>
@@ -510,91 +508,16 @@
     </div>
 </template>
 
-<style lang="postcss">
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-.h1 {
-    @apply font-bold;
-    font-size: 40px;
-    line-height: 48px;
-    letter-spacing: 0.03em;
-}
-.h2 {
-    @apply font-bold;
-    font-size: 32px;
-    line-height: 38px;
-    letter-spacing: 0.03em;
-}
-.h3 {
-    @apply font-bold;
-    font-size: 28px;
-    line-height: 34px;
-    letter-spacing: 0.03em;
-}
-.h4 {
-    @apply font-bold;
-    font-size: 24px;
-    line-height: 29px;
-    letter-spacing: 0.03em;
-}
-.h5 {
-    @apply font-bold;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 0.03em;
-}
-.h6 {
-    @apply font-medium;
-    font-size: 16px;
-    line-height: 19px;
-    letter-spacing: 0.03em;
-}
-.body {
-    @apply font-normal;
-    font-size: 20px;
-    line-height: 30px;
-    letter-spacing: 0.03em;
-}
-.body-sm {
-    @apply font-normal;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0.03em;
-}
-.caption {
-    @apply font-normal;
-    font-size: 14px;
-    line-height: 21px;
-    letter-spacing: 0.03em;
-}
-</style>
-
-
 <script>
-import btn from '@/components/btn.vue';
-import navBtn from '@/components/navBtn.vue';
-import card from '@/components/card.vue';
-import tag from '@/components/tag.vue';
-import textLink from '@/components/textLink.vue';
-
 export default {
-    components: {
-        btn,
-        navBtn,
-        card,
-        tag,
-        textLink,
-    }, 
     data() {
         return {
-            h1Code: '<h1 class="h1">Title / H1</h1>',
-            h2Code: '<h2 class="h2">Title / H2</h2>',
-            h3Code: '<h3 class="h3">Title / H3</h3>',
-            h4Code: '<h4 class="h4">Title / H4</h4>',
-            h5Code: '<h5 class="h5">Title / H5</h5>',
-            h6Code: '<h6 class="h6">Title / H6</h6>',
+            h1Code: '<h1>Title / H1</h1>',
+            h2Code: '<h2>Title / H2</h2>',
+            h3Code: '<h3>Title / H3</h3>',
+            h4Code: '<h4>Title / H4</h4>',
+            h5Code: '<h5>Title / H5</h5>',
+            h6Code: '<h6>Title / H6</h6>',
             bodyCode: '<div class="body">Title / Body.20</div>',
             bodySmCode: '<div class="body-sm">Title / Body.16</div>',
             captionCode: '<div class="caption">Title / Caption</div>',

@@ -17,7 +17,7 @@
             <div class="vertical-text text-center text-sm font-light tracking-wide leading-4 mt-1">最<br>新 </div>
         </div>
         <div class="p-5 truncate">
-            <h6 class="h6 mb-1 truncate">{{title}}</h6>
+            <h6 class="mb-1 truncate">{{title}}</h6>
             <div class="caption text-black-6 mb-3 truncate">{{company}}</div>
             <div class="flex justify-start items-center">
                 <!-- 加班狀況 start -->
