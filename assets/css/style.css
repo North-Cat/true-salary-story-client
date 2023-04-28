@@ -2,5 +2,13 @@
 
 * {
     font-family: 'Noto Sans TC', sans-serif;
+    position: relative;
 }
 
+/* 首頁輪播套件調整 */
+.carousel__slide.carousel__slide--prev > div{
+    margin-right: 88px;
+}
+.carousel__slide.carousel__slide--next{
+    margin-left: 46px;
+}

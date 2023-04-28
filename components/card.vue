@@ -1,114 +1,77 @@
 <template>
-    <div class="flex border border-black-1 max-w-[416px] min-w-[416px] cursor-pointer hover:shadow-card transition duration-150 ease-in-out">
+    <div class="flex sm:flex-col md:flex-row border border-black-1 sm:w-[257px] min-w-[257px] md:w-[410px] max-w-[416px] cursor-pointer hover:shadow-card transition duration-150 ease-in-out">
         <!-- 精選 左側 -->
-        <div v-if="cate=='top'" 
-        class="flex flex-col justify-center items-center text-white fill-white px-3 py-5 bg-blue">
-            <svg width="14" height="13" viewBox="0 0 14 13">
-                <path d="M7 12.3809C10.3516 12.3809 13.1113 9.62109 13.1113 6.26953C13.1113 2.92383 10.3457 0.158203 6.99414 0.158203C3.64844 0.158203 0.888672 2.92383 0.888672 6.26953C0.888672 9.62109 3.64844 12.3809 7 12.3809ZM5.33008 9.35156C4.96094 9.62695 4.5625 9.35156 4.70898 8.90039L5.36523 6.94336L3.68359 5.73633C3.34961 5.49023 3.44336 4.98633 3.92383 4.99219L5.99219 5.01562L6.61914 3.04102C6.75977 2.60156 7.23438 2.60156 7.375 3.04102L8.00781 5.01562L10.0762 4.99219C10.5684 4.98633 10.6387 5.49609 10.3105 5.73047L8.62891 6.9375L9.28516 8.90039C9.4375 9.35742 9.03906 9.62695 8.66992 9.35156L7 8.12695L5.33008 9.35156Z"/>
-            </svg>
-            <div class="vertical-text text-center text-sm font-light tracking-wide leading-4 mt-1">精<br>選</div>
+        <div v-if="cate=='top'"  
+        class="flex sm:flex-row md:flex-col sm:justify-start md:justify-center  md:items-center text-white fill-white px-3 sm:py-2 md:py-5 bg-blue">
+            <span class="icon-star-circle-fill text-sm mr-1.5 mt-0.5 md:m-0 md:mb-1"></span>
+            <div class="flex sm:flex-row md:flex-col text-center text-sm font-light tracking-wide leading-4">
+                <span>精</span><span>選</span>
+            </div>
         </div> 
         <!-- 最新 左側 -->
-        <div v-else-if="cate=='new'"
-        class="flex flex-col justify-center items-center text-white fill-white px-3 py-5 bg-black-10" >
-            <svg width="16" height="19" viewBox="0 0 16 19">
-                <path d="M7.71289 16.2227C10.9121 16.2227 13.0449 14.0664 13.0449 10.832C13.0449 5.49414 8.46875 3.25586 5.32812 3.25586C4.68945 3.25586 4.26758 3.50195 4.26758 3.9707C4.26758 4.15234 4.34961 4.33984 4.48438 4.50391C5.22852 5.40039 5.87305 6.31445 5.88477 7.42188C5.88477 7.50977 5.87891 7.5918 5.86133 7.67383C5.50391 6.92383 4.95312 6.53711 4.44336 6.53711C4.13867 6.53711 3.93359 6.74805 3.93359 7.08203C3.93359 7.28125 3.98047 7.58008 3.98047 7.89062C3.98047 9.25586 2.94922 9.89453 2.94922 12.0859C2.94922 14.5703 4.84766 16.2227 7.71289 16.2227ZM7.77734 15.1094C5.55664 15.1094 4.06836 13.8965 4.06836 12.0859C4.06836 10.293 5.04688 9.74219 5.04102 7.97852C5.04102 7.9375 5.04102 7.93164 5.04102 7.93164C5.31055 8.29492 5.50977 8.76953 5.62695 9.32617C5.66211 9.50781 5.76172 9.60742 5.91992 9.60742C6.5 9.60742 6.875 8.37109 6.875 7.45117C6.875 6.31445 6.45312 5.19531 5.75 4.35742C9.5 4.7207 11.8906 7.32227 11.8906 10.7969C11.8906 13.3809 10.2441 15.1094 7.77734 15.1094ZM7.86523 14.2949C9.18359 14.2949 9.89258 13.3457 9.89258 12.1914C9.89258 11.0137 9.21875 9.78906 7.97656 9.23242C7.89453 9.19727 7.82422 9.25 7.8418 9.34375C7.94727 10.2109 7.85938 11.0137 7.56641 11.4824C7.43164 11.125 7.26758 10.8379 7.02148 10.6094C6.94531 10.5449 6.875 10.5859 6.86328 10.668C6.77539 11.3887 6.07812 11.7051 6.07812 12.6953C6.07812 13.6562 6.78711 14.2949 7.86523 14.2949Z"/>
-            </svg>
-            <div class="vertical-text text-center text-sm font-light tracking-wide leading-4 mt-1">最<br>新 </div>
-        </div>
-        <div class="p-5 truncate">
+        <div v-if="cate=='new'"  
+        class="flex sm:flex-row md:flex-col sm:justify-start md:justify-center  md:items-center text-white fill-white px-3 sm:py-2 md:py-5 bg-black-10">
+            <span class="icon-fire sm:text-base mr-1.5 mt-0.5 md:m-0 md:mb-1"></span>
+            <div class="flex sm:flex-row md:flex-col text-center text-sm font-light tracking-wide leading-4">
+                <span>最</span><span>新</span>
+            </div>
+        </div>  
+        <div class="sm:p-3 md:p-5 truncate flex flex-col justify-center items-start">
             <h6 class="mb-1 truncate">{{title}}</h6>
             <div class="caption text-black-6 mb-3 truncate">{{company}}</div>
             <div class="flex justify-start items-center">
                 <!-- 加班狀況 start -->
                 <div v-if="overtime == '1'" 
-                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4.75C8.27614 4.75 8.5 4.97386 8.5 5.25V8.91667C8.5 9.02485 8.53509 9.13012 8.6 9.21667L9.9 10.95C10.0657 11.1709 10.0209 11.4843 9.8 11.65C9.57909 11.8157 9.26569 11.7709 9.1 11.55L7.8 9.81667C7.60527 9.55702 7.5 9.24122 7.5 8.91667V5.25C7.5 4.97386 7.72386 4.75 8 4.75Z" fill="#329163"/>
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209Z" fill="#329163"/>
-                        <circle cx="12" cy="4.5" r="3" fill="white"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5273 3.08403C13.7571 3.2372 13.8192 3.54764 13.666 3.7774L12.2074 5.96538C11.9105 6.41069 11.2562 6.41068 10.9593 5.96538L10.334 5.0274C10.1808 4.79764 10.2429 4.4872 10.4726 4.33403C10.7024 4.18085 11.0128 4.24294 11.166 4.4727L11.5833 5.09867L12.834 3.2227C12.9871 2.99294 13.2976 2.93085 13.5273 3.08403Z" fill="#329163"/>
-                    </svg>
+                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-time-good text-sm"></span>
                     <span class="ms-1">準時上下班</span>
                 </div>
                 <div v-else-if="overtime == '2'" 
-                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4.75C8.27614 4.75 8.5 4.97386 8.5 5.25V8.91667C8.5 9.02485 8.53509 9.13012 8.6 9.21667L9.9 10.95C10.0657 11.1709 10.0209 11.4843 9.8 11.65C9.57909 11.8157 9.26569 11.7709 9.1 11.55L7.8 9.81667C7.60527 9.55702 7.5 9.24122 7.5 8.91667V5.25C7.5 4.97386 7.72386 4.75 8 4.75Z" fill="#329163"/>
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209Z" fill="#329163"/>
-                        <circle cx="12" cy="4.5" r="3" fill="white"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5273 3.08403C13.7571 3.2372 13.8192 3.54764 13.666 3.7774L12.2074 5.96538C11.9105 6.41069 11.2562 6.41068 10.9593 5.96538L10.334 5.0274C10.1808 4.79764 10.2429 4.4872 10.4726 4.33403C10.7024 4.18085 11.0128 4.24294 11.166 4.4727L11.5833 5.09867L12.834 3.2227C12.9871 2.99294 13.2976 2.93085 13.5273 3.08403Z" fill="#329163"/>
-                    </svg>
+                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-time-good text-sm"></span>
                     <span class="ms-1">很少加班</span>
                 </div>
                 <div v-else-if="overtime == '3'" 
-                class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209Z" fill="#D08B24"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4.75C8.27614 4.75 8.5 4.97386 8.5 5.25V8.91667C8.5 9.02485 8.53509 9.13012 8.6 9.21667L9.9 10.95C10.0657 11.1709 10.0209 11.4843 9.8 11.65C9.57909 11.8157 9.26569 11.7709 9.1 11.55L7.8 9.81667C7.60527 9.55702 7.5 9.24122 7.5 8.91667V5.25C7.5 4.97386 7.72386 4.75 8 4.75Z" fill="#D08B24"/>
-                    </svg>
-
+                class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-time-normal text-sm"></span>
                     <span class="ms-1">偶爾加班</span>
                 </div>
                 <div v-else-if="overtime == '4'" 
-                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg class="me-1" width="16" height="17" viewBox="0 0 16 17">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4.75C8.27614 4.75 8.5 4.97386 8.5 5.25V8.91667C8.5 9.02485 8.53509 9.13012 8.6 9.21667L9.9 10.95C10.0657 11.1709 10.0209 11.4843 9.8 11.65C9.57909 11.8157 9.26569 11.7709 9.1 11.55L7.8 9.81667C7.60527 9.55702 7.5 9.24122 7.5 8.91667V5.25C7.5 4.97386 7.72386 4.75 8 4.75Z" />
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209Z" />
-                        <circle cx="12" cy="4.5" r="3" fill="white"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.0458 2.92794C10.8752 2.75734 10.5986 2.75734 10.428 2.92794C10.2574 3.09853 10.2574 3.37513 10.428 3.54572L11.3823 4.49999L10.428 5.45425C10.2574 5.62485 10.2574 5.90144 10.428 6.07204C10.5986 6.24264 10.8752 6.24264 11.0458 6.07204L12 5.11778L12.9543 6.07204C13.1249 6.24264 13.4015 6.24264 13.5721 6.07204C13.7427 5.90144 13.7427 5.62485 13.5721 5.45425L12.6178 4.49999L13.5721 3.54572C13.7427 3.37513 13.7427 3.09853 13.5721 2.92794C13.4015 2.75734 13.1249 2.75734 12.9543 2.92794L12 3.8822L11.0458 2.92794Z" />
-                    </svg>
+                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-time-bad text-sm"></span>
                     <span class="ms-1">常常加班</span>
                 </div>
                 <div v-else-if="overtime == '5'" 
-                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg class="me-1" width="16" height="17" viewBox="0 0 16 17">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4.75C8.27614 4.75 8.5 4.97386 8.5 5.25V8.91667C8.5 9.02485 8.53509 9.13012 8.6 9.21667L9.9 10.95C10.0657 11.1709 10.0209 11.4843 9.8 11.65C9.57909 11.8157 9.26569 11.7709 9.1 11.55L7.8 9.81667C7.60527 9.55702 7.5 9.24122 7.5 8.91667V5.25C7.5 4.97386 7.72386 4.75 8 4.75Z" />
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209Z" />
-                        <circle cx="12" cy="4.5" r="3" fill="white"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.0458 2.92794C10.8752 2.75734 10.5986 2.75734 10.428 2.92794C10.2574 3.09853 10.2574 3.37513 10.428 3.54572L11.3823 4.49999L10.428 5.45425C10.2574 5.62485 10.2574 5.90144 10.428 6.07204C10.5986 6.24264 10.8752 6.24264 11.0458 6.07204L12 5.11778L12.9543 6.07204C13.1249 6.24264 13.4015 6.24264 13.5721 6.07204C13.7427 5.90144 13.7427 5.62485 13.5721 5.45425L12.6178 4.49999L13.5721 3.54572C13.7427 3.37513 13.7427 3.09853 13.5721 2.92794C13.4015 2.75734 13.1249 2.75734 12.9543 2.92794L12 3.8822L11.0458 2.92794Z" />
-                    </svg>
+                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-time-bad text-sm"></span>
                     <span class="ms-1">賣肝拼經濟</span>
                 </div>
                 <!-- 加班狀況 end -->
 
                 <!-- 上班心情 start -->
                 <div v-if="feeling == '1'" 
-                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209ZM6.28074 7.97725C6.64666 7.97725 6.97193 7.64618 6.97193 7.18732C6.97193 6.72846 6.65247 6.39739 6.28074 6.39739C5.92062 6.39739 5.60697 6.72846 5.60697 7.18732C5.60697 7.64618 5.92062 7.97725 6.28074 7.97725ZM9.70765 7.97725C10.0736 7.97725 10.3988 7.64618 10.3988 7.18732C10.3988 6.72846 10.0736 6.39739 9.70765 6.39739C9.34172 6.39739 9.03388 6.72846 9.03388 7.18732C9.03388 7.64618 9.34753 7.97725 9.70765 7.97725ZM7.99419 11.3577C9.21394 11.3577 10.0329 10.5503 10.0329 10.1612C10.0329 10.0218 9.89351 9.95789 9.75992 10.016C9.33591 10.2367 8.84221 10.4981 7.99419 10.4981C7.15198 10.4981 6.65247 10.2367 6.22846 10.016C6.10068 9.95208 5.96128 10.0218 5.96128 10.1612C5.96128 10.5503 6.78025 11.3577 7.99419 11.3577Z" fill="#329163"/>
-                    </svg>
+                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-face-good text-sm"></span>
                     <span class="ms-1">非常開心</span>
                 </div>
                 <div v-else-if="feeling == '2'" 
-                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209ZM6.28074 7.97725C6.64666 7.97725 6.97193 7.64618 6.97193 7.18732C6.97193 6.72846 6.65247 6.39739 6.28074 6.39739C5.92062 6.39739 5.60697 6.72846 5.60697 7.18732C5.60697 7.64618 5.92062 7.97725 6.28074 7.97725ZM9.70765 7.97725C10.0736 7.97725 10.3988 7.64618 10.3988 7.18732C10.3988 6.72846 10.0736 6.39739 9.70765 6.39739C9.34172 6.39739 9.03388 6.72846 9.03388 7.18732C9.03388 7.64618 9.34753 7.97725 9.70765 7.97725ZM7.99419 11.3577C9.21394 11.3577 10.0329 10.5503 10.0329 10.1612C10.0329 10.0218 9.89351 9.95789 9.75992 10.016C9.33591 10.2367 8.84221 10.4981 7.99419 10.4981C7.15198 10.4981 6.65247 10.2367 6.22846 10.016C6.10068 9.95208 5.96128 10.0218 5.96128 10.1612C5.96128 10.5503 6.78025 11.3577 7.99419 11.3577Z" fill="#329163"/>
-                    </svg> 
+                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-face-good text-sm"></span>
                     <span class="ms-1">還算愉快</span>
                 </div>
                 <div v-else-if="feeling == '3'" 
-                class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209ZM6.28074 7.97725C6.64666 7.97725 6.97193 7.64618 6.97193 7.18732C6.97193 6.72846 6.65247 6.39739 6.28074 6.39739C5.92062 6.39739 5.60697 6.72846 5.60697 7.18732C5.60697 7.64618 5.92062 7.97725 6.28074 7.97725ZM9.70765 7.97725C10.0736 7.97725 10.3988 7.64618 10.3988 7.18732C10.3988 6.72846 10.0736 6.39739 9.70765 6.39739C9.34172 6.39739 9.03388 6.72846 9.03388 7.18732C9.03388 7.64618 9.34753 7.97725 9.70765 7.97725Z" fill="#D08B24"/>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.625 10.5C5.625 10.2929 5.79289 10.125 6 10.125H10C10.2071 10.125 10.375 10.2929 10.375 10.5C10.375 10.7071 10.2071 10.875 10 10.875H6C5.79289 10.875 5.625 10.7071 5.625 10.5Z" fill="#D08B24"/>
-                    </svg> 
+                class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-face-normal text-sm"></span>
                     <span class="ms-1">平常心</span>
                 </div>
                 <div v-else-if="feeling == '4'" 
-                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209ZM6.28074 7.97725C6.64666 7.97725 6.97193 7.64618 6.97193 7.18732C6.97193 6.72846 6.65247 6.39739 6.28074 6.39739C5.92062 6.39739 5.60697 6.72846 5.60697 7.18732C5.60697 7.64618 5.92062 7.97725 6.28074 7.97725ZM9.70765 7.97725C10.0736 7.97725 10.3988 7.64618 10.3988 7.18732C10.3988 6.72846 10.0736 6.39739 9.70765 6.39739C9.34172 6.39739 9.03388 6.72846 9.03388 7.18732C9.03388 7.64618 9.34753 7.97725 9.70765 7.97725Z" fill="#BE2C61"/>
-                        <path d="M6.00002 10.8309C6.00002 10.4418 6.81899 9.6344 8.03874 9.6344C9.25268 9.6344 10.0717 10.4418 10.0717 10.8309C10.0717 10.9703 9.93226 11.04 9.80447 10.9761L9.80057 10.9741C9.3774 10.7538 8.87837 10.494 8.03874 10.494C7.19896 10.494 6.70663 10.7504 6.28537 10.9697L6.27301 10.9761C6.13942 11.0342 6.00002 10.9703 6.00002 10.8309Z" fill="#BE2C61"/>
-                    </svg>
+                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-face-bad text-sm"></span>
                     <span class="ms-1">有苦說不出</span>
                 </div>
                 <div v-else-if="feeling == '5'" 
-                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 me-2">
-                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 14.5C11.2817 14.5 14 11.7875 14 8.5C14 5.2183 11.2817 2.5 7.99419 2.5C4.71249 2.5 2 5.2183 2 8.5C2 11.7875 4.7183 14.5 8 14.5ZM8 13.3209C5.32817 13.3209 3.1849 11.1718 3.1849 8.5C3.1849 5.82817 5.32236 3.6849 7.99419 3.6849C10.666 3.6849 12.8209 5.82817 12.8209 8.5C12.8209 11.1718 10.6718 13.3209 8 13.3209ZM6.28074 7.97725C6.64666 7.97725 6.97193 7.64618 6.97193 7.18732C6.97193 6.72846 6.65247 6.39739 6.28074 6.39739C5.92062 6.39739 5.60697 6.72846 5.60697 7.18732C5.60697 7.64618 5.92062 7.97725 6.28074 7.97725ZM9.70765 7.97725C10.0736 7.97725 10.3988 7.64618 10.3988 7.18732C10.3988 6.72846 10.0736 6.39739 9.70765 6.39739C9.34172 6.39739 9.03388 6.72846 9.03388 7.18732C9.03388 7.64618 9.34753 7.97725 9.70765 7.97725Z" fill="#BE2C61"/>
-                        <path d="M6.00002 10.8309C6.00002 10.4418 6.81899 9.6344 8.03874 9.6344C9.25268 9.6344 10.0717 10.4418 10.0717 10.8309C10.0717 10.9703 9.93226 11.04 9.80447 10.9761L9.80057 10.9741C9.3774 10.7538 8.87837 10.494 8.03874 10.494C7.19896 10.494 6.70663 10.7504 6.28537 10.9697L6.27301 10.9761C6.13942 11.0342 6.00002 10.9703 6.00002 10.8309Z" fill="#BE2C61"/>
-                    </svg>
+                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                    <span class="icon-face-bad text-sm"></span>
                     <span class="ms-1">想換工作了</span>
                 </div>
                 <!-- 上班心情 end -->
