@@ -22,7 +22,7 @@
       <btn cate="text-sm" content="帳號" v-if="isLogin">
         <span class="icon-person-circle text-2xl mb-1"></span>
       </btn>
-      <btn cate="text-sm" content="登入" v-if="!isLogin">
+      <btn cate="text-sm" content="登入" v-if="!isLogin" @click="login">
         <span class="icon-person text-2xl mb-1"></span>
       </btn>
       <btn cate="text-sm" content="加薪計畫" v-if="!isLogin">
@@ -59,7 +59,7 @@
           class="w-12 h-12"
           src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2043&q=80" alt="圖片" >
         </button>
-        <btn cate="secondary" content="登入" class="me-5" v-if="!isLogin">
+        <btn cate="secondary" content="登入" class="me-5" v-if="!isLogin" @click="login">
           <span class="icon-person text-xl me-2"></span>
         </btn>
         <btn cate="primary" content="加薪計畫" >
@@ -131,3 +131,13 @@
     </div>
   </footer>
 </template>
+
+<script lang="ts" setup>
+  import { storeToRefs  } from 'pinia'
+  import { useAuthStore } from '@/stores/auth'
+  const useAuth = useAuthStore()
+  const { isLogin } = storeToRefs (useAuth)
+  const login = () => {
+    useAuth.login()
+  }
+</script>

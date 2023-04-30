@@ -9,8 +9,10 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "nuxt": "^3.3.2",
     "@nuxtjs/tailwindcss": "^6.6.6",
+    "@pinia/nuxt": "^0.4.9",
+    "nuxt": "^3.3.2",
+    "pinia": "^2.0.35",
     "vue3-carousel": "^0.3.0"
   }
 }
