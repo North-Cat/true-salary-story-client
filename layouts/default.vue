@@ -59,7 +59,7 @@
           class="w-12 h-12"
           src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2043&q=80" alt="圖片" >
         </button>
-        <btn cate="secondary" content="登入" class="me-5" v-if="!isLogin" @click="login">
+        <btn to="/login" cate="secondary" content="登入" class="me-5" v-if="!isLogin">
           <span class="icon-person text-xl me-2"></span>
         </btn>
         <btn cate="primary" content="加薪計畫" >

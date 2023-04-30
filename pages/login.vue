@@ -1,0 +1,35 @@
+<template>
+  <div class="login h-screen w-screen flex justify-center items-center">
+    <div class="login-box bg-white border-2 p-10 w-10/12 md:w-8/12 lg:w-5/12 xl:w-3/12 ">
+      <nuxt-link to="/">
+         <img src="~/assets/img/LOGO.png" alt="LOGO" class="w-[120px] md:w-[150px]">
+      </nuxt-link>
+      <h2 class="text-blue mt-5 md:text-3xl text-2xl">有比較才有進步</h2>
+      <div class="mt-10">
+        <a
+          href="/" 
+          class="bg-black-1 flex  justify-center items-center py-4 px-5 mt-3 w-full hover:text-black-6 rounded-lg"
+        >
+          <img src="~/assets/img/google.svg" alt="" width="20" class="mr-2"><span>使用 Google 繼續</span>
+        </a>
+      </div>
+      <div class="mt-10 text-sm text-black-5">
+        繼續代表你同意真薪話「服務條款」與「隱私權政策」。真薪話不會將您的個人資訊用於任何商業用途,或公開顯示在畫面中。
+      </div>
+    </div>
+  </div>
+</template>
+<script setup>
+	definePageMeta({
+	  layout: false,
+	})
+  useHead({
+    title: '登入',
+  })
+
+</script>
+<style>
+.login {
+  background: #F5F5F8;
+}
+</style>
