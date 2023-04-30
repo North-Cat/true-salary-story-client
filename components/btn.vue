@@ -51,8 +51,8 @@ export default {
             type: String,
         },
         to: {
-            type: String,
-            default: '/',
+            type: [String, Object],
+            default: '/' ,
         }
     },
 };

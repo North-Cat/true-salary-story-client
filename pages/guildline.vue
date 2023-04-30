@@ -335,6 +335,8 @@
 
 套件路徑: @/components/btn.vue
 參數說明:
+    to: 
+        路由, 傳入 String || Object
     cate: 
         類型, 傳入 String , 選項如下
             'secondary': 次要按鈕,
