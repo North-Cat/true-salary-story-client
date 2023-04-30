@@ -1,6 +1,6 @@
 <template>
   <div class="login h-screen w-screen flex justify-center items-center">
-    <div class="login-box bg-white border-2 p-10 w-10/12 md:w-8/12 lg:w-5/12 xl:w-3/12 ">
+    <div class="login-box bg-white border-2 p-10 w-10/12 md:w-[400px] ">
       <nuxt-link to="/">
          <img src="~/assets/img/LOGO.png" alt="LOGO" class="w-[120px] md:w-[150px]">
       </nuxt-link>

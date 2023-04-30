@@ -9,3 +9,10 @@
     </NuxtLayout>
   </div>
 </template>
+<script lang="ts" setup>
+  useHead({
+    titleTemplate: (titleChunk) => {
+      return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
+    }
+  })
+</script>
