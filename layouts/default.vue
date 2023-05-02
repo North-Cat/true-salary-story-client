@@ -88,7 +88,7 @@
           class="me-5"
           v-if="!isLogin"
         >
-          <span class="icon-person text-xl me-2"></span>
+          <span class="icon-person text-xl me-2 mt-1"></span>
         </btn>
         <btn cate="primary" content="加薪計畫">
           <span class="icon-star text-2xl me-2"></span>
