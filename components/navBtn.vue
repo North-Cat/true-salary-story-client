@@ -10,21 +10,19 @@
     </button>
 </template>
 
-<script>
-export default {
-    props: { 
-        type: {
-            type: String,
-            default: 'button',
-        },
-        isCircle: { // true:圓形 ; false:方形
-            type: Boolean,
-            required: true
-        },
-        isLeft: { // true:向左 ; false:向右
-            type: Boolean,
-            required: true
-        },
+<script setup lang="ts">
+const props = defineProps({
+    type: {
+        type: String as () => 'button' | 'submit' | 'reset',
+        default: 'button',
     },
-};
+    isCircle: { // true:圓形 ; false:方形
+        type: Boolean,
+        required: true
+    },
+    isLeft: { // true:向左 ; false:向右
+        type: Boolean,
+        required: true
+    },
+})
 </script>

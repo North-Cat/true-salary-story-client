@@ -636,20 +636,19 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            h1Code: '<h1>Title / H1</h1>',
-            h2Code: '<h2>Title / H2</h2>',
-            h3Code: '<h3>Title / H3</h3>',
-            h4Code: '<h4>Title / H4</h4>',
-            h5Code: '<h5>Title / H5</h5>',
-            h6Code: '<h6>Title / H6</h6>',
-            bodyCode: '<div class="body">Title / Body.20</div>',
-            bodySmCode: '<div class="body-sm">Title / Body.16</div>',
-            captionCode: '<div class="caption">Title / Caption</div>',
-        }
-    }
-}
+<script setup>
+    const h1Code = ref('<h1>Title / H1</h1>');
+    const h2Code = ref('<h2>Title / H2</h2>');
+    const h3Code = ref('<h3>Title / H3</h3>');
+    const h4Code = ref('<h4>Title / H4</h4>');
+    const h5Code = ref('<h5>Title / H5</h5>');
+    const h6Code = ref('<h6>Title / H6</h6>');
+    const bodyCode = ref('<div class="body">Title / Body.20</div>');
+    const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
+    const captionCode = ref('<div class="caption">Title / Caption</div>');
+
+    // 不套用 layout
+    definePageMeta({
+        layout: false,
+    });
 </script>

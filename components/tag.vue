@@ -4,12 +4,10 @@
     </button>
 </template>
 
-<script>
-export default {
-    props: { 
-        content: {
-            type: String
-        }
-    },
-};
+<script setup lang="ts">
+const props = defineProps({
+    content: {
+        type: String
+    }
+})
 </script>
