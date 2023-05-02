@@ -23,6 +23,7 @@
     if (jwtToken) {
       user.isLogin = true;
       localStorage.setItem('token', jwtToken as string);
+      user.token = jwtToken as string;
       router.push('/');
     }
   };

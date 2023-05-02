@@ -1,4 +1,21 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { storeToRefs } from 'pinia';
+  import { useUserStore } from '@/store/user';
+  const user = useUserStore();
+  const { isLogin } = storeToRefs(user);
+  const { tryToFetchProfile } = user;
+  const checkLoginStatus = () => {
+    const jwtToken = localStorage.getItem('token');
+    if (jwtToken) {
+      user.isLogin = true;
+      user.token = jwtToken as string;
+      tryToFetchProfile();
+    }
+  };
+  onMounted(() => {
+    checkLoginStatus();
+  });
+</script>
 
 <template>
   <!-- sm nav -->
