@@ -57,6 +57,18 @@
                                 <div class="text-xs text-stone-600">#366BAB</div>
                             </div>
                             <div class="flex flex-col">
+                                <div class="bg-blue-light border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="text-sm text-stone-900">bg-blue-light</div>
+                                <div class="text-xs text-stone-600">#E9F7FF</div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="bg-blue-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="text-sm text-stone-900">bg-blue-dark</div>
+                                <div class="text-xs text-stone-600">#25469A</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-row mb-5 font-semibold">
+                            <div class="flex flex-col">
                                 <div class="bg-green border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
                                 <div class="text-sm text-stone-900">bg-green</div>
                                 <div class="text-xs text-stone-600">#329063</div>
