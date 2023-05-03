@@ -2,19 +2,19 @@
   import { storeToRefs } from 'pinia';
   import { useUserStore } from '@/store/user';
   const user = useUserStore();
-  const { isLogin } = storeToRefs(user);
-  const { tryToFetchProfile } = user;
-  const checkLoginStatus = () => {
-    const jwtToken = localStorage.getItem('token');
-    if (jwtToken) {
-      user.isLogin = true;
-      user.token = jwtToken as string;
-      tryToFetchProfile();
-    }
-  };
-  onMounted(() => {
-    checkLoginStatus();
-  });
+  const { isLogin, currentUser } = storeToRefs(user);
+  // const { tryToFetchProfile } = user;
+  // const checkLoginStatus = () => {
+  //   const jwtToken = localStorage.getItem('token');
+  //   if (jwtToken) {
+  //     user.isLogin = true;
+  //     user.token = jwtToken as string;
+  //     tryToFetchProfile();
+  //   }
+  // };
+  // onMounted(() => {
+  //   checkLoginStatus();
+  // });
 </script>
 
 <template>
@@ -91,13 +91,17 @@
         <btn cate="yellow-text" content="240 積分" class="me-8" v-if="isLogin">
           <span class="icon-star-circle text-xl me-2"></span>
         </btn>
-        <button class="rounded-full overflow-hidden me-8" v-if="isLogin">
+        <btn
+          class="rounded-full overflow-hidden me-8 bg-transparent p-0 hover:bg-transparent"
+          v-if="isLogin"
+          to="/user"
+        >
           <img
-            class="w-12 h-12"
-            src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2043&q=80"
+            class="w-12 h-12 rounded-full"
+            :src="currentUser.profilePicture"
             alt="圖片"
           />
-        </button>
+        </btn>
         <btn
           to="/login"
           cate="secondary"
