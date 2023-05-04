@@ -72,7 +72,12 @@
         <img src="../assets/img/LOGO.png" alt="LOGO" />
       </a>
       <div class="sm:hidden md:flex flex-row justify-center items-center">
-        <btn cate="blue-text" content="匿名分享" class="me-0">
+        <btn
+          cate="blue-text"
+          content="匿名分享"
+          class="me-0"
+          to="/sharemysalary"
+        >
           <span class="icon-edit text-lg me-2"></span>
         </btn>
         <btn cate="gray-text" content="搜尋" :class="{ 'me-8': !isLogin }">
