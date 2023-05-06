@@ -1,9 +1,5 @@
 import { defineStore } from 'pinia';
-import { LoginUserInfo } from '@/interface/user';
-// import { useFetch } from '@vueuse/core';
-interface RequestHeaders extends Headers {
-  Authorization?: string;
-}
+import { LoginUserInfo, RequestHeaders } from '@/interface/user';
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
@@ -17,23 +13,53 @@ export const useUserStore = defineStore('user', {
       const backendUrl = 'https://client-api-dev.up.railway.app/social/google';
       window.location.href = backendUrl;
     },
-    async tryToFetchProfile(): Promise<void> {
+    async tryToFetchProfile(isRfresh = false): Promise<void> {
       const token = this.token;
       const vm = this;
-      await useFetch('https://client-api-dev.up.railway.app/user/profile', {
-        onRequest({ request, options }) {
-          options.headers = {
-            ...(options.headers as RequestHeaders),
-            Authorization: `Bearer ${token}`,
-          };
+      const { data, error, refresh } = await useFetch(
+        'https://client-api-dev.up.railway.app/user/profile',
+        {
+          onRequest({ request, options }) {
+            options.headers = {
+              ...(options.headers as RequestHeaders),
+              Authorization: `Bearer ${token}`,
+            };
+          },
+          onRequestError({ request, options, error }) {},
+          onResponse({ request, response, options }) {
+            vm.currentUser = response._data.data
+              .user as unknown as LoginUserInfo;
+          },
+          onResponseError({ request, response, options }) {
+            vm.logout();
+          },
         },
-        onRequestError({ request, options, error }) {
-          // Handle the request errors
+      );
+      if (isRfresh) {
+        refresh();
+      }
+    },
+    async logout(): Promise<void> {
+      const token = this.token;
+      const { data, error } = await useFetch(
+        'https://client-api-dev.up.railway.app/auth/logout',
+        {
+          method: 'POST',
+          onRequest({ request, options }) {
+            options.headers = {
+              ...(options.headers as RequestHeaders),
+              Authorization: `Bearer ${token}`,
+            };
+          },
         },
-        onResponse({ request, response, options }) {
-          vm.currentUser = response._data.data.user;
-        },
-      });
+      );
+      if (data) {
+        localStorage.removeItem('token');
+        this.isLogin = false;
+      } else {
+        localStorage.removeItem('token');
+        this.isLogin = false;
+      }
     },
   },
 });

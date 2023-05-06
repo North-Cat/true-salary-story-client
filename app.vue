@@ -4,15 +4,17 @@
       return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
     },
   });
+  const route = useRoute();
   import { useUserStore } from '@/store/user';
   const user = useUserStore();
+  let error = reactive({});
   const { tryToFetchProfile } = user;
   const checkLoginStatus = () => {
     const jwtToken = localStorage.getItem('token');
     if (jwtToken) {
       user.isLogin = true;
       user.token = jwtToken as string;
-      tryToFetchProfile();
+      tryToFetchProfile(true);
     }
   };
   onMounted(() => {

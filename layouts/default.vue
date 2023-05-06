@@ -1,20 +1,51 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { useUserStore } from '@/store/user';
+  const route = useRoute();
+  const router = useRouter();
+  const showUserList = ref(false);
   const user = useUserStore();
   const { isLogin, currentUser } = storeToRefs(user);
-  // const { tryToFetchProfile } = user;
-  // const checkLoginStatus = () => {
-  //   const jwtToken = localStorage.getItem('token');
-  //   if (jwtToken) {
-  //     user.isLogin = true;
-  //     user.token = jwtToken as string;
-  //     tryToFetchProfile();
-  //   }
-  // };
-  // onMounted(() => {
-  //   checkLoginStatus();
-  // });
+  const { logout } = user;
+  const loginOut = () => {
+    logout();
+    if (route.path !== '/') {
+      router.push('/');
+    }
+    showUserList.value = false;
+  };
+  const userList = ref([
+    {
+      title: '關於我',
+      to: {
+        name: 'user',
+      },
+    },
+    {
+      title: '我的薪水',
+      to: {
+        name: 'user-my-salary',
+      },
+    },
+    {
+      title: '薪水訂閱',
+      to: {
+        name: 'user-subscribed-companies',
+      },
+    },
+    {
+      title: '訂單總覽',
+      to: 'user/orders',
+    },
+    {
+      title: '積分明細',
+      to: 'user-credit-history',
+    },
+    {
+      title: '登出',
+      click: loginOut,
+    },
+  ]);
 </script>
 
 <template>
@@ -96,17 +127,57 @@
         <btn cate="yellow-text" content="240 積分" class="me-8" v-if="isLogin">
           <span class="icon-star-circle text-xl me-2"></span>
         </btn>
-        <btn
-          class="rounded-full overflow-hidden me-8 bg-transparent p-0 hover:bg-transparent"
-          v-if="isLogin"
-          to="/user"
-        >
-          <img
-            class="w-12 h-12 rounded-full"
-            :src="currentUser.profilePicture"
-            alt="圖片"
-          />
-        </btn>
+        <div class="relative">
+          <btn
+            class="rounded-full overflow-hidden me-8 bg-transparent px-0 py-0 hover:bg-transparent"
+            type="button"
+            v-if="isLogin"
+            @click="showUserList = !showUserList"
+          >
+            <img
+              class="w-12 h-12 rounded-full"
+              :src="currentUser.profilePicture"
+              alt="圖片"
+            />
+          </btn>
+          <div
+            v-if="showUserList"
+            class="absolute shadow bg-white top-[110px] w-[400px] p-5"
+            style="right: -100%"
+          >
+            <div class="flex justify-between">
+              <img
+                class="w-5 h-5 rounded-full"
+                :src="currentUser.profilePicture"
+                alt="圖片"
+              />
+              <div>
+                <button>複製uuid</button>
+                <button>X</button>
+              </div>
+            </div>
+            <ul class="list-none pt-2 pb-2">
+              <li v-for="item in userList">
+                <btn
+                  cate="text-sm"
+                  v-if="item.to"
+                  :to="item.to"
+                  class="py-2 px-3 block"
+                >
+                  {{ item.title }}
+                </btn>
+                <btn
+                  v-if="item.click"
+                  class="py-2 px-3 block"
+                  cate="text-sm"
+                  @click="item.click"
+                >
+                  {{ item.title }}
+                </btn>
+              </li>
+            </ul>
+          </div>
+        </div>
         <btn
           to="/login"
           cate="secondary"

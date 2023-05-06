@@ -4,3 +4,7 @@ export interface LoginUserInfo {
   profilePicture: string;
   _id: string;
 }
+
+export interface RequestHeaders extends Headers {
+  Authorization?: string;
+}
