@@ -1,9 +1,10 @@
 <script setup lang="ts">
   import { storeToRefs } from 'pinia';
   import { useUserStore } from '@/store/user';
+  import { RouteLocationRaw } from 'vue-router';
   const route = useRoute();
   const router = useRouter();
-  const showUserList = ref(false);
+  let showUserList = ref(false);
   const user = useUserStore();
   const { isLogin, currentUser } = storeToRefs(user);
   const { logout } = user;
@@ -17,35 +18,52 @@
   const userList = ref([
     {
       title: '關於我',
+      icon: 'icon-person-circle',
       to: {
         name: 'user',
       },
     },
     {
       title: '我的薪水',
+      icon: 'icon-edit',
       to: {
         name: 'user-my-salary',
       },
     },
     {
       title: '薪水訂閱',
+      icon: 'icon-plus-circle',
       to: {
         name: 'user-subscribed-companies',
       },
     },
     {
-      title: '訂單總覽',
-      to: 'user/orders',
+      title: '請教紀錄',
+      icon: 'icon-message',
+      to: {
+        name: 'user-consult',
+      },
     },
     {
       title: '積分明細',
+      icon: 'icon-star-circle',
       to: 'user-credit-history',
     },
     {
+      title: '訂單總覽',
+      icon: 'icon-file',
+      to: 'user/orders',
+    },
+    {
       title: '登出',
+      icon: 'icon-person-circle',
       click: loginOut,
     },
   ]);
+  const goToPage = (to: RouteLocationRaw) => {
+    router.push(to);
+    showUserList.value = false;
+  };
 </script>
 
 <template>
@@ -129,10 +147,11 @@
         </btn>
         <div class="relative">
           <btn
-            class="rounded-full overflow-hidden me-8 bg-transparent px-0 py-0 hover:bg-transparent"
+            class="rounded-full overflow-hidden me-8 bg-transparent hover:bg-transparent"
             type="button"
             v-if="isLogin"
             @click="showUserList = !showUserList"
+            style="padding: 0"
           >
             <img
               class="w-12 h-12 rounded-full"
@@ -142,18 +161,26 @@
           </btn>
           <div
             v-if="showUserList"
-            class="absolute shadow bg-white top-[110px] w-[400px] p-5"
+            class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
             style="right: -100%"
           >
-            <div class="flex justify-between">
-              <img
-                class="w-5 h-5 rounded-full"
-                :src="currentUser.profilePicture"
-                alt="圖片"
-              />
+            <div class="flex justify-between pb-3 border-b border-b-black-5">
+              <div class="text-xl">
+                {{ currentUser.displayName }}
+              </div>
               <div>
-                <button>複製uuid</button>
-                <button>X</button>
+                <!-- FIX: 複製UID -->
+                <button
+                  class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                >
+                  複製UID
+                </button>
+                <button
+                  class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                  @click="showUserList = false"
+                >
+                  <i class="icomoon icon-cross"></i>
+                </button>
               </div>
             </div>
             <ul class="list-none pt-2 pb-2">
@@ -161,18 +188,26 @@
                 <btn
                   cate="text-sm"
                   v-if="item.to"
-                  :to="item.to"
-                  class="py-2 px-3 block"
+                  @click="goToPage(item.to)"
+                  class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn"
                 >
-                  {{ item.title }}
+                  <div class="text-black-10 group-hover:text-blue">
+                    <span class="w-[35px] inline-block text-center mr-3">
+                      <i
+                        :class="`icomoon ${item.icon} text-black-5 text-2xl align-text-top group-hover:text-blue`"
+                      ></i>
+                    </span>
+                    {{ item.title }}
+                  </div>
                 </btn>
                 <btn
                   v-if="item.click"
-                  class="py-2 px-3 block"
-                  cate="text-sm"
+                  class="rounded py-5 px-3 bg-transparent group hover:bg-blue-light hover:text-blue w-full"
                   @click="item.click"
                 >
-                  {{ item.title }}
+                  <span class="text-black-10 group-hover:text-blue">
+                    {{ item.title }}
+                  </span>
                 </btn>
               </li>
             </ul>
@@ -287,3 +322,8 @@
     </div>
   </footer>
 </template>
+<style scoped>
+  .showUserList-item-btn {
+    @apply items-start;
+  }
+</style>

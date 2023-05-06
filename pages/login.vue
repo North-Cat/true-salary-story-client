@@ -21,7 +21,7 @@
   const checkLoginStatus = () => {
     const jwtToken = route.query.token;
     if (jwtToken) {
-      user.isLogin = true;
+      // user.isLogin = true;
       localStorage.setItem('token', jwtToken as string);
       user.token = jwtToken as string;
       router.push('/');

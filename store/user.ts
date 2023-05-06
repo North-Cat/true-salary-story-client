@@ -25,10 +25,17 @@ export const useUserStore = defineStore('user', {
               Authorization: `Bearer ${token}`,
             };
           },
-          onRequestError({ request, options, error }) {},
+          onRequestError({ request, options, error }) {
+            vm.logout();
+          },
           onResponse({ request, response, options }) {
+            if (response.status === 401) {
+              vm.logout();
+              return;
+            }
             vm.currentUser = response._data.data
               .user as unknown as LoginUserInfo;
+            vm.isLogin = true;
           },
           onResponseError({ request, response, options }) {
             vm.logout();
