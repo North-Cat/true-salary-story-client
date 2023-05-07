@@ -8,73 +8,86 @@
                         <div class="text-2xl text-blue mb-5">Color</div>
                         <div class="flex flex-row mb-5 font-semibold">
                             <div class="flex flex-col">
-                                <div class="bg-white border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-white border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-white</div>
                                 <div class="text-xs text-stone-600">#FFFFFF</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-gray</div>
                                 <div class="text-xs text-stone-600">#F5F5F8</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-dark</div>
                                 <div class="text-xs text-stone-600">#D4D4D7</div>
                             </div>
                         </div>
                         <div class="flex flex-row mb-5 font-semibold">
                             <div class="flex flex-col">
-                                <div class="bg-black-10 border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-black-10 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-black-10</div>
                                 <div class="text-xs text-stone-600">#2B2B31</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-black-6 border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-black-6 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-black-6</div>
                                 <div class="text-xs text-stone-600">#2B2B31A8</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-black-5 border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-black-5 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-black-5</div>
                                 <div class="text-xs text-stone-600">#2B2B3180</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-black-3 border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-black-3 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-black-3</div>
                                 <div class="text-xs text-stone-600">#2B2B314D</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-black-1 border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-black-1 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-black-1</div>
                                 <div class="text-xs text-stone-600">#2B2B311A</div>
                             </div>
                         </div>
                         <div class="flex flex-row mb-5 font-semibold">
                             <div class="flex flex-col">
-                                <div class="bg-blue border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-blue border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-blue</div>
                                 <div class="text-xs text-stone-600">#366BAB</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-blue-light border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-blue-light border border-stone-200 me-5 mb-1"
+                                    style="height:79px; width:79px"></div>
                                 <div class="text-sm text-stone-900">bg-blue-light</div>
                                 <div class="text-xs text-stone-600">#E9F7FF</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-blue-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-blue-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-blue-dark</div>
                                 <div class="text-xs text-stone-600">#25469A</div>
                             </div>
                         </div>
                         <div class="flex flex-row mb-5 font-semibold">
                             <div class="flex flex-col">
-                                <div class="bg-green border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-green border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-green</div>
                                 <div class="text-xs text-stone-600">#329063</div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="bg-yellow border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
+                                <div class="bg-yellow border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
                                 <div class="text-sm text-stone-900">bg-yellow</div>
                                 <div class="text-xs text-stone-600">#D08B24</div>
                             </div>
@@ -209,6 +222,10 @@
                                 <p>icon-plus</p>
                             </div>
                             <div class="flex flex-row items-center me-5 mb-8">
+                                <span class="text-2xl icon-minus me-2"></span>
+                                <p>icon-minus</p>
+                            </div>
+                            <div class="flex flex-row items-center me-5 mb-8">
                                 <span class="text-2xl icon-plus-circle me-2"></span>
                                 <p>icon-plus-circle</p>
                             </div>
@@ -269,6 +286,10 @@
                                 <span class="text-2xl icon-star-circle-fill me-2"></span>
                                 <p>icon-star-circle-fill</p>
                             </div>
+                            <div class="flex flex-row items-center me-5 mb-8">
+                                <span class="text-2xl icon-info me-2"></span>
+                                <p>icon-info</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -295,7 +316,7 @@
                     <div class="w-full sm:w-2/12 px-2">
                         <h4 class="h4 ms-10">Button</h4>
                     </div>
-                    <div class="w-full sm:w-6/12 px-2">               
+                    <div class="w-full sm:w-6/12 px-2">
                         <div class="flex flex-col justify-center items-center mb-6 ">
                             <btn cate="blue-text" content="匿名分享" class="mb-1">
                                 <span class="icon-edit text-lg me-2"></span>
@@ -306,7 +327,8 @@
                             <btn cate="gray-text" content="訊息" class="mb-1">
                                 <div>
                                     <!-- 訊息紅點 -->
-                                    <span class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
+                                    <span
+                                        class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
                                     <span class="icon-mail text-2xl me-2"></span>
                                 </div>
                             </btn>
@@ -321,7 +343,7 @@
                             </btn>
                         </div>
                         <div class="flex flex-row justify-center items-center mb-6 ">
-                        
+
                             <btn cate="text-sm" content="分享" class="mb-1">
                                 <span class="icon-edit text-2xl mb-1"></span>
                             </btn>
@@ -331,7 +353,8 @@
                             <btn cate="text-sm" content="訊息" class="mb-1">
                                 <div class="-mb-1">
                                     <!-- 訊息紅點 -->
-                                    <span class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
+                                    <span
+                                        class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
                                     <span class="icon-mail text-3xl"></span>
                                 </div>
                             </btn>
@@ -339,7 +362,7 @@
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                                 <pre><code>
 &#060;btn &#058;cate&#061;&#034;cate&#034; &#058;content&#061;&#034;content&#034;&#062;
     &#060;svg&#062; icon &#060;&#047;svg&#062;
@@ -371,16 +394,16 @@
                     <div class="w-full sm:w-6/12 px-2">
                         <div class="flex flex-row justify-center items-start mb-6 ">
                             <nav-btn :isCircle="true" :isLeft="true" class="me-5"></nav-btn>
-                            <nav-btn :isCircle="true" :isLeft="false" ></nav-btn>
+                            <nav-btn :isCircle="true" :isLeft="false"></nav-btn>
                         </div>
                         <div class="flex flex-row justify-center items-center">
                             <nav-btn :isCircle="false" :isLeft="true" class="me-5"></nav-btn>
-                            <nav-btn :isCircle="false" :isLeft="false" ></nav-btn>
+                            <nav-btn :isCircle="false" :isLeft="false"></nav-btn>
                         </div>
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                                 <pre><code>
 &#060;nav-btn &#058;isCircle&#061;&#034;isCircle&#034; &#058;isLeft&#061;&#034;isLeft&#034;&#062;&#060;&#047;nav-btn&#062;
 
@@ -405,45 +428,37 @@
                     </div>
                     <div class="w-full sm:w-6/12 px-2">
                         <div class="flex flex-col justify-center items-center mb-6  ">
-                            <card 
-                                class="mb-2"
-                                cate="top" 
-                                title="國內業務人員" 
-                                company="櫻花廚房器具_櫻欣興業股份有限公司" 
-                                overtime="5" feeling="5">
+                            <card class="mb-2" cate="top" title="國內業務人員" company="櫻花廚房器具_櫻欣興業股份有限公司" overtime="5"
+                                feeling="5">
                             </card>
-                            <card 
-                                cate="new" 
-                                title="國內業務人員" 
-                                company="櫻花廚房器具_櫻欣興業股份有限公司" 
-                                overtime="4" feeling="4">
+                            <card cate="new" title="國內業務人員" company="櫻花廚房器具_櫻欣興業股份有限公司" overtime="4" feeling="4">
                             </card>
                         </div>
                         <div class="flex flex-col justify-center items-start mb-6">
                             <div class="flex mb-5">
                                 <!-- 加班狀況 start -->
                                 <div
-                                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-time-good text-sm"></span>
                                     <span class="ms-1">準時上下班</span>
                                 </div>
-                                <div 
-                                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-time-good text-sm"></span>
                                     <span class="ms-1">很少加班</span>
                                 </div>
-                                <div 
-                                class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-time-normal text-sm"></span>
                                     <span class="ms-1">偶爾加班</span>
                                 </div>
-                                <div 
-                                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-time-bad text-sm"></span>
                                     <span class="ms-1">常常加班</span>
                                 </div>
-                                <div 
-                                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-time-bad text-sm"></span>
                                     <span class="ms-1">賣肝拼經濟</span>
                                 </div>
@@ -452,27 +467,27 @@
                             <div class="flex">
                                 <!-- 上班心情 start -->
                                 <div
-                                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-face-good text-sm"></span>
                                     <span class="ms-1">非常開心</span>
                                 </div>
-                                <div 
-                                class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-face-good text-sm"></span>
                                     <span class="ms-1">還算愉快</span>
                                 </div>
-                                <div 
-                                class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-face-normal text-sm"></span>
                                     <span class="ms-1">平常心</span>
                                 </div>
-                                <div 
-                                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-face-bad text-sm"></span>
                                     <span class="ms-1">有苦說不出</span>
                                 </div>
-                                <div 
-                                class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
+                                <div
+                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
                                     <span class="icon-face-bad text-sm"></span>
                                     <span class="ms-1">想換工作了</span>
                                 </div>
@@ -482,7 +497,7 @@
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                                 <pre><code>
 &#060;card 
     &#058;cate&#061;&#034;cate&#034; 
@@ -536,7 +551,7 @@
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                                 <pre><code>
 &#060;tag &#058;content&#061;&#034;content&#034;&#062;&#060;&#047;tag&#062;
 
@@ -557,14 +572,15 @@
                         <div class="flex flex-row justify-center items-start ">
                             <div>
                                 <text-link class="mb-2" content="資訊科技"></text-link>
-                                <text-link class="mb-2 w-[350px]" content="7-11_統一超商股份有限公司" end-content="12323 筆"></text-link>
+                                <text-link class="mb-2 w-[350px]" content="7-11_統一超商股份有限公司"
+                                    end-content="12323 筆"></text-link>
                                 <text-link class="mb-2" content="美光薪資結構"></text-link>
                             </div>
                         </div>
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                                 <pre><code>
 &#060;text-link 
     &#058;content&#061;&#034;content&#034; 
@@ -589,15 +605,18 @@
                     <div class="w-full sm:w-6/12 px-2">
                         <div class="flex flex-row justify-center items-start ">
                             <div class="flex flex-col">
-                                <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2">服務條款</a>
-                                <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2">隱私權政策</a>
-                                <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out">幫助中心</a>
+                                <a href="#"
+                                    class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2">服務條款</a>
+                                <a href="#"
+                                    class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2">隱私權政策</a>
+                                <a href="#"
+                                    class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out">幫助中心</a>
                             </div>
                         </div>
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded "> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded ">
                                 <pre class="overflow-x-scroll"><code>
 &#060;a href&#061;&#034;#&#034; class&#061;&#034;caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out&#034; &#062;
 服務條款
@@ -616,7 +635,9 @@
                     <div class="w-full sm:w-6/12 px-2">
                         <div class="flex flex-row justify-center items-start ">
                             <div class="flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out">
-                                <input class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none " type="text" placeholder="搜尋薪水、公司、職位..." />
+                                <input
+                                    class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none "
+                                    type="text" placeholder="搜尋薪水、公司、職位..." />
                                 <button class="flex justify-center items-center bg-black-10 py-3 px-8">
                                     <span class="icon-search text-white text-xl"></span>
                                 </button>
@@ -625,7 +646,7 @@
                     </div>
                     <div class="w-full sm:w-4/12 px-2">
                         <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"> 
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                                 <pre class="overflow-x-scroll"><code>
 &#060;div class&#061;"flex border-2 hover:shadow-search transition duration-150 ease-in-out"&#062;
 	&#060;input class&#061;"w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none " type&#061;"text" placeholder&#061;"搜尋薪水、公司、職位..." /&#062;
@@ -649,18 +670,18 @@
 </template>
 
 <script setup>
-    const h1Code = ref('<h1>Title / H1</h1>');
-    const h2Code = ref('<h2>Title / H2</h2>');
-    const h3Code = ref('<h3>Title / H3</h3>');
-    const h4Code = ref('<h4>Title / H4</h4>');
-    const h5Code = ref('<h5>Title / H5</h5>');
-    const h6Code = ref('<h6>Title / H6</h6>');
-    const bodyCode = ref('<div class="body">Title / Body.20</div>');
-    const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
-    const captionCode = ref('<div class="caption">Title / Caption</div>');
+const h1Code = ref('<h1>Title / H1</h1>');
+const h2Code = ref('<h2>Title / H2</h2>');
+const h3Code = ref('<h3>Title / H3</h3>');
+const h4Code = ref('<h4>Title / H4</h4>');
+const h5Code = ref('<h5>Title / H5</h5>');
+const h6Code = ref('<h6>Title / H6</h6>');
+const bodyCode = ref('<div class="body">Title / Body.20</div>');
+const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
+const captionCode = ref('<div class="caption">Title / Caption</div>');
 
-    // 不套用 layout
-    definePageMeta({
-        layout: false,
-    });
+// 不套用 layout
+definePageMeta({
+    layout: false,
+});
 </script>
