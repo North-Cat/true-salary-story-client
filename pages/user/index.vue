@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-  useHead({
-    title: '關於我',
-  });
-  definePageMeta({
-    middleware: 'auth',
-  });
-  import { storeToRefs } from 'pinia';
-  import { useUserStore } from '@/store/user';
-  const user = useUserStore();
-  const { currentUser } = storeToRefs(user);
+useHead({
+  title: '關於我',
+});
+definePageMeta({
+  middleware: 'auth',
+});
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
+const user = useUserStore();
+const { currentUser } = storeToRefs(user);
 </script>
 <template>
   <userLayouts>
-    <div class="w-full flex flex-col p-6">
+    <div class="w-full flex flex-col">
       <div class="w-full">
         <h5 class="mb-5">基本資料</h5>
         <ul class="list-none">
