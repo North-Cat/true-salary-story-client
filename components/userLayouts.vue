@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+  import { storeToRefs } from 'pinia';
   import { useUserStore } from '@/store/user';
   const route = useRoute();
   const router = useRouter();
   const user = useUserStore();
-  const { logout, currentUser } = user;
+  const { logout } = user;
+  const { currentUser } = storeToRefs(user);
   const loginOut = () => {
     logout();
     router.push('/');
