@@ -1,14 +1,14 @@
-// import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/store/user';
 export default defineNuxtPlugin((nuxtApp) => {
-  //   const user = useUserStore();
-  //   const { tryToFetchProfile } = user;
-  //   nuxtApp.hook('app:mounted', () => {
-  //     const jwtToken = localStorage.getItem('token');
-  //     console.log(jwtToken);
-  //     if (jwtToken) {
-  //       user.isLogin = true;
-  //       user.token = jwtToken as string;
-  //       tryToFetchProfile(true);
-  //     }
-  //   });
+  const user = useUserStore();
+  const { tryToFetchProfile } = user;
+  nuxtApp.hook('app:created', () => {
+    const jwtToken = useCookie('token');
+    if (jwtToken.value) {
+      // user.isLogin = true;
+      user.token = jwtToken.value as string;
+      console.log('plugins');
+      tryToFetchProfile();
+    }
+  });
 });

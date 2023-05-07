@@ -7,18 +7,18 @@
   import { useUserStore } from '@/store/user';
   const user = useUserStore();
   const { tryToFetchProfile } = user;
-  const checkLoginStatus = () => {
-    const jwtToken = localStorage.getItem('token');
-    // const jwtToken = useCookie('token').value
-    if (jwtToken) {
-      // user.isLogin = true;
-      user.token = jwtToken as string;
-      tryToFetchProfile(true);
-    }
-  };
-  onMounted(() => {
-    checkLoginStatus();
-  });
+  // const checkLoginStatus = () => {
+  //   const jwtToken = localStorage.getItem('token');
+  //   // const jwtToken = useCookie('token').value
+  // if (user.token) {
+  //     // user.isLogin = true;
+  //     user.token = jwtToken as string;
+  // tryToFetchProfile(true);
+  // }
+  // };
+  // onMounted(() => {
+  // checkLoginStatus();
+  // });
 </script>
 <template>
   <div>

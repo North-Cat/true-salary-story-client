@@ -4,7 +4,7 @@
   const user = useUserStore();
   const route = useRoute();
   const router = useRouter();
-
+  const { tryToFetchProfile } = user;
   definePageMeta({
     layout: false,
   });
@@ -22,9 +22,15 @@
     const jwtToken = route.query.token;
     if (jwtToken) {
       // user.isLogin = true;
-      localStorage.setItem('token', jwtToken as string);
+      const tokenCookie = useCookie('token');
+      tokenCookie.value = jwtToken as string;
+      // localStorage.setItem('token', jwtToken as string);
       user.token = jwtToken as string;
       router.push('/');
+      nextTick(() => {
+        console.log('login');
+        tryToFetchProfile();
+      });
     }
   };
 

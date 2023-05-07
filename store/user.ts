@@ -61,10 +61,14 @@ export const useUserStore = defineStore('user', {
         },
       );
       if (data) {
-        localStorage.removeItem('token');
+        // localStorage.removeItem('token');
+        const tokenCookie = useCookie('token');
+        tokenCookie.value = null;
         this.isLogin = false;
       } else {
-        localStorage.removeItem('token');
+        // localStorage.removeItem('token');
+        const tokenCookie = useCookie('token');
+        tokenCookie.value = null;
         this.isLogin = false;
       }
     },
