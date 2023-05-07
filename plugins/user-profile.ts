@@ -5,9 +5,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.hook('app:created', () => {
     const jwtToken = useCookie('token');
     if (jwtToken.value) {
-      // user.isLogin = true;
+      user.isLogin = true;
       user.token = jwtToken.value as string;
-      console.log('plugins');
       tryToFetchProfile();
     }
   });
