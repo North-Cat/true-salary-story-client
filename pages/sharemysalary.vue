@@ -2,6 +2,9 @@
   useHead({
     title: '匿名分享',
   });
+  definePageMeta({
+    middleware: 'auth',
+  });
 </script>
 <template>
   <div class="sharemysalary pt-[130px]">

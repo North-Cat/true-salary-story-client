@@ -2,6 +2,9 @@
   useHead({
     title: '關於我',
   });
+  definePageMeta({
+    middleware: 'auth',
+  });
   import { storeToRefs } from 'pinia';
   import { useUserStore } from '@/store/user';
   const user = useUserStore();

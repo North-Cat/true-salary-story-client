@@ -108,7 +108,7 @@
       >
         <span class="icon-person text-2xl mb-1"></span>
       </btn>
-      <btn cate="text-sm" content="加薪計畫" v-if="!isLogin">
+      <btn to="/offer" cate="text-sm" content="加薪計畫" v-if="!isLogin">
         <span class="icon-star text-3xl"></span>
       </btn>
     </div>
@@ -121,9 +121,9 @@
     <div
       class="container mx-auto max-w-[1800px] flex justify-between items-center"
     >
-      <a href="#" class="sm:w-[80px] md:w-[150px] lg:w-[150px]">
+      <nuxt-link to="/" class="sm:w-[80px] md:w-[150px] lg:w-[150px]">
         <img src="../assets/img/LOGO.png" alt="LOGO" />
-      </a>
+      </nuxt-link>
       <div class="sm:hidden md:flex flex-row justify-center items-center">
         <btn
           cate="blue-text"
@@ -226,7 +226,7 @@
         >
           <span class="icon-person text-xl me-2"></span>
         </btn>
-        <btn cate="primary" content="加薪計畫">
+        <btn cate="primary" content="加薪計畫" to="/offer">
           <span class="icon-star text-2xl me-2"></span>
         </btn>
       </div>
