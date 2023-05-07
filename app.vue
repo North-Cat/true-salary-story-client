@@ -1,24 +1,9 @@
 <script lang="ts" setup>
-  useHead({
-    titleTemplate: (titleChunk) => {
-      return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
-    },
-  });
-  import { useUserStore } from '@/store/user';
-  const user = useUserStore();
-  const { tryToFetchProfile } = user;
-  // const checkLoginStatus = () => {
-  //   const jwtToken = localStorage.getItem('token');
-  //   // const jwtToken = useCookie('token').value
-  // if (user.token) {
-  //     // user.isLogin = true;
-  //     user.token = jwtToken as string;
-  // tryToFetchProfile(true);
-  // }
-  // };
-  // onMounted(() => {
-  // checkLoginStatus();
-  // });
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
+  },
+});
 </script>
 <template>
   <div>

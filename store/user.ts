@@ -26,19 +26,19 @@ export const useUserStore = defineStore('user', {
             };
           },
           onRequestError({ request, options, error }) {
-            vm.logout();
+            vm.error();
           },
           onResponse({ request, response, options }) {
-            if (response.status === 401) {
-              vm.logout();
-              return;
+            if (response.status === 200) {
+              vm.currentUser = response._data.data
+                .user as unknown as LoginUserInfo;
+              vm.isLogin = true;
+            } else {
+              vm.error();
             }
-            vm.currentUser = response._data.data
-              .user as unknown as LoginUserInfo;
-            vm.isLogin = true;
           },
           onResponseError({ request, response, options }) {
-            vm.logout();
+            vm.error();
           },
         },
       );
@@ -61,16 +61,16 @@ export const useUserStore = defineStore('user', {
         },
       );
       if (data) {
-        // localStorage.removeItem('token');
-        const tokenCookie = useCookie('token');
-        tokenCookie.value = null;
-        this.isLogin = false;
+        this.error();
       } else {
-        // localStorage.removeItem('token');
-        const tokenCookie = useCookie('token');
-        tokenCookie.value = null;
-        this.isLogin = false;
+        this.error();
       }
+    },
+    error() {
+      const tokenCookie = useCookie('token');
+      tokenCookie.value = null;
+      this.isLogin = false;
+      navigateTo('/');
     },
   },
 });
