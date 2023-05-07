@@ -4,7 +4,5 @@
   });
 </script>
 <template>
-  <div class="subscribedCompanies pt-[130px]">
-    <section>薪水訂閱</section>
-  </div>
+  <userLayouts> 薪水訂閱 </userLayouts>
 </template>

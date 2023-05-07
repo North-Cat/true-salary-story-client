@@ -4,7 +4,5 @@
   });
 </script>
 <template>
-  <div class="mySalary pt-[130px]">
-    <section>我的薪水</section>
-  </div>
+  <userLayouts> 我的薪水 </userLayouts>
 </template>

@@ -4,7 +4,5 @@
   });
 </script>
 <template>
-  <div class="orders pt-[130px]">
-    <section>訂單總覽</section>
-  </div>
+  <userLayouts> 訂單總覽 </userLayouts>
 </template>

@@ -47,12 +47,16 @@
     {
       title: '積分明細',
       icon: 'icon-star-circle',
-      to: 'user-credit-history',
+      to: {
+        name: 'user-credit-history',
+      },
     },
     {
       title: '訂單總覽',
       icon: 'icon-file',
-      to: 'user/orders',
+      to: {
+        name: 'user-orders',
+      },
     },
     {
       title: '登出',
@@ -184,29 +188,29 @@
               </div>
             </div>
             <ul class="list-none pt-2 pb-2">
-              <li v-for="item in userList">
+              <li v-for="userItem in userList">
                 <btn
                   cate="text-sm"
-                  v-if="item.to"
-                  @click="goToPage(item.to)"
+                  v-if="userItem.to"
+                  @click="goToPage(userItem.to)"
                   class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn"
                 >
                   <div class="text-black-10 group-hover:text-blue">
-                    <span class="w-[35px] inline-block text-center mr-3">
+                    <span class="w-[48px] inline-block text-center mr-3">
                       <i
-                        :class="`icomoon ${item.icon} text-black-5 text-2xl align-text-top group-hover:text-blue`"
+                        :class="`icomoon ${userItem.icon} text-black-5 text-2xl align-text-top group-hover:text-blue`"
                       ></i>
                     </span>
-                    {{ item.title }}
+                    {{ userItem.title }}
                   </div>
                 </btn>
                 <btn
-                  v-if="item.click"
+                  v-if="userItem.click"
                   class="rounded py-5 px-3 bg-transparent group hover:bg-blue-light hover:text-blue w-full"
-                  @click="item.click"
+                  @click="userItem.click"
                 >
                   <span class="text-black-10 group-hover:text-blue">
-                    {{ item.title }}
+                    {{ userItem.title }}
                   </span>
                 </btn>
               </li>

@@ -4,7 +4,5 @@
   });
 </script>
 <template>
-  <div class="consult pt-[130px]">
-    <section>請教記錄</section>
-  </div>
+  <userLayouts> 請教紀錄 </userLayouts>
 </template>
