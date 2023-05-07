@@ -5,15 +5,17 @@ module.exports = {
     './layouts/**/*.vue',
     './pages/**/*.vue',
     './plugins/**/*.{js,ts}',
-    './app.{js,ts,vue}'
+    './app.{js,ts,vue}',
   ],
   theme: {
     extend: {
       screens: {
-        sm: '320px'
+        sm: '320px',
       },
       colors: {
         gray: '#F5F5F8',
+        'gray-light': '#E9E8ED',
+        'gray-field': '#EFEFF4',
         dark: '#D4D4D7',
         black: {
           10: '#2B2B31',
@@ -31,17 +33,17 @@ module.exports = {
       },
       boxShadow: {
         card: '0px 2px 20px rgba(82, 154, 242, 0.5), 0px 0px 4px rgba(82, 154, 242, 0.3)',
-        search: '0px 2px 20px rgba(82, 154, 242, 0.5), 0px 0px 4px rgba(82, 154, 242, 0.3)',
+        search:
+          '0px 2px 20px rgba(82, 154, 242, 0.5), 0px 0px 4px rgba(82, 154, 242, 0.3)',
         nav: '0px -2px 8px rgba(43, 43, 49, 0.1)',
       },
       padding: {
-        15: '60px'
+        15: '60px',
       },
       margin: {
-        15: '60px'
-      }
+        15: '60px',
+      },
     },
   },
   plugins: [],
-}
-
+};

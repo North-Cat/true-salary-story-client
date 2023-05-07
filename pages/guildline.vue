@@ -20,6 +20,18 @@
                                 <div class="text-xs text-stone-600">#F5F5F8</div>
                             </div>
                             <div class="flex flex-col">
+                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
+                                <div class="text-sm text-stone-900">bg-gray-field</div>
+                                <div class="text-xs text-stone-600">#EFEFF4</div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
+                                </div>
+                                <div class="text-sm text-stone-900">bg-gray-light</div>
+                                <div class="text-xs text-stone-600">#E9E8ED</div>
+                            </div>
+                            <div class="flex flex-col">
                                 <div class="bg-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
                                 </div>
                                 <div class="text-sm text-stone-900">bg-dark</div>
@@ -338,8 +350,13 @@
                             <btn cate="secondary" content="登入" class="mb-2">
                                 <span class="icon-person text-xl me-2"></span>
                             </btn>
-                            <btn cate="primary" content="加薪計畫" class="mb-1">
+                            <btn cate="primary" content="加薪計畫" class="mb-2">
                                 <span class="icon-star text-2xl me-2"></span>
+                            </btn>
+                            <btn cate="gray" content="已訂閱" class="mb-2">
+                            </btn>
+                            <btn cate="white" content="套用" class="mb-2">
+                                <span class="icon-filter text-sm me-2"></span>
                             </btn>
                         </div>
                         <div class="flex flex-row justify-center items-center mb-6 ">
@@ -374,8 +391,10 @@
         路由, 傳入 String || Object
     cate: 
         類型, 傳入 String , 選項如下
-            'secondary': 次要按鈕,
             'primary': 主要按鈕,
+            'secondary': 次要按鈕,
+            'gray': 灰色按鈕, 
+            'white': 白色按鈕, 
             'gray-text':灰色無邊框, 
             'blue-text':藍色無邊框, 
             'yellow-text':黃色無邊框, 
