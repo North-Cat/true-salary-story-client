@@ -6,13 +6,10 @@ const route = useRoute();
 const router = useRouter();
 let showUserList = ref(false);
 const user = useUserStore();
-const { isLogin, currentUser } = storeToRefs(user);
+const { isLogin, currentUser, isFetchProfileLoading } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
   logout();
-  if (route.path !== '/') {
-    router.push('/');
-  }
   showUserList.value = false;
 };
 const userList = ref([
@@ -168,7 +165,12 @@ const goToPage = (to: RouteLocationRaw) => {
         <div class="relative">
           <btn class="rounded-full overflow-hidden me-8 bg-transparent hover:bg-transparent" type="button" v-if="isLogin"
             @click="showUserList = !showUserList" style="padding: 0">
-            <img class="w-12 h-12 rounded-full" :src="currentUser.profilePicture" alt="圖片" />
+            <div v-if="isFetchProfileLoading">
+              <div class="animate-pulse flex space-x-4">
+                <div class="bg-slate-200 w-12 h-12 rounded-full"></div>
+              </div>
+            </div>
+            <img v-else class="w-12 h-12 rounded-full" :src="currentUser.profilePicture" alt="圖片" />
           </btn>
           <div v-if="showUserList" class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded" style="right: -100%">
             <div class="flex justify-between pb-3 border-b border-b-black-5">

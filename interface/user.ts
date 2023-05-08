@@ -1,10 +1,10 @@
-export interface LoginUserInfo {
+export interface ILoginUserInfo {
   displayName: string;
   email: string;
   profilePicture: string;
   _id: string;
 }
 
-export interface RequestHeaders extends Headers {
+export interface IRequestHeaders extends Headers {
   Authorization?: string;
 }

@@ -8,7 +8,6 @@ const { logout } = user;
 const { currentUser } = storeToRefs(user);
 const loginOut = () => {
   logout();
-  router.push('/');
 };
 const userList = ref([
   {
