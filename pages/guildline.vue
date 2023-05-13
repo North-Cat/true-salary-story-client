@@ -709,6 +709,55 @@ showSuccess("成功標題", "成功訊息");
                         </div>
                     </div>
                 </div>
+                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
+                    <div class="w-full sm:w-2/12 px-2">
+                        <h4 class="h4 ms-10">Dialog</h4>
+                    </div>
+                    <div class="w-full sm:w-6/12 px-2">
+                        <div class="flex flex-col justify-center items-center mb-6 ">
+                            <button @click="confirmOpen" class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
+                                type="button">
+                                Open confirmOpen
+                            </button>
+                            <button @click="promptOpen" class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
+                                type="button">
+                                Open promptOpen
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-4/12 px-2">
+                        <div class="flex flex-col justify-center items-start">
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
+                                <pre><code>
+在 js 中使用:
+import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
+
+// 開啟有 "確定" 跟 "取消" 按鈕的彈出視窗
+openConfirmModal(title, message, confirmFunc, cancelFunc);
+
+// 開啟有 "確定" 按鈕的彈出視窗
+openPromptModal(title, message, confirmFunc);
+
+
+參數說明:
+title: 
+    標題, 傳入 String
+message: 
+    內容, 傳入 String
+confirmFunc: 
+    確認方法, 傳入 Function | undefined , 點擊確定會觸發此方法並關閉視窗
+    cancelFunc: 
+    取消方法, 傳入 Function | undefined , 點擊取消會觸發此方法並關閉視窗
+
+====================================================================================
+
+* 若需要客製化彈出視窗內容，可以參考 "@/component/defaultModal.vue" 的樣式
+
+                                        </code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -730,6 +779,7 @@ definePageMeta({
     layout: false,
 });
 
+// message
 import { showInfo, showSuccess, showError } from "@/utilities/message";
 function clickShowInfo() {
     showInfo("提示標題", "請填寫帳號。");
@@ -739,5 +789,27 @@ function clickShowError() {
 }
 function clickShowSuccess() {
     showSuccess("成功標題", "成功訊息");
+}
+
+// dialog
+import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
+function confirmOpen() {
+    // 使用 utilities 的 dialog 開啟視窗
+    let title = "標題";
+    let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文";
+    console.log(title);
+    openConfirmModal(title, message, confirmFunc, cancelFunc);
+}
+function promptOpen() {
+    // 使用 utilities 的 dialog 開啟視窗
+    let title = "標題2";
+    let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2";
+    openPromptModal(title, message, confirmFunc);
+}
+function confirmFunc() {
+    showSuccess("觸發確定按鈕");
+}
+function cancelFunc() {
+    showInfo("觸發取消按鈕");
 }
 </script>
