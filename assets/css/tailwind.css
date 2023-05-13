@@ -62,3 +62,23 @@
         padding-right: 12px;
     }
 }
+@layer utilities {
+  .my-notification .vue-notification {
+    @apply m-1 p-5 caption rounded bg-white text-black-10 shadow-md;
+  }
+  .my-notification .vue-notification .notification-title {
+    @apply text-base mb-1;
+  }
+  .my-notification .vue-notification .notification-content {
+    @apply text-black-6;
+  }
+  .my-notification .vue-notification.info {
+    @apply border-l-8 border-black-6 bg-white;
+  }
+  .my-notification .vue-notification.success {
+    @apply border-l-8 border-green bg-white;
+  }
+  .my-notification .vue-notification.error {
+    @apply border-l-8 border-red bg-white;
+  }
+}
