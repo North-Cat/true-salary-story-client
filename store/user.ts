@@ -18,45 +18,51 @@ export const useUserStore = defineStore('user', {
       const token = this.token;
       const vm = this;
       this.isFetchProfileLoading = true;
-      const { data, error, refresh } = await useFetch('/api/user/profile', {
-        onRequest({ request, options }) {
-          options.headers = {
-            ...(options.headers as IRequestHeaders),
-            Authorization: `Bearer ${token}`,
-          };
-        },
-        onRequestError({ request, options, error }) {
-          vm.error();
-        },
-        onResponse({ request, response, options }) {
-          if (response.status === 200) {
-            vm.currentUser = response._data.data
-              .user as unknown as ILoginUserInfo;
-            vm.isLogin = true;
-            vm.isFetchProfileLoading = false;
-          } else {
+      const { data, error, refresh } = await useFetch(
+        'https://client-api-dev.up.railway.app/user/profile',
+        {
+          onRequest({ request, options }) {
+            options.headers = {
+              ...(options.headers as IRequestHeaders),
+              Authorization: `Bearer ${token}`,
+            };
+          },
+          onRequestError({ request, options, error }) {
             vm.error();
-          }
+          },
+          onResponse({ request, response, options }) {
+            if (response.status === 200) {
+              vm.currentUser = response._data.data
+                .user as unknown as ILoginUserInfo;
+              vm.isLogin = true;
+              vm.isFetchProfileLoading = false;
+            } else {
+              vm.error();
+            }
+          },
+          onResponseError({ request, response, options }) {
+            vm.error();
+          },
         },
-        onResponseError({ request, response, options }) {
-          vm.error();
-        },
-      });
+      );
       if (isRfresh) {
         refresh();
       }
     },
     async logout(): Promise<void> {
       const token = this.token;
-      const { data, error } = await useFetch('/api/auth/logout', {
-        method: 'POST',
-        onRequest({ request, options }) {
-          options.headers = {
-            ...(options.headers as IRequestHeaders),
-            Authorization: `Bearer ${token}`,
-          };
+      const { data, error } = await useFetch(
+        'https://client-api-dev.up.railway.app/auth/logout',
+        {
+          method: 'POST',
+          onRequest({ request, options }) {
+            options.headers = {
+              ...(options.headers as IRequestHeaders),
+              Authorization: `Bearer ${token}`,
+            };
+          },
         },
-      });
+      );
       if (data) {
         this.error();
       } else {
