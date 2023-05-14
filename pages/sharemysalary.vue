@@ -19,9 +19,9 @@ import {
 useHead({
   title: '匿名分享',
 });
-definePageMeta({
-  middleware: 'auth',
-});
+// definePageMeta({
+//   middleware: 'auth',
+// });
 const submitData: IShareSalaryFormData = reactive({
   taxId: '',
   companyName: '',
