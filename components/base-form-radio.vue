@@ -13,13 +13,26 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  inputName: {
-    type: String,
-    default: 'default',
-  },
   description: {
     type: String,
     default: ''
+  },
+  name: {
+    type: String,
+    default: 'default',
+    required: true,
+  },
+  placeholder: {
+    type: String,
+    default: '請選擇',
+  },
+  type: {
+    type: String,
+    default: "text",
+  },
+  required: {
+    type: String,
+    default: "",
   },
   isButtonStyle: {
     type: Boolean,
@@ -31,9 +44,9 @@ const props = defineProps({
   <div class="text-black-10" :class="{ 'mb-2': !description }">{{ label }}</div>
   <span v-if="description" v-html="description" class="block mb-2 mt-1 text-sm text-black-6"></span>
   <div v-if="isButtonStyle" class="flex items-center justify-center">
-    <label v-for="(item, $index) in options" :for="`${inputName}-${item.value}`"
+    <label v-for="(item, $index) in options" :for="`${name}-${item.value}`"
       class="flex-1 releative cursor-pointer items-center inline-flex justify-start">
-      <input :id="`${inputName}-${item.value}`" type="radio" :value="item.value" :name="inputName"
+      <input :id="`${name}-${item.value}`" type="radio" :value="item.value" :name="name"
         @change="$emit('update:modelValue', item.value)"
         class="h-0 left-0 opacity-0 pointer-events-none absolute top-0 invisible width-0 appearance-none">
       <span class="bg-dark releative items-center flex justify-center py-3 w-full"
@@ -43,13 +56,13 @@ const props = defineProps({
     </label>
   </div>
   <div v-else class="flex items-center justify-between">
-    <label v-for="(item, $index) in options" :for="`${inputName}-${item.value}`"
+    <label v-for="(item, $index) in options" :for="`${name}-${item.value}`"
       class="flex-1 releative cursor-pointer items-center inline-flex justify-start">
-      <input :id="`${inputName}-${item.value}`" type="radio" :value="item.value" :name="inputName"
+      <input :id="`${name}-${item.value}`" type="radio" :value="item.value" :name="name"
         @change="$emit('update:modelValue', item.value)" class="appearance-none w-[20px] h-[20px] relative 
         after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full
         checked:after:border-[6px] checked:after:border-blue
-        ">
+        " :checked="item.value === modelValue">
       <span class="ml-2">{{ item.text }}</span>
     </label>
   </div>

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
 import {
   cityOptions,
   yearsOfServiceOptions,
@@ -19,20 +21,11 @@ useHead({
 // definePageMeta({
 //   middleware: 'auth',
 // });
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
-
-const user = useUserStore();
-const { currentUser } = storeToRefs(user);
-const salaryTypes = ref('monthly')
-const customTagsText = ref('')
-const step = ref(2)
-const form = ref(null)
 const submitData: IShareSalaryFormData = reactive({
   taxId: '',
   companyName: '',
   title: '',
-  employmentType: '',
+  employmentType: '全職',
   inService: true,
   city: '',
   workYears: '',
@@ -53,6 +46,59 @@ const submitData: IShareSalaryFormData = reactive({
   tags: [],
   customTags: []
 })
+// 測試驗證區
+import { object, string } from 'yup';
+import { useForm, useField, configure, defineRule } from 'vee-validate';
+import { localize, setLocale } from '@vee-validate/i18n';
+import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+const { errorMessage, handleBlur, setErrors, errors } = useField('taxId', 'required|numeric');
+configure({
+  validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
+  validateOnChange: true, // controls if `change` events should trigger validation with `handleChange` handler
+  validateOnInput: true, // controls if `input` events should trigger validation with `handleChange` handler
+  validateOnModelUpdate: true, // controls if `update:modelValue` events should trigger validation with `handleChange` handler
+  generateMessage: localize({ zh_TW: zhTW }),
+});
+setLocale('zh_TW');
+
+defineRule('taxIdVee', async (taxId: string) => {
+  const reg = /^\d{8}$/;
+  const matchResult = taxId.match(reg);
+
+  if (!matchResult) {
+    return '統編為8碼';
+  }
+
+  const idArray = matchResult[0].split('').map(Number);
+  const weight = [1, 2, 1, 2, 1, 2, 4, 1];
+  let sum = 0;
+
+  for (let i = 0; i < idArray.length; i++) {
+    const p = idArray[i] * weight[i];
+    const s = Math.floor(p / 10) + (p % 10);
+    sum += s;
+  }
+
+  const checkNumber = 5;
+  const isLegal =
+    sum % checkNumber === 0 ||
+    ((sum + 1) % checkNumber === 0 && idArray[6] === 7);
+
+  if (!isLegal) {
+    return '不合法的統編驗證'
+  }
+  return true;
+});
+
+// 測試驗證區結束
+
+const user = useUserStore();
+const { currentUser } = storeToRefs(user);
+const salaryTypes = ref('monthly')
+const customTagsText = ref('')
+const step = ref(1)
+const form = ref(null)
+
 const salaryTypesField: ISalary = reactive({
   monthly: {
     salary: '',
@@ -70,6 +116,48 @@ const salaryTypesField: ISalary = reactive({
     total: ''
   },
 })
+watch(salaryTypesField, (newValue, oldValue) => { // 要監聽的值，參數 : 新值跟舊值
+  chnagSalaryTotal()
+}, { deep: true });
+
+watch(() => [submitData.yearEndBonus, submitData.holidayBonus, submitData.profitSharingBonus, submitData.otherBonus], () => {
+  chnagSalaryTotal()
+})
+
+// 監聽 salaryTypesField 的變化
+const chnagSalaryTotal = () => {
+  const monthlySalary = Number(salaryTypesField.monthly.salary);
+  const dailySalary = Number(salaryTypesField.daily.salary);
+  const dailyAvgWorkingDays = Number(salaryTypesField.daily.avgWorkingDaysPerMonth);
+  const hourlySalary = Number(salaryTypesField.hourly.salary);
+  const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.dailyAverageWorkingHours);
+  const hourlyAvgWorkingDays = Number(salaryTypesField.hourly.avgWorkingDaysPerMonth);
+  if (isNumber(monthlySalary)) {
+    salaryTypesField.monthly.total = calculateTotal(monthlySalary, 12) + othersBouns();
+  }
+  if (isNumber(dailySalary) && isNumber(dailyAvgWorkingDays)) {
+    salaryTypesField.daily.total = calculateTotal(dailySalary * dailyAvgWorkingDays, 12) + othersBouns();;
+  }
+  if (isNumber(hourlySalary) && isNumber(hourlyAvgWorkingHours) && isNumber(hourlyAvgWorkingDays)) {
+    salaryTypesField.hourly.total = calculateTotal(hourlySalary * hourlyAvgWorkingHours * hourlyAvgWorkingDays, 12) + othersBouns();
+  }
+}
+const othersBouns = () => {
+  const { yearEndBonus, holidayBonus, profitSharingBonus, otherBonus } = submitData
+  const resYearEndBonus = isNumber(Number(yearEndBonus)) ? yearEndBonus : '0'
+  const resHolidayBonus = isNumber(Number(holidayBonus)) ? holidayBonus : '0'
+  const resProfitSharingBonus = isNumber(Number(profitSharingBonus)) ? profitSharingBonus : '0'
+  const resOtherBonus = isNumber(Number(otherBonus)) ? otherBonus : '0'
+  return Number(resProfitSharingBonus) + Number(resOtherBonus) + Number(resYearEndBonus) + Number(resHolidayBonus)
+}
+const isNumber = (value: number) => {
+  return typeof value === 'number' && isFinite(value) && !isNaN(value);
+}
+// 定義一個函數，用來計算 total 值
+const calculateTotal = (salary: number, multiplier: number): number | string => {
+  return salary ? Number(salary * multiplier) : 0;
+}
+
 const addCustomTags = (tag: string) => {
   submitData.customTags?.push(tag)
   customTagsText.value = ''
@@ -81,9 +169,10 @@ const removeCustomTag = (tag: string) => {
   submitData.customTags.splice(index, 1);
 }
 const onSubmit = () => {
-  console.log(form)
+  console.log('value', form.value);
+  // form.value.resetForm();
 }
-
+const debug = ref(false);
 // 右側邊欄
 const rightSideList = reactive([
   {
@@ -145,13 +234,15 @@ const rightSideList = reactive([
             <h4>{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
             <p class="opacity-70 mt-2">在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。</p>
           </div>
-          <form class="min-h-full md:min-h-[300px] p-6 bg-white" ref="form">
+          <VForm v-slot="{ errors, meta }" class="p-6" @submit="onSubmit" ref="form">
             <div v-show="step === 1">
               <!-- 公司統編 -->
               <div class="mb-10">
                 <label for="taxId" label="" class="text-black-10 ">公司統一編號</label>
-                <input id="taxId" type="text" name="taxId" class="w-full border border-black-1 rounded py-2 px-4 mt-2"
-                  placeholder="請輸入公司統一編號" />
+                <VField name="taxId" label="統一編號" type="number" v-model.number="submitData.taxId"
+                  :class="{ 'border-red': errors.taxId }" rules="required|numeric|taxIdVee"
+                  class="w-full border border-black-1 rounded py-2 px-4 mt-2" placeholder="請輸入公司統一編號" />
+                <VErrorMessage name="taxId" as="div" class="help is-danger text-red" />
               </div>
               <!-- 公司名稱 -->
               <div class="mb-10">
@@ -161,9 +252,11 @@ const rightSideList = reactive([
               </div>
               <!-- 應徵職務 -->
               <div class="">
-                <label for="title" label="" class="text-black-10 ">應徵職務</label>
-                <input id="title" type="text" name="title" class="w-full border border-black-1 rounded py-2 px-4 mt-2"
-                  placeholder="請輸入應徵職務" />
+                <label for="taxId" label="" class="text-black-10 ">應徵職務</label>
+                <VField name="title" label="應徵職務" type="text" v-model.trim="submitData.title"
+                  :class="{ 'border-red': errors.title }" rules="required"
+                  class="w-full border border-black-1 rounded py-2 px-4 mt-2" placeholder="請輸入應徵職務" />
+                <VErrorMessage name="title" as="div" class="help is-danger text-red" />
 
               </div>
               <div class="flex items-center mt-1 mb-10">
@@ -175,43 +268,48 @@ const rightSideList = reactive([
               <!-- 職務類別 -->
               <div class="mb-10">
                 <BaseFormRadio v-model="submitData.employmentType" :options="employmentTypesOptions" label="職務類別"
-                  input-name="employmentType" isButtonStyle />
+                  name="employmentType" isButtonStyle required="required" />
 
               </div>
 
               <!-- 在職狀況 -->
               <div class="mb-10">
-                <BaseFormRadio v-model="submitData.inService" :options="isServerOptions" label="在職狀況"
-                  input-name="isService" isButtonStyle />
+                <BaseFormRadio v-model="submitData.inService" :options="isServerOptions" label="在職狀況" name="isService"
+                  isButtonStyle />
               </div>
 
               <!-- 工作城市 -->
               <div class="mb-10">
-                <BaseFormSelect v-model="submitData.city" :options="cityOptions" label="工作城市" inputName="city" />
+                <BaseFormSelect v-model="submitData.city" :options="cityOptions" label="工作城市" name="city"
+                  required="required" />
               </div>
 
               <!-- 年資 -->
               <div class="flex mb-10">
                 <BaseFormSelect v-model="submitData.workYears" :options="yearsOfServiceOptions" label="在職年資" class="mr-3"
-                  inputName="workYears" />
+                  name="workYears" required="required" />
                 <BaseFormSelect v-model="submitData.totalWorkYears" :options="yearsOfServiceOptions" label="總年資"
-                  class="ml-3" inputName="totalWorkYears" />
+                  class="ml-3" name="totalWorkYears" required="required" />
               </div>
 
               <!-- 薪資情況 -->
               <div class="mb-10">
-                <BaseFormRadio v-model="salaryTypes" :options="salaryTypesOpions" label="薪資情況（新台幣）"
-                  input-name="salaryTypes" description="輸入薪資資料，真薪話將為你自動計算年薪。" isButtonStyle />
+                <BaseFormRadio v-model="salaryTypes" :options="salaryTypesOpions" label="薪資情況（新台幣）" name="salaryTypes"
+                  description="輸入薪資資料，真薪話將為你自動計算年薪。" isButtonStyle />
                 <div class="mt-4">
                   <div class="pl-12">
                     <keep-alive>
                       <template v-if="salaryTypes === 'monthly'">
                         <div class="relativ">
-                          <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary" placeholder="月薪"
-                            class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
+                          <VField name="monthlySalary" label="月薪" type="number"
+                            v-model.number="salaryTypesField[salaryTypes].salary"
+                            :class="{ 'border-red': errors.monthlySalary }"
+                            :rules="salaryTypes === 'monthly' ? 'required|numeric' : 'numeric'"
+                            class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2" placeholder="月薪" />
                           <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
                           </span>
+                          <VErrorMessage name="monthlySalary" as="div" class="help is-danger text-red" />
                         </div>
                       </template>
                     </keep-alive>
@@ -219,16 +317,24 @@ const rightSideList = reactive([
                       <template v-if="salaryTypes === 'daily'">
                         <div class="flex">
                           <div class="shrink w-full">
-                            <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
-                              placeholder="日薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
+                            <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
+                              placeholder="日薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
+
+                            <VField name="dailySalary" label="日薪" type="number"
+                              v-model.number="salaryTypesField[salaryTypes].salary"
+                              :class="{ 'border-red': errors.dailySalary }"
+                              :rules="salaryTypes === 'daily' ? 'required|numeric' : 'numeric'"
+                              class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2" placeholder="日薪" />
+                            <VErrorMessage name="dailySalary" as="div" class="help is-danger text-red" />
                           </div>
-                          <div class="w-[48px] flex items-center justify-center px-5"><i
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1"><i
                               class="icomoon icon-cross text-black-6"></i>
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
-                              :options="monthOptions" inputName="workingDay" placeholder="月均工作天數">
-                              <span class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm">
+                              :options="monthOptions" name="avgWorkingDaysPerMonth" placeholder="月均工作天數"
+                              :required="salaryTypes === 'daily' ? 'required' : ''" label="月均工作天數" hidden-label>
+                              <span class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm top-2">
                                 x12月
                               </span>
                             </BaseFormSelect>
@@ -240,24 +346,32 @@ const rightSideList = reactive([
                       <template v-if="salaryTypes === 'hourly'">
                         <div class="flex">
                           <div class="shrink w-full">
-                            <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
-                              placeholder="時薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
+                            <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
+                              placeholder="時薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
+                            <VField name="hourlySalary" label="時薪" type="number"
+                              v-model.number="salaryTypesField[salaryTypes].salary"
+                              :class="{ 'border-red': errors.hourlySalary }"
+                              :rules="salaryTypes === 'hourly' ? 'required|numeric' : 'numeric'"
+                              class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2" placeholder="時薪" />
+                            <VErrorMessage name="hourlySalary" as="div" class="help is-danger text-red" />
                           </div>
-                          <div class="w-[48px] flex items-center justify-center px-5"><i
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1"><i
                               class="icomoon icon-cross text-black-6"></i>
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect v-model="salaryTypesField[salaryTypes].dailyAverageWorkingHours"
-                              :options="workingHoursOptions" inputName="workingDay" placeholder="日均工時">
+                              :options="workingHoursOptions" name="dailyAverageWorkingHours" placeholder="日均工時"
+                              :required="salaryTypes === 'hourly' ? 'required' : ''" label="日均工時" hidden-label>
                             </BaseFormSelect>
                           </div>
-                          <div class="w-[48px] flex items-center justify-center px-5"><i
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1"><i
                               class="icomoon icon-cross text-black-6"></i>
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
-                              :options="monthOptions" inputName="workingDay" placeholder="月均工作天數">
-                              <span class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm">
+                              :required="salaryTypes === 'hourly' ? 'required' : ''" :options="monthOptions"
+                              name="avgWorkingDaysPerMonth" placeholder="月均工作天數" label="月均工作天數" hidden-label>
+                              <span class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm top-2">
                                 x12月
                               </span>
                             </BaseFormSelect>
@@ -272,7 +386,7 @@ const rightSideList = reactive([
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
-                      <input v-model="submitData.yearEndBonus" type="text" name="yearEndBonus" placeholder="年終"
+                      <input v-model.number="submitData.yearEndBonus" type="number" name="yearEndBonus" placeholder="年終"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
                     </div>
                   </div>
@@ -282,7 +396,7 @@ const rightSideList = reactive([
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
-                      <input v-model="submitData.holidayBonus" type="text" name="holidayBonus" placeholder="三節"
+                      <input v-model.number="submitData.holidayBonus" type="number" name="holidayBonus" placeholder="三節"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
                     </div>
                   </div>
@@ -292,7 +406,7 @@ const rightSideList = reactive([
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
-                      <input v-model="submitData.profitSharingBonus" type="text" name="profitSharingBonus"
+                      <input v-model.number="submitData.profitSharingBonus" type="number" name="profitSharingBonus"
                         placeholder="獎金" class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
                     </div>
                   </div>
@@ -302,7 +416,7 @@ const rightSideList = reactive([
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
-                      <input v-model="submitData.otherBonus" type="text" name="search" placeholder="其他"
+                      <input v-model.number="submitData.otherBonus" type="number" name="otherBonus" placeholder="其他"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9">
                     </div>
                   </div>
@@ -320,13 +434,12 @@ const rightSideList = reactive([
 
               <!-- 上班頻率 -->
               <div class="mb-10">
-                <BaseFormRadio v-model="submitData.overtime" :options="overtimeOptions" label="上班頻率"
-                  input-name="overtime" />
+                <BaseFormRadio v-model="submitData.overtime" :options="overtimeOptions" label="上班頻率" name="overtime" />
               </div>
 
               <!-- 上班心情 -->
               <div class="mb-10">
-                <BaseFormRadio v-model="submitData.feeling" :options="feelingOptions" label="上班心情" input-name="feeling" />
+                <BaseFormRadio v-model="submitData.feeling" :options="feelingOptions" label="上班心情" name="feeling" />
               </div>
               <hr class="my-10">
               <div class="flex justify-between">
@@ -346,9 +459,18 @@ const rightSideList = reactive([
                   <br>
                   <span class="text-sm text-black-6">還記得工作時的情形嗎?不論是工作項目、工作環境、福利條件、花費時間等,都可以在這裡盡情分享。</span>
                 </label>
-                <textarea id="jobDescription" type="text" name="jobDescription" v-model="submitData.jobDescription"
-                  class="w-full border border-black-1 rounded py-2 px-4 mt-2" placeholder="輸入工作內容...." rows="10" />
-                <span class="text-sm text-black-6"><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫60字以上</span>
+                <!-- <VField name="taxId" label="統一編號" type="area" v-model.number="submitData.taxId"
+                  :class="{ 'border-red': errors.taxId }" rules="required|numeric|taxIdVee"
+                  class="w-full border border-black-1 rounded py-2 px-4 mt-2" placeholder="輸入工作內容...." rows="10"/>
+                <VErrorMessage name="taxId" as="div" class="help is-danger text-red" /> -->
+
+                <VField v-slot="{ field, errors }" v-model="submitData.jobDescription" name="jobDescription" label="工作內容"
+                  rules="required|min:60">
+                  <textarea id="jobDescription" v-bind="field" name="jobDescription" placeholder="輸入工作內容...." rows="10"
+                    class="w-full border border-black-1 rounded py-2 px-4 mt-2" />
+                  <span class="text-sm text-black-6"><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫60字以上</span>
+                  <div v-if="errors[0]" class="text-red">{{ errors[0] }}</div>
+                </VField>
               </div>
 
               <!-- 建議與資訊 -->
@@ -358,9 +480,15 @@ const rightSideList = reactive([
                   <br>
                   <span class="text-sm text-black-6">還有什麼想跟職場後輩說的嗎?給予建議或資訊來幫助後輩們更了解這間公司。</span>
                 </label>
-                <textarea id="suggestion" type="text" name="suggestion" v-model="submitData.suggestion"
-                  class="w-full border border-black-1 rounded py-2 px-4 mt-2" placeholder="輸入建議與資訊...." rows="10" />
-                <span class="text-sm text-black-6"><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫30字以上</span>
+
+                <VField v-slot="{ field, errors }" v-model="submitData.suggestion" name="suggestion" label="建議與資訊"
+                  rules="required|min:30">
+                  <textarea id="suggestion" v-bind="field" name="suggestion" placeholder="輸入建議與資訊...." rows="10"
+                    class="w-full border border-black-1 rounded py-2 px-4 mt-2" />
+                  <span class="text-sm text-black-6"><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫30字以上</span>
+                  <div v-if="errors[0]" class="text-red">{{ errors[0] }}</div>
+                </VField>
+
               </div>
               <!-- 評價標籤 -->
               <div class="mb-10">
@@ -408,13 +536,13 @@ const rightSideList = reactive([
               <div class="flex justify-between">
                 <btn cate="white" @click="step = 1">上一步</btn>
                 <button
-                  class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10"
-                  type="submit" @click.prevent.stop="onSubmit">送出</button>
+                  class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 disabled:bg-black-3 disabled:text-black-6"
+                  type="submit" :disabled="!meta.valid">送出</button>
               </div>
 
 
             </div>
-          </form>
+          </VForm>
         </div>
         <div class="lg:w-2/6 ml-[30px] lg:mt-0 md:mt-15">
           <div v-for="rightSideBlock in rightSideList" class="mb-4 bg-white rounded p-6">
@@ -437,3 +565,16 @@ const rightSideList = reactive([
     </div>
   </section>
 </template>
+<style scoped>
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>

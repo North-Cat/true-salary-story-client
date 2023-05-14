@@ -23,5 +23,11 @@
     "pinia": "^2.0.35",
     "prettier": "^2.8.8",
     "vue3-carousel": "^0.3.0"
+  },
+  "dependencies": {
+    "@vee-validate/i18n": "^4.9.3",
+    "@vee-validate/rules": "^4.9.3",
+    "vee-validate": "^4.9.3",
+    "yup": "^1.1.1"
   }
 }
