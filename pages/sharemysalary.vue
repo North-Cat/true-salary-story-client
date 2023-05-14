@@ -90,12 +90,12 @@ defineRule('taxIdVee', async (taxId: string) => {
   tryToGetUniformNumbers()
   return true;
 });
+
+
 const tryToGetUniformNumbers = async () => {
   console.log('取得統編')
-  // const hots = await shareSalaryApi.getUniformNumbers(submitData.taxId)
-  const { data, error } = await useFetch(`/api/api/salary/uniformNumbers/${submitData.taxId}`);
-  // console.log(hots)
-  console.log('data', data)
+  const uniformNumbers = await shareSalaryApi.getUniformNumbers(submitData.taxId)
+  // console.log(uniformNumbers.companyName)
 }
 // 測試驗證區結束
 

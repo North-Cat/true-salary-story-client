@@ -1,5 +1,5 @@
 import { hash } from 'ohash';
-
+import { showInfo, showSuccess, showError } from '@/utilities/message';
 // 后端返回的数据类型
 export interface ResOptions<T> {
   data: T;
@@ -16,9 +16,9 @@ export interface ResOptions<T> {
 const fetch = async (url: string, options?: any, headers?: any) => {
   try {
     const {
-      public: { VITE_API_HOST },
+      public: { apiBase },
     } = useRuntimeConfig(); // 3.0正式版环境变量要从useRuntimeConfig里的public拿
-    const reqUrl = VITE_API_HOST + url; // 你的接口地址
+    const reqUrl = apiBase + url; // 你的接口地址
 
     // 设置key
     const key = hash(options + url);
@@ -31,15 +31,17 @@ const fetch = async (url: string, options?: any, headers?: any) => {
       key,
       headers: customHeaders,
     });
-    const result = data.value as ResOptions<any>;
-    if (error.value || !result || (result && result.code !== 200)) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: reqUrl,
-        message: error.value?.message || '服务器内部错误',
-      });
+    const result = data.value;
+    if (error.value || !result) {
+      showError('error', '系統錯誤');
+      // throw createError({
+      //   statusCode: 500,
+      //   statusMessage: reqUrl,
+      //   message: error.value?.message || '服务器内部错误',
+      // });
+      // console.log(error);
     }
-    return result.data; // 这里直接返回data或者其他的
+    return result; // 这里直接返回data或者其他的
   } catch (err) {
     console.log(err);
     return Promise.reject(err);
