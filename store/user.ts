@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     async loginWithGoogle(): Promise<void> {
-      const backendUrl = '/api/social/google';
+      const backendUrl = 'https://client-api-dev.up.railway.app/social/google';
       window.location.href = backendUrl;
     },
     async tryToFetchProfile(isRfresh = false): Promise<void> {
