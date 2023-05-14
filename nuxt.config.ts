@@ -6,4 +6,14 @@ export default defineNuxtConfig({
     '@/assets/css/style.css',
     '@/assets/css/icon.css',
   ],
+
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'https://client-api-dev.up.railway.app', // 这里是接口地址
+        changeOrigin: true,
+        prependPath: true,
+      },
+    },
+  },
 });
