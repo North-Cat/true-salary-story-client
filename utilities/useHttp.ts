@@ -1,11 +1,12 @@
 import { hash } from 'ohash';
 import { showInfo, showSuccess, showError } from '@/utilities/message';
-// 后端返回的数据类型
-export interface ResOptions<T> {
-  data: T;
-  code?: number;
-  message?: string;
-}
+import { ILoginUserInfo, IRequestHeaders } from '~/interface/user';
+
+// export interface ResOptions<T> {
+//   data: T;
+//   code?: number;
+//   message?: string;
+// }
 
 /**
  * api请求封装
@@ -21,15 +22,31 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     const reqUrl = apiBase + url; // 你的接口地址
 
     // 设置key
-    const key = hash(options + url);
+    // const key = hash(options + url);
 
     // 可以设置默认headers例如
     const customHeaders = { token: useCookie('token').value, ...headers };
 
-    const { data, error } = await useFetch(reqUrl, {
+    const { data, pending, error, refresh } = await useFetch(reqUrl, {
       ...options,
-      key,
-      headers: customHeaders,
+      onRequest({ request, options }) {
+        const token = useCookie('token');
+        if (token) {
+          options.headers = {
+            ...(options.headers as IRequestHeaders),
+            Authorization: `Bearer ${token}`,
+          };
+        }
+      },
+      onRequestError({ request, options, error }) {
+        console.log(error, 'onRequestError');
+      },
+      onResponse({ request, response, options }) {
+        return response._data;
+      },
+      onResponseError({ request, options, response }) {
+        console.log(response, 'onResponseError');
+      },
     });
     const result = data.value;
     if (error.value || !result) {
@@ -41,7 +58,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
       // });
       // console.log(error);
     }
-    return result; // 这里直接返回data或者其他的
+    return data; // 这里直接返回data或者其他的
   } catch (err) {
     console.log(err);
     return Promise.reject(err);

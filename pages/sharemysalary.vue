@@ -87,15 +87,29 @@ defineRule('taxIdVee', async (taxId: string) => {
   if (!isLegal) {
     return '統編驗證錯誤'
   }
-  tryToGetUniformNumbers()
+  let isHasTaxId = true;
+  await tryToGetUniformNumbers().then((res) => {
+    if (!res.isExist) {
+      submitData.companyName = ''
+      isHasTaxId = false
+    } else {
+      submitData.companyName = res.companyName
+    }
+  })
+  if (!isHasTaxId) {
+    return '查無此統編'
+  }
   return true;
 });
 
 
 const tryToGetUniformNumbers = async () => {
-  console.log('取得統編')
-  const uniformNumbers = await shareSalaryApi.getUniformNumbers(submitData.taxId)
-  // console.log(uniformNumbers.companyName)
+  const data = await shareSalaryApi.getUniformNumbers(submitData.taxId)
+  const { isExist, companyName } = JSON.parse(JSON.stringify(data))._value
+  return {
+    isExist,
+    companyName
+  }
 }
 // 測試驗證區結束
 
@@ -254,7 +268,7 @@ const rightSideList = reactive([
               <!-- 公司名稱 -->
               <div class="mb-10">
                 <label for="companyName" label="" class="text-black-10 ">公司名稱</label>
-                <input id="companyName" type="text" name="companyName"
+                <input id="companyName" type="text" name="companyName" v-model="submitData.companyName"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2" disabled placeholder="請輸入公司名稱" />
               </div>
               <!-- 應徵職務 -->
