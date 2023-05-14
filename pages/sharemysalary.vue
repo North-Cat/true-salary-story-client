@@ -2,6 +2,7 @@
 import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
+const { shareSalaryApi } = useApi()
 import {
   cityOptions,
   yearsOfServiceOptions,
@@ -47,7 +48,6 @@ const submitData: IShareSalaryFormData = reactive({
   customTags: []
 })
 // 測試驗證區
-import { object, string } from 'yup';
 import { useForm, useField, configure, defineRule } from 'vee-validate';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
@@ -85,11 +85,18 @@ defineRule('taxIdVee', async (taxId: string) => {
     ((sum + 1) % checkNumber === 0 && idArray[6] === 7);
 
   if (!isLegal) {
-    return '不合法的統編驗證'
+    return '統編驗證錯誤'
   }
+  tryToGetUniformNumbers()
   return true;
 });
-
+const tryToGetUniformNumbers = async () => {
+  console.log('取得統編')
+  // const hots = await shareSalaryApi.getUniformNumbers(submitData.taxId)
+  const { data, error } = await useFetch(`/api/api/salary/uniformNumbers/${submitData.taxId}`);
+  // console.log(hots)
+  console.log('data', data)
+}
 // 測試驗證區結束
 
 const user = useUserStore();
@@ -116,7 +123,7 @@ const salaryTypesField: ISalary = reactive({
     total: ''
   },
 })
-watch(salaryTypesField, (newValue, oldValue) => { // 要監聽的值，參數 : 新值跟舊值
+watch(salaryTypesField, (newValue, oldValue) => {
   chnagSalaryTotal()
 }, { deep: true });
 
