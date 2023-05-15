@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-  useHead({
-    title: '搜尋',
-  });
+useHead({
+  title: '搜尋',
+});
 </script>
 <template>
   <div class="search pt-[130px]">

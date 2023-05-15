@@ -2,11 +2,7 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt'],
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules'] },
-  css: [
-    '@/assets/css/tailwind.css',
-    '@/assets/css/style.css',
-    '@/assets/css/icon.css',
-  ],
+  css: ['@/assets/css/tailwind.css', '@/assets/css/style.css', '@/assets/css/icon.css'],
 
   // nitro: {
   //   devProxy: {

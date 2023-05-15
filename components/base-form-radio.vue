@@ -1,52 +1,48 @@
 <script lang="ts" setup>
-  const emit = defineEmits(['update:modelValue']);
-  const props = defineProps({
-    modelValue: {
-      type: [String, Number, Boolean],
-      default: '',
-    },
-    options: {
-      type: Object,
-      default: () => {},
-    },
-    label: {
-      type: String,
-      default: '',
-    },
-    description: {
-      type: String,
-      default: '',
-    },
-    name: {
-      type: String,
-      default: 'default',
-      required: true,
-    },
-    placeholder: {
-      type: String,
-      default: '請選擇',
-    },
-    type: {
-      type: String,
-      default: 'text',
-    },
-    required: {
-      type: String,
-      default: '',
-    },
-    isButtonStyle: {
-      type: Boolean,
-      default: false,
-    },
-  });
+const emit = defineEmits(['update:modelValue']);
+const props = defineProps({
+  modelValue: {
+    type: [String, Number, Boolean],
+    default: '',
+  },
+  options: {
+    type: Object,
+    default: () => {},
+  },
+  label: {
+    type: String,
+    default: '',
+  },
+  description: {
+    type: String,
+    default: '',
+  },
+  name: {
+    type: String,
+    default: 'default',
+    required: true,
+  },
+  placeholder: {
+    type: String,
+    default: '請選擇',
+  },
+  type: {
+    type: String,
+    default: 'text',
+  },
+  required: {
+    type: String,
+    default: '',
+  },
+  isButtonStyle: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 <template>
   <div class="text-black-10" :class="{ 'mb-2': !description }">{{ label }}</div>
-  <span
-    v-if="description"
-    class="block mb-2 mt-1 text-sm text-black-6"
-    v-html="description"
-  ></span>
+  <span v-if="description" class="block mb-2 mt-1 text-sm text-black-6" v-html="description"></span>
   <div v-if="isButtonStyle" class="flex items-center justify-center">
     <label
       v-for="(item, $index) in options"

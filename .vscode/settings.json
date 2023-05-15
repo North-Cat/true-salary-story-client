@@ -15,5 +15,5 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "vue.codeActions.enabled": false,
+  "vue.codeActions.enabled": false
 }

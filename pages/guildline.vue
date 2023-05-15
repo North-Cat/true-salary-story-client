@@ -8,136 +8,88 @@
             <div class="text-2xl text-blue mb-5">Color</div>
             <div class="flex flex-row mb-5 font-semibold">
               <div class="flex flex-col">
-                <div
-                  class="bg-white border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-white border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-white</div>
                 <div class="text-xs text-stone-600">#FFFFFF</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-gray border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-gray</div>
                 <div class="text-xs text-stone-600">#F5F5F8</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-gray border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-gray-field</div>
                 <div class="text-xs text-stone-600">#EFEFF4</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-gray border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-gray-light</div>
                 <div class="text-xs text-stone-600">#E9E8ED</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-dark border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-dark border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-dark</div>
                 <div class="text-xs text-stone-600">#D4D4D7</div>
               </div>
             </div>
             <div class="flex flex-row mb-5 font-semibold">
               <div class="flex flex-col">
-                <div
-                  class="bg-black-10 border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-black-10 border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-black-10</div>
                 <div class="text-xs text-stone-600">#2B2B31</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-black-6 border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-black-6 border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-black-6</div>
                 <div class="text-xs text-stone-600">#2B2B31A8</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-black-5 border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-black-5 border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-black-5</div>
                 <div class="text-xs text-stone-600">#2B2B3180</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-black-3 border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-black-3 border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-black-3</div>
                 <div class="text-xs text-stone-600">#2B2B314D</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-black-1 border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-black-1 border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-black-1</div>
                 <div class="text-xs text-stone-600">#2B2B311A</div>
               </div>
             </div>
             <div class="flex flex-row mb-5 font-semibold">
               <div class="flex flex-col">
-                <div
-                  class="bg-blue border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-blue border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-blue</div>
                 <div class="text-xs text-stone-600">#366BAB</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-blue-light border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-blue-light border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-blue-light</div>
                 <div class="text-xs text-stone-600">#E9F7FF</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-blue-dark border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-blue-dark border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-blue-dark</div>
                 <div class="text-xs text-stone-600">#25469A</div>
               </div>
             </div>
             <div class="flex flex-row mb-5 font-semibold">
               <div class="flex flex-col">
-                <div
-                  class="bg-green border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-green border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-green</div>
                 <div class="text-xs text-stone-600">#329063</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-yellow border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-yellow border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-yellow</div>
                 <div class="text-xs text-stone-600">#D08B24</div>
               </div>
               <div class="flex flex-col">
-                <div
-                  class="bg-red border border-stone-200 me-5 mb-1"
-                  style="height: 79px; width: 79px"
-                ></div>
+                <div class="bg-red border border-stone-200 me-5 mb-1" style="height: 79px; width: 79px"></div>
                 <div class="text-sm text-stone-900">bg-red</div>
                 <div class="text-xs text-stone-600">#BE2C61</div>
               </div>
@@ -147,75 +99,46 @@
             <div class="text-2xl text-blue mb-5">Typography</div>
             <div class="mb-2">
               <h1 class="mb-2 me-4 inline-block">Title / H1</h1>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="h1Code"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="h1Code"></span>
             </div>
             <div class="mb-2">
               <h2 class="mb-2 me-4 inline-block">Title / H2</h2>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="h2Code"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="h2Code"></span>
             </div>
             <div class="mb-2">
               <h3 class="mb-2 me-4 inline-block">Title / H3</h3>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="h3Code"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="h3Code"></span>
             </div>
             <div class="mb-2">
               <h4 class="mb-2 me-4 inline-block">Title / H4</h4>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="h4Code"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="h4Code"></span>
             </div>
             <div class="mb-2">
               <h5 class="mb-2 me-4 inline-block">Title / H5</h5>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="h5Code"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="h5Code"></span>
             </div>
             <div class="mb-2">
               <h6 class="mb-2 me-4 inline-block">Title / H6</h6>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="h6Code"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="h6Code"></span>
             </div>
             <div class="mb-2">
               <div class="body mb-2 me-4 inline-block">Title / Body.20</div>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="bodyCode"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="bodyCode"></span>
             </div>
             <div class="mb-2">
               <div class="body-sm mb-2 me-4 inline-block">Title / Body.16</div>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="bodySmCode"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="bodySmCode"></span>
             </div>
             <div class="mb-10">
               <div class="caption mb-2 me-4 inline-block">Title / Caption</div>
-              <span
-                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
-                v-text="captionCode"
-              ></span>
+              <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded" v-text="captionCode"></span>
             </div>
           </div>
         </div>
         <div class="flex">
           <div class="w-full">
             <div class="text-2xl text-blue mb-5">Icon</div>
-            <div class="mb-5">
-              以下將設計師給的 SVG 打包成字體，各 icon 的 class name ：
-            </div>
+            <div class="mb-5">以下將設計師給的 SVG 打包成字體，各 icon 的 class name ：</div>
             <div class="flex flex-wrap">
               <div class="flex flex-row items-center me-5 mb-8">
                 <span class="text-2xl icon-time-bad me-2"></span>
@@ -440,9 +363,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
 &#060;btn &#058;cate&#061;&#034;cate&#034; &#058;content&#061;&#034;content&#034;&#062;
   &#060;svg&#062; icon &#060;&#047;svg&#062;
@@ -479,19 +400,13 @@
               <nav-btn :is-circle="true" :is-left="false"></nav-btn>
             </div>
             <div class="flex flex-row justify-center items-center">
-              <nav-btn
-                :is-circle="false"
-                :is-left="true"
-                class="me-5"
-              ></nav-btn>
+              <nav-btn :is-circle="false" :is-left="true" class="me-5"></nav-btn>
               <nav-btn :is-circle="false" :is-left="false"></nav-btn>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
 &#060;nav-btn &#058;isCircle&#061;&#034;isCircle&#034; &#058;isLeft&#061;&#034;isLeft&#034;&#062;&#060;&#047;nav-btn&#062;
 
@@ -607,9 +522,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
 &#060;card 
   &#058;cate&#061;&#034;cate&#034; 
@@ -663,9 +576,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
 &#060;tag &#058;content&#061;&#034;content&#034;&#062;&#060;&#047;tag&#062;
 
@@ -697,9 +608,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
 &#060;text-link 
   &#058;content&#061;&#034;content&#034; 
@@ -724,19 +633,13 @@
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-row justify-center items-start">
               <div class="flex flex-col">
-                <a
-                  href="#"
-                  class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2"
+                <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2"
                   >服務條款</a
                 >
-                <a
-                  href="#"
-                  class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2"
+                <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2"
                   >隱私權政策</a
                 >
-                <a
-                  href="#"
-                  class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out"
+                <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out"
                   >幫助中心</a
                 >
               </div>
@@ -744,9 +647,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre class="overflow-x-scroll"><code>
 &#060;a href&#061;&#034;#&#034; class&#061;&#034;caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out&#034; &#062;
 服務條款
@@ -764,17 +665,13 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-row justify-center items-start">
-              <div
-                class="flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out"
-              >
+              <div class="flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out">
                 <input
                   class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3 focus:outline-none"
                   type="text"
                   placeholder="搜尋薪水、公司、職位..."
                 />
-                <button
-                  class="flex justify-center items-center bg-black-10 py-3 px-8"
-                >
+                <button class="flex justify-center items-center bg-black-10 py-3 px-8">
                   <span class="icon-search text-white text-xl"></span>
                 </button>
               </div>
@@ -782,9 +679,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre class="overflow-x-scroll"><code>
 &#060;div class&#061;"flex border-2 hover:shadow-search transition duration-150 ease-in-out"&#062;
 &#060;input class&#061;"w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none " type&#061;"text" placeholder&#061;"搜尋薪水、公司、職位..." /&#062;
@@ -815,9 +710,7 @@
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre class="overflow-x-scroll"><code>
 在 js 中使用:
 import { showInfo, showSuccess, showError } from "@/utilities/message";
@@ -836,27 +729,17 @@ showSuccess("成功標題", "成功訊息");
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-col justify-center items-center mb-6">
-              <button
-                class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
-                type="button"
-                @click="confirmOpen"
-              >
+              <button class="mb-5 px-6 py-2 text-white bg-blue rounded shadow" type="button" @click="confirmOpen">
                 Open confirmOpen
               </button>
-              <button
-                class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
-                type="button"
-                @click="promptOpen"
-              >
+              <button class="mb-5 px-6 py-2 text-white bg-blue rounded shadow" type="button" @click="promptOpen">
                 Open promptOpen
               </button>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
-              <div
-                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll"
-              >
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
                 <pre><code>
 在 js 中使用:
 import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
@@ -893,54 +776,52 @@ confirmFunc:
 </template>
 
 <script setup>
-  // message
-  import { showInfo, showSuccess, showError } from '@/utilities/message';
+// message
+import { showInfo, showSuccess, showError } from '@/utilities/message';
 
-  // dialog
-  import { openConfirmModal, openPromptModal } from '@/utilities/dialog';
+// dialog
+import { openConfirmModal, openPromptModal } from '@/utilities/dialog';
 
-  const h1Code = ref('<h1>Title / H1</h1>');
-  const h2Code = ref('<h2>Title / H2</h2>');
-  const h3Code = ref('<h3>Title / H3</h3>');
-  const h4Code = ref('<h4>Title / H4</h4>');
-  const h5Code = ref('<h5>Title / H5</h5>');
-  const h6Code = ref('<h6>Title / H6</h6>');
-  const bodyCode = ref('<div class="body">Title / Body.20</div>');
-  const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
-  const captionCode = ref('<div class="caption">Title / Caption</div>');
+const h1Code = ref('<h1>Title / H1</h1>');
+const h2Code = ref('<h2>Title / H2</h2>');
+const h3Code = ref('<h3>Title / H3</h3>');
+const h4Code = ref('<h4>Title / H4</h4>');
+const h5Code = ref('<h5>Title / H5</h5>');
+const h6Code = ref('<h6>Title / H6</h6>');
+const bodyCode = ref('<div class="body">Title / Body.20</div>');
+const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
+const captionCode = ref('<div class="caption">Title / Caption</div>');
 
-  // 不套用 layout
-  definePageMeta({
-    layout: false,
-  });
-  function clickShowInfo() {
-    showInfo('提示標題', '請填寫帳號。');
-  }
-  function clickShowError() {
-    showError('失敗標題', '失敗訊息');
-  }
-  function clickShowSuccess() {
-    showSuccess('成功標題', '成功訊息');
-  }
-  function confirmOpen() {
-    // 使用 utilities 的 dialog 開啟視窗
-    const title = '標題';
-    const message =
-      '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文';
-    console.log(title);
-    openConfirmModal(title, message, confirmFunc, cancelFunc);
-  }
-  function promptOpen() {
-    // 使用 utilities 的 dialog 開啟視窗
-    const title = '標題2';
-    const message =
-      '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2';
-    openPromptModal(title, message, confirmFunc);
-  }
-  function confirmFunc() {
-    showSuccess('觸發確定按鈕');
-  }
-  function cancelFunc() {
-    showInfo('觸發取消按鈕');
-  }
+// 不套用 layout
+definePageMeta({
+  layout: false,
+});
+function clickShowInfo() {
+  showInfo('提示標題', '請填寫帳號。');
+}
+function clickShowError() {
+  showError('失敗標題', '失敗訊息');
+}
+function clickShowSuccess() {
+  showSuccess('成功標題', '成功訊息');
+}
+function confirmOpen() {
+  // 使用 utilities 的 dialog 開啟視窗
+  const title = '標題';
+  const message = '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文';
+  console.log(title);
+  openConfirmModal(title, message, confirmFunc, cancelFunc);
+}
+function promptOpen() {
+  // 使用 utilities 的 dialog 開啟視窗
+  const title = '標題2';
+  const message = '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2';
+  openPromptModal(title, message, confirmFunc);
+}
+function confirmFunc() {
+  showSuccess('觸發確定按鈕');
+}
+function cancelFunc() {
+  showInfo('觸發取消按鈕');
+}
 </script>

@@ -1,304 +1,250 @@
 <script lang="ts" setup>
-  import { storeToRefs } from 'pinia';
-  // 測試驗證區
-  import { object, string } from 'yup';
-  import { useForm, useField, configure, defineRule } from 'vee-validate';
-  import { localize, setLocale } from '@vee-validate/i18n';
-  import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
-  import {
-    cityOptions,
-    yearsOfServiceOptions,
-    workingHoursOptions,
-    isServerOptions,
-    employmentTypesOptions,
-    salaryTypesOpions,
-    monthOptions,
-    overtimeOptions,
-    feelingOptions,
-    tagsOptions,
-  } from '~/utilities/options';
-  import { useUserStore } from '@/store/user';
-  import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
-  useHead({
-    title: '匿名分享',
-  });
-  definePageMeta({
-    middleware: 'auth',
-  });
-  const submitData: IShareSalaryFormData = reactive({
-    taxId: '',
-    companyName: '',
-    title: '',
-    employmentType: '全職',
-    inService: true,
-    city: '',
-    workYears: '',
-    totalWorkYears: '',
-    monthlySalary: '',
-    dailySalary: '',
+import { storeToRefs } from 'pinia';
+// 測試驗證區
+import { object, string } from 'yup';
+import { useForm, useField, configure, defineRule } from 'vee-validate';
+import { localize, setLocale } from '@vee-validate/i18n';
+import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+import {
+  cityOptions,
+  yearsOfServiceOptions,
+  workingHoursOptions,
+  isServerOptions,
+  employmentTypesOptions,
+  salaryTypesOpions,
+  monthOptions,
+  overtimeOptions,
+  feelingOptions,
+  tagsOptions,
+} from '~/utilities/options';
+import { useUserStore } from '@/store/user';
+import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
+useHead({
+  title: '匿名分享',
+});
+definePageMeta({
+  middleware: 'auth',
+});
+const submitData: IShareSalaryFormData = reactive({
+  taxId: '',
+  companyName: '',
+  title: '',
+  employmentType: '全職',
+  inService: true,
+  city: '',
+  workYears: '',
+  totalWorkYears: '',
+  monthlySalary: '',
+  dailySalary: '',
+  avgWorkingDaysPerMonth: '',
+  hourlySalary: '',
+  dailyAverageWorkingHours: '',
+  yearEndBonus: '',
+  holidayBonus: '',
+  profitSharingBonus: '',
+  otherBonus: '',
+  overtime: 3,
+  feeling: 3,
+  jobDescription: '',
+  suggestion: '',
+  tags: [],
+  customTags: [],
+});
+const { errorMessage, handleBlur, setErrors, errors } = useField('taxId', 'required|numeric');
+configure({
+  validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
+  validateOnChange: true, // controls if `change` events should trigger validation with `handleChange` handler
+  validateOnInput: true, // controls if `input` events should trigger validation with `handleChange` handler
+  validateOnModelUpdate: true, // controls if `update:modelValue` events should trigger validation with `handleChange` handler
+  generateMessage: localize({ zh_TW: zhTW }),
+});
+setLocale('zh_TW');
+
+defineRule('taxIdVee', async (taxId: string) => {
+  const reg = /^\d{8}$/;
+  const matchResult = taxId.match(reg);
+
+  if (!matchResult) {
+    return '統編為8碼';
+  }
+
+  const idArray = matchResult[0].split('').map(Number);
+  const weight = [1, 2, 1, 2, 1, 2, 4, 1];
+  let sum = 0;
+
+  for (let i = 0; i < idArray.length; i++) {
+    const p = idArray[i] * weight[i];
+    const s = Math.floor(p / 10) + (p % 10);
+    sum += s;
+  }
+
+  const checkNumber = 5;
+  const isLegal = sum % checkNumber === 0 || ((sum + 1) % checkNumber === 0 && idArray[6] === 7);
+
+  if (!isLegal) {
+    return '不合法的統編驗證';
+  }
+  return true;
+});
+
+// 測試驗證區結束
+
+const user = useUserStore();
+const { currentUser } = storeToRefs(user);
+const salaryTypes = ref('monthly');
+const customTagsText = ref('');
+const step = ref(1);
+const form = ref(null);
+
+const salaryTypesField: ISalary = reactive({
+  monthly: {
+    salary: '',
+    total: '',
+  },
+  daily: {
+    salary: '',
     avgWorkingDaysPerMonth: '',
-    hourlySalary: '',
+    total: '',
+  },
+  hourly: {
+    salary: '',
     dailyAverageWorkingHours: '',
-    yearEndBonus: '',
-    holidayBonus: '',
-    profitSharingBonus: '',
-    otherBonus: '',
-    overtime: 3,
-    feeling: 3,
-    jobDescription: '',
-    suggestion: '',
-    tags: [],
-    customTags: [],
-  });
-  const { errorMessage, handleBlur, setErrors, errors } = useField(
-    'taxId',
-    'required|numeric',
-  );
-  configure({
-    validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
-    validateOnChange: true, // controls if `change` events should trigger validation with `handleChange` handler
-    validateOnInput: true, // controls if `input` events should trigger validation with `handleChange` handler
-    validateOnModelUpdate: true, // controls if `update:modelValue` events should trigger validation with `handleChange` handler
-    generateMessage: localize({ zh_TW: zhTW }),
-  });
-  setLocale('zh_TW');
+    avgWorkingDaysPerMonth: '',
+    total: '',
+  },
+});
+watch(
+  salaryTypesField,
+  (newValue, oldValue) => {
+    // 要監聽的值，參數 : 新值跟舊值
+    chnagSalaryTotal();
+  },
+  { deep: true },
+);
 
-  defineRule('taxIdVee', async (taxId: string) => {
-    const reg = /^\d{8}$/;
-    const matchResult = taxId.match(reg);
+watch(
+  () => [submitData.yearEndBonus, submitData.holidayBonus, submitData.profitSharingBonus, submitData.otherBonus],
+  () => {
+    chnagSalaryTotal();
+  },
+);
 
-    if (!matchResult) {
-      return '統編為8碼';
-    }
+// 監聽 salaryTypesField 的變化
+const chnagSalaryTotal = () => {
+  const monthlySalary = Number(salaryTypesField.monthly.salary);
+  const dailySalary = Number(salaryTypesField.daily.salary);
+  const dailyAvgWorkingDays = Number(salaryTypesField.daily.avgWorkingDaysPerMonth);
+  const hourlySalary = Number(salaryTypesField.hourly.salary);
+  const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.dailyAverageWorkingHours);
+  const hourlyAvgWorkingDays = Number(salaryTypesField.hourly.avgWorkingDaysPerMonth);
+  if (isNumber(monthlySalary)) {
+    salaryTypesField.monthly.total = calculateTotal(monthlySalary, 12) + othersBouns();
+  }
+  if (isNumber(dailySalary) && isNumber(dailyAvgWorkingDays)) {
+    salaryTypesField.daily.total = calculateTotal(dailySalary * dailyAvgWorkingDays, 12) + othersBouns();
+  }
+  if (isNumber(hourlySalary) && isNumber(hourlyAvgWorkingHours) && isNumber(hourlyAvgWorkingDays)) {
+    salaryTypesField.hourly.total =
+      calculateTotal(hourlySalary * hourlyAvgWorkingHours * hourlyAvgWorkingDays, 12) + othersBouns();
+  }
+};
+const othersBouns = () => {
+  const { yearEndBonus, holidayBonus, profitSharingBonus, otherBonus } = submitData;
+  const resYearEndBonus = isNumber(Number(yearEndBonus)) ? yearEndBonus : '0';
+  const resHolidayBonus = isNumber(Number(holidayBonus)) ? holidayBonus : '0';
+  const resProfitSharingBonus = isNumber(Number(profitSharingBonus)) ? profitSharingBonus : '0';
+  const resOtherBonus = isNumber(Number(otherBonus)) ? otherBonus : '0';
+  return Number(resProfitSharingBonus) + Number(resOtherBonus) + Number(resYearEndBonus) + Number(resHolidayBonus);
+};
+const isNumber = (value: number) => {
+  return typeof value === 'number' && isFinite(value) && !isNaN(value);
+};
+// 定義一個函數，用來計算 total 值
+const calculateTotal = (salary: number, multiplier: number): number | string => {
+  return salary ? Number(salary * multiplier) : 0;
+};
 
-    const idArray = matchResult[0].split('').map(Number);
-    const weight = [1, 2, 1, 2, 1, 2, 4, 1];
-    let sum = 0;
-
-    for (let i = 0; i < idArray.length; i++) {
-      const p = idArray[i] * weight[i];
-      const s = Math.floor(p / 10) + (p % 10);
-      sum += s;
-    }
-
-    const checkNumber = 5;
-    const isLegal =
-      sum % checkNumber === 0 ||
-      ((sum + 1) % checkNumber === 0 && idArray[6] === 7);
-
-    if (!isLegal) {
-      return '不合法的統編驗證';
-    }
-    return true;
-  });
-
-  // 測試驗證區結束
-
-  const user = useUserStore();
-  const { currentUser } = storeToRefs(user);
-  const salaryTypes = ref('monthly');
-  const customTagsText = ref('');
-  const step = ref(1);
-  const form = ref(null);
-
-  const salaryTypesField: ISalary = reactive({
-    monthly: {
-      salary: '',
-      total: '',
-    },
-    daily: {
-      salary: '',
-      avgWorkingDaysPerMonth: '',
-      total: '',
-    },
-    hourly: {
-      salary: '',
-      dailyAverageWorkingHours: '',
-      avgWorkingDaysPerMonth: '',
-      total: '',
-    },
-  });
-  watch(
-    salaryTypesField,
-    (newValue, oldValue) => {
-      // 要監聽的值，參數 : 新值跟舊值
-      chnagSalaryTotal();
-    },
-    { deep: true },
-  );
-
-  watch(
-    () => [
-      submitData.yearEndBonus,
-      submitData.holidayBonus,
-      submitData.profitSharingBonus,
-      submitData.otherBonus,
+const addCustomTags = (tag: string) => {
+  submitData.customTags?.push(tag);
+  customTagsText.value = '';
+};
+const removeCustomTag = (tag: string) => {
+  if (!submitData.customTags) return;
+  const index = submitData.customTags.indexOf(tag);
+  if (index === -1) return;
+  submitData.customTags.splice(index, 1);
+};
+const onSubmit = () => {
+  console.log('value', form.value);
+  // form.value.resetForm();
+};
+const debug = ref(false);
+// 右側邊欄
+const rightSideList = reactive([
+  {
+    title: '關於薪水情報',
+    description: '',
+    list: [
+      {
+        icon: 'icon-hide',
+        title: '全站匿名',
+        description: '安心分享自己的真實經驗',
+      },
+      {
+        icon: 'icon-person-checked',
+        title: '真人審核',
+        description: '每筆心得經過審核，杜絕無用內容',
+      },
+      {
+        icon: 'icon-message',
+        title: '向前輩發問',
+        description: '直接私訊前輩，開啟更多機會',
+      },
+      {
+        icon: 'icon-shield-checked',
+        title: '言論自由',
+        description: '法律團隊確保你在這裡的言論自由',
+      },
     ],
-    () => {
-      chnagSalaryTotal();
-    },
-  );
-
-  // 監聽 salaryTypesField 的變化
-  const chnagSalaryTotal = () => {
-    const monthlySalary = Number(salaryTypesField.monthly.salary);
-    const dailySalary = Number(salaryTypesField.daily.salary);
-    const dailyAvgWorkingDays = Number(
-      salaryTypesField.daily.avgWorkingDaysPerMonth,
-    );
-    const hourlySalary = Number(salaryTypesField.hourly.salary);
-    const hourlyAvgWorkingHours = Number(
-      salaryTypesField.hourly.dailyAverageWorkingHours,
-    );
-    const hourlyAvgWorkingDays = Number(
-      salaryTypesField.hourly.avgWorkingDaysPerMonth,
-    );
-    if (isNumber(monthlySalary)) {
-      salaryTypesField.monthly.total =
-        calculateTotal(monthlySalary, 12) + othersBouns();
-    }
-    if (isNumber(dailySalary) && isNumber(dailyAvgWorkingDays)) {
-      salaryTypesField.daily.total =
-        calculateTotal(dailySalary * dailyAvgWorkingDays, 12) + othersBouns();
-    }
-    if (
-      isNumber(hourlySalary) &&
-      isNumber(hourlyAvgWorkingHours) &&
-      isNumber(hourlyAvgWorkingDays)
-    ) {
-      salaryTypesField.hourly.total =
-        calculateTotal(
-          hourlySalary * hourlyAvgWorkingHours * hourlyAvgWorkingDays,
-          12,
-        ) + othersBouns();
-    }
-  };
-  const othersBouns = () => {
-    const { yearEndBonus, holidayBonus, profitSharingBonus, otherBonus } =
-      submitData;
-    const resYearEndBonus = isNumber(Number(yearEndBonus)) ? yearEndBonus : '0';
-    const resHolidayBonus = isNumber(Number(holidayBonus)) ? holidayBonus : '0';
-    const resProfitSharingBonus = isNumber(Number(profitSharingBonus))
-      ? profitSharingBonus
-      : '0';
-    const resOtherBonus = isNumber(Number(otherBonus)) ? otherBonus : '0';
-    return (
-      Number(resProfitSharingBonus) +
-      Number(resOtherBonus) +
-      Number(resYearEndBonus) +
-      Number(resHolidayBonus)
-    );
-  };
-  const isNumber = (value: number) => {
-    return typeof value === 'number' && isFinite(value) && !isNaN(value);
-  };
-  // 定義一個函數，用來計算 total 值
-  const calculateTotal = (
-    salary: number,
-    multiplier: number,
-  ): number | string => {
-    return salary ? Number(salary * multiplier) : 0;
-  };
-
-  const addCustomTags = (tag: string) => {
-    submitData.customTags?.push(tag);
-    customTagsText.value = '';
-  };
-  const removeCustomTag = (tag: string) => {
-    if (!submitData.customTags) return;
-    const index = submitData.customTags.indexOf(tag);
-    if (index === -1) return;
-    submitData.customTags.splice(index, 1);
-  };
-  const onSubmit = () => {
-    console.log('value', form.value);
-    // form.value.resetForm();
-  };
-  const debug = ref(false);
-  // 右側邊欄
-  const rightSideList = reactive([
-    {
-      title: '關於薪水情報',
-      description: '',
-      list: [
-        {
-          icon: 'icon-hide',
-          title: '全站匿名',
-          description: '安心分享自己的真實經驗',
-        },
-        {
-          icon: 'icon-person-checked',
-          title: '真人審核',
-          description: '每筆心得經過審核，杜絕無用內容',
-        },
-        {
-          icon: 'icon-message',
-          title: '向前輩發問',
-          description: '直接私訊前輩，開啟更多機會',
-        },
-        {
-          icon: 'icon-shield-checked',
-          title: '言論自由',
-          description: '法律團隊確保你在這裡的言論自由',
-        },
-      ],
-    },
-    {
-      title: '精選心得：樂於分享總是有所回報',
-      description:
-        '如果你填寫了優質內容，並由真薪話小幫手選為「編輯精選」後，你可以享有以下福利。',
-      list: [
-        {
-          icon: 'icon-sparkle-checked',
-          title: '精選標章',
-          description: '幫助下一個人辨認優質內容',
-        },
-        {
-          icon: 'icon-list',
-          title: '優先曝光',
-          description: '讓薪水情報可以讓更多人看見',
-        },
-        {
-          icon: 'icon-star-circle',
-          title: '額外積分獎勵',
-          description: '額外獲得 200 積分',
-        },
-      ],
-    },
-  ]);
+  },
+  {
+    title: '精選心得：樂於分享總是有所回報',
+    description: '如果你填寫了優質內容，並由真薪話小幫手選為「編輯精選」後，你可以享有以下福利。',
+    list: [
+      {
+        icon: 'icon-sparkle-checked',
+        title: '精選標章',
+        description: '幫助下一個人辨認優質內容',
+      },
+      {
+        icon: 'icon-list',
+        title: '優先曝光',
+        description: '讓薪水情報可以讓更多人看見',
+      },
+      {
+        icon: 'icon-star-circle',
+        title: '額外積分獎勵',
+        description: '額外獲得 200 積分',
+      },
+    ],
+  },
+]);
 </script>
 <template>
-  <section
-    class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden"
-  >
-    <div
-      class="sharemysalary container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl lg:mt-10"
-    >
+  <section class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
+    <div class="sharemysalary container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl lg:mt-10">
       <h2 class="text-3xl mb-5">匿名分享</h2>
       <div class="flex">
-        <div
-          class="lg:w-4/6 border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br"
-        >
+        <div class="lg:w-4/6 border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
           <div class="w-100 p-6 bg-black-10 text-white">
-            <h4>
-              {{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！
-            </h4>
-            <p class="opacity-70 mt-2">
-              在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。
-            </p>
+            <h4>{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
+            <p class="opacity-70 mt-2">在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。</p>
           </div>
-          <VForm
-            v-slot="{ errors, meta }"
-            ref="form"
-            class="p-6"
-            @submit="onSubmit"
-          >
+          <VForm v-slot="{ errors, meta }" ref="form" class="p-6" @submit="onSubmit">
             <div v-show="step === 1">
               <!-- 公司統編 -->
               <div class="mb-10">
-                <label for="taxId" label="" class="text-black-10"
-                  >公司統一編號</label
-                >
+                <label for="taxId" label="" class="text-black-10">公司統一編號</label>
                 <VField
                   v-model.number="submitData.taxId"
                   name="taxId"
@@ -309,17 +255,11 @@
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
                 />
-                <VErrorMessage
-                  name="taxId"
-                  as="div"
-                  class="help is-danger text-red"
-                />
+                <VErrorMessage name="taxId" as="div" class="help is-danger text-red" />
               </div>
               <!-- 公司名稱 -->
               <div class="mb-10">
-                <label for="companyName" label="" class="text-black-10"
-                  >公司名稱</label
-                >
+                <label for="companyName" label="" class="text-black-10">公司名稱</label>
                 <input
                   id="companyName"
                   type="text"
@@ -331,9 +271,7 @@
               </div>
               <!-- 應徵職務 -->
               <div class="">
-                <label for="taxId" label="" class="text-black-10"
-                  >應徵職務</label
-                >
+                <label for="taxId" label="" class="text-black-10">應徵職務</label>
                 <VField
                   v-model.trim="submitData.title"
                   name="title"
@@ -344,11 +282,7 @@
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入應徵職務"
                 />
-                <VErrorMessage
-                  name="title"
-                  as="div"
-                  class="help is-danger text-red"
-                />
+                <VErrorMessage name="title" as="div" class="help is-danger text-red" />
               </div>
               <div class="flex items-center mt-1 mb-10">
                 <input
@@ -357,9 +291,7 @@
                   name="inService"
                   class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 rounded accent-blue rounded-2xl"
                 />
-                <label
-                  for="inService"
-                  class="text-gray-700 ml-2 hover:text-blue"
+                <label for="inService" class="text-gray-700 ml-2 hover:text-blue"
                   >不提供職務名稱（將不會獲得精選）</label
                 >
               </div>
@@ -434,31 +366,19 @@
                       <template v-if="salaryTypes === 'monthly'">
                         <div class="relativ">
                           <VField
-                            v-model.number="
-                              salaryTypesField[salaryTypes].salary
-                            "
+                            v-model.number="salaryTypesField[salaryTypes].salary"
                             name="monthlySalary"
                             label="月薪"
                             type="number"
                             :class="{ 'border-red': errors.monthlySalary }"
-                            :rules="
-                              salaryTypes === 'monthly'
-                                ? 'required|numeric'
-                                : 'numeric'
-                            "
+                            :rules="salaryTypes === 'monthly' ? 'required|numeric' : 'numeric'"
                             class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                             placeholder="月薪"
                           />
-                          <span
-                            class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm"
-                          >
+                          <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
                           </span>
-                          <VErrorMessage
-                            name="monthlySalary"
-                            as="div"
-                            class="help is-danger text-red"
-                          />
+                          <VErrorMessage name="monthlySalary" as="div" class="help is-danger text-red" />
                         </div>
                       </template>
                     </keep-alive>
@@ -470,50 +390,31 @@
                               placeholder="日薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
 
                             <VField
-                              v-model.number="
-                                salaryTypesField[salaryTypes].salary
-                              "
+                              v-model.number="salaryTypesField[salaryTypes].salary"
                               name="dailySalary"
                               label="日薪"
                               type="number"
                               :class="{ 'border-red': errors.dailySalary }"
-                              :rules="
-                                salaryTypes === 'daily'
-                                  ? 'required|numeric'
-                                  : 'numeric'
-                              "
+                              :rules="salaryTypes === 'daily' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                               placeholder="日薪"
                             />
-                            <VErrorMessage
-                              name="dailySalary"
-                              as="div"
-                              class="help is-danger text-red"
-                            />
+                            <VErrorMessage name="dailySalary" as="div" class="help is-danger text-red" />
                           </div>
-                          <div
-                            class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1"
-                          >
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect
-                              v-model="
-                                salaryTypesField[salaryTypes]
-                                  .avgWorkingDaysPerMonth
-                              "
+                              v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
                               :options="monthOptions"
                               name="avgWorkingDaysPerMonth"
                               placeholder="月均工作天數"
-                              :required="
-                                salaryTypes === 'daily' ? 'required' : ''
-                              "
+                              :required="salaryTypes === 'daily' ? 'required' : ''"
                               label="月均工作天數"
                               hidden-label
                             >
-                              <span
-                                class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm top-2"
-                              >
+                              <span class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm top-2">
                                 x12月
                               </span>
                             </BaseFormSelect>
@@ -528,72 +429,46 @@
                             <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
                               placeholder="時薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
                             <VField
-                              v-model.number="
-                                salaryTypesField[salaryTypes].salary
-                              "
+                              v-model.number="salaryTypesField[salaryTypes].salary"
                               name="hourlySalary"
                               label="時薪"
                               type="number"
                               :class="{ 'border-red': errors.hourlySalary }"
-                              :rules="
-                                salaryTypes === 'hourly'
-                                  ? 'required|numeric'
-                                  : 'numeric'
-                              "
+                              :rules="salaryTypes === 'hourly' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                               placeholder="時薪"
                             />
-                            <VErrorMessage
-                              name="hourlySalary"
-                              as="div"
-                              class="help is-danger text-red"
-                            />
+                            <VErrorMessage name="hourlySalary" as="div" class="help is-danger text-red" />
                           </div>
-                          <div
-                            class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1"
-                          >
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect
-                              v-model="
-                                salaryTypesField[salaryTypes]
-                                  .dailyAverageWorkingHours
-                              "
+                              v-model="salaryTypesField[salaryTypes].dailyAverageWorkingHours"
                               :options="workingHoursOptions"
                               name="dailyAverageWorkingHours"
                               placeholder="日均工時"
-                              :required="
-                                salaryTypes === 'hourly' ? 'required' : ''
-                              "
+                              :required="salaryTypes === 'hourly' ? 'required' : ''"
                               label="日均工時"
                               hidden-label
                             >
                             </BaseFormSelect>
                           </div>
-                          <div
-                            class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1"
-                          >
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect
-                              v-model="
-                                salaryTypesField[salaryTypes]
-                                  .avgWorkingDaysPerMonth
-                              "
-                              :required="
-                                salaryTypes === 'hourly' ? 'required' : ''
-                              "
+                              v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
+                              :required="salaryTypes === 'hourly' ? 'required' : ''"
                               :options="monthOptions"
                               name="avgWorkingDaysPerMonth"
                               placeholder="月均工作天數"
                               label="月均工作天數"
                               hidden-label
                             >
-                              <span
-                                class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm top-2"
-                              >
+                              <span class="absolute inset-y-0 right-4 flex items-center text-black-6 text-sm top-2">
                                 x12月
                               </span>
                             </BaseFormSelect>
@@ -604,9 +479,7 @@
                   </div>
                   <!-- 年終 -->
                   <div class="flex mt-3">
-                    <span
-                      class="w-[48px] flex items-center justify-center px-5"
-                    >
+                    <span class="w-[48px] flex items-center justify-center px-5">
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
@@ -621,9 +494,7 @@
                   </div>
                   <!-- 三節 -->
                   <div class="flex mt-3">
-                    <span
-                      class="w-[48px] flex items-center justify-center px-5"
-                    >
+                    <span class="w-[48px] flex items-center justify-center px-5">
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
@@ -638,9 +509,7 @@
                   </div>
                   <!-- 獎金 -->
                   <div class="flex mt-3">
-                    <span
-                      class="w-[48px] flex items-center justify-center px-5"
-                    >
+                    <span class="w-[48px] flex items-center justify-center px-5">
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
@@ -655,9 +524,7 @@
                   </div>
                   <!-- 其他 -->
                   <div class="flex mt-3">
-                    <span
-                      class="w-[48px] flex items-center justify-center px-5"
-                    >
+                    <span class="w-[48px] flex items-center justify-center px-5">
                       <i class="icomoon icon-plus text-black-6 text-lg"></i>
                     </span>
                     <div class="shrink w-full">
@@ -701,12 +568,7 @@
 
               <!-- 上班心情 -->
               <div class="mb-10">
-                <BaseFormRadio
-                  v-model="submitData.feeling"
-                  :options="feelingOptions"
-                  label="上班心情"
-                  name="feeling"
-                />
+                <BaseFormRadio v-model="submitData.feeling" :options="feelingOptions" label="上班心情" name="feeling" />
               </div>
               <hr class="my-10" />
               <div class="flex justify-between">
@@ -749,8 +611,7 @@
                     class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   />
                   <span class="text-sm text-black-6"
-                    ><i class="icomoon icon-info text-sm mr-1"></i
-                    >內容需填寫60字以上</span
+                    ><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫60字以上</span
                   >
                   <div v-if="errors[0]" class="text-red">{{ errors[0] }}</div>
                 </VField>
@@ -782,8 +643,7 @@
                     class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   />
                   <span class="text-sm text-black-6"
-                    ><i class="icomoon icon-info text-sm mr-1"></i
-                    >內容需填寫30字以上</span
+                    ><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫30字以上</span
                   >
                   <div v-if="errors[0]" class="text-red">{{ errors[0] }}</div>
                 </VField>
@@ -829,19 +689,13 @@
                     </label>
                   </li>
                 </ul>
-                <ul
-                  v-if="submitData.customTags && submitData.customTags[0]"
-                  class="flex flex-wrap list-none"
-                >
+                <ul v-if="submitData.customTags && submitData.customTags[0]" class="flex flex-wrap list-none">
                   <li v-for="customTagsItem in submitData.customTags">
                     <button
                       class="cursor-pointer flex p-2 block text-black-10 bg-white border border-black-6 rounded text-sm mr-3 mb-3 peer-checked:text-white hover:bg-black-1"
                       @click.stop.prevent="removeCustomTag(customTagsItem)"
                     >
-                      <span class="text-sm"
-                        ><i class="icomoon icon-cross text-xs mr-2"></i
-                        >{{ customTagsItem }}</span
-                      >
+                      <span class="text-sm"><i class="icomoon icon-cross text-xs mr-2"></i>{{ customTagsItem }}</span>
                     </button>
                   </li>
                 </ul>
@@ -879,14 +733,8 @@
           </VForm>
         </div>
         <div class="lg:w-2/6 ml-[30px] lg:mt-0 md:mt-15">
-          <div
-            v-for="rightSideBlock in rightSideList"
-            class="mb-4 bg-white rounded p-6"
-          >
-            <h4
-              class="text-blue text-2xl"
-              :class="{ 'mb-5': !rightSideBlock.description }"
-            >
+          <div v-for="rightSideBlock in rightSideList" class="mb-4 bg-white rounded p-6">
+            <h4 class="text-blue text-2xl" :class="{ 'mb-5': !rightSideBlock.description }">
               {{ rightSideBlock.title }}
             </h4>
             <p class="text-sm text-black-6 mt-3">
@@ -894,11 +742,8 @@
             </p>
             <ul class="list-none">
               <li v-for="blockItem in rightSideBlock.list" class="flex mt-5">
-                <span
-                  class="w-[48px] h-[48px] flex items-center justify-center bg-blue-light rounded mr-4"
-                  ><i
-                    :class="`icomoon ${blockItem.icon} text-blue-dark text-2xl`"
-                  ></i
+                <span class="w-[48px] h-[48px] flex items-center justify-center bg-blue-light rounded mr-4"
+                  ><i :class="`icomoon ${blockItem.icon} text-blue-dark text-2xl`"></i
                 ></span>
                 <div>
                   <h5 class="text-base font-medium">{{ blockItem.title }}</h5>
@@ -915,14 +760,14 @@
   </section>
 </template>
 <style scoped>
-  input[type='number']::-webkit-outer-spin-button,
-  input[type='number']::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-  /* Firefox */
-  input[type='number'] {
-    -moz-appearance: textfield;
-  }
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 </style>

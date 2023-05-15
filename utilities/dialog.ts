@@ -49,36 +49,15 @@ export function openConfirmModal(
   cancelText?: string,
 ) {
   cancelFunc = cancelFunc || closeModal;
-  openDefaultDialog(
-    true,
-    title,
-    message,
-    confirmFunc,
-    cancelFunc,
-    confirmText,
-    cancelText,
-  );
+  openDefaultDialog(true, title, message, confirmFunc, cancelFunc, confirmText, cancelText);
 }
 
 /**
  * @description  只有確認的 Modal
  */
-export function openPromptModal(
-  title: string,
-  message: string,
-  confirmFunc?: () => void,
-  confirmText?: string,
-) {
+export function openPromptModal(title: string, message: string, confirmFunc?: () => void, confirmText?: string) {
   confirmFunc = confirmFunc || closeModal;
-  openDefaultDialog(
-    false,
-    title,
-    message,
-    confirmFunc,
-    closeModal,
-    confirmText,
-    undefined,
-  );
+  openDefaultDialog(false, title, message, confirmFunc, closeModal, confirmText, undefined);
 }
 
 function closeModal(): void {
