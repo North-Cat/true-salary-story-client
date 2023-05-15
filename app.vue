@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-useHead({
-  titleTemplate: (titleChunk) => {
-    return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
-  },
-});
+  useHead({
+    titleTemplate: (titleChunk) => {
+      return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
+    },
+  });
 </script>
 <template>
   <div>
@@ -11,7 +11,12 @@ useHead({
     <default-modal></default-modal>
     <!-- message -->
     <client-only>
-      <notifications position="top right" class="my-notification" :duration="3000" :max="5" />
+      <notifications
+        position="top right"
+        class="my-notification"
+        :duration="3000"
+        :max="5"
+      />
     </client-only>
 
     <!-- 套用共通 layout (nav 跟 footer)-->

@@ -1,386 +1,449 @@
 <template>
-    <div class="bg-stone-300 text-black-10">
-        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
-            <div class="mb-1 text-stone-600">Style</div>
-            <div class="py-10 bg-white px-10">
-                <div class="flex flex-wrap -mx-2">
-                    <div class="w-full sm:w-1/2 px-2">
-                        <div class="text-2xl text-blue mb-5">Color</div>
-                        <div class="flex flex-row mb-5 font-semibold">
-                            <div class="flex flex-col">
-                                <div class="bg-white border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-white</div>
-                                <div class="text-xs text-stone-600">#FFFFFF</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-gray</div>
-                                <div class="text-xs text-stone-600">#F5F5F8</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-gray-field</div>
-                                <div class="text-xs text-stone-600">#EFEFF4</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-gray border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-gray-light</div>
-                                <div class="text-xs text-stone-600">#E9E8ED</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-dark</div>
-                                <div class="text-xs text-stone-600">#D4D4D7</div>
-                            </div>
-                        </div>
-                        <div class="flex flex-row mb-5 font-semibold">
-                            <div class="flex flex-col">
-                                <div class="bg-black-10 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-black-10</div>
-                                <div class="text-xs text-stone-600">#2B2B31</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-black-6 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-black-6</div>
-                                <div class="text-xs text-stone-600">#2B2B31A8</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-black-5 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-black-5</div>
-                                <div class="text-xs text-stone-600">#2B2B3180</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-black-3 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-black-3</div>
-                                <div class="text-xs text-stone-600">#2B2B314D</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-black-1 border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-black-1</div>
-                                <div class="text-xs text-stone-600">#2B2B311A</div>
-                            </div>
-                        </div>
-                        <div class="flex flex-row mb-5 font-semibold">
-                            <div class="flex flex-col">
-                                <div class="bg-blue border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-blue</div>
-                                <div class="text-xs text-stone-600">#366BAB</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-blue-light border border-stone-200 me-5 mb-1"
-                                    style="height:79px; width:79px"></div>
-                                <div class="text-sm text-stone-900">bg-blue-light</div>
-                                <div class="text-xs text-stone-600">#E9F7FF</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-blue-dark border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-blue-dark</div>
-                                <div class="text-xs text-stone-600">#25469A</div>
-                            </div>
-                        </div>
-                        <div class="flex flex-row mb-5 font-semibold">
-                            <div class="flex flex-col">
-                                <div class="bg-green border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-green</div>
-                                <div class="text-xs text-stone-600">#329063</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-yellow border border-stone-200 me-5 mb-1" style="height:79px; width:79px">
-                                </div>
-                                <div class="text-sm text-stone-900">bg-yellow</div>
-                                <div class="text-xs text-stone-600">#D08B24</div>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="bg-red border border-stone-200 me-5 mb-1" style="height:79px; width:79px"></div>
-                                <div class="text-sm text-stone-900">bg-red</div>
-                                <div class="text-xs text-stone-600">#BE2C61</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-1/2 px-2">
-                        <div class="text-2xl text-blue mb-5">Typography</div>
-                        <div class="mb-2">
-                            <h1 class="mb-2 me-4 inline-block">Title / H1</h1>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h1Code"></span>
-                        </div>
-                        <div class="mb-2">
-                            <h2 class="mb-2 me-4 inline-block">Title / H2</h2>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h2Code"></span>
-                        </div>
-                        <div class="mb-2">
-                            <h3 class="mb-2 me-4 inline-block">Title / H3</h3>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h3Code"></span>
-                        </div>
-                        <div class="mb-2">
-                            <h4 class="mb-2 me-4 inline-block">Title / H4</h4>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h4Code"></span>
-                        </div>
-                        <div class="mb-2">
-                            <h5 class="mb-2 me-4 inline-block">Title / H5</h5>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h5Code"></span>
-                        </div>
-                        <div class="mb-2">
-                            <h6 class="mb-2 me-4 inline-block">Title / H6</h6>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="h6Code"></span>
-                        </div>
-                        <div class="mb-2">
-                            <div class="body mb-2 me-4 inline-block">Title / Body.20</div>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="bodyCode"></span>
-                        </div>
-                        <div class="mb-2">
-                            <div class="body-sm mb-2 me-4 inline-block">Title / Body.16</div>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="bodySmCode"></span>
-                        </div>
-                        <div class="mb-10">
-                            <div class="caption mb-2 me-4 inline-block">Title / Caption</div>
-                            <span class="bg-stone-200 p-2 text-xs text-stone-600 rounded " v-text="captionCode"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex">
-                    <div class="w-full">
-                        <div class="text-2xl text-blue mb-5">Icon</div>
-                        <div class="mb-5">以下將設計師給的 SVG 打包成字體，各 icon 的 class name ：</div>
-                        <div class="flex flex-wrap">
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-time-bad me-2"></span>
-                                <p>icon-time-bad</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-time-good me-2"></span>
-                                <p>icon-time-good</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-time-normal me-2"></span>
-                                <p>icon-time-normal</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-coin me-2"></span>
-                                <p>icon-coin</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-cross me-2"></span>
-                                <p>icon-cross</p>
-                            </div>
-
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-edit me-2"></span>
-                                <p>icon-edit</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-face-bad me-2"></span>
-                                <p>icon-face-bad</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-face-good me-2"></span>
-                                <p>icon-face-good</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-face-normal me-2"></span>
-                                <p>icon-face-normal</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-file me-2"></span>
-                                <p>icon-file</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-filter me-2"></span>
-                                <p>icon-filter</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-hide me-2"></span>
-                                <p>icon-hide</p>
-                            </div>
-
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-list me-2"></span>
-                                <p>icon-list</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-message me-2"></span>
-                                <p>icon-message</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-message-blank me-2"></span>
-                                <p>icon-message-blank</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-person me-2"></span>
-                                <p>icon-person</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-person-circle me-2"></span>
-                                <p>icon-person-circle</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-person-checked me-2"></span>
-                                <p>icon-person-checked</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-plus me-2"></span>
-                                <p>icon-plus</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-minus me-2"></span>
-                                <p>icon-minus</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-plus-circle me-2"></span>
-                                <p>icon-plus-circle</p>
-                            </div>
-
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-search me-2"></span>
-                                <p>icon-search</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-share me-2"></span>
-                                <p>icon-share</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-shield-checked me-2"></span>
-                                <p>icon-shield-checked</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-slide me-2"></span>
-                                <p>icon-slide</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-sparkle-checked me-2"></span>
-                                <p>icon-sparkle-checked</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-star me-2"></span>
-                                <p>icon-star</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-star-circle me-2"></span>
-                                <p>icon-star-circle</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-down-arrow me-2"></span>
-                                <p>icon-down-arrow</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-left-arrow me-2"></span>
-                                <p>icon-left-arrow</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-right-arrow me-2"></span>
-                                <p>icon-right-arrow</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-up-arrow me-2"></span>
-                                <p>icon-up-arrow</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-mail me-2"></span>
-                                <p>icon-mail</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-fire me-2"></span>
-                                <p>icon-fire</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-star-circle-fill me-2"></span>
-                                <p>icon-star-circle-fill</p>
-                            </div>
-                            <div class="flex flex-row items-center me-5 mb-8">
-                                <span class="text-2xl icon-info me-2"></span>
-                                <p>icon-info</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="bg-stone-300 text-black-10">
+    <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+      <div class="mb-1 text-stone-600">Style</div>
+      <div class="py-10 bg-white px-10">
+        <div class="flex flex-wrap -mx-2">
+          <div class="w-full sm:w-1/2 px-2">
+            <div class="text-2xl text-blue mb-5">Color</div>
+            <div class="flex flex-row mb-5 font-semibold">
+              <div class="flex flex-col">
+                <div
+                  class="bg-white border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-white</div>
+                <div class="text-xs text-stone-600">#FFFFFF</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-gray border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-gray</div>
+                <div class="text-xs text-stone-600">#F5F5F8</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-gray border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-gray-field</div>
+                <div class="text-xs text-stone-600">#EFEFF4</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-gray border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-gray-light</div>
+                <div class="text-xs text-stone-600">#E9E8ED</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-dark border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-dark</div>
+                <div class="text-xs text-stone-600">#D4D4D7</div>
+              </div>
             </div>
+            <div class="flex flex-row mb-5 font-semibold">
+              <div class="flex flex-col">
+                <div
+                  class="bg-black-10 border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-black-10</div>
+                <div class="text-xs text-stone-600">#2B2B31</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-black-6 border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-black-6</div>
+                <div class="text-xs text-stone-600">#2B2B31A8</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-black-5 border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-black-5</div>
+                <div class="text-xs text-stone-600">#2B2B3180</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-black-3 border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-black-3</div>
+                <div class="text-xs text-stone-600">#2B2B314D</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-black-1 border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-black-1</div>
+                <div class="text-xs text-stone-600">#2B2B311A</div>
+              </div>
+            </div>
+            <div class="flex flex-row mb-5 font-semibold">
+              <div class="flex flex-col">
+                <div
+                  class="bg-blue border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-blue</div>
+                <div class="text-xs text-stone-600">#366BAB</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-blue-light border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-blue-light</div>
+                <div class="text-xs text-stone-600">#E9F7FF</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-blue-dark border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-blue-dark</div>
+                <div class="text-xs text-stone-600">#25469A</div>
+              </div>
+            </div>
+            <div class="flex flex-row mb-5 font-semibold">
+              <div class="flex flex-col">
+                <div
+                  class="bg-green border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-green</div>
+                <div class="text-xs text-stone-600">#329063</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-yellow border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-yellow</div>
+                <div class="text-xs text-stone-600">#D08B24</div>
+              </div>
+              <div class="flex flex-col">
+                <div
+                  class="bg-red border border-stone-200 me-5 mb-1"
+                  style="height: 79px; width: 79px"
+                ></div>
+                <div class="text-sm text-stone-900">bg-red</div>
+                <div class="text-xs text-stone-600">#BE2C61</div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-1/2 px-2">
+            <div class="text-2xl text-blue mb-5">Typography</div>
+            <div class="mb-2">
+              <h1 class="mb-2 me-4 inline-block">Title / H1</h1>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="h1Code"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <h2 class="mb-2 me-4 inline-block">Title / H2</h2>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="h2Code"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <h3 class="mb-2 me-4 inline-block">Title / H3</h3>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="h3Code"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <h4 class="mb-2 me-4 inline-block">Title / H4</h4>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="h4Code"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <h5 class="mb-2 me-4 inline-block">Title / H5</h5>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="h5Code"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <h6 class="mb-2 me-4 inline-block">Title / H6</h6>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="h6Code"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <div class="body mb-2 me-4 inline-block">Title / Body.20</div>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="bodyCode"
+              ></span>
+            </div>
+            <div class="mb-2">
+              <div class="body-sm mb-2 me-4 inline-block">Title / Body.16</div>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="bodySmCode"
+              ></span>
+            </div>
+            <div class="mb-10">
+              <div class="caption mb-2 me-4 inline-block">Title / Caption</div>
+              <span
+                class="bg-stone-200 p-2 text-xs text-stone-600 rounded"
+                v-text="captionCode"
+              ></span>
+            </div>
+          </div>
         </div>
-        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
-            <div class="mb-1 text-stone-600">Component</div>
-            <div class="py-10 bg-white px-10">
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-5">
-                    <div class="w-full sm:w-2/12 px-2">
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-row justify-center ">
-                            <h4>Default / Hover / Pressed</h4>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-row justify-center">
-                            <h4>使用方法</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Button</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-col justify-center items-center mb-6 ">
-                            <btn cate="blue-text" content="匿名分享" class="mb-1">
-                                <span class="icon-edit text-lg me-2"></span>
-                            </btn>
-                            <btn cate="gray-text" content="搜尋" class="mb-1">
-                                <span class="icon-search text-lg me-2"></span>
-                            </btn>
-                            <btn cate="gray-text" content="訊息" class="mb-1">
-                                <div>
-                                    <!-- 訊息紅點 -->
-                                    <span
-                                        class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
-                                    <span class="icon-mail text-2xl me-2"></span>
-                                </div>
-                            </btn>
-                            <btn cate="yellow-text" content="240 積分" class="mb-1">
-                                <span class="icon-star-circle text-xl me-2"></span>
-                            </btn>
-                            <btn cate="secondary" content="登入" class="mb-2">
-                                <span class="icon-person text-xl me-2"></span>
-                            </btn>
-                            <btn cate="primary" content="加薪計畫" class="mb-2">
-                                <span class="icon-star text-2xl me-2"></span>
-                            </btn>
-                            <btn cate="gray" content="已訂閱" class="mb-2">
-                            </btn>
-                            <btn cate="white" content="套用" class="mb-2">
-                                <span class="icon-filter text-sm me-2"></span>
-                            </btn>
-                        </div>
-                        <div class="flex flex-row justify-center items-center mb-6 ">
+        <div class="flex">
+          <div class="w-full">
+            <div class="text-2xl text-blue mb-5">Icon</div>
+            <div class="mb-5">
+              以下將設計師給的 SVG 打包成字體，各 icon 的 class name ：
+            </div>
+            <div class="flex flex-wrap">
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-time-bad me-2"></span>
+                <p>icon-time-bad</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-time-good me-2"></span>
+                <p>icon-time-good</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-time-normal me-2"></span>
+                <p>icon-time-normal</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-coin me-2"></span>
+                <p>icon-coin</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-cross me-2"></span>
+                <p>icon-cross</p>
+              </div>
 
-                            <btn cate="text-sm" content="分享" class="mb-1">
-                                <span class="icon-edit text-2xl mb-1"></span>
-                            </btn>
-                            <btn cate="text-sm" content="搜尋" class="mb-1">
-                                <span class="icon-search text-2xl mb-1"></span>
-                            </btn>
-                            <btn cate="text-sm" content="訊息" class="mb-1">
-                                <div class="-mb-1">
-                                    <!-- 訊息紅點 -->
-                                    <span
-                                        class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
-                                    <span class="icon-mail text-3xl"></span>
-                                </div>
-                            </btn>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre><code>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-edit me-2"></span>
+                <p>icon-edit</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-face-bad me-2"></span>
+                <p>icon-face-bad</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-face-good me-2"></span>
+                <p>icon-face-good</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-face-normal me-2"></span>
+                <p>icon-face-normal</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-file me-2"></span>
+                <p>icon-file</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-filter me-2"></span>
+                <p>icon-filter</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-hide me-2"></span>
+                <p>icon-hide</p>
+              </div>
+
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-list me-2"></span>
+                <p>icon-list</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-message me-2"></span>
+                <p>icon-message</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-message-blank me-2"></span>
+                <p>icon-message-blank</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-person me-2"></span>
+                <p>icon-person</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-person-circle me-2"></span>
+                <p>icon-person-circle</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-person-checked me-2"></span>
+                <p>icon-person-checked</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-plus me-2"></span>
+                <p>icon-plus</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-minus me-2"></span>
+                <p>icon-minus</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-plus-circle me-2"></span>
+                <p>icon-plus-circle</p>
+              </div>
+
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-search me-2"></span>
+                <p>icon-search</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-share me-2"></span>
+                <p>icon-share</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-shield-checked me-2"></span>
+                <p>icon-shield-checked</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-slide me-2"></span>
+                <p>icon-slide</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-sparkle-checked me-2"></span>
+                <p>icon-sparkle-checked</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-star me-2"></span>
+                <p>icon-star</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-star-circle me-2"></span>
+                <p>icon-star-circle</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-down-arrow me-2"></span>
+                <p>icon-down-arrow</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-left-arrow me-2"></span>
+                <p>icon-left-arrow</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-right-arrow me-2"></span>
+                <p>icon-right-arrow</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-up-arrow me-2"></span>
+                <p>icon-up-arrow</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-mail me-2"></span>
+                <p>icon-mail</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-fire me-2"></span>
+                <p>icon-fire</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-star-circle-fill me-2"></span>
+                <p>icon-star-circle-fill</p>
+              </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-info me-2"></span>
+                <p>icon-info</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+      <div class="mb-1 text-stone-600">Component</div>
+      <div class="py-10 bg-white px-10">
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-5">
+          <div class="w-full sm:w-2/12 px-2"></div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-row justify-center">
+              <h4>Default / Hover / Pressed</h4>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-row justify-center">
+              <h4>使用方法</h4>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Button</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center mb-6">
+              <btn cate="blue-text" content="匿名分享" class="mb-1">
+                <span class="icon-edit text-lg me-2"></span>
+              </btn>
+              <btn cate="gray-text" content="搜尋" class="mb-1">
+                <span class="icon-search text-lg me-2"></span>
+              </btn>
+              <btn cate="gray-text" content="訊息" class="mb-1">
+                <div>
+                  <!-- 訊息紅點 -->
+                  <span
+                    class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"
+                  ></span>
+                  <span class="icon-mail text-2xl me-2"></span>
+                </div>
+              </btn>
+              <btn cate="yellow-text" content="240 積分" class="mb-1">
+                <span class="icon-star-circle text-xl me-2"></span>
+              </btn>
+              <btn cate="secondary" content="登入" class="mb-2">
+                <span class="icon-person text-xl me-2"></span>
+              </btn>
+              <btn cate="primary" content="加薪計畫" class="mb-2">
+                <span class="icon-star text-2xl me-2"></span>
+              </btn>
+              <btn cate="gray" content="已訂閱" class="mb-2"> </btn>
+              <btn cate="white" content="套用" class="mb-2">
+                <span class="icon-filter text-sm me-2"></span>
+              </btn>
+            </div>
+            <div class="flex flex-row justify-center items-center mb-6">
+              <btn cate="text-sm" content="分享" class="mb-1">
+                <span class="icon-edit text-2xl mb-1"></span>
+              </btn>
+              <btn cate="text-sm" content="搜尋" class="mb-1">
+                <span class="icon-search text-2xl mb-1"></span>
+              </btn>
+              <btn cate="text-sm" content="訊息" class="mb-1">
+                <div class="-mb-1">
+                  <!-- 訊息紅點 -->
+                  <span
+                    class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"
+                  ></span>
+                  <span class="icon-mail text-3xl"></span>
+                </div>
+              </btn>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre><code>
 &#060;btn &#058;cate&#061;&#034;cate&#034; &#058;content&#061;&#034;content&#034;&#062;
   &#060;svg&#062; icon &#060;&#047;svg&#062;
 &#060;&#047;btn&#062;
@@ -402,28 +465,34 @@
   content: 
       文字內容, 傳入 String
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Nav</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-row justify-center items-start mb-6 ">
-                            <nav-btn :isCircle="true" :isLeft="true" class="me-5"></nav-btn>
-                            <nav-btn :isCircle="true" :isLeft="false"></nav-btn>
-                        </div>
-                        <div class="flex flex-row justify-center items-center">
-                            <nav-btn :isCircle="false" :isLeft="true" class="me-5"></nav-btn>
-                            <nav-btn :isCircle="false" :isLeft="false"></nav-btn>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Nav</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-row justify-center items-start mb-6">
+              <nav-btn :is-circle="true" :is-left="true" class="me-5"></nav-btn>
+              <nav-btn :is-circle="true" :is-left="false"></nav-btn>
+            </div>
+            <div class="flex flex-row justify-center items-center">
+              <nav-btn
+                :is-circle="false"
+                :is-left="true"
+                class="me-5"
+              ></nav-btn>
+              <nav-btn :is-circle="false" :is-left="false"></nav-btn>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre><code>
 &#060;nav-btn &#058;isCircle&#061;&#034;isCircle&#034; &#058;isLeft&#061;&#034;isLeft&#034;&#062;&#060;&#047;nav-btn&#062;
 
 套件路徑: @/components/navBtn.vue
@@ -437,87 +506,111 @@
           true: 向左,
           false: 向右
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Card</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center mb-6">
+              <card
+                class="mb-2"
+                cate="top"
+                title="國內業務人員"
+                company="櫻花廚房器具_櫻欣興業股份有限公司"
+                overtime="5"
+                feeling="5"
+              >
+              </card>
+              <card
+                cate="new"
+                title="國內業務人員"
+                company="櫻花廚房器具_櫻欣興業股份有限公司"
+                overtime="4"
+                feeling="4"
+              >
+              </card>
+            </div>
+            <div class="flex flex-col justify-center items-start mb-6">
+              <div class="flex mb-5">
+                <!-- 加班狀況 start -->
+                <div
+                  class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-time-good text-sm"></span>
+                  <span class="ms-1">準時上下班</span>
                 </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Card</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-col justify-center items-center mb-6  ">
-                            <card class="mb-2" cate="top" title="國內業務人員" company="櫻花廚房器具_櫻欣興業股份有限公司" overtime="5"
-                                feeling="5">
-                            </card>
-                            <card cate="new" title="國內業務人員" company="櫻花廚房器具_櫻欣興業股份有限公司" overtime="4" feeling="4">
-                            </card>
-                        </div>
-                        <div class="flex flex-col justify-center items-start mb-6">
-                            <div class="flex mb-5">
-                                <!-- 加班狀況 start -->
-                                <div
-                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-time-good text-sm"></span>
-                                    <span class="ms-1">準時上下班</span>
-                                </div>
-                                <div
-                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-time-good text-sm"></span>
-                                    <span class="ms-1">很少加班</span>
-                                </div>
-                                <div
-                                    class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-time-normal text-sm"></span>
-                                    <span class="ms-1">偶爾加班</span>
-                                </div>
-                                <div
-                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-time-bad text-sm"></span>
-                                    <span class="ms-1">常常加班</span>
-                                </div>
-                                <div
-                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-time-bad text-sm"></span>
-                                    <span class="ms-1">賣肝拼經濟</span>
-                                </div>
-                                <!-- 加班狀況 end -->
-                            </div>
-                            <div class="flex">
-                                <!-- 上班心情 start -->
-                                <div
-                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-face-good text-sm"></span>
-                                    <span class="ms-1">非常開心</span>
-                                </div>
-                                <div
-                                    class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-face-good text-sm"></span>
-                                    <span class="ms-1">還算愉快</span>
-                                </div>
-                                <div
-                                    class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-face-normal text-sm"></span>
-                                    <span class="ms-1">平常心</span>
-                                </div>
-                                <div
-                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-face-bad text-sm"></span>
-                                    <span class="ms-1">有苦說不出</span>
-                                </div>
-                                <div
-                                    class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2">
-                                    <span class="icon-face-bad text-sm"></span>
-                                    <span class="ms-1">想換工作了</span>
-                                </div>
-                                <!-- 上班心情 end -->
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre><code>
+                <div
+                  class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-time-good text-sm"></span>
+                  <span class="ms-1">很少加班</span>
+                </div>
+                <div
+                  class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-time-normal text-sm"></span>
+                  <span class="ms-1">偶爾加班</span>
+                </div>
+                <div
+                  class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-time-bad text-sm"></span>
+                  <span class="ms-1">常常加班</span>
+                </div>
+                <div
+                  class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-time-bad text-sm"></span>
+                  <span class="ms-1">賣肝拼經濟</span>
+                </div>
+                <!-- 加班狀況 end -->
+              </div>
+              <div class="flex">
+                <!-- 上班心情 start -->
+                <div
+                  class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-face-good text-sm"></span>
+                  <span class="ms-1">非常開心</span>
+                </div>
+                <div
+                  class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-face-good text-sm"></span>
+                  <span class="ms-1">還算愉快</span>
+                </div>
+                <div
+                  class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-face-normal text-sm"></span>
+                  <span class="ms-1">平常心</span>
+                </div>
+                <div
+                  class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-face-bad text-sm"></span>
+                  <span class="ms-1">有苦說不出</span>
+                </div>
+                <div
+                  class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
+                >
+                  <span class="icon-face-bad text-sm"></span>
+                  <span class="ms-1">想換工作了</span>
+                </div>
+                <!-- 上班心情 end -->
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre><code>
 &#060;card 
   &#058;cate&#061;&#034;cate&#034; 
   &#058;title&#061;&#034;title&#034; 
@@ -551,27 +644,29 @@
           '4':有苦說不出;
           '5':想換工作了
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Tag</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-row justify-center items-start ">
-                            <tag class="me-2" content="年前跳槽"></tag>
-                            <tag class="me-2" content="臺灣平均薪資"></tag>
-                            <tag class="me-2" content="2023連假"></tag>
-                            <tag class="me-2" content="真薪話數據調查"></tag>
-                            <tag class="me-2" content="2023基本工資"></tag>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Tag</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-row justify-center items-start">
+              <tag class="me-2" content="年前跳槽"></tag>
+              <tag class="me-2" content="臺灣平均薪資"></tag>
+              <tag class="me-2" content="2023連假"></tag>
+              <tag class="me-2" content="真薪話數據調查"></tag>
+              <tag class="me-2" content="2023基本工資"></tag>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre><code>
 &#060;tag &#058;content&#061;&#034;content&#034;&#062;&#060;&#047;tag&#062;
 
 套件路徑: @/components/tag.vue
@@ -579,28 +674,33 @@
   content: 
       文字內容, 傳入 String
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Text Link</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-row justify-center items-start ">
-                            <div>
-                                <text-link class="mb-2" content="資訊科技"></text-link>
-                                <text-link class="mb-2 w-[350px]" content="7-11_統一超商股份有限公司"
-                                    end-content="12323 筆"></text-link>
-                                <text-link class="mb-2" content="美光薪資結構"></text-link>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Text Link</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-row justify-center items-start">
+              <div>
+                <text-link class="mb-2" content="資訊科技"></text-link>
+                <text-link
+                  class="mb-2 w-[350px]"
+                  content="7-11_統一超商股份有限公司"
+                  end-content="12323 筆"
+                ></text-link>
+                <text-link class="mb-2" content="美光薪資結構"></text-link>
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre><code>
 &#060;text-link 
   &#058;content&#061;&#034;content&#034; 
   &#058;end-content&#061;&#034;end-content&#034;&#062;
@@ -613,60 +713,79 @@
   end-content: 
       結尾文字內容, 傳入 String, 非必填
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Footer</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-row justify-center items-start ">
-                            <div class="flex flex-col">
-                                <a href="#"
-                                    class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2">服務條款</a>
-                                <a href="#"
-                                    class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2">隱私權政策</a>
-                                <a href="#"
-                                    class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out">幫助中心</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded ">
-                                <pre class="overflow-x-scroll"><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Footer</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-row justify-center items-start">
+              <div class="flex flex-col">
+                <a
+                  href="#"
+                  class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2"
+                  >服務條款</a
+                >
+                <a
+                  href="#"
+                  class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-2"
+                  >隱私權政策</a
+                >
+                <a
+                  href="#"
+                  class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out"
+                  >幫助中心</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre class="overflow-x-scroll"><code>
 &#060;a href&#061;&#034;#&#034; class&#061;&#034;caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out&#034; &#062;
 服務條款
 &#060;&#047;a&#062;
 
 非套件                                
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Search</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-row justify-center items-start ">
-                            <div class="flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out">
-                                <input
-                                    class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none "
-                                    type="text" placeholder="搜尋薪水、公司、職位..." />
-                                <button class="flex justify-center items-center bg-black-10 py-3 px-8">
-                                    <span class="icon-search text-white text-xl"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre class="overflow-x-scroll"><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Search</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-row justify-center items-start">
+              <div
+                class="flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out"
+              >
+                <input
+                  class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3 focus:outline-none"
+                  type="text"
+                  placeholder="搜尋薪水、公司、職位..."
+                />
+                <button
+                  class="flex justify-center items-center bg-black-10 py-3 px-8"
+                >
+                  <span class="icon-search text-white text-xl"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre class="overflow-x-scroll"><code>
 &#060;div class&#061;"flex border-2 hover:shadow-search transition duration-150 ease-in-out"&#062;
 &#060;input class&#061;"w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none " type&#061;"text" placeholder&#061;"搜尋薪水、公司、職位..." /&#062;
 &#060;button class&#061;"flex justify-center items-center bg-black-10"&#062;
@@ -679,25 +798,27 @@
 
 非套件
                           </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Message</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-col justify-center items-center ">
-                            <btn class="mb-2" @click="clickShowInfo">showInfo</btn>
-                            <btn class="mb-2" @click="clickShowError">showError</btn>
-                            <btn class="mb-2" @click="clickShowSuccess">showSuccess</btn>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
-                                <pre class="overflow-x-scroll"><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Message</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center">
+              <btn class="mb-2" @click="clickShowInfo">showInfo</btn>
+              <btn class="mb-2" @click="clickShowError">showError</btn>
+              <btn class="mb-2" @click="clickShowSuccess">showSuccess</btn>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded"
+              >
+                <pre class="overflow-x-scroll"><code>
 在 js 中使用:
 import { showInfo, showSuccess, showError } from "@/utilities/message";
 
@@ -705,30 +826,38 @@ showInfo("提示標題", "請填寫帳號。");
 showError("失敗標題", "失敗訊息");
 showSuccess("成功標題", "成功訊息");
                         </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
-                    <div class="w-full sm:w-2/12 px-2">
-                        <h4 class="h4 ms-10">Dialog</h4>
-                    </div>
-                    <div class="w-full sm:w-6/12 px-2">
-                        <div class="flex flex-col justify-center items-center mb-6 ">
-                            <button @click="confirmOpen" class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
-                                type="button">
-                                Open confirmOpen
-                            </button>
-                            <button @click="promptOpen" class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
-                                type="button">
-                                Open promptOpen
-                            </button>
-                        </div>
-                    </div>
-                    <div class="w-full sm:w-4/12 px-2">
-                        <div class="flex flex-col justify-center items-start">
-                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
-                                <pre><code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Dialog</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center mb-6">
+              <button
+                class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
+                type="button"
+                @click="confirmOpen"
+              >
+                Open confirmOpen
+              </button>
+              <button
+                class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
+                type="button"
+                @click="promptOpen"
+              >
+                Open promptOpen
+              </button>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div
+                class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll"
+              >
+                <pre><code>
 在 js 中使用:
 import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
 
@@ -754,62 +883,64 @@ confirmFunc:
 * 若需要客製化彈出視窗內容，可以參考 "@/component/defaultModal.vue" 的樣式
 
                                         </code></pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-const h1Code = ref('<h1>Title / H1</h1>');
-const h2Code = ref('<h2>Title / H2</h2>');
-const h3Code = ref('<h3>Title / H3</h3>');
-const h4Code = ref('<h4>Title / H4</h4>');
-const h5Code = ref('<h5>Title / H5</h5>');
-const h6Code = ref('<h6>Title / H6</h6>');
-const bodyCode = ref('<div class="body">Title / Body.20</div>');
-const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
-const captionCode = ref('<div class="caption">Title / Caption</div>');
+  // message
+  import { showInfo, showSuccess, showError } from '@/utilities/message';
 
-// 不套用 layout
-definePageMeta({
+  // dialog
+  import { openConfirmModal, openPromptModal } from '@/utilities/dialog';
+
+  const h1Code = ref('<h1>Title / H1</h1>');
+  const h2Code = ref('<h2>Title / H2</h2>');
+  const h3Code = ref('<h3>Title / H3</h3>');
+  const h4Code = ref('<h4>Title / H4</h4>');
+  const h5Code = ref('<h5>Title / H5</h5>');
+  const h6Code = ref('<h6>Title / H6</h6>');
+  const bodyCode = ref('<div class="body">Title / Body.20</div>');
+  const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
+  const captionCode = ref('<div class="caption">Title / Caption</div>');
+
+  // 不套用 layout
+  definePageMeta({
     layout: false,
-});
-
-// message
-import { showInfo, showSuccess, showError } from "@/utilities/message";
-function clickShowInfo() {
-    showInfo("提示標題", "請填寫帳號。");
-}
-function clickShowError() {
-    showError("失敗標題", "失敗訊息");
-}
-function clickShowSuccess() {
-    showSuccess("成功標題", "成功訊息");
-}
-
-// dialog
-import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
-function confirmOpen() {
+  });
+  function clickShowInfo() {
+    showInfo('提示標題', '請填寫帳號。');
+  }
+  function clickShowError() {
+    showError('失敗標題', '失敗訊息');
+  }
+  function clickShowSuccess() {
+    showSuccess('成功標題', '成功訊息');
+  }
+  function confirmOpen() {
     // 使用 utilities 的 dialog 開啟視窗
-    let title = "標題";
-    let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文";
+    const title = '標題';
+    const message =
+      '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文';
     console.log(title);
     openConfirmModal(title, message, confirmFunc, cancelFunc);
-}
-function promptOpen() {
+  }
+  function promptOpen() {
     // 使用 utilities 的 dialog 開啟視窗
-    let title = "標題2";
-    let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2";
+    const title = '標題2';
+    const message =
+      '內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2';
     openPromptModal(title, message, confirmFunc);
-}
-function confirmFunc() {
-    showSuccess("觸發確定按鈕");
-}
-function cancelFunc() {
-    showInfo("觸發取消按鈕");
-}
+  }
+  function confirmFunc() {
+    showSuccess('觸發確定按鈕');
+  }
+  function cancelFunc() {
+    showInfo('觸發取消按鈕');
+  }
 </script>

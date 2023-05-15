@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-useHead({
-  title: '關於我',
-});
-definePageMeta({
-  middleware: 'auth',
-});
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
-const user = useUserStore();
-const { currentUser } = storeToRefs(user);
+  import { storeToRefs } from 'pinia';
+  import { useUserStore } from '@/store/user';
+  useHead({
+    title: '關於我',
+  });
+  definePageMeta({
+    middleware: 'auth',
+  });
+  const user = useUserStore();
+  const { currentUser } = storeToRefs(user);
 </script>
 <template>
   <userLayouts>

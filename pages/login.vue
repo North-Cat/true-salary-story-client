@@ -52,8 +52,8 @@
       <h2 class="text-blue mt-5 md:text-3xl text-2xl">有比較才有進步</h2>
       <div class="mt-10">
         <div
-          @click="loginHandler('google')"
           class="bg-black-1 flex cursor-pointer justify-center items-center py-4 px-5 mt-3 w-full hover:text-black-6 rounded-lg"
+          @click="loginHandler('google')"
         >
           <img
             src="~/assets/img/google.svg"

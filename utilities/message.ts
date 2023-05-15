@@ -3,24 +3,24 @@ const { notify } = useNotification();
 
 export function showInfo(title: string, text: string) {
   notify({
-    title: title,
-    text: text,
+    title,
+    text,
     type: 'info',
   });
 }
 
 export function showError(title: string, text: string) {
   notify({
-    title: title,
-    text: text,
+    title,
+    text,
     type: 'error',
   });
 }
 
 export function showSuccess(title: string, text: string) {
   notify({
-    title: title,
-    text: text,
+    title,
+    text,
     type: 'success',
   });
 }
