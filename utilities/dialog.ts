@@ -22,14 +22,14 @@ function openDefaultDialog(
   confirmText?: string | undefined,
   cancelText?: string | undefined,
 ) {
-  let dialogInfo = {
+  const dialogInfo = {
     showCancel: showCancelBtn,
-    title: title,
-    message: message,
+    title,
+    message,
     cancelText: cancelText || '取消',
     confirmText: confirmText || '確認',
-    cancelFunc: cancelFunc,
-    confirmFunc: confirmFunc,
+    cancelFunc,
+    confirmFunc,
   };
   const dialogStore = useDialogStore();
   // 將視窗資訊存入 store
@@ -48,37 +48,16 @@ export function openConfirmModal(
   confirmText?: string,
   cancelText?: string,
 ) {
-  cancelFunc = cancelFunc ? cancelFunc : closeModal;
-  openDefaultDialog(
-    true,
-    title,
-    message,
-    confirmFunc,
-    cancelFunc,
-    confirmText,
-    cancelText,
-  );
+  cancelFunc = cancelFunc || closeModal;
+  openDefaultDialog(true, title, message, confirmFunc, cancelFunc, confirmText, cancelText);
 }
 
 /**
  * @description  只有確認的 Modal
  */
-export function openPromptModal(
-  title: string,
-  message: string,
-  confirmFunc?: () => void,
-  confirmText?: string,
-) {
-  confirmFunc = confirmFunc ? confirmFunc : closeModal;
-  openDefaultDialog(
-    false,
-    title,
-    message,
-    confirmFunc,
-    closeModal,
-    confirmText,
-    undefined,
-  );
+export function openPromptModal(title: string, message: string, confirmFunc?: () => void, confirmText?: string) {
+  confirmFunc = confirmFunc || closeModal;
+  openDefaultDialog(false, title, message, confirmFunc, closeModal, confirmText, undefined);
 }
 
 function closeModal(): void {

@@ -79,34 +79,43 @@ const userList = ref([
 <template>
   <section class="user bg-gray pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
     <div
-      class="container mx-auto max-w-full md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20">
+      class="container mx-auto max-w-full md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
+    >
       <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
         <!-- 側邊選單 -->
         <div class="lg:w-2/6 lg:mr-[30px] lg:mt-0 md:mt-15 md:block hidden">
           <div class="h-full">
             <div
-              class="sticky top-[80px] border border-black-1 bg-white flex flex-col justify-start items-start py-6 px-3">
+              class="sticky top-[80px] border border-black-1 bg-white flex flex-col justify-start items-start py-6 px-3"
+            >
               <template v-for="userItem in userList">
                 <div class="group w-full">
-                  <nuxt-link v-if="userItem.to" :class="{
-                    'bg-blue-light text-blue  border-transparent':
-                      $route.name === userItem.to.name,
-                  }" :to="userItem.to"
-                    class="w-full flex justify-start items-center py-2 px-3 rounded group-hover:bg-blue-light group-hover:text-blue group-hover:border-transparent transition duration-300 ease-in-out">
+                  <nuxt-link
+                    v-if="userItem.to"
+                    :class="{
+                      'bg-blue-light text-blue  border-transparent': $route.name === userItem.to.name,
+                    }"
+                    :to="userItem.to"
+                    class="w-full flex justify-start items-center py-2 px-3 rounded group-hover:bg-blue-light group-hover:text-blue group-hover:border-transparent transition duration-300 ease-in-out"
+                  >
                     <div class="w-[48px] h-[48px] flex justify-center items-center mr-3">
-                      <span class="text-2xl text-black-5 group-hover:text-blue transition duration-300 ease-in-out"
-                        :class="[
-                          `icomoon ${userItem.icon}`,
-                          { 'text-blue': $route.name === userItem.to.name },
-                        ]"></span>
+                      <span
+                        class="text-2xl text-black-5 group-hover:text-blue transition duration-300 ease-in-out"
+                        :class="[`icomoon ${userItem.icon}`, { 'text-blue': $route.name === userItem.to.name }]"
+                      ></span>
                     </div>
                     <h6>{{ userItem.title }}</h6>
                   </nuxt-link>
-                  <button v-if="userItem.type === 'click'" @click="userItem.click"
-                    class="w-full flex justify-start items-center py-2 px-3 rounded group-hover:bg-blue-light group-hover:text-blue group-hover:border-transparent transition duration-300 ease-in-out">
+                  <button
+                    v-if="userItem.type === 'click'"
+                    class="w-full flex justify-start items-center py-2 px-3 rounded group-hover:bg-blue-light group-hover:text-blue group-hover:border-transparent transition duration-300 ease-in-out"
+                    @click="userItem.click"
+                  >
                     <div class="w-[48px] h-[48px] flex justify-center items-center mr-3">
-                      <span class="text-2xl text-black-5 group-hover:text-blue transition duration-300 ease-in-out"
-                        :class="`icomoon ${userItem.icon}`"></span>
+                      <span
+                        class="text-2xl text-black-5 group-hover:text-blue transition duration-300 ease-in-out"
+                        :class="`icomoon ${userItem.icon}`"
+                      ></span>
                     </div>
                     <h6>{{ userItem.title }}</h6>
                   </button>
@@ -127,10 +136,7 @@ const userList = ref([
               <!-- <span>UID: {{ 'xxxxxxx' }}</span> -->
             </template>
             <template v-else>
-              {{
-                userList.find((item) => item.id === $route.name)?.title ||
-                '會員資訊'
-              }}
+              {{ userList.find((item) => item.id === $route.name)?.title || '會員資訊' }}
             </template>
           </div>
           <div class="min-h-full md:min-h-[300px] p-6">

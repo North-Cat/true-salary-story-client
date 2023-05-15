@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-  useHead({
-    title: '單一公司全部薪水分享',
-  });
+useHead({
+  title: '單一公司全部薪水分享',
+});
 </script>
 <template>
   <div class="companies pt-[130px]">

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/store/user';
 import { RouteLocationRaw } from 'vue-router';
+import { useUserStore } from '@/store/user';
 const route = useRoute();
 const router = useRouter();
-let showUserList = ref(false);
+const showUserList = ref(false);
 const user = useUserStore();
 const { isLogin, currentUser, isFetchProfileLoading } = storeToRefs(user);
 const { logout } = user;
@@ -69,8 +69,10 @@ const goToPage = (to: RouteLocationRaw) => {
 
 <template>
   <!-- sm nav -->
-  <nav class="z-10 fixed md:hidden bg-white/80 w-full h-[77px] bottom-0 left-0 pb-2 px-4 shadow-nav backdrop-blur-sm"
-    aria-label="行動版選單">
+  <nav
+    class="z-10 fixed md:hidden bg-white/80 w-full h-[77px] bottom-0 left-0 pb-2 px-4 shadow-nav backdrop-blur-sm"
+    aria-label="行動版選單"
+  >
     <div class="flex justify-between">
       <btn cate="text-sm" content="分享">
         <span class="icon-edit text-2xl mb-1"></span>
@@ -79,23 +81,23 @@ const goToPage = (to: RouteLocationRaw) => {
         <span class="icon-search text-2xl mb-1"></span>
       </btn>
       <!-- TODO: 取得是否登入 -->
-      <btn cate="text-sm" content="訊息" v-if="isLogin">
+      <btn v-if="isLogin" cate="text-sm" content="訊息">
         <div class="-mb-1">
           <!-- 訊息紅點 -->
           <span class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
           <span class="icon-mail text-3xl"></span>
         </div>
       </btn>
-      <btn cate="text-sm" content="150" v-if="isLogin">
+      <btn v-if="isLogin" cate="text-sm" content="150">
         <span class="icon-star-circle text-2xl mb-1"></span>
       </btn>
-      <btn cate="text-sm" content="帳號" v-if="isLogin" @click="showUserList = !showUserList">
+      <btn v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
         <span class="icon-person-circle text-2xl mb-1"></span>
       </btn>
-      <btn to="/login" cate="text-sm" content="登入" class="me-5" v-if="!isLogin">
+      <btn v-if="!isLogin" to="/login" cate="text-sm" content="登入" class="me-5">
         <span class="icon-person text-2xl mb-1"></span>
       </btn>
-      <btn to="/payment" cate="text-sm" content="加薪計畫" v-if="!isLogin">
+      <btn v-if="!isLogin" to="/payment" cate="text-sm" content="加薪計畫">
         <span class="icon-star text-3xl"></span>
       </btn>
     </div>
@@ -106,9 +108,7 @@ const goToPage = (to: RouteLocationRaw) => {
         </div>
         <div>
           <!-- FIX: 複製UID -->
-          <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
-            複製UID
-          </button>
+          <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
           <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserList = false">
             <i class="icomoon icon-cross"></i>
           </button>
@@ -116,8 +116,12 @@ const goToPage = (to: RouteLocationRaw) => {
       </div>
       <ul class="list-none pt-2 pb-2">
         <li v-for="userItem in userList">
-          <btn cate="text-sm" v-if="userItem.to" @click="goToPage(userItem.to)"
-            class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn">
+          <btn
+            v-if="userItem.to"
+            cate="text-sm"
+            class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn"
+            @click="goToPage(userItem.to)"
+          >
             <div class="text-black-10 group-hover:text-blue">
               <span class="w-[48px] inline-block text-center mr-3">
                 <i :class="`icomoon ${userItem.icon} text-black-5 text-2xl align-text-top group-hover:text-blue`"></i>
@@ -125,9 +129,11 @@ const goToPage = (to: RouteLocationRaw) => {
               {{ userItem.title }}
             </div>
           </btn>
-          <btn v-if="userItem.click"
+          <btn
+            v-if="userItem.click"
             class="rounded py-5 px-3 bg-transparent group hover:bg-blue-light hover:text-blue w-full"
-            @click="userItem.click">
+            @click="userItem.click"
+          >
             <span class="text-black-10 group-hover:text-blue">
               {{ userItem.title }}
             </span>
@@ -139,7 +145,8 @@ const goToPage = (to: RouteLocationRaw) => {
   <!-- md lg nav -->
   <nav
     class="z-10 fixed top-0 left-0 bg-white/80 w-full sm:py-3 sm:px-3 md:py-6 md:px-10 lg:py-6 lg:px-10 shadow-nav backdrop-blur-sm"
-    aria-label="平板電腦版選單">
+    aria-label="平板電腦版選單"
+  >
     <div class="container mx-auto max-w-[1800px] flex justify-between items-center">
       <nuxt-link to="/" class="sm:w-[80px] md:w-[150px] lg:w-[150px]">
         <img src="../assets/img/LOGO.png" alt="LOGO" />
@@ -152,19 +159,24 @@ const goToPage = (to: RouteLocationRaw) => {
           <span class="icon-search text-lg me-2"></span>
         </btn>
         <!-- TODO: 取得是否登入 -->
-        <btn cate="gray-text" content="訊息" v-if="isLogin">
+        <btn v-if="isLogin" cate="gray-text" content="訊息">
           <div>
             <!-- 訊息紅點 -->
             <span class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
             <span class="icon-mail text-2xl me-2"></span>
           </div>
         </btn>
-        <btn cate="yellow-text" content="240 積分" class="me-8" v-if="isLogin">
+        <btn v-if="isLogin" cate="yellow-text" content="240 積分" class="me-8">
           <span class="icon-star-circle text-xl me-2"></span>
         </btn>
         <div class="relative">
-          <btn class="rounded-full overflow-hidden me-8 bg-transparent hover:bg-transparent" type="button" v-if="isLogin"
-            @click="showUserList = !showUserList" style="padding: 0">
+          <btn
+            v-if="isLogin"
+            class="rounded-full overflow-hidden me-8 bg-transparent hover:bg-transparent"
+            type="button"
+            style="padding: 0"
+            @click="showUserList = !showUserList"
+          >
             <div v-if="isFetchProfileLoading">
               <div class="animate-pulse flex space-x-4">
                 <div class="bg-slate-200 w-12 h-12 rounded-full"></div>
@@ -172,16 +184,18 @@ const goToPage = (to: RouteLocationRaw) => {
             </div>
             <img v-else class="w-12 h-12 rounded-full" :src="currentUser.profilePicture" alt="圖片" />
           </btn>
-          <div v-if="showUserList" class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded" style="right: -100%">
+          <div
+            v-if="showUserList"
+            class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
+            style="right: -100%"
+          >
             <div class="flex justify-between pb-3 border-b border-b-black-5">
               <div class="text-xl">
                 {{ currentUser.displayName }}
               </div>
               <div>
                 <!-- FIX: 複製UID -->
-                <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
-                  複製UID
-                </button>
+                <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
                 <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserList = false">
                   <i class="icomoon icon-cross"></i>
                 </button>
@@ -189,19 +203,26 @@ const goToPage = (to: RouteLocationRaw) => {
             </div>
             <ul class="list-none pt-2 pb-2">
               <li v-for="userItem in userList">
-                <btn cate="text-sm" v-if="userItem.to" @click="goToPage(userItem.to)"
-                  class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn">
+                <btn
+                  v-if="userItem.to"
+                  cate="text-sm"
+                  class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn"
+                  @click="goToPage(userItem.to)"
+                >
                   <div class="text-black-10 group-hover:text-blue">
                     <span class="w-[48px] inline-block text-center mr-3">
                       <i
-                        :class="`icomoon ${userItem.icon} text-black-5 text-2xl align-text-top group-hover:text-blue`"></i>
+                        :class="`icomoon ${userItem.icon} text-black-5 text-2xl align-text-top group-hover:text-blue`"
+                      ></i>
                     </span>
                     {{ userItem.title }}
                   </div>
                 </btn>
-                <btn v-if="userItem.click"
+                <btn
+                  v-if="userItem.click"
                   class="rounded py-5 px-3 bg-transparent group hover:bg-blue-light hover:text-blue w-full"
-                  @click="userItem.click">
+                  @click="userItem.click"
+                >
                   <span class="text-black-10 group-hover:text-blue">
                     {{ userItem.title }}
                   </span>
@@ -210,7 +231,7 @@ const goToPage = (to: RouteLocationRaw) => {
             </ul>
           </div>
         </div>
-        <btn to="/login" cate="secondary" content="登入" class="me-5" v-if="!isLogin">
+        <btn v-if="!isLogin" to="/login" cate="secondary" content="登入" class="me-5">
           <span class="icon-person text-xl me-2 mt-1"></span>
         </btn>
         <btn cate="primary" content="加薪計畫" to="/payment">
@@ -225,7 +246,8 @@ const goToPage = (to: RouteLocationRaw) => {
 
   <footer class="bg-white sm:py-10 sm:px-3 sm:mb-20 md:mb-0 lg:py-20 max-[1920px]:overflow-x-hidden">
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center">
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center"
+    >
       <div class="w-full flex flex-wrap">
         <div class="w-full md:w-4/12 mb-10">
           <div class="w-[150px] lg:w-full">
@@ -235,8 +257,10 @@ const goToPage = (to: RouteLocationRaw) => {
         <div class="w-1/2 md:w-2/12 mb-10">
           <div class="flex flex-col">
             <div class="caption mb-3">服務</div>
-            <nuxt-link to="/payment"
-              class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+            <nuxt-link
+              to="/payment"
+              class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+            >
               加薪計畫
             </nuxt-link>
           </div>

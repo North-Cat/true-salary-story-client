@@ -13,33 +13,34 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from 'vue';
 const props = defineProps({
   type: {
     type: String as () => 'button' | 'submit' | 'reset',
     default: 'button',
   },
   /**
-   * 'primary': 主要按鈕, 
-   * 'secondary': 次要按鈕, 
-   * 'gray': 灰色按鈕, 
-   * 'white': 白色按鈕, 
-   * 'gray-text':灰色無邊框, 
-   * 'blue-text':藍色無邊框, 
-   * 'yellow-text':黃色無邊框, 
+   * 'primary': 主要按鈕,
+   * 'secondary': 次要按鈕,
+   * 'gray': 灰色按鈕,
+   * 'white': 白色按鈕,
+   * 'gray-text':灰色無邊框,
+   * 'blue-text':藍色無邊框,
+   * 'yellow-text':黃色無邊框,
    * 'text-sm':小型無邊框
    */
   cate: {
     type: String,
     default: 'primary',
   },
-  content: { // 按鈕文字
+  content: {
+    // 按鈕文字
     type: String,
   },
   to: {
-    type: [String, Object]
-  }
-})
+    type: [String, Object],
+  },
+});
 
 const btnClasses = computed(() => {
   let className = '';
