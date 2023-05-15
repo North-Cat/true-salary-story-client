@@ -58,7 +58,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
       // });
       // console.log(error);
     }
-    return data; // 这里直接返回data或者其他的
+    return JSON.parse(JSON.stringify(data))._value; // 这里直接返回data或者其他的
   } catch (err) {
     console.log(err);
     return Promise.reject(err);
