@@ -19,13 +19,14 @@
               <h1 class="text-black-10 mb-10">前輩親自告訴你</h1>
             </div>
             <div class="sm:w-[300px] sm:h-full md:w-[500px] md:h-full lg:w-[416px] lg:h-full">
-              <!-- TODO: 搜尋 -->
               <!-- Search Input -->
               <div
                 class="w-full h-full flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out sm:mb-8 lg:mb-20">
-                <input class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none "
-                  type="text" placeholder="搜尋薪水、公司、職位..." />
-                <button class="flex justify-center items-center bg-black-10 py-3 px-8">
+                <input @keyup.enter="keywordSearch(searchParam.keyword)" v-model="searchParam.keyword"
+                  class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3  focus:outline-none "
+                  type="text" placeholder="搜尋、公司、職位、產業..." />
+                <button @click="keywordSearch(searchParam.keyword)"
+                  class="flex justify-center items-center bg-black-10 py-3 px-8">
                   <span class="icon-search text-white text-xl"></span>
                 </button>
               </div>
@@ -2303,28 +2304,28 @@
               <div class="flex flex-col sm:pe-8 sm:pb-3 md:pb-0 md:pe-6 lg:pe-10 border-r">
                 <div v-for="(comType, index) in popularCompanyType" :key="comType">
                   <text-link v-if="index >= 0 && index <= 4" class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
-                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType">
+                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType" @click="searchCompanytype(comType)">
                   </text-link>
                 </div>
               </div>
               <div class="flex flex-col sm:ps-8 sm:pb-3 md:pb-0 md:px-6 lg:px-10 md:border-r">
                 <div v-for="(comType, index) in popularCompanyType" :key="comType">
                   <text-link v-if="index >= 5 && index <= 9" class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
-                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType">
+                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType" @click="searchCompanytype(comType)">
                   </text-link>
                 </div>
               </div>
               <div class="flex flex-col sm:pe-8 md:pb-0 md:px-6 lg:px-10 border-r">
                 <div v-for="(comType, index) in popularCompanyType" :key="comType">
                   <text-link v-if="index >= 10 && index <= 14" class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
-                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType">
+                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType" @click="searchCompanytype(comType)">
                   </text-link>
                 </div>
               </div>
               <div class="flex flex-col sm:ps-8 md:pb-0 md:ps-6 lg:ps-10">
                 <div v-for="(comType, index) in popularCompanyType" :key="comType">
                   <text-link v-if="index >= 15 && index <= 19" class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
-                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType">
+                    :class="{ 'mb-3': index % 5 != 4 }" :content="comType" @click="searchCompanytype(comType)">
                   </text-link>
                 </div>
               </div>
@@ -2374,13 +2375,13 @@
               <!-- 重點關鍵字 (顯示六個) -->
               <div class="flex flex-wrap justify-start items-center sm:mb-2 lg:mb-7">
                 <tag v-for="keyword in keywords.slice(0, 6)" :key="keyword" :content="keyword"
-                  class="sm:me-2 sm:mb-3 lg:mb-0 lg:me-5">
+                  class="sm:me-2 sm:mb-3 lg:mb-0 lg:me-5" @click="keywordSearch(keyword)">
                 </tag>
               </div>
               <!-- 其他關鍵字 -->
               <div class="flex flex-wrap justify-between items-center">
                 <text-link v-for="keyword in keywords.slice(5, keywords.length)" :key="keyword" :content="keyword"
-                  size="sm">
+                  size="sm" @click="keywordSearch(keyword)">
                 </text-link>
               </div>
             </div>
@@ -2396,6 +2397,47 @@
 import { ref, onMounted } from 'vue';
 import { Carousel, Slide, Navigation } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
+import { showInfo } from '@/utilities/message';
+
+/**
+ * 搜尋相關
+ */
+// 搜尋參數
+const searchParam = ref({
+  keyword: "", // 關鍵字
+  company: "", // 公司
+  jobTitle: "", // 職位
+  companyType: "" // 產業
+});
+// 點擊關鍵字搜尋
+function keywordSearch(keyword: string) {
+  let paramObj = undefined;
+  paramObj = !keyword.trim() ? undefined : {
+    searchType: "keyword",
+    param: keyword.trim()
+  };
+  if (!paramObj) {
+    showInfo("提示", "請輸入搜尋條件");
+    return;
+  }
+  search(paramObj);
+}
+// 點擊產業搜尋
+function searchCompanytype(type: string) {
+  let paramObj = {
+    searchType: "type",
+    param: type
+  };
+  search(paramObj);
+}
+// 帶著參數導頁至搜尋頁面
+async function search(paramObj: { searchType: string; param: string; }) {
+  await navigateTo({
+    path: '/search',
+    query: paramObj
+  })
+}
+
 
 // 薪水檔案櫃
 interface IPost {

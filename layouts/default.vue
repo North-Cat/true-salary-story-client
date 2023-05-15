@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { RouteLocationRaw } from 'vue-router';
+import { showInfo } from '@/utilities/message';
 const route = useRoute();
 const router = useRouter();
 let showUserList = ref(false);
@@ -65,6 +66,79 @@ const goToPage = (to: RouteLocationRaw) => {
   router.push(to);
   showUserList.value = false;
 };
+
+/**
+ * 搜尋相關
+ */
+enum SearchTab {
+  COMPANY = 'company', // 公司
+  JOB_TITLE = 'jobTitle', // 職位
+  COMPANY_TYPE = 'companyType', // 產業
+}
+// 目前在哪個頁籤, 預設 "公司"
+const curSearchTab = ref();
+curSearchTab.value = SearchTab.COMPANY;
+
+function changeTab(tab: SearchTab) {
+  curSearchTab.value = tab;
+}
+function isTab(tab: SearchTab): boolean {
+  return curSearchTab.value == tab;
+}
+const tabClass = computed(() => (tab: SearchTab) => {
+  let className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
+  return className;
+});
+// 開啟搜尋視窗 (PC)
+let showSearchModal = ref(false);
+const searchModal = ref(null);
+onClickOutside(searchModal, () => {
+  showSearchModal.value = false;
+})
+// 開啟搜尋視窗 (Moblie)
+const searchModalSm = ref(null);
+let showSearchModalSm = ref(false);
+onClickOutside(searchModalSm, () => {
+  showSearchModalSm.value = false;
+})
+// 搜尋參數
+const searchParam = ref({
+  company: "", // 公司
+  jobTitle: "", // 職位
+  companyType: "" // 產業
+});
+// 點擊搜尋
+async function search() {
+  let paramObj = undefined;
+  if (curSearchTab.value == SearchTab.COMPANY) {
+    let company = searchParam.value.company.trim();
+    paramObj = !company ? undefined : {
+      searchType: "companyName",
+      param: company
+    };
+  } else if (curSearchTab.value == SearchTab.JOB_TITLE) {
+    let jobTitle = searchParam.value.jobTitle.trim();
+    paramObj = !jobTitle ? undefined : {
+      searchType: "title",
+      param: jobTitle
+    };
+  } else if (curSearchTab.value == SearchTab.COMPANY_TYPE) {
+    let type = searchParam.value.companyType.trim();
+    paramObj = !type ? undefined : {
+      searchType: "type",
+      param: type
+    };
+  }
+  if (!paramObj) {
+    showInfo("提示", "請輸入搜尋條件");
+    return;
+  }
+  // 帶著參數導頁至搜尋頁面
+  await navigateTo({
+    path: '/search',
+    query: paramObj
+  })
+}
 </script>
 
 <template>
@@ -75,10 +149,9 @@ const goToPage = (to: RouteLocationRaw) => {
       <btn cate="text-sm" content="分享">
         <span class="icon-edit text-2xl mb-1"></span>
       </btn>
-      <btn cate="text-sm" content="搜尋">
+      <btn cate="text-sm" content="搜尋" @click="showSearchModalSm = !showSearchModalSm">
         <span class="icon-search text-2xl mb-1"></span>
       </btn>
-      <!-- TODO: 取得是否登入 -->
       <btn cate="text-sm" content="訊息" v-if="isLogin">
         <div class="-mb-1">
           <!-- 訊息紅點 -->
@@ -92,7 +165,7 @@ const goToPage = (to: RouteLocationRaw) => {
       <btn cate="text-sm" content="帳號" v-if="isLogin" @click="showUserList = !showUserList">
         <span class="icon-person-circle text-2xl mb-1"></span>
       </btn>
-      <btn to="/login" cate="text-sm" content="登入" class="me-5" v-if="!isLogin">
+      <btn to="/login" cate="text-sm" content="登入" v-if="!isLogin">
         <span class="icon-person text-2xl mb-1"></span>
       </btn>
       <btn to="/payment" cate="text-sm" content="加薪計畫" v-if="!isLogin">
@@ -135,6 +208,67 @@ const goToPage = (to: RouteLocationRaw) => {
         </li>
       </ul>
     </div>
+    <div ref="searchModalSm" v-if="showSearchModalSm"
+      class="fixed shadow bg-white w-full p-5 rounded left-0 right-0 bottom-[77px]" style="">
+      <div class="flex justify-between pb-3 border-b border-b-black-5">
+        <div class="text-xl">
+          搜尋
+        </div>
+        <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showSearchModalSm = false">
+          <i class="icomoon icon-cross"></i>
+        </button>
+      </div>
+      <div class="flex flex-col pt-2 pb-2">
+        <!-- 搜尋頁籤 -->
+        <div class="w-full flex mb-2">
+          <div class="py-3 pe-6">
+            <button
+              class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+              :class="tabClass(SearchTab.COMPANY)" @click="changeTab(SearchTab.COMPANY)">
+              <h6>公司</h6>
+            </button>
+          </div>
+          <div class="py-3 pe-6">
+            <button
+              class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+              :class="tabClass(SearchTab.JOB_TITLE)" @click="changeTab(SearchTab.JOB_TITLE)">
+              <h6>職位</h6>
+            </button>
+          </div>
+          <div class="py-3 pe-6">
+            <button
+              class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+              :class="tabClass(SearchTab.COMPANY_TYPE)" @click="changeTab(SearchTab.COMPANY_TYPE)">
+              <h6>產業</h6>
+            </button>
+          </div>
+        </div>
+        <!-- 搜尋欄位 -->
+        <div class="w-full mb-2">
+          <div v-if="isTab(SearchTab.COMPANY)"
+            class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
+            <div class="icon-search me-3 text-black-5"></div>
+            <input type="text" style="outline: none;" placeholder="搜尋公司" v-model="searchParam.company"
+              @keyup.enter="search">
+          </div>
+          <div v-if="isTab(SearchTab.JOB_TITLE)"
+            class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
+            <div class="icon-search me-3 text-black-5"></div>
+            <input type="text" style="outline: none;" placeholder="搜尋職位" v-model="searchParam.jobTitle"
+              @keyup.enter="search">
+          </div>
+          <div v-if="isTab(SearchTab.COMPANY_TYPE)"
+            class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
+            <div class="icon-search me-3 text-black-5"></div>
+            <input type="text" style="outline: none;" placeholder="搜尋產業" v-model="searchParam.companyType"
+              @keyup.enter="search">
+          </div>
+        </div>
+        <btn cate="secondary" class="w-full" @click="search">
+          搜尋
+        </btn>
+      </div>
+    </div>
   </nav>
   <!-- md lg nav -->
   <nav
@@ -148,10 +282,72 @@ const goToPage = (to: RouteLocationRaw) => {
         <btn cate="blue-text" content="匿名分享" class="me-0" to="/sharemysalary">
           <span class="icon-edit text-lg me-2"></span>
         </btn>
-        <btn cate="gray-text" content="搜尋" :class="{ 'me-8': !isLogin }">
-          <span class="icon-search text-lg me-2"></span>
-        </btn>
-        <!-- TODO: 取得是否登入 -->
+        <div class="relative">
+          <btn cate="gray-text" content="搜尋" :class="{ 'me-8': !isLogin }" @click="showSearchModal = !showSearchModal">
+            <span class="icon-search text-lg me-2"></span>
+          </btn>
+          <div ref="searchModal" v-if="showSearchModal" class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
+            style="right: -100%">
+            <div class="flex justify-between pb-3 border-b border-b-black-5">
+              <div class="text-xl">
+                搜尋
+              </div>
+              <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showSearchModal = false">
+                <i class="icomoon icon-cross"></i>
+              </button>
+            </div>
+            <div class="flex flex-col pt-2 pb-2">
+              <!-- 搜尋頁籤 -->
+              <div class="w-full flex mb-2">
+                <div class="py-3 pe-6">
+                  <button
+                    class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+                    :class="tabClass(SearchTab.COMPANY)" @click="changeTab(SearchTab.COMPANY)">
+                    <h6>公司</h6>
+                  </button>
+                </div>
+                <div class="py-3 pe-6">
+                  <button
+                    class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+                    :class="tabClass(SearchTab.JOB_TITLE)" @click="changeTab(SearchTab.JOB_TITLE)">
+                    <h6>職位</h6>
+                  </button>
+                </div>
+                <div class="py-3 pe-6">
+                  <button
+                    class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+                    :class="tabClass(SearchTab.COMPANY_TYPE)" @click="changeTab(SearchTab.COMPANY_TYPE)">
+                    <h6>產業</h6>
+                  </button>
+                </div>
+              </div>
+              <!-- 搜尋欄位 -->
+              <div class="w-full mb-2">
+                <div v-if="isTab(SearchTab.COMPANY)"
+                  class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
+                  <div class="icon-search me-3 text-black-5"></div>
+                  <input type="text" style="outline: none;" placeholder="搜尋公司" v-model="searchParam.company"
+                    @keyup.enter="search">
+                </div>
+                <div v-if="isTab(SearchTab.JOB_TITLE)"
+                  class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
+                  <div class="icon-search me-3 text-black-5"></div>
+                  <input type="text" style="outline: none;" placeholder="搜尋職位" v-model="searchParam.jobTitle"
+                    @keyup.enter="search">
+                </div>
+                <div v-if="isTab(SearchTab.COMPANY_TYPE)"
+                  class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
+                  <div class="icon-search me-3 text-black-5"></div>
+                  <input type="text" style="outline: none;" placeholder="搜尋產業" v-model="searchParam.companyType"
+                    @keyup.enter="search">
+                </div>
+              </div>
+              <btn cate="secondary" class="w-full" @click="search">
+                搜尋
+              </btn>
+            </div>
+          </div>
+        </div>
         <btn cate="gray-text" content="訊息" v-if="isLogin">
           <div>
             <!-- 訊息紅點 -->
