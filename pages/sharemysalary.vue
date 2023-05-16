@@ -17,6 +17,7 @@ import {
 } from '~/utilities/options';
 import { useUserStore } from '@/store/user';
 import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
+import { useThrottleFn } from '@vueuse/core';
 useHead({
   title: '匿名分享',
 });
@@ -57,8 +58,8 @@ configure({
   generateMessage: localize({ zh_TW: zhTW }),
 });
 setLocale('zh_TW');
-
-defineRule('taxIdVee', async (taxId: string) => {
+const form = ref(null);
+defineRule('validationTaxId', async (taxId: string) => {
   const reg = /^\d{8}$/;
   const matchResult = taxId.match(reg);
 
@@ -82,29 +83,19 @@ defineRule('taxIdVee', async (taxId: string) => {
   if (!isLegal) {
     return '統編驗證錯誤';
   }
-  let isHasTaxId = true;
-  await tryToGetUniformNumbers().then((res) => {
-    console.log(res);
-    if (!res.isExist) {
-      submitData.companyName = '';
-      isHasTaxId = false;
-    } else {
-      submitData.companyName = res.companyName;
-    }
-  });
-  if (!isHasTaxId) {
+  const { isExist, companyName } = await throttledFn();
+  if (!isExist) {
+    submitData.companyName = '';
     return '查無此統編';
+  } else {
+    submitData.companyName = companyName;
   }
   return true;
 });
-
-const customHandleBlur = (taxId: string) => {
-  // const reg = /^\d{8}$/;
-  // const matchResult = taxId.match(reg);
-  // if (!matchResult) {
-  //   return '統編為8碼';
-  // }
-};
+const throttledFn = useThrottleFn(() => {
+  const data = tryToGetUniformNumbers();
+  return data;
+}, 3000);
 const tryToGetUniformNumbers = async () => {
   const { isExist, companyName } = await shareSalaryApi.getUniformNumbers(submitData.taxId);
   return {
@@ -120,7 +111,6 @@ const { currentUser } = storeToRefs(user);
 const salaryTypes = ref('monthly');
 const customTagsText = ref('');
 const step = ref(1);
-const form = ref(null);
 const salaryTypesField: ISalary = reactive({
   monthly: {
     salary: '',
@@ -274,9 +264,8 @@ const rightSideList = reactive([
                   name="taxId"
                   label="統一編號"
                   type="number"
-                  rules="required|numeric|taxIdVee"
+                  rules="required|numeric|validationTaxId"
                   :class="{ 'border-red': errors.taxId }"
-                  @blur="customHandleBlur(submitData.taxId)"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
                 />
