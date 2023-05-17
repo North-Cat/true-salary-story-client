@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ILoginUserInfo, IRequestHeaders } from '~/interface/user';
+import { ILoginUserInfo } from '~/interface/user';
 const { userApi } = useApi();
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -11,25 +11,23 @@ export const useUserStore = defineStore('user', {
     };
   },
   actions: {
-    async loginWithGoogle(): Promise<void> {
+    loginWithGoogle() {
       const backendUrl = 'https://client-api-dev.up.railway.app/social/google';
       window.location.href = backendUrl;
     },
-    async tryToFetchProfile(isRfresh = false): Promise<void> {
-      const token = this.token;
-      const vm = this;
+    async tryToFetchProfile(): Promise<void> {
       this.isFetchProfileLoading = true;
 
       await userApi
         .getUserProfile()
         .then(({ data: { user } }) => {
-          vm.currentUser = user as unknown as ILoginUserInfo;
-          vm.isLogin = true;
-          vm.isFetchProfileLoading = false;
+          this.currentUser = user as unknown as ILoginUserInfo;
+          this.isLogin = true;
+          this.isFetchProfileLoading = false;
         })
         .catch((error) => {
           console.log('error');
-          vm.error();
+          this.error();
         });
     },
     async logout(): Promise<void> {

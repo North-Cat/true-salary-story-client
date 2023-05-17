@@ -46,6 +46,7 @@ const props = defineProps({
   <div v-if="isButtonStyle" class="flex items-center justify-center">
     <label
       v-for="(item, $index) in options"
+      :key="$index"
       :for="`${name}-${item.value}`"
       class="flex-1 releative cursor-pointer items-center inline-flex justify-start"
     >
@@ -72,6 +73,7 @@ const props = defineProps({
   <div v-else class="flex items-center justify-between">
     <label
       v-for="(item, $index) in options"
+      :key="$index"
       :for="`${name}-${item.value}`"
       class="flex-1 releative cursor-pointer items-center inline-flex justify-start"
     >

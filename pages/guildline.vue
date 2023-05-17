@@ -354,7 +354,7 @@
                 <div class="-mb-1">
                   <!-- 訊息紅點 -->
                   <span
-                    class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"
+                    class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"
                   ></span>
                   <span class="icon-mail text-3xl"></span>
                 </div>

@@ -28,7 +28,6 @@ const checkLoginStatus = () => {
     user.token = jwtToken as string;
     router.push('/');
     nextTick(() => {
-      console.log('login');
       tryToFetchProfile();
     });
   }

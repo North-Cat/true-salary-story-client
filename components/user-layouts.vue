@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
-const route = useRoute();
-const router = useRouter();
+// const route = useRoute();
+// const router = useRouter();
 const user = useUserStore();
 const { logout } = user;
 const { currentUser } = storeToRefs(user);
@@ -88,7 +88,7 @@ const userList = ref([
             <div
               class="sticky top-[80px] border border-black-1 bg-white flex flex-col justify-start items-start py-6 px-3"
             >
-              <template v-for="userItem in userList">
+              <template v-for="(userItem, $index) in userList" :key="$index">
                 <div class="group w-full">
                   <nuxt-link
                     v-if="userItem.to"

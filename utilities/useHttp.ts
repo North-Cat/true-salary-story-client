@@ -1,6 +1,6 @@
-import { hash } from 'ohash';
-import { showInfo, showSuccess, showError } from '@/utilities/message';
-import { ILoginUserInfo, IRequestHeaders } from '~/interface/user';
+// import { hash } from 'ohash';
+import { showError } from '@/utilities/message';
+import { IRequestHeaders } from '~/interface/user';
 
 // export interface ResOptions<T> {
 //   data: T;
@@ -27,9 +27,9 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     // 可以设置默认headers例如
     // const customHeaders = { token: useCookie('token').value, ...headers };
 
-    const { data, pending, error, refresh } = await useFetch(reqUrl, {
+    const { data, error } = await useFetch(reqUrl, {
       ...options,
-      onRequest({ request, options }) {
+      onRequest({ options }) {
         const token = useCookie('token');
         if (token.value) {
           options.headers = {
@@ -42,13 +42,13 @@ const fetch = async (url: string, options?: any, headers?: any) => {
           };
         }
       },
-      onRequestError({ request, options, error }) {
+      onRequestError({ error }) {
         console.log(error, 'onRequestError');
       },
-      onResponse({ request, response, options }) {
+      onResponse({ response }) {
         return response._data;
       },
-      onResponseError({ request, options, response }) {
+      onResponseError({ response }) {
         return response._data;
       },
     });
