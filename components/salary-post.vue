@@ -55,10 +55,12 @@ defineProps<{
 </script>
 
 <template>
-  <section class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white">
+  <section
+    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
+  >
     <div class="w-full flex flex-col p-6">
       <div class="flex flex-col">
-        <div class="p-6 flex flex-col mb-10">
+        <div class="p-6 flex flex-col">
           <div class="flex mb-5">
             <div class="w-[48px] h-[48px] flex justify-center items-center rounded bg-blue-light mr-[18px]">
               <span class="icon-sparkle-checked text-3xl text-blue-dark"></span>
@@ -180,21 +182,22 @@ defineProps<{
             <div class="caption text-black-5 mb-1">其他建議</div>
             <p class="body-sm">{{ post.suggestion }}</p>
           </div>
-          <div class="flex flex-wrap">
+          <div class="flex flex-wrap mb-5">
             <span v-for="tag in post.tags" :key="tag" class="body-sm text-black-5 me-5"> #{{ tag }} </span>
           </div>
-        </div>
-        <div class="flex justify-end">
-          <button
-            class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded mr-5"
-          >
-            通過
-          </button>
-          <button
-            class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10 rounded"
-          >
-            拒絕
-          </button>
+          <div class="flex justify-between p-4 bg-blue-light">
+            <div class="text-blue">
+              <p>有更多問題想要深入了解？</p>
+              <p>兌換後馬上就能向前輩發問！</p>
+            </div>
+            <div>
+              <button
+                class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded mr-5"
+              >
+                向前輩請教
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
