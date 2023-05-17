@@ -25,16 +25,20 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     // const key = hash(options + url);
 
     // 可以设置默认headers例如
-    const customHeaders = { token: useCookie('token').value, ...headers };
+    // const customHeaders = { token: useCookie('token').value, ...headers };
 
     const { data, pending, error, refresh } = await useFetch(reqUrl, {
       ...options,
       onRequest({ request, options }) {
         const token = useCookie('token');
-        if (token) {
+        if (token.value) {
           options.headers = {
-            ...(options.headers as IRequestHeaders),
-            Authorization: `Bearer ${token}`,
+            ...(headers as IRequestHeaders),
+            Authorization: `Bearer ${token.value}`,
+          };
+        } else {
+          options.headers = {
+            ...(headers as IRequestHeaders),
           };
         }
       },
@@ -45,12 +49,13 @@ const fetch = async (url: string, options?: any, headers?: any) => {
         return response._data;
       },
       onResponseError({ request, options, response }) {
-        console.log(response, 'onResponseError');
+        return response._data;
       },
     });
     const result = data.value;
     if (error.value || !result) {
-      showError('error', '系統錯誤');
+      showError('error', error?.value?.statusMessage || '系統錯誤');
+      return Promise.reject(error);
       // throw createError({
       //   statusCode: 500,
       //   statusMessage: reqUrl,
