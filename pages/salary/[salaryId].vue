@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import { IShareSalaryFormData } from '@/interface/salaryData';
 import salaryPost from '@/components/salary-post.vue';
 import keyword from '@/components/salary-keyword.vue';
+import modal from '@/components/defaultModal.vue';
 useHead({
   title: '薪水分享',
 });
@@ -13,6 +14,9 @@ const { id } = route.params;
 const post = ref<IShareSalaryFormData>({});
 // const { data, pending, error, refresh } = await useFetch('https://random-data-api.com/api/v2/users?size=2&is_xml=true');
 // console.log(data.value)
+const openModal = () => {
+  console.log('modal')
+};
 post.value = {
   postId: 'Post1234',
   title: '工程師',
@@ -59,11 +63,11 @@ post.value = {
 <template>
   <div class="bg-gray pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
     <div
-      class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
-    >
+      class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20">
       <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between">
-        <salary-post :post="post" />
+        <salary-post :post="post" @click="openModal" />
         <keyword />
+        <modal />
       </div>
     </div>
   </div>

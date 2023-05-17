@@ -9,6 +9,8 @@ defineProps<{
   post: IShareSalaryFormData;
 }>();
 
+const emit = defineEmits(['click']);
+
 // 審核內容
 // const feelingClass = computed(() => (id: string) => {
 //   let className = '';
@@ -77,7 +79,7 @@ defineProps<{
             </div>
           </div>
           <div class="flex flex-col pb-5 border-b border-b-black-1 mb-5">
-            <div class="w-full flex justify-between mb-5">
+            <div class="w-full flex flex-col lg:flex-row justify-between mb-5 gap-y-4">
               <div class="lg:w-1/2 flex justify-between items-center">
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
@@ -125,7 +127,7 @@ defineProps<{
                 </div>
               </div>
             </div>
-            <div class="w-full flex justify-between">
+            <div class="w-full flex flex-col lg:flex-row justify-between gap-y-4">
               <div class="lg:w-1/2 flex justify-between items-center">
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
@@ -193,6 +195,7 @@ defineProps<{
             <div>
               <button
                 class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded mr-5"
+                @click="emit('click')"
               >
                 向前輩請教
               </button>
