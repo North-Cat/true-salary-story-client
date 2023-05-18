@@ -58,8 +58,7 @@ const emit = defineEmits(['click']);
 
 <template>
   <section
-    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
-  >
+    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0">
     <div class="w-full flex flex-col p-6">
       <div class="flex flex-col">
         <div class="p-6 flex flex-col">
@@ -189,17 +188,11 @@ const emit = defineEmits(['click']);
           </div>
           <div class="flex justify-between p-4 bg-blue-light">
             <div class="text-blue">
-              <p>有更多問題想要深入了解？</p>
-              <p>兌換後馬上就能向前輩發問！</p>
+              <span>有更多問題想要深入了解？</span>
+              <br />
+              <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <div>
-              <button
-                class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded mr-5"
-                @click="emit('click')"
-              >
-                向前輩請教
-              </button>
-            </div>
+            <btn content="向前輩請教" @click="emit('click')" />
           </div>
         </div>
       </div>
