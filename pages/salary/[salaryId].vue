@@ -8,11 +8,11 @@ import modal from '@/components/salary-modal.vue';
 useHead({
   title: '薪水分享',
 });
-
+const { shareSalaryApi } = useApi();
 const route = useRoute();
 const { id } = route.params;
 const post = ref<IShareSalaryFormData>({});
-// const { data, pending, error, refresh } = await useFetch('https://random-data-api.com/api/v2/users?size=2&is_xml=true');
+const { data, pending, error, refresh } = shareSalaryApi.getSalaryInfo(id);
 // console.log(data.value)
 const isShowModal = ref(false);
 const redirect = () => {
@@ -66,7 +66,8 @@ post.value = {
   <div>
     <div class="bg-gray pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
       <div
-        class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20">
+        class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
+      >
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between">
           <salary-post :post="post" @click="redirect" />
           <keyword />

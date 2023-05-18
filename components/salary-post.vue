@@ -58,7 +58,8 @@ const emit = defineEmits(['click']);
 
 <template>
   <section
-    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0">
+    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
+  >
     <div class="w-full flex flex-col p-6">
       <div class="flex flex-col">
         <div class="p-6 flex flex-col">
