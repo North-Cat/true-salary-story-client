@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import { ILoginUserInfo, IRequestHeaders } from '~/interface/user';
+import { ILoginUserInfo } from '~/interface/user';
+const { userApi } = useApi();
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
@@ -10,52 +11,27 @@ export const useUserStore = defineStore('user', {
     };
   },
   actions: {
-    async loginWithGoogle(): Promise<void> {
+    loginWithGoogle() {
       const backendUrl = 'https://client-api-dev.up.railway.app/social/google';
       window.location.href = backendUrl;
     },
-    async tryToFetchProfile(isRfresh = false): Promise<void> {
-      const token = this.token;
-      const vm = this;
+    async tryToFetchProfile(): Promise<void> {
       this.isFetchProfileLoading = true;
-      const { data, error, refresh } = await useFetch('https://client-api-dev.up.railway.app/user/profile', {
-        onRequest({ request, options }) {
-          options.headers = {
-            ...(options.headers as IRequestHeaders),
-            Authorization: `Bearer ${token}`,
-          };
-        },
-        onRequestError({ request, options, error }) {
-          vm.error();
-        },
-        onResponse({ request, response, options }) {
-          if (response.status === 200) {
-            vm.currentUser = response._data.data.user as unknown as ILoginUserInfo;
-            vm.isLogin = true;
-            vm.isFetchProfileLoading = false;
-          } else {
-            vm.error();
-          }
-        },
-        onResponseError({ request, response, options }) {
-          vm.error();
-        },
-      });
-      if (isRfresh) {
-        refresh();
-      }
+
+      await userApi
+        .getUserProfile()
+        .then(({ data: { user } }) => {
+          this.currentUser = user as unknown as ILoginUserInfo;
+          this.isLogin = true;
+          this.isFetchProfileLoading = false;
+        })
+        .catch((error) => {
+          console.log('error');
+          this.error();
+        });
     },
     async logout(): Promise<void> {
-      const token = this.token;
-      const { data, error } = await useFetch('https://client-api-dev.up.railway.app/auth/logout', {
-        method: 'POST',
-        onRequest({ request, options }) {
-          options.headers = {
-            ...(options.headers as IRequestHeaders),
-            Authorization: `Bearer ${token}`,
-          };
-        },
-      });
+      const { data } = await userApi.postLogout();
       if (data) {
         this.error();
       } else {

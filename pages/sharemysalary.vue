@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-// 測試驗證區
-import { object, string } from 'yup';
-import { useForm, useField, configure, defineRule } from 'vee-validate';
+import { configure, defineRule } from 'vee-validate';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
+import { useThrottleFn } from '@vueuse/core';
 import {
   cityOptions,
   yearsOfServiceOptions,
@@ -22,9 +21,10 @@ import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
 useHead({
   title: '匿名分享',
 });
-definePageMeta({
-  middleware: 'auth',
-});
+// definePageMeta({
+//   middleware: 'auth',
+// });
+const { shareSalaryApi } = useApi();
 const submitData: IShareSalaryFormData = reactive({
   taxId: '',
   companyName: '',
@@ -50,7 +50,6 @@ const submitData: IShareSalaryFormData = reactive({
   tags: [],
   customTags: [],
 });
-const { errorMessage, handleBlur, setErrors, errors } = useField('taxId', 'required|numeric');
 configure({
   validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
   validateOnChange: true, // controls if `change` events should trigger validation with `handleChange` handler
@@ -59,8 +58,8 @@ configure({
   generateMessage: localize({ zh_TW: zhTW }),
 });
 setLocale('zh_TW');
-
-defineRule('taxIdVee', async (taxId: string) => {
+const form = ref(null);
+defineRule('validationTaxId', async (taxId: string) => {
   const reg = /^\d{8}$/;
   const matchResult = taxId.match(reg);
 
@@ -82,10 +81,28 @@ defineRule('taxIdVee', async (taxId: string) => {
   const isLegal = sum % checkNumber === 0 || ((sum + 1) % checkNumber === 0 && idArray[6] === 7);
 
   if (!isLegal) {
-    return '不合法的統編驗證';
+    return '統編驗證錯誤';
+  }
+  const { isExist, companyName } = await throttledFn();
+  if (!isExist) {
+    submitData.companyName = '';
+    return '查無此統編';
+  } else {
+    submitData.companyName = companyName;
   }
   return true;
 });
+const throttledFn = useThrottleFn(() => {
+  const data = tryToGetUniformNumbers();
+  return data;
+}, 3000);
+const tryToGetUniformNumbers = async () => {
+  const { isExist, companyName } = await shareSalaryApi.getUniformNumbers(submitData.taxId);
+  return {
+    isExist,
+    companyName,
+  };
+};
 
 // 測試驗證區結束
 
@@ -94,8 +111,6 @@ const { currentUser } = storeToRefs(user);
 const salaryTypes = ref('monthly');
 const customTagsText = ref('');
 const step = ref(1);
-const form = ref(null);
-
 const salaryTypesField: ISalary = reactive({
   monthly: {
     salary: '',
@@ -115,7 +130,7 @@ const salaryTypesField: ISalary = reactive({
 });
 watch(
   salaryTypesField,
-  (newValue, oldValue) => {
+  () => {
     // 要監聽的值，參數 : 新值跟舊值
     chnagSalaryTotal();
   },
@@ -178,7 +193,6 @@ const onSubmit = () => {
   console.log('value', form.value);
   // form.value.resetForm();
 };
-const debug = ref(false);
 // 右側邊欄
 const rightSideList = reactive([
   {
@@ -231,11 +245,11 @@ const rightSideList = reactive([
 ]);
 </script>
 <template>
-  <section class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
-    <div class="sharemysalary container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl lg:mt-10">
+  <section class="bg-gray md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
+    <div class="sharemysalary mx-auto px-14 md:max-w-full lg:max-w-7xl lg:mt-10">
       <h2 class="text-3xl mb-5">匿名分享</h2>
-      <div class="flex">
-        <div class="lg:w-4/6 border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
+      <div class="block lg:flex">
+        <div class="w-full lg:w-4/6 border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
           <div class="w-100 p-6 bg-black-10 text-white">
             <h4>{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
             <p class="opacity-70 mt-2">在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。</p>
@@ -244,14 +258,14 @@ const rightSideList = reactive([
             <div v-show="step === 1">
               <!-- 公司統編 -->
               <div class="mb-10">
-                <label for="taxId" label="" class="text-black-10">公司統一編號</label>
+                <label for="taxId" class="text-black-10">公司統一編號</label>
                 <VField
                   v-model.number="submitData.taxId"
                   name="taxId"
                   label="統一編號"
                   type="number"
+                  rules="required|numeric|validationTaxId"
                   :class="{ 'border-red': errors.taxId }"
-                  rules="required|numeric|taxIdVee"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
                 />
@@ -259,9 +273,10 @@ const rightSideList = reactive([
               </div>
               <!-- 公司名稱 -->
               <div class="mb-10">
-                <label for="companyName" label="" class="text-black-10">公司名稱</label>
+                <label for="companyName" class="text-black-10">公司名稱</label>
                 <input
                   id="companyName"
+                  v-model="submitData.companyName"
                   type="text"
                   name="companyName"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
@@ -271,14 +286,14 @@ const rightSideList = reactive([
               </div>
               <!-- 應徵職務 -->
               <div class="">
-                <label for="taxId" label="" class="text-black-10">應徵職務</label>
+                <label for="taxId" class="text-black-10">應徵職務</label>
                 <VField
                   v-model.trim="submitData.title"
                   name="title"
                   label="應徵職務"
                   type="text"
-                  :class="{ 'border-red': errors.title }"
                   rules="required"
+                  :class="{ 'border-red': errors.title }"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入應徵職務"
                 />
@@ -590,10 +605,6 @@ const rightSideList = reactive([
                     >還記得工作時的情形嗎?不論是工作項目、工作環境、福利條件、花費時間等,都可以在這裡盡情分享。</span
                   >
                 </label>
-                <!-- <VField name="taxId" label="統一編號" type="area" v-model.number="submitData.taxId"
-                  :class="{ 'border-red': errors.taxId }" rules="required|numeric|taxIdVee"
-                  class="w-full border border-black-1 rounded py-2 px-4 mt-2" placeholder="輸入工作內容...." rows="10"/>
-                <VErrorMessage name="taxId" as="div" class="help is-danger text-red" /> -->
 
                 <VField
                   v-slot="{ field, errors }"
@@ -652,7 +663,7 @@ const rightSideList = reactive([
               <div class="mb-10">
                 <div class="mb-2">評價標籤</div>
                 <ul class="flex flex-wrap list-none mb-3">
-                  <li v-for="(tagsItem, $index) in tagsOptions">
+                  <li v-for="(tagsItem, $index) in tagsOptions" :key="$index">
                     <input
                       :id="`tagsItemGood-${$index}`"
                       v-model="submitData.tags"
@@ -671,7 +682,7 @@ const rightSideList = reactive([
                   </li>
                 </ul>
                 <ul class="flex flex-wrap list-none mb-3">
-                  <li v-for="(tagsItem, $index) in tagsOptions">
+                  <li v-for="(tagsItem, $index) in tagsOptions" :key="$index">
                     <input
                       :id="`tagsItemBad-${$index}`"
                       v-model="submitData.tags"
@@ -690,7 +701,7 @@ const rightSideList = reactive([
                   </li>
                 </ul>
                 <ul v-if="submitData.customTags && submitData.customTags[0]" class="flex flex-wrap list-none">
-                  <li v-for="customTagsItem in submitData.customTags">
+                  <li v-for="(customTagsItem, $index) in submitData.customTags" :key="$index">
                     <button
                       class="cursor-pointer flex p-2 block text-black-10 bg-white border border-black-6 rounded text-sm mr-3 mb-3 peer-checked:text-white hover:bg-black-1"
                       @click.stop.prevent="removeCustomTag(customTagsItem)"
@@ -732,8 +743,8 @@ const rightSideList = reactive([
             </div>
           </VForm>
         </div>
-        <div class="lg:w-2/6 ml-[30px] lg:mt-0 md:mt-15">
-          <div v-for="rightSideBlock in rightSideList" class="mb-4 bg-white rounded p-6">
+        <div class="w-full lg:w-2/6 ml-0 lg:ml-[30px] lg:mt-0 md:mt-15">
+          <div v-for="(rightSideBlock, $index) in rightSideList" :key="$index" class="mb-4 bg-white rounded p-6">
             <h4 class="text-blue text-2xl" :class="{ 'mb-5': !rightSideBlock.description }">
               {{ rightSideBlock.title }}
             </h4>
@@ -741,7 +752,7 @@ const rightSideList = reactive([
               {{ rightSideBlock.description }}
             </p>
             <ul class="list-none">
-              <li v-for="blockItem in rightSideBlock.list" class="flex mt-5">
+              <li v-for="(blockItem, $index) in rightSideBlock.list" :key="$index" class="flex mt-5">
                 <span class="w-[48px] h-[48px] flex items-center justify-center bg-blue-light rounded mr-4"
                   ><i :class="`icomoon ${blockItem.icon} text-blue-dark text-2xl`"></i
                 ></span>
