@@ -63,15 +63,17 @@ post.value = {
 </script>
 
 <template>
-  <div class="bg-gray pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
-    <div
-      class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
-    >
-      <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between">
-        <salary-post :post="post" @click="redirect" />
-        <keyword />
-        <modal :is-visible="isShowModal" />
+  <tempalte>
+    <div class="bg-gray pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
+      <div
+        class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
+      >
+        <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between">
+          <salary-post :post="post" @click="redirect" />
+          <keyword />
+        </div>
       </div>
     </div>
-  </div>
+    <modal :is-visible="isShowModal" @click="isShowModal = false" />
+  </tempalte>
 </template>
