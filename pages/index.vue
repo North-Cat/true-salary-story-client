@@ -2414,7 +2414,8 @@ function keywordSearch(keyword: string) {
   let paramObj = undefined;
   paramObj = !keyword.trim() ? undefined : {
     searchType: "keyword",
-    param: keyword.trim()
+    param: keyword.trim(),
+    page: 1 // 搜尋第一頁
   };
   if (!paramObj) {
     showInfo("提示", "請輸入搜尋條件");
@@ -2426,12 +2427,13 @@ function keywordSearch(keyword: string) {
 function searchCompanytype(type: string) {
   let paramObj = {
     searchType: "type",
-    param: type
+    param: type,
+    page: 1 // 搜尋第一頁
   };
   search(paramObj);
 }
 // 帶著參數導頁至搜尋頁面
-async function search(paramObj: { searchType: string; param: string; }) {
+async function search(paramObj: { searchType: string; param: string; page:number}) {
   await navigateTo({
     path: '/search',
     query: paramObj

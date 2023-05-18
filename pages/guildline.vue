@@ -1,6 +1,6 @@
 <template>
     <div class="bg-stone-300 text-black-10">
-        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+        <div class="container mx-auto max-w-9xl flex flex-col pt-10">
             <div class="mb-1 text-stone-600">Style</div>
             <div class="py-10 bg-white px-10">
                 <div class="flex flex-wrap -mx-2">
@@ -307,7 +307,7 @@
                 </div>
             </div>
         </div>
-        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+        <div class="container mx-auto max-w-9xl flex flex-col pt-10">
             <div class="mb-1 text-stone-600">Component</div>
             <div class="py-10 bg-white px-10">
                 <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-5">
@@ -758,6 +758,56 @@ confirmFunc:
                         </div>
                     </div>
                 </div>
+                <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
+                    <div class="w-full sm:w-2/12 px-2">
+                        <h4 class="h4 ms-10">Pagination</h4>
+                    </div>
+                    <div class="w-full sm:w-6/12 px-2">
+                        <div class="flex flex-col justify-center items-center mb-6 ">
+                            <div class="flex flex-col items-center mb-20">
+                                <h6 class="mb-5">六頁以下，頁面全顯示</h6>
+                                <pagination-button :init-page="initPage1" :total-pages="totalPages1"
+                                    @change-page-event="callSomeFunc"></pagination-button>
+                            </div>
+                            <div class="flex flex-col items-center mb-10">
+                                <h6 class="mb-5">六頁以上，顯示部分</h6>
+                                <pagination-button :init-page="initPage2" :total-pages="totalPages2"
+                                    @change-page-event="callSomeFunc"></pagination-button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-4/12 px-2">
+                        <div class="flex flex-col justify-center items-start">
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
+                                <pre><code>
+template:
+&#060;pagination-button
+:init-page="initPage"
+:total-pages="totalPages"
+@change-page-event="callSomeFunc"&#062;
+&#060;/pagination-button&#062;
+
+js:
+const initPage = ref(1); // 初始選擇頁面
+const totalPages = ref(10); //所有頁數
+function callSomeFunc(currentPageFromComponent) {
+    console.log("目前頁數", currentPageFromComponent);
+}
+
+
+套件路徑: @/components/pagination-button.vue
+參數說明:
+initPage: 
+    初始選擇頁面, 傳入 Number, 非必填, 預設 1      
+totalPages: 
+    總頁數, 傳入 Number, 必填
+changePageEvent:
+    換頁時會觸發的事件, 傳入父元件的 function, 此 function 參數會接收子元件回傳的目前頁數
+                                        </code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -811,5 +861,14 @@ function confirmFunc() {
 }
 function cancelFunc() {
     showInfo("觸發取消按鈕");
+}
+
+// pagination
+const initPage1 = ref(1); // 目前頁面
+const totalPages1 = ref(6); //所有頁數
+const initPage2 = ref(1); // 目前頁面
+const totalPages2 = ref(10); //所有頁數
+function callSomeFunc(currentPageFromComponent) {
+    console.log("目前頁數", currentPageFromComponent);
 }
 </script>

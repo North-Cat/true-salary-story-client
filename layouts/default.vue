@@ -70,22 +70,22 @@ const goToPage = (to: RouteLocationRaw) => {
 /**
  * 搜尋相關
  */
-enum SearchTab {
+enum SearchType {
   COMPANY = 'company', // 公司
-  JOB_TITLE = 'jobTitle', // 職位
-  COMPANY_TYPE = 'companyType', // 產業
+  JOB_TITLE = 'title', // 職位
+  COMPANY_TYPE = 'type', // 產業
 }
 // 目前在哪個頁籤, 預設 "公司"
-const curSearchTab = ref();
-curSearchTab.value = SearchTab.COMPANY;
+const curSearchType = ref();
+curSearchType.value = SearchType.COMPANY;
 
-function changeTab(tab: SearchTab) {
-  curSearchTab.value = tab;
+function changeTab(tab: SearchType) {
+  curSearchType.value = tab;
 }
-function isTab(tab: SearchTab): boolean {
-  return curSearchTab.value == tab;
+function isTab(tab: SearchType): boolean {
+  return curSearchType.value == tab;
 }
-const tabClass = computed(() => (tab: SearchTab) => {
+const tabClass = computed(() => (tab: SearchType) => {
   let className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
   return className;
 });
@@ -110,23 +110,26 @@ const searchParam = ref({
 // 點擊搜尋
 async function search() {
   let paramObj = undefined;
-  if (curSearchTab.value == SearchTab.COMPANY) {
+  if (curSearchType.value == SearchType.COMPANY) {
     let company = searchParam.value.company.trim();
     paramObj = !company ? undefined : {
       searchType: "companyName",
-      param: company
+      param: company,
+      page: 1 // 搜尋第一頁
     };
-  } else if (curSearchTab.value == SearchTab.JOB_TITLE) {
+  } else if (curSearchType.value == SearchType.JOB_TITLE) {
     let jobTitle = searchParam.value.jobTitle.trim();
     paramObj = !jobTitle ? undefined : {
       searchType: "title",
-      param: jobTitle
+      param: jobTitle,
+      page: 1 // 搜尋第一頁
     };
-  } else if (curSearchTab.value == SearchTab.COMPANY_TYPE) {
+  } else if (curSearchType.value == SearchType.COMPANY_TYPE) {
     let type = searchParam.value.companyType.trim();
     paramObj = !type ? undefined : {
       searchType: "type",
-      param: type
+      param: type,
+      page: 1 // 搜尋第一頁
     };
   }
   if (!paramObj) {
@@ -224,43 +227,46 @@ async function search() {
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchTab.COMPANY)" @click="changeTab(SearchTab.COMPANY)">
+              :class="tabClass(SearchType.COMPANY)" @click="changeTab(SearchType.COMPANY)">
               <h6>公司</h6>
             </button>
           </div>
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchTab.JOB_TITLE)" @click="changeTab(SearchTab.JOB_TITLE)">
+              :class="tabClass(SearchType.JOB_TITLE)" @click="changeTab(SearchType.JOB_TITLE)">
               <h6>職位</h6>
             </button>
           </div>
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchTab.COMPANY_TYPE)" @click="changeTab(SearchTab.COMPANY_TYPE)">
+              :class="tabClass(SearchType.COMPANY_TYPE)" @click="changeTab(SearchType.COMPANY_TYPE)">
               <h6>產業</h6>
             </button>
           </div>
         </div>
         <!-- 搜尋欄位 -->
         <div class="w-full mb-2">
-          <div v-if="isTab(SearchTab.COMPANY)"
-            class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
-            <div class="icon-search me-3 text-black-5"></div>
-            <input type="text" style="outline: none;" placeholder="搜尋公司" v-model="searchParam.company"
+          <div v-if="isTab(SearchType.COMPANY)" class="flex items-center w-full border border-black-1 rounded mb-2">
+            <div
+              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10">
+            </div>
+            <input type="text" class="w-full ps-10 py-3 pe-5" placeholder="搜尋公司" v-model="searchParam.company"
               @keyup.enter="search">
           </div>
-          <div v-if="isTab(SearchTab.JOB_TITLE)"
-            class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
-            <div class="icon-search me-3 text-black-5"></div>
-            <input type="text" style="outline: none;" placeholder="搜尋職位" v-model="searchParam.jobTitle"
+          <div v-if="isTab(SearchType.JOB_TITLE)" class="flex items-center w-full border border-black-1 rounded mb-2">
+            <div
+              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10">
+            </div>
+            <input type="text" class="w-full ps-10 py-3 pe-5" placeholder="搜尋職位" v-model="searchParam.jobTitle"
               @keyup.enter="search">
           </div>
-          <div v-if="isTab(SearchTab.COMPANY_TYPE)"
-            class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
-            <div class="icon-search me-3 text-black-5"></div>
-            <input type="text" style="outline: none;" placeholder="搜尋產業" v-model="searchParam.companyType"
+          <div v-if="isTab(SearchType.COMPANY_TYPE)" class="flex items-center w-full border border-black-1 rounded mb-2">
+            <div
+              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10">
+            </div>
+            <input type="text" class="w-full ps-10 py-3 pe-5" placeholder="搜尋產業" v-model="searchParam.companyType"
               @keyup.enter="search">
           </div>
         </div>
@@ -302,43 +308,48 @@ async function search() {
                 <div class="py-3 pe-6">
                   <button
                     class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-                    :class="tabClass(SearchTab.COMPANY)" @click="changeTab(SearchTab.COMPANY)">
+                    :class="tabClass(SearchType.COMPANY)" @click="changeTab(SearchType.COMPANY)">
                     <h6>公司</h6>
                   </button>
                 </div>
                 <div class="py-3 pe-6">
                   <button
                     class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-                    :class="tabClass(SearchTab.JOB_TITLE)" @click="changeTab(SearchTab.JOB_TITLE)">
+                    :class="tabClass(SearchType.JOB_TITLE)" @click="changeTab(SearchType.JOB_TITLE)">
                     <h6>職位</h6>
                   </button>
                 </div>
                 <div class="py-3 pe-6">
                   <button
                     class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-                    :class="tabClass(SearchTab.COMPANY_TYPE)" @click="changeTab(SearchTab.COMPANY_TYPE)">
+                    :class="tabClass(SearchType.COMPANY_TYPE)" @click="changeTab(SearchType.COMPANY_TYPE)">
                     <h6>產業</h6>
                   </button>
                 </div>
               </div>
               <!-- 搜尋欄位 -->
               <div class="w-full mb-2">
-                <div v-if="isTab(SearchTab.COMPANY)"
-                  class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
-                  <div class="icon-search me-3 text-black-5"></div>
-                  <input type="text" style="outline: none;" placeholder="搜尋公司" v-model="searchParam.company"
+                <div v-if="isTab(SearchType.COMPANY)" class="flex items-center w-full border border-black-1 rounded mb-2">
+                  <div
+                    class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10">
+                  </div>
+                  <input type="text" class="w-full ps-10 py-3 pe-5" placeholder="搜尋公司" v-model="searchParam.company"
                     @keyup.enter="search">
                 </div>
-                <div v-if="isTab(SearchTab.JOB_TITLE)"
-                  class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
-                  <div class="icon-search me-3 text-black-5"></div>
-                  <input type="text" style="outline: none;" placeholder="搜尋職位" v-model="searchParam.jobTitle"
+                <div v-if="isTab(SearchType.JOB_TITLE)"
+                  class="flex items-center w-full border border-black-1 rounded mb-2">
+                  <div
+                    class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10">
+                  </div>
+                  <input type="text" class="w-full ps-10 py-3 pe-5" placeholder="搜尋職位" v-model="searchParam.jobTitle"
                     @keyup.enter="search">
                 </div>
-                <div v-if="isTab(SearchTab.COMPANY_TYPE)"
-                  class="flex items-center w-full border border-black-1 rounded py-3 px-4 mb-2">
-                  <div class="icon-search me-3 text-black-5"></div>
-                  <input type="text" style="outline: none;" placeholder="搜尋產業" v-model="searchParam.companyType"
+                <div v-if="isTab(SearchType.COMPANY_TYPE)"
+                  class="flex items-center w-full border border-black-1 rounded mb-2">
+                  <div
+                    class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10">
+                  </div>
+                  <input type="text" class="w-full ps-10 py-3 pe-5" placeholder="搜尋產業" v-model="searchParam.companyType"
                     @keyup.enter="search">
                 </div>
               </div>
