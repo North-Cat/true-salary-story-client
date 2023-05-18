@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 import { IShareSalaryFormData } from '@/interface/salaryData';
 import salaryPost from '@/components/salary-post.vue';
@@ -9,11 +8,9 @@ useHead({
   title: '薪水分享',
 });
 const { shareSalaryApi } = useApi();
-const route = useRoute();
-const { id } = route.params;
+const { salaryId } = useRoute().params;
 const post = ref<IShareSalaryFormData>({});
-const { data, pending, error, refresh } = shareSalaryApi.getSalaryInfo(id);
-// console.log(data.value)
+const data = await shareSalaryApi.getSalaryInfo('6460b8ddce505393374dc329');
 const isShowModal = ref(false);
 const redirect = () => {
   // 判斷導登入頁 or 顯示modal or 解鎖

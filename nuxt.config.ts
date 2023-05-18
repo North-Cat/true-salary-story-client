@@ -4,9 +4,10 @@ export default defineNuxtConfig({
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules'] },
   runtimeConfig: {
     public: {
-      apiBase: 'https://client-api-dev.up.railway.app',
+      apiBase: 'http://localhost:3000',
     },
   },
+  telemetry: false,
   css: ['@/assets/css/tailwind.css', '@/assets/css/style.css', '@/assets/css/icon.css'],
 
   // nitro: {
