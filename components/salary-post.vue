@@ -188,11 +188,11 @@ const emit = defineEmits(['click']);
           </div>
           <div class="flex justify-between p-4 bg-blue-light">
             <div class="text-blue">
-              <span>有更多問題想要深入了解？</span>
+              <span>想了解只有員工才知道的職場心聲？</span>
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <btn content="向前輩請教" @click="emit('click')" />
+            <btn content="查看完整內容及薪水" @click="emit('click')" />
           </div>
         </div>
       </div>
