@@ -11,7 +11,9 @@ defineProps<{
 
 const emit = defineEmits(['click']);
 
-// 審核內容
+// TODO
+const isLocked = ref(false);
+
 const feelingClass = computed(() => (text: string) => {
   let className = '';
   switch (text) {
@@ -33,6 +35,7 @@ const feelingClass = computed(() => (text: string) => {
   }
   return className;
 });
+
 const overtimeClass = computed(() => (text: string) => {
   let className = '';
   switch (text) {
@@ -67,8 +70,8 @@ const numberRange = computed(() => (number: number) => {
   }
 
   let max = Math.ceil(number / range); // ceil 回傳大於等於所給數字的最大整數
-  let min = Math.floor(number / range); // floor 回傳小於等於所給數字的最大整數
-  max = min == max ? (max += 1) : max; // 若為整數 (例 40000) 依上述寫法會變成 40-40k， 則將上限加 1k 變為 40-41k
+  const min = Math.floor(number / range); // floor 回傳小於等於所給數字的最大整數
+  max = min === max ? (max += 1) : max; // 若為整數 (例 40000) 依上述寫法會變成 40-40k， 則將上限加 1k 變為 40-41k
 
   if (number >= 100000) {
     text = `${min * 10} - ${max * 10}k`;
@@ -76,6 +79,13 @@ const numberRange = computed(() => (number: number) => {
     text = `${min} - ${max}k`;
   } else if (number > 0 && number < 1000) {
     text = '低於 1k';
+  }
+  return text;
+});
+
+const truncateText = computed(() => (text: string, maxLength: number) => {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + '...';
   }
   return text;
 });
@@ -205,11 +215,11 @@ const numberRange = computed(() => (number: number) => {
           </div>
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">工作內容</div>
-            <p class="body-sm">{{ post.jobDescription }}</p>
+            <p class="body-sm">{{ isLocked ? post.jobDescription : truncateText(post.jobDescription, 20) }}</p>
           </div>
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">其他建議</div>
-            <p class="body-sm">{{ post.suggestion }}</p>
+            <p class="body-sm">{{ isLocked ? post.suggestion : truncateText(post.suggestion, 20) }}</p>
           </div>
           <div class="flex flex-wrap mb-5">
             <span v-for="tag in post.tags" :key="tag" class="body-sm text-black-5 me-5"> #{{ tag }} </span>
