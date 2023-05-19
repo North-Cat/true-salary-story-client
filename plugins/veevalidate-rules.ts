@@ -3,7 +3,7 @@ import { defineRule } from 'vee-validate';
 
 import * as rules from '@vee-validate/rules';
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(() => {
   Object.keys(rules)
     .filter((k) => k !== 'default')
     .forEach((rule) => {

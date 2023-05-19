@@ -2,8 +2,7 @@
   font-family: 'icomoon';
   src: url('../fonts/icomoon.eot?dlv8ro');
   src: url('../fonts/icomoon.eot?dlv8ro#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?dlv8ro') format('truetype'),
-    url('../fonts/icomoon.woff?dlv8ro') format('woff'),
+    url('../fonts/icomoon.ttf?dlv8ro') format('truetype'), url('../fonts/icomoon.woff?dlv8ro') format('woff'),
     url('../fonts/icomoon.svg?dlv8ro#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
