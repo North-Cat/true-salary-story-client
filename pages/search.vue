@@ -234,12 +234,12 @@ const forceRender = () => {
 </script>
 
 <template>
-  <section class="search bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden lg:pt-40">
+  <section class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 lg:pt-40">
     <div
       class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-4xl flex flex-col justify-center items-center">
-      <div class="w-full max-w-[1076px] flex flex-col border-2 border-black-10 bg-white py-10 px-5 mb-10">
-        <div class="w-full flex mb-5">
-          <div class="w-10/12 flex items-center border border-black-1 rounded me-2">
+      <div class="w-full max-w-[1076px] flex flex-col border-2 border-black-10 bg-white py-5 lg:py-10 px-5 mb-10">
+        <div class="w-full flex flex-col lg:flex-row mb-5">
+          <div class="w-full lg:w-10/12 flex items-center border border-black-1 rounded me-2 mb-3 lg:mb-0">
             <div
               class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 z-10">
             </div>
@@ -247,10 +247,10 @@ const forceRender = () => {
             <button class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"
               @click="clickClear"></button>
           </div>
-          <base-button class="w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></base-button>
+          <base-button class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></base-button>
         </div>
         <!-- 搜尋頁籤 -->
-        <div v-if="showResult" class="w-full flex pb-5 mb-10 border-b border-black-1">
+        <div v-if="showResult" class="w-full flex flex-wrap pb-5 mb-10 border-b border-black-1">
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
@@ -320,7 +320,7 @@ const forceRender = () => {
                 <h5 class="text-blue mb-2">{{ comType.type }} | {{ comType.companyName }} | 真薪話</h5>
               </nuxt-link>
               <p class="text-yellow mb-2">{{ comType.postCount }} 則薪水情報</p>
-              <div class="flex mb-2">
+              <div class="flex flex-col lg:flex-row mb-2">
                 <div class="caption me-20">地址 | {{ comType.address }}</div>
                 <div class="caption me-20">電話 | {{ comType.phone }}</div>
                 <div class="caption me-20">統編 | {{ comType.taxId }}</div>
@@ -330,22 +330,23 @@ const forceRender = () => {
           </div>
 
           <!-- 所有結果頁數 -->
-          <pagination-button
+          <pagination-button class="flex justify-center"
             v-if="isTab(SearchType.KEYWORD) && (companies.length != 0 || titles.length != 0 || types.length != 0)"
             :key="componentKey" :init-page="keywordCurPage" :total-pages="keywordTotalPages"
             @change-page-event="changePage">
           </pagination-button>
           <!-- 找公司頁數 -->
-          <pagination-button v-if="isTab(SearchType.COMPANY) && companies.length != 0" :key="componentKey"
-            :init-page="companyCurPage" :total-pages="companyTotalPages" @change-page-event="changePage">
+          <pagination-button class="flex justify-center" v-if="isTab(SearchType.COMPANY) && companies.length != 0"
+            :key="componentKey" :init-page="companyCurPage" :total-pages="companyTotalPages"
+            @change-page-event="changePage">
           </pagination-button>
           <!-- 找職位頁數 -->
-          <pagination-button v-if="isTab(SearchType.JOB_TITLE) && titles.length != 0" :key="componentKey"
-            :init-page="titleCurPage" :total-pages="titleTotalPages" @change-page-event="changePage">
+          <pagination-button class="flex justify-center" v-if="isTab(SearchType.JOB_TITLE) && titles.length != 0"
+            :key="componentKey" :init-page="titleCurPage" :total-pages="titleTotalPages" @change-page-event="changePage">
           </pagination-button>
           <!-- 找產業頁數 -->
-          <pagination-button v-if="isTab(SearchType.COMPANY_TYPE) && types.length != 0" :key="componentKey"
-            :init-page="typeCurPage" :total-pages="typeTotalPages" @change-page-event="changePage">
+          <pagination-button class="flex justify-center" v-if="isTab(SearchType.COMPANY_TYPE) && types.length != 0"
+            :key="componentKey" :init-page="typeCurPage" :total-pages="typeTotalPages" @change-page-event="changePage">
           </pagination-button>
 
           <!-- 查無資料 -->
