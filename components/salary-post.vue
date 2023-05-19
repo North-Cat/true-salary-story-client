@@ -12,48 +12,73 @@ defineProps<{
 const emit = defineEmits(['click']);
 
 // 審核內容
-// const feelingClass = computed(() => (id: string) => {
-//   let className = '';
-//   switch (id) {
-//     case '1':
-//       className = 'icon-face-good text-green';
-//       break;
-//     case '2':
-//       className = 'icon-face-good text-green';
-//       break;
-//     case '3':
-//       className = 'icon-face-normal text-yellow';
-//       break;
-//     case '4':
-//       className = 'icon-face-bad text-red';
-//       break;
-//     case '5':
-//       className = 'icon-face-bad text-red';
-//       break;
-//   }
-//   return className;
-// });
-// const overtimeClass = computed(() => (id: string) => {
-//   let className = '';
-//   switch (id) {
-//     case '1':
-//       className = 'icon-time-good text-green';
-//       break;
-//     case '2':
-//       className = 'icon-time-good text-green';
-//       break;
-//     case '3':
-//       className = 'icon-time-normal text-yellow';
-//       break;
-//     case '4':
-//       className = 'icon-time-bad text-red';
-//       break;
-//     case '5':
-//       className = 'icon-time-bad text-red';
-//       break;
-//   }
-//   return className;
-// });
+const feelingClass = computed(() => (text: string) => {
+  let className = '';
+  switch (text) {
+    case '非常開心':
+      className = 'icon-face-good text-green';
+      break;
+    case '還算愉快':
+      className = 'icon-face-good text-green';
+      break;
+    case '平常心':
+      className = 'icon-face-normal text-yellow';
+      break;
+    case '有苦說不出':
+      className = 'icon-face-bad text-red';
+      break;
+    case '想換工作了':
+      className = 'icon-face-bad text-red';
+      break;
+  }
+  return className;
+});
+const overtimeClass = computed(() => (text: string) => {
+  let className = '';
+  switch (text) {
+    case '準時上下班':
+      className = 'icon-time-good text-green';
+      break;
+    case '很少加班':
+      className = 'icon-time-good text-green';
+      break;
+    case '偶爾加班':
+      className = 'icon-time-normal text-yellow';
+      break;
+    case '常常加班':
+      className = 'icon-time-bad text-red';
+      break;
+    case '賣肝拼經濟':
+      className = 'icon-time-bad text-red';
+      break;
+  }
+  return className;
+});
+
+const numberRange = computed(() => (number: number) => {
+  let text = '-';
+  let range = 0;
+  if (number >= 100000) {
+    // 若為六位數，範圍間距為 10k
+    range = 10000;
+  } else if (number >= 1000 && number < 100000) {
+    // 若為四、五位數，範圍間距為 1k
+    range = 1000;
+  }
+
+  let max = Math.ceil(number / range); // ceil 回傳大於等於所給數字的最大整數
+  let min = Math.floor(number / range); // floor 回傳小於等於所給數字的最大整數
+  max = min == max ? (max += 1) : max; // 若為整數 (例 40000) 依上述寫法會變成 40-40k， 則將上限加 1k 變為 40-41k
+
+  if (number >= 100000) {
+    text = `${min * 10} - ${max * 10}k`;
+  } else if (number >= 1000 && number < 100000) {
+    text = `${min} - ${max}k`;
+  } else if (number > 0 && number < 1000) {
+    text = '低於 1k';
+  }
+  return text;
+});
 </script>
 
 <template>
@@ -87,7 +112,7 @@ const emit = defineEmits(['click']);
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6>70-71k</h6>
+                    <h6>{{ numberRange(post.monthlySalary) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -96,7 +121,7 @@ const emit = defineEmits(['click']);
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年薪</div>
-                    <h6>980-990k</h6>
+                    <h6>{{ numberRange(post.yearlySalary) }}</h6>
                   </div>
                 </div>
               </div>
@@ -104,25 +129,27 @@ const emit = defineEmits(['click']);
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年終</div>
-                    <h6>-</h6>
+                    <h6>
+                      <h6>{{ numberRange(post.yearEndBonus) }}</h6>
+                    </h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">三節</div>
-                    <h6>-</h6>
+                    <h6>{{ numberRange(post.holidayBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">分紅</div>
-                    <h6>-</h6>
+                    <h6>{{ numberRange(post.profitSharingBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">其他</div>
-                    <h6>-</h6>
+                    <h6>{{ numberRange(post.otherBonus) }}</h6>
                   </div>
                 </div>
               </div>
@@ -131,7 +158,7 @@ const emit = defineEmits(['click']);
               <div class="lg:w-1/2 flex justify-between items-center">
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                    <span class="text-2xl"></span>
+                    <span :class="['text-2xl', feelingClass(post.feeling)]"></span>
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">上班心情</div>
@@ -140,7 +167,7 @@ const emit = defineEmits(['click']);
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                    <span class="text-2xl"></span>
+                    <span :class="['text-2xl', overtimeClass(post.overtime)]"></span>
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
