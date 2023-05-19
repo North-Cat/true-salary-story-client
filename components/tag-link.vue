@@ -5,9 +5,10 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   content: {
     type: String,
+    default: 'tag',
   },
 });
 </script>

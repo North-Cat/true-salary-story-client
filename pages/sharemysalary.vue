@@ -592,7 +592,7 @@ const rightSideList = reactive([
                   <br />
                   成為他人的職場貴人！
                 </p>
-                <btn cate="primary" @click="step = 2">下一步</btn>
+                <base-button cate="primary" @click="step = 2">下一步</base-button>
               </div>
             </div>
             <div v-show="step === 2">
@@ -719,19 +719,19 @@ const rightSideList = reactive([
                     placeholder="自訂評價(每個最多10字)"
                     class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
                   />
-                  <btn
+                  <base-button
                     :disabled="!customTagsText"
                     cate="gray-text"
                     class="absolute inset-y-0 right-0 flex items-center"
                     @click="addCustomTags(customTagsText)"
                   >
                     <i class="icomoon icon-plus"></i>
-                  </btn>
+                  </base-button>
                 </div>
               </div>
               <hr class="my-10" />
               <div class="flex justify-between">
-                <btn cate="white" @click="step = 1">上一步</btn>
+                <base-button cate="white" @click="step = 1">上一步</base-button>
                 <button
                   class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 disabled:bg-black-3 disabled:text-black-6"
                   type="submit"

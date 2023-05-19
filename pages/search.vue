@@ -52,7 +52,7 @@ const keywordTotalPages = ref(); // 總頁數
  * UI function
  */
 // 點擊搜尋
-async function clickSearch(page?: number) {
+function clickSearch(page?: number) {
   if (!searchParam.value) {
     showInfo('提示', '請輸入搜尋條件');
     return;
@@ -88,12 +88,12 @@ function enterSearch() {
  */
 // 搜尋 api
 function search() {
-  console.log('目前頁數(關鍵字)', keywordCurPage.value);
-  console.log('目前頁數(公司)', companyCurPage.value);
-  console.log('目前頁數(產業)', typeCurPage.value);
-  console.log('目前頁數(職位)', titleCurPage.value);
-  console.log('搜尋類型', curSearchType.value);
-  console.log('搜尋參數', searchParam.value);
+  // console.log('目前頁數(關鍵字)', keywordCurPage.value);
+  // console.log('目前頁數(公司)', companyCurPage.value);
+  // console.log('目前頁數(產業)', typeCurPage.value);
+  // console.log('目前頁數(職位)', titleCurPage.value);
+  // console.log('搜尋類型', curSearchType.value);
+  // console.log('搜尋參數', searchParam.value);
   // TODO: call search api
 
   // Mock
@@ -208,11 +208,31 @@ function search() {
 }
 
 /**
- * 資料轉換
+ * 切換頁籤相關
  */
+enum SearchType {
+  KEYWORD = 'keyword', // 關鍵字
+  COMPANY = 'companyName', // 公司
+  JOB_TITLE = 'title', // 職位
+  COMPANY_TYPE = 'type', // 產業
+}
+const curSearchType = ref();
+curSearchType.value = searchType; // 取得 URL 上的 searchType
+
+function changeTab(tab: SearchType) {
+  curSearchType.value = tab;
+  clickSearch(1); // 換頁時搜尋
+}
+function isTab(tab: SearchType): boolean {
+  return curSearchType.value === tab;
+}
+const tabClass = computed(() => (tab: SearchType) => {
+  const className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
+  return className;
+});
 // 換頁時，判斷是哪一個頁籤要換頁
 function changePageByTab(page?: number) {
-  console.log('changePageByTab', page);
+  // console.log('changePageByTab', page);
   switch (curSearchType.value) {
     case SearchType.KEYWORD:
       keywordCurPage.value = page || 1;
@@ -236,30 +256,6 @@ const componentKey = ref(0);
 const forceRender = () => {
   componentKey.value += 1;
 };
-
-/**
- * 切換頁籤相關
- */
-enum SearchType {
-  KEYWORD = 'keyword', // 關鍵字
-  COMPANY = 'companyName', // 公司
-  JOB_TITLE = 'title', // 職位
-  COMPANY_TYPE = 'type', // 產業
-}
-const curSearchType = ref();
-curSearchType.value = searchType; // 取得 URL 上的 searchType
-
-function changeTab(tab: SearchType) {
-  curSearchType.value = tab;
-  clickSearch(1); // 換頁時搜尋
-}
-function isTab(tab: SearchType): boolean {
-  return curSearchType.value == tab;
-}
-const tabClass = computed(() => (tab: SearchType) => {
-  const className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
-  return className;
-});
 </script>
 
 <template>
@@ -276,7 +272,7 @@ const tabClass = computed(() => (tab: SearchType) => {
             <input v-model="searchParam" type="text" class="w-full ps-10 py-3 pe-10" @keyup.enter="enterSearch" />
             <button class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"></button>
           </div>
-          <btn class="w-2/12 h-[48px]" @click="clickSearch(1)"> 搜尋 </btn>
+          <base-button class="w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></base-button>
         </div>
         <!-- 搜尋頁籤 -->
         <div class="w-full flex pb-5 mb-10 border-b border-black-1">

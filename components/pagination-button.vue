@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref } from 'vue';
 const emit = defineEmits(['changePageEvent']); // 換頁要呼叫的方法 (會回傳給父元件目前頁數)
 const props = defineProps({
   initPage: {

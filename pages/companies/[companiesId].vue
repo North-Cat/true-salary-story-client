@@ -10,8 +10,8 @@ useHead({
 // 職位
 const titleOptions = ['全部', '業務', '高級專員'];
 const titleValue = ref<string[]>([]);
-watch(titleValue, async (newQuestion, oldQuestion) => {
-  console.log(titleValue.value);
+watch(titleValue, () => {
+  showInfo('', titleValue.value.join('|'));
 });
 // 排序
 const sortOptions = [
@@ -21,8 +21,8 @@ const sortOptions = [
   { text: '心情 好→壞', value: 4 },
 ];
 const sortValue = ref();
-watch(sortValue, async (newQuestion, oldQuestion) => {
-  console.log(sortValue.value);
+watch(sortValue, () => {
+  showInfo('', sortValue.value);
 });
 // 關鍵字
 const keywords = ref<string[]>([]);
@@ -109,8 +109,7 @@ onMounted(() => {
 
 // 點擊關鍵字搜尋
 function keywordSearch(keyword: string) {
-  let paramObj;
-  paramObj = !keyword.trim()
+  const paramObj = !keyword.trim()
     ? undefined
     : {
         searchType: 'keyword',
@@ -188,14 +187,14 @@ onClickOutside(filterModal, () => {
           </div>
           <div class="w-full lg:w-2/5 flex items-center">
             <div class="w-1/2 me-3 lg:me-5">
-              <btn content="請教所有前輩" class="w-full">
+              <base-button content="請教所有前輩" class="w-full">
                 <div class="icon-message me-2 -mb-1"></div>
-              </btn>
+              </base-button>
             </div>
             <div class="w-1/2">
-              <btn content="訂閱情報" cate="secondary" class="w-full">
+              <base-button content="訂閱情報" cate="secondary" class="w-full">
                 <div class="icon-plus-circle me-2 -mb-1"></div>
-              </btn>
+              </base-button>
             </div>
           </div>
         </div>
@@ -285,10 +284,10 @@ onClickOutside(filterModal, () => {
                 </div>
                 <div class="w-full border-b border-black-1 mb-3"></div>
                 <div class="flex justify-end">
-                  <btn cate="gray-text" content="全部重設" class="me-3"></btn>
-                  <btn cate="white" content="套用">
+                  <base-button cate="gray-text" content="全部重設" class="me-3"></base-button>
+                  <base-button cate="white" content="套用">
                     <span class="icon-filter text-sm me-2"></span>
-                  </btn>
+                  </base-button>
                 </div>
               </div>
             </div>
@@ -356,10 +355,10 @@ onClickOutside(filterModal, () => {
                 </div>
                 <div class="w-full border-b border-black-1 mb-3"></div>
                 <div class="flex justify-end">
-                  <btn cate="gray-text" content="全部重設" class="me-3"></btn>
-                  <btn cate="white" content="套用">
+                  <base-button cate="gray-text" content="全部重設" class="me-3"></base-button>
+                  <base-button cate="white" content="套用">
                     <span class="icon-filter text-sm me-2"></span>
-                  </btn>
+                  </base-button>
                 </div>
               </div>
             </div>
@@ -406,11 +405,15 @@ onClickOutside(filterModal, () => {
             :for="`sort-${item.value}`"
             class="flex-1 relative cursor-pointer items-center inline-flex justify-start caption me-5 mb-5"
           >
-            <input :id="`sort-${item.value}`" v-model="sortValue" type="radio" :value="item.value" name="sort"
-            class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2
-            after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6
-            after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue
-            :checked="item.value === sortValue" />
+            <input
+              :id="`sort-${item.value}`"
+              v-model="sortValue"
+              type="radio"
+              :value="item.value"
+              name="sort"
+              class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue"
+              :checked="item.value === sortValue"
+            />
             <span :class="{ 'text-blue': item.value === sortValue }" class="ml-2">{{ item.text }}</span>
           </label>
         </div>
@@ -434,11 +437,11 @@ onClickOutside(filterModal, () => {
       </div>
       <div class="w-full border-b border-black-1 mb-3"></div>
       <div class="flex justify-between">
-        <btn class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></btn>
-        <btn class="" cate="gray-text" content="全部重設"></btn>
-        <btn class="" cate="white" content="套用">
+        <base-button class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></base-button>
+        <base-button class="" cate="gray-text" content="全部重設"></base-button>
+        <base-button class="" cate="white" content="套用">
           <span class="icon-filter text-sm me-2"></span>
-        </btn>
+        </base-button>
       </div>
     </div>
   </section>
