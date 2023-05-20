@@ -26,9 +26,16 @@ export interface IShareSalaryFormData {
 
 export interface ISalary {
   [key: string]: {
+    monthlySalary: number;
     salary: number | string;
     total: number | string;
     avgWorkingDaysPerMonth?: number | string;
     dailyAverageWorkingHours?: number | string;
   };
+}
+
+export interface ISalaryResult {
+  companyName: string;
+  title: string;
+  point: number;
 }

@@ -4,6 +4,7 @@ import { configure, defineRule } from 'vee-validate';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import { useThrottleFn } from '@vueuse/core';
+import { openConfirmModal } from '@/utilities/dialog';
 import {
   cityOptions,
   yearsOfServiceOptions,
@@ -17,7 +18,7 @@ import {
   tagsOptions,
 } from '~/utilities/options';
 import { useUserStore } from '@/store/user';
-import { IShareSalaryFormData, ISalary } from '~/interface/salaryData';
+import { IShareSalaryFormData, ISalary, ISalaryResult } from '~/interface/salaryData';
 useHead({
   title: '匿名分享',
 });
@@ -25,7 +26,7 @@ useHead({
 //   middleware: 'auth',
 // });
 const { shareSalaryApi } = useApi();
-const submitData: IShareSalaryFormData = reactive({
+const submitData = reactive<IShareSalaryFormData>({
   taxId: '',
   companyName: '',
   title: '',
@@ -58,10 +59,12 @@ configure({
   generateMessage: localize({ zh_TW: zhTW }),
 });
 setLocale('zh_TW');
-const form = ref(null);
+const form = ref();
+// === 驗證 === //
+// FIXME:  onBlur form.value.setFieldError('taxID', '查無此統編')
 defineRule('validationTaxId', async (taxId: string) => {
-  const reg = /^\d{8}$/;
-  const matchResult = taxId.match(reg);
+  const reg = /^[0-9]{8}$/;
+  const matchResult = typeof taxId === 'string' ? taxId?.match(reg) : submitData.taxId.toString().match(reg);
 
   if (!matchResult) {
     return '統編為8碼';
@@ -92,6 +95,37 @@ defineRule('validationTaxId', async (taxId: string) => {
   }
   return true;
 });
+defineRule('confirmedToWorkYears', () => {
+  if (
+    typeof submitData.workYears === 'number' &&
+    typeof submitData.totalWorkYears === 'number' &&
+    submitData.totalWorkYears < submitData.workYears
+  ) {
+    form.value.setFieldError('totalWorkYears', '總年資要大於在職年資');
+  } else if (typeof submitData.totalWorkYears === 'number') {
+    form.value.setFieldError('totalWorkYears', '');
+  }
+  return true;
+});
+defineRule('confirmedWorkYears', () => {
+  const resetError = () => {
+    form.value.setFieldError('workYears', '');
+    form.value.setFieldError('totalWorkYears', '');
+  };
+  if (typeof submitData.workYears !== 'number' && !submitData.workYears && submitData.totalWorkYears) {
+    form.value.setFieldError('workYears', '請填寫在職年資');
+  }
+  if (
+    typeof submitData.workYears === 'number' &&
+    typeof submitData.totalWorkYears === 'number' &&
+    submitData.totalWorkYears < submitData.workYears
+  ) {
+    resetError();
+    return '總年資要大於在職年資';
+  }
+  return true;
+});
+
 const throttledFn = useThrottleFn(() => {
   const data = tryToGetUniformNumbers();
   return data;
@@ -103,33 +137,44 @@ const tryToGetUniformNumbers = async () => {
     companyName,
   };
 };
-
-// 測試驗證區結束
+// === 驗證結束 === //
 
 const user = useUserStore();
 const { currentUser } = storeToRefs(user);
 const salaryTypes = ref('monthly');
 const customTagsText = ref('');
 const step = ref(1);
+const isOfferJob = ref(false);
+const successResult = ref<ISalaryResult>();
 const salaryTypesField: ISalary = reactive({
   monthly: {
     salary: '',
     total: '',
+    monthlySalary: 0,
   },
   daily: {
     salary: '',
     avgWorkingDaysPerMonth: '',
     total: '',
+    monthlySalary: 0,
   },
   hourly: {
     salary: '',
     dailyAverageWorkingHours: '',
     avgWorkingDaysPerMonth: '',
     total: '',
+    monthlySalary: 0,
   },
 });
 watch(
-  salaryTypesField,
+  () => [
+    salaryTypesField.monthly.salary,
+    salaryTypesField.daily.salary,
+    salaryTypesField.daily.avgWorkingDaysPerMonth,
+    salaryTypesField.hourly.salary,
+    salaryTypesField.hourly.dailyAverageWorkingHours,
+    salaryTypesField.hourly.avgWorkingDaysPerMonth,
+  ],
   () => {
     // 要監聽的值，參數 : 新值跟舊值
     chnagSalaryTotal();
@@ -144,6 +189,51 @@ watch(
   },
 );
 
+const onNext = async () => {
+  const isRequiredSuccess = await validate();
+  if (isRequiredSuccess) {
+    nextTick(() => {
+      step.value = 2;
+    });
+    scrollTop();
+  }
+};
+const onPrev = () => {
+  nextTick(() => {
+    step.value = 1;
+  });
+  scrollTop();
+};
+const validate = async () => {
+  return await form.value.validate().then((success: { errors: object; results: object; valid: boolean }) => {
+    if (!success.valid) {
+      setTimeout(() => {
+        const formatErrors = Object.entries(success.errors)
+          .map(([key, value]) => ({ key, value }))
+          .filter((error) => error.value.length);
+        const errorKey = formatErrors[0].key;
+        const errorInput: HTMLInputElement | null = document.querySelector(`input[name = '${errorKey}']`);
+        if (errorInput) {
+          errorInput.focus();
+        }
+        return false;
+        // form.value.refs[formatErrors[0].key].$el.scrollIntoView({
+        //   behavior: 'smooth',
+        //   block: 'center',
+        // });
+      }, 100);
+    } else {
+      return true;
+    }
+  });
+};
+
+const scrollTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
 // 監聽 salaryTypesField 的變化
 const chnagSalaryTotal = () => {
   const monthlySalary = Number(salaryTypesField.monthly.salary);
@@ -153,12 +243,18 @@ const chnagSalaryTotal = () => {
   const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.dailyAverageWorkingHours);
   const hourlyAvgWorkingDays = Number(salaryTypesField.hourly.avgWorkingDaysPerMonth);
   if (isNumber(monthlySalary)) {
+    salaryTypesField.monthly.monthlySalary = calculateTotal(monthlySalary, 12);
     salaryTypesField.monthly.total = calculateTotal(monthlySalary, 12) + othersBouns();
   }
   if (isNumber(dailySalary) && isNumber(dailyAvgWorkingDays)) {
+    salaryTypesField.daily.monthlySalary = calculateTotal(dailySalary * dailyAvgWorkingDays, 12);
     salaryTypesField.daily.total = calculateTotal(dailySalary * dailyAvgWorkingDays, 12) + othersBouns();
   }
   if (isNumber(hourlySalary) && isNumber(hourlyAvgWorkingHours) && isNumber(hourlyAvgWorkingDays)) {
+    salaryTypesField.hourly.monthlySalary = calculateTotal(
+      hourlySalary * hourlyAvgWorkingHours * hourlyAvgWorkingDays,
+      12,
+    );
     salaryTypesField.hourly.total =
       calculateTotal(hourlySalary * hourlyAvgWorkingHours * hourlyAvgWorkingDays, 12) + othersBouns();
   }
@@ -175,7 +271,7 @@ const isNumber = (value: number) => {
   return typeof value === 'number' && isFinite(value) && !isNaN(value);
 };
 // 定義一個函數，用來計算 total 值
-const calculateTotal = (salary: number, multiplier: number): number | string => {
+const calculateTotal = (salary: number, multiplier: number): number => {
   return salary ? Number(salary * multiplier) : 0;
 };
 
@@ -189,9 +285,34 @@ const removeCustomTag = (tag: string) => {
   if (index === -1) return;
   submitData.customTags.splice(index, 1);
 };
-const onSubmit = () => {
-  console.log('value', form.value);
-  // form.value.resetForm();
+const onConfirm = async () => {
+  const isRequiredSuccess = await validate();
+  if (isRequiredSuccess) {
+    const title = '感謝你的分享!';
+    const message = `你真實且寶貴的經歷將成為下位求職者不可或缺的幫助。\n提醒您,內容若涉及人身攻擊、謾罵或個資,
+該筆分享可能不會成為有效資料喔!`;
+    openConfirmModal(title, message, onSubmit);
+  }
+};
+const onSubmit = async () => {
+  const { monthlySalary, total } = salaryTypesField[salaryTypes.value];
+  const data = {
+    ...submitData,
+    monthlySalary,
+    yearlySalary: total,
+  };
+  await shareSalaryApi
+    .postSalary(data)
+    .then((res) => {
+      successResult.value = res;
+      nextTick(() => {
+        step.value = 3;
+      });
+      scrollTop();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 // 右側邊欄
 const rightSideList = reactive([
@@ -251,11 +372,14 @@ const rightSideList = reactive([
       <div class="block lg:flex">
         <div class="w-full lg:w-4/6 border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
           <div class="w-100 p-6 bg-black-10 text-white">
-            <h4>{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
-            <p class="opacity-70 mt-2">在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。</p>
+            <template v-if="step !== 3">
+              <h4>{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
+              <p class="opacity-70 mt-2">在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。</p>
+            </template>
+            <template v-else> 成功分享，獲得{{ successResult?.point }}! </template>
           </div>
-          <VForm v-slot="{ errors, meta }" ref="form" class="p-6" @submit="onSubmit">
-            <div v-show="step === 1">
+          <VForm v-slot="{ errors, meta }" ref="form" class="p-6" @submit="onConfirm">
+            <div v-if="step === 1">
               <!-- 公司統編 -->
               <div class="mb-10">
                 <label for="taxId" class="text-black-10">公司統一編號</label>
@@ -286,13 +410,13 @@ const rightSideList = reactive([
               </div>
               <!-- 應徵職務 -->
               <div class="">
-                <label for="taxId" class="text-black-10">應徵職務</label>
+                <label for="title" class="text-black-10">應徵職務</label>
                 <VField
                   v-model.trim="submitData.title"
                   name="title"
                   label="應徵職務"
                   type="text"
-                  rules="required"
+                  :rules="isOfferJob ? '' : 'required'"
                   :class="{ 'border-red': errors.title }"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入應徵職務"
@@ -302,6 +426,7 @@ const rightSideList = reactive([
               <div class="flex items-center mt-1 mb-10">
                 <input
                   id="inService"
+                  v-model="isOfferJob"
                   type="checkbox"
                   name="inService"
                   class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 rounded accent-blue rounded-2xl"
@@ -353,7 +478,7 @@ const rightSideList = reactive([
                   label="在職年資"
                   class="mr-3"
                   name="workYears"
-                  required="required"
+                  required="required|confirmedToWorkYears"
                 />
                 <BaseFormSelect
                   v-model="submitData.totalWorkYears"
@@ -361,7 +486,7 @@ const rightSideList = reactive([
                   label="總年資"
                   class="ml-3"
                   name="totalWorkYears"
-                  required="required"
+                  required="required|confirmedWorkYears"
                 />
               </div>
 
@@ -393,8 +518,8 @@ const rightSideList = reactive([
                           <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
                           </span>
-                          <VErrorMessage name="monthlySalary" as="div" class="help is-danger text-red" />
                         </div>
+                        <VErrorMessage name="monthlySalary" as="div" class="help is-danger text-red" />
                       </template>
                     </keep-alive>
                     <keep-alive>
@@ -499,10 +624,10 @@ const rightSideList = reactive([
                     </span>
                     <div class="shrink w-full">
                       <input
-                        v-model.number="submitData.yearEndBonus"
+                        v-model.number.lazy="submitData.yearEndBonus"
                         type="number"
                         name="yearEndBonus"
-                        placeholder="年終"
+                        placeholder="年終 EX: 12000"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
                       />
                     </div>
@@ -514,7 +639,7 @@ const rightSideList = reactive([
                     </span>
                     <div class="shrink w-full">
                       <input
-                        v-model.number="submitData.holidayBonus"
+                        v-model.number.lazy="submitData.holidayBonus"
                         type="number"
                         name="holidayBonus"
                         placeholder="三節"
@@ -529,7 +654,7 @@ const rightSideList = reactive([
                     </span>
                     <div class="shrink w-full">
                       <input
-                        v-model.number="submitData.profitSharingBonus"
+                        v-model.number.lazy="submitData.profitSharingBonus"
                         type="number"
                         name="profitSharingBonus"
                         placeholder="獎金"
@@ -544,7 +669,7 @@ const rightSideList = reactive([
                     </span>
                     <div class="shrink w-full">
                       <input
-                        v-model.number="submitData.otherBonus"
+                        v-model.number.lazy="submitData.otherBonus"
                         type="number"
                         name="otherBonus"
                         placeholder="其他"
@@ -592,10 +717,10 @@ const rightSideList = reactive([
                   <br />
                   成為他人的職場貴人！
                 </p>
-                <btn cate="primary" @click="step = 2">下一步</btn>
+                <btn cate="primary" @click="onNext">下一步</btn>
               </div>
             </div>
-            <div v-show="step === 2">
+            <div v-if="step === 2">
               <!-- 工作內容分享 -->
               <div class="mb-10">
                 <label for="jobDescription" class="text-black-10">
@@ -731,7 +856,7 @@ const rightSideList = reactive([
               </div>
               <hr class="my-10" />
               <div class="flex justify-between">
-                <btn cate="white" @click="step = 1">上一步</btn>
+                <btn cate="white" @click="onPrev">上一步</btn>
                 <button
                   class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 disabled:bg-black-3 disabled:text-black-6"
                   type="submit"
