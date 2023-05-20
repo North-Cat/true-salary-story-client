@@ -9,7 +9,7 @@ export default new (class postShare extends Http {
     return this.get(`/api/salary/uniformNumbers/${id}`);
   }
 
-  public getSalaryInfo(id: number) {
+  public getSalaryInfo(id: string) {
     return this.get(`/api/salary/${id}`);
   }
 

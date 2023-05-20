@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { IShareSalaryFormData } from '@/interface/salaryData';
 useHead({
   title: '薪水分享',
 });
 
-defineProps<{
-  post: IShareSalaryFormData;
-}>();
+defineProps(['post']);
 
 const emit = defineEmits(['click']);
 
@@ -93,8 +90,7 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
 
 <template>
   <section
-    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
-  >
+    class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0">
     <div class="w-full flex flex-col p-6">
       <div class="flex flex-col">
         <div class="p-6 flex flex-col">
@@ -122,7 +118,7 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6 v-show="post.monthlySalary">{{ numberRange(post.monthlySalary) }}</h6>
+                    <h6>{{ numberRange(post.monthlySalary) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -131,7 +127,7 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年薪</div>
-                    <h6 v-show="post.yearlySalary">{{ numberRange(post.yearlySalary) }}</h6>
+                    <h6>{{ numberRange(post.yearlySalary) }}</h6>
                   </div>
                 </div>
               </div>
@@ -139,25 +135,25 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年終</div>
-                    <h6 v-show="post.yearEndBonus">{{ numberRange(post.yearEndBonus) }}</h6>
+                    <h6>{{ numberRange(post.yearEndBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">三節</div>
-                    <h6 v-show="post.holidayBonus">{{ numberRange(post.holidayBonus) }}</h6>
+                    <h6>{{ numberRange(post.holidayBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">分紅</div>
-                    <h6 v-show="post.profitSharingBonus">{{ numberRange(post.profitSharingBonus) }}</h6>
+                    <h6>{{ numberRange(post.profitSharingBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">其他</div>
-                    <h6 v-show="post.otherBonus">{{ numberRange(post.otherBonus) }}</h6>
+                    <h6>{{ numberRange(post.otherBonus) }}</h6>
                   </div>
                 </div>
               </div>
@@ -213,11 +209,11 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
           </div>
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">工作內容</div>
-            <p class="body-sm" v-show="post.jobDescription">{{ isLocked ? post.jobDescription : truncateText(post.jobDescription, 20) }}</p>
+            <p class="body-sm">{{ isLocked ? post.jobDescription : truncateText(post.jobDescription, 20) }}</p>
           </div>
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">其他建議</div>
-            <p class="body-sm" v-show="post.suggestion">{{ isLocked ? post.suggestion : truncateText(post.suggestion, 20) }}</p>
+            <p class="body-sm">{{ isLocked ? post.suggestion : truncateText(post.suggestion, 20) }}</p>
           </div>
           <div class="flex flex-wrap mb-5">
             <span v-for="tag in post.tags" :key="tag" class="body-sm text-black-5 me-5"> #{{ tag }} </span>
