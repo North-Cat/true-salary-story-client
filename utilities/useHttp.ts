@@ -42,9 +42,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
           };
         }
       },
-      onRequestError({ error }) {
-        console.log(error, 'onRequestError');
-      },
+      onRequestError() {},
       onResponse({ response }) {
         return response._data;
       },
@@ -54,7 +52,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     });
     const result = data.value;
     if (error.value || !result) {
-      showError('error', error?.value?.statusMessage || '系統錯誤');
+      showError('error', error?.value?.data?.message || '系統錯誤');
       return Promise.reject(error);
       // throw createError({
       //   statusCode: 500,
@@ -65,7 +63,6 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     }
     return JSON.parse(JSON.stringify(data))._value; // 这里直接返回data或者其他的
   } catch (err) {
-    console.log(err);
     return Promise.reject(err);
   }
 };

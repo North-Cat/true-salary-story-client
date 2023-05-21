@@ -22,7 +22,7 @@ const checkLoginStatus = () => {
   const jwtToken = route.query.token;
   if (jwtToken) {
     // user.isLogin = true;
-    const tokenCookie = useCookie('token');
+    const tokenCookie = useCookie('token', { maxAge: 60 * 60 });
     tokenCookie.value = jwtToken as string;
     // localStorage.setItem('token', jwtToken as string);
     user.token = jwtToken as string;

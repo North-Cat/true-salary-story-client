@@ -25,8 +25,7 @@ export const useUserStore = defineStore('user', {
           this.isLogin = true;
           this.isFetchProfileLoading = false;
         })
-        .catch((error) => {
-          console.log('error');
+        .catch(() => {
           this.error();
         });
     },

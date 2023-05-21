@@ -32,3 +32,9 @@ export interface ISalary {
     dailyAverageWorkingHours?: number | string;
   };
 }
+
+export interface ISalaryResult {
+  companyName: string;
+  title: string;
+  point: number;
+}
