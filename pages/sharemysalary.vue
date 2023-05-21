@@ -451,7 +451,7 @@ const rightSideList = reactive([
                   :class="{ 'border-red': errors.taxId }"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
-                  @blur="onBlurValidationTaxId(submitData.taxId)"
+                  oninput="value=value.replace('-','')"
                 />
                 <VErrorMessage name="taxId" as="div" class="text-red" />
               </div>
@@ -574,6 +574,7 @@ const rightSideList = reactive([
                             :rules="salaryTypes === 'monthly' ? 'required|numeric' : 'numeric'"
                             class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                             placeholder="月薪"
+                            oninput="value=value.replace('-','')"
                           />
                           <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
@@ -598,6 +599,7 @@ const rightSideList = reactive([
                               :rules="salaryTypes === 'daily' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                               placeholder="日薪"
+                              oninput="value=value.replace('-','')"
                             />
                             <VErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
@@ -637,6 +639,7 @@ const rightSideList = reactive([
                               :rules="salaryTypes === 'hourly' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                               placeholder="時薪"
+                              oninput="value=value.replace('-','')"
                             />
                             <VErrorMessage name="hourlySalary" as="div" class="text-red" />
                           </div>
@@ -689,6 +692,7 @@ const rightSideList = reactive([
                         name="yearEndBonus"
                         placeholder="年終 EX: 12000"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
+                        oninput="value=value.replace('-','')"
                       />
                     </div>
                   </div>
@@ -704,6 +708,7 @@ const rightSideList = reactive([
                         name="holidayBonus"
                         placeholder="三節"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
+                        oninput="value=value.replace('-','')"
                       />
                     </div>
                   </div>
@@ -719,6 +724,7 @@ const rightSideList = reactive([
                         name="profitSharingBonus"
                         placeholder="獎金"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
+                        oninput="value=value.replace('-','')"
                       />
                     </div>
                   </div>
@@ -734,6 +740,7 @@ const rightSideList = reactive([
                         name="otherBonus"
                         placeholder="其他"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
+                        oninput="value=value.replace('-','')"
                       />
                     </div>
                   </div>
