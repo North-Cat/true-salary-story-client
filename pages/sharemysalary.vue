@@ -127,11 +127,16 @@ defineRule('confirmedWorkYears', () => {
   }
   return true;
 });
-
+defineRule('comfirnEditNumber', (value: number) => {
+  if (value < Number(salaryTypesField[salaryTypes.value].tempTotal)) {
+    return '編輯後的總數不能小於原本加總';
+  }
+  return true;
+});
 const throttledFn = useThrottleFn(() => {
   const data = tryToGetUniformNumbers();
   return data;
-}, 3000);
+}, 5000);
 const tryToGetUniformNumbers = async () => {
   const { isExist, companyName } = await shareSalaryApi.getUniformNumbers(submitData.taxId);
   return {
@@ -153,17 +158,20 @@ const salaryTypesField: ISalary = reactive({
   monthly: {
     salary: '',
     total: '',
+    tempTotal: '',
   },
   daily: {
     salary: '',
     avgWorkingDaysPerMonth: '',
     total: '',
+    tempTotal: '',
   },
   hourly: {
     salary: '',
     dailyAverageWorkingHours: '',
     avgWorkingDaysPerMonth: '',
     total: '',
+    tempTotal: '',
   },
 });
 watch(
@@ -264,17 +272,20 @@ const resetSubmitData = () => {
     monthly: {
       salary: '',
       total: '',
+      tempTotal: '',
     },
     daily: {
       salary: '',
       avgWorkingDaysPerMonth: '',
       total: '',
+      tempTotal: '',
     },
     hourly: {
       salary: '',
       dailyAverageWorkingHours: '',
       avgWorkingDaysPerMonth: '',
       total: '',
+      tempTotal: '',
     },
   });
 };
@@ -332,13 +343,16 @@ const chnagSalaryTotal = () => {
   const hourlyAvgWorkingDays = Number(salaryTypesField.hourly.avgWorkingDaysPerMonth);
   if (isNumber(monthlySalary)) {
     salaryTypesField.monthly.total = calculateTotal(monthlySalary, 12) + othersBouns();
+    salaryTypesField.monthly.tempTotal = salaryTypesField.monthly.total;
   }
   if (isNumber(dailySalary) && isNumber(dailyAvgWorkingDays)) {
     salaryTypesField.daily.total = calculateTotal(dailySalary * dailyAvgWorkingDays, 12) + othersBouns();
+    salaryTypesField.daily.tempTotal = salaryTypesField.daily.total;
   }
   if (isNumber(hourlySalary) && isNumber(hourlyAvgWorkingHours) && isNumber(hourlyAvgWorkingDays)) {
     salaryTypesField.hourly.total =
       calculateTotal(hourlySalary * hourlyAvgWorkingHours * hourlyAvgWorkingDays, 12) + othersBouns();
+    salaryTypesField.hourly.tempTotal = salaryTypesField.hourly.total;
   }
 };
 const othersBouns = () => {
@@ -745,13 +759,16 @@ const rightSideList = reactive([
                   <!-- 總獎金 -->
                   <div class="mt-3">
                     <div class="shrink w-full">
-                      <input
+                      <VField
                         v-model="salaryTypesField[salaryTypes].total"
-                        type="text"
+                        type="number"
                         name="total"
                         placeholder="系統自動加總年薪"
                         class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
+                        rules="comfirnEditNumber"
+                        oninput="value=value.replace('-','')"
                       />
+                      <VErrorMessage name="total" as="div" class="text-red" />
                     </div>
                     <span class="text-sm text-black-6"
                       ><i class="icomoon icon-info text-sm mr-1"></i

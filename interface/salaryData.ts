@@ -28,6 +28,7 @@ export interface ISalary {
   [key: string]: {
     salary: number | string;
     total: number | string;
+    tempTotal: number | string;
     avgWorkingDaysPerMonth?: number | string;
     dailyAverageWorkingHours?: number | string;
   };
