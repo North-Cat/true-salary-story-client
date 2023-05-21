@@ -18,14 +18,14 @@ import {
   tagsOptions,
 } from '~/utilities/options';
 import { useUserStore } from '@/store/user';
-import { useSalaryStore } from '@/store/salary';
+// import { useSalaryStore } from '@/store/salary';
 import { IShareSalaryFormData, ISalary, ISalaryResult } from '~/interface/salaryData';
 useHead({
   title: '匿名分享',
 });
-// definePageMeta({
-//   middleware: 'auth',
-// });
+definePageMeta({
+  middleware: 'auth',
+});
 const { shareSalaryApi } = useApi();
 const router = useRouter();
 const submitData = reactive<IShareSalaryFormData>({
