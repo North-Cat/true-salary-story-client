@@ -52,7 +52,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     });
     const result = data.value;
     if (error.value || !result) {
-      showError('error', error?.value?.statusMessage || '系統錯誤');
+      showError('error', error?.value?.data?.message || '系統錯誤');
       return Promise.reject(error);
       // throw createError({
       //   statusCode: 500,

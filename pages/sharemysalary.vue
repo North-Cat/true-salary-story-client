@@ -260,6 +260,23 @@ const resetSubmitData = () => {
     tags: [],
     customTags: [],
   });
+  Object.assign(salaryTypesField, {
+    monthly: {
+      salary: '',
+      total: '',
+    },
+    daily: {
+      salary: '',
+      avgWorkingDaysPerMonth: '',
+      total: '',
+    },
+    hourly: {
+      salary: '',
+      dailyAverageWorkingHours: '',
+      avgWorkingDaysPerMonth: '',
+      total: '',
+    },
+  });
 };
 const onConfirm = async () => {
   const isRequiredSuccess = await validate();
@@ -292,7 +309,6 @@ const onSubmit = async () => {
       scrollTop();
     })
     .catch((error) => {
-      console.log(error.value.data.message);
       if (error.value.data.message === 'No token provided') {
         // salary.tempSalaryFormData = { ...submitData };
         // salary.tempSalary = { ...salaryTypesField };
@@ -435,8 +451,9 @@ const rightSideList = reactive([
                   :class="{ 'border-red': errors.taxId }"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
+                  @blur="onBlurValidationTaxId(submitData.taxId)"
                 />
-                <VErrorMessage name="taxId" as="div" class="help is-danger text-red" />
+                <VErrorMessage name="taxId" as="div" class="text-red" />
               </div>
               <!-- 公司名稱 -->
               <div class="mb-10">
@@ -464,7 +481,7 @@ const rightSideList = reactive([
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入應徵職務"
                 />
-                <VErrorMessage name="title" as="div" class="help is-danger text-red" />
+                <VErrorMessage name="title" as="div" class="text-red" />
               </div>
               <div class="flex items-center mt-1 mb-10">
                 <input
@@ -562,7 +579,7 @@ const rightSideList = reactive([
                             x12月
                           </span>
                         </div>
-                        <VErrorMessage name="monthlySalary" as="div" class="help is-danger text-red" />
+                        <VErrorMessage name="monthlySalary" as="div" class="text-red" />
                       </template>
                     </keep-alive>
                     <keep-alive>
@@ -582,7 +599,7 @@ const rightSideList = reactive([
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                               placeholder="日薪"
                             />
-                            <VErrorMessage name="dailySalary" as="div" class="help is-danger text-red" />
+                            <VErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
@@ -621,7 +638,7 @@ const rightSideList = reactive([
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
                               placeholder="時薪"
                             />
-                            <VErrorMessage name="hourlySalary" as="div" class="help is-danger text-red" />
+                            <VErrorMessage name="hourlySalary" as="div" class="text-red" />
                           </div>
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
@@ -792,7 +809,7 @@ const rightSideList = reactive([
                   <span class="text-sm text-black-6"
                     ><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫60字以上</span
                   >
-                  <div v-if="errors[0]" class="text-red">{{ errors[0] }}</div>
+                  <VErrorMessage name="jobDescription" as="div" class="text-red" />
                 </VField>
               </div>
 
@@ -824,7 +841,7 @@ const rightSideList = reactive([
                   <span class="text-sm text-black-6"
                     ><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫30字以上</span
                   >
-                  <div v-if="errors[0]" class="text-red">{{ errors[0] }}</div>
+                  <VErrorMessage name="suggestion" as="div" class="text-red" />
                 </VField>
               </div>
               <!-- 評價標籤 -->
