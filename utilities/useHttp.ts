@@ -42,9 +42,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
           };
         }
       },
-      onRequestError({ error }) {
-        console.log(error, 'onRequestError');
-      },
+      onRequestError() {},
       onResponse({ response }) {
         return response._data;
       },
@@ -65,7 +63,6 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     }
     return JSON.parse(JSON.stringify(data))._value; // 这里直接返回data或者其他的
   } catch (err) {
-    console.log(err);
     return Promise.reject(err);
   }
 };

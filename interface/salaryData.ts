@@ -26,7 +26,6 @@ export interface IShareSalaryFormData {
 
 export interface ISalary {
   [key: string]: {
-    monthlySalary: number;
     salary: number | string;
     total: number | string;
     avgWorkingDaysPerMonth?: number | string;

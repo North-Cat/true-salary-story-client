@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { RouteLocationRaw } from 'vue-router';
 import { useUserStore } from '@/store/user';
-const route = useRoute();
+// const route = useRoute();
 const router = useRouter();
 const showUserList = ref(false);
 const user = useUserStore();
