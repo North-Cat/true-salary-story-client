@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useWindowSize } from '@vueuse/core'
+import { useWindowSize } from '@vueuse/core';
 
 const emit = defineEmits(['changePageEvent']); // 換頁要呼叫的方法 (會回傳給父元件目前頁數)
 const props = defineProps({
@@ -57,26 +57,25 @@ const hiddenLimitPage = ref({
 /**
  * 偵測瀏覽器寬度
  */
-const smScreen = 320;
 const mdScreen = 768;
 const lgScreen = 1024;
 enum Screen {
-  SM = "sm",
-  MD = "md",
-  LG = "lg",
+  SM = 'sm',
+  MD = 'md',
+  LG = 'lg',
 }
 // 取得螢幕寬度
-const { width } = useWindowSize()
+const { width } = useWindowSize();
 onMounted(() => {
   checkCurScreen(width.value);
-})
-watch(width, (newWidth, oldWidth) => {
+});
+watch(width, (newWidth) => {
   checkCurScreen(newWidth);
 });
 
 const curScreen = ref();
 function checkCurScreen(widthInput?: number) {
-  const curWidth = widthInput ? widthInput : width.value;
+  const curWidth = widthInput || width.value;
   if (curWidth < mdScreen) {
     curScreen.value = Screen.SM;
     showLimitPage.value = 3;
@@ -84,38 +83,49 @@ function checkCurScreen(widthInput?: number) {
       min: 1,
       middle: 1,
       max: 2,
-    }
+    };
   } else if (curWidth >= mdScreen && curWidth < lgScreen) {
     curScreen.value = Screen.MD;
   } else if (curWidth >= lgScreen) {
     curScreen.value = Screen.LG;
   }
 }
-
 </script>
 <template>
   <div class="pagination flex">
-    <button :class="{ 'pointer-events-none opacity-60': currentPageComponent == 1 }"
+    <button
+      :class="{ 'pointer-events-none opacity-60': currentPageComponent == 1 }"
       class="w-full lg:w-auto border border-blue rounded text-blue py-3 px-5 me-1.5 hover:bg-blue-light active:bg-blue active:text-white"
-      @click="changePage('prev')">
+      @click="changePage('prev')"
+    >
       <h6>上一頁</h6>
     </button>
 
     <!-- (Mobile) 下拉選單 -->
     <div v-if="curScreen == Screen.SM">
-      <select name="pageOption" id="pageOption" class="border border-blue rounded text-blue py-3 px-5"
-        v-model="currentPageComponent" @change="changePage(currentPageComponent)">
+      <select
+        id="pageOption"
+        v-model="currentPageComponent"
+        name="pageOption"
+        class="border border-blue rounded text-blue py-3 px-5"
+        @change="changePage(currentPageComponent)"
+      >
         <option v-for="page in totalPagesComponent" :key="page" :value="page">{{ page }}</option>
       </select>
     </div>
 
     <!-- (PC) 總頁數 <= 上限，顯示所有頁數 -->
     <div v-if="totalPagesComponent <= showLimitPage && curScreen == Screen.LG">
-      <button v-for="page in totalPagesComponent" :key="page" :class="{
-        'bg-blue text-white': currentPageComponent == page,
-        'hover:bg-blue-light': currentPageComponent != page,
-      }" class="border border-blue rounded text-blue py-1 px-3 lg:py-3 lg:px-5 mx-1.5 active:bg-blue active:text-white"
-        @click="changePage(page)">
+      <button
+        v-for="page in totalPagesComponent"
+        :key="page"
+        :class="{
+          'bg-blue text-white': currentPageComponent == page,
+          'hover:bg-blue-light': currentPageComponent != page,
+        }"
+        class="border border-blue rounded text-blue py-1 px-3 lg:py-3 lg:px-5 mx-1.5 active:bg-blue active:text-white"
+        @click="changePage(page)"
+      >
         <h6>{{ page }}</h6>
       </button>
     </div>
@@ -124,11 +134,15 @@ function checkCurScreen(widthInput?: number) {
       <!-- 樣式一 : 靠近第一頁 -->
       <div v-if="currentPageComponent <= hiddenLimitPage.middle" class="flex">
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page <= hiddenLimitPage.max" :class="{
-            'bg-blue text-white': currentPageComponent == page,
-            'hover:bg-blue-light': currentPageComponent != page,
-          }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="page <= hiddenLimitPage.max"
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
@@ -136,26 +150,38 @@ function checkCurScreen(widthInput?: number) {
           <h6>...</h6>
         </button>
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page > totalPagesComponent - hiddenLimitPage.min" :class="{
-            'bg-blue text-white': currentPageComponent == page,
-            'hover:bg-blue-light': currentPageComponent != page,
-          }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="page > totalPagesComponent - hiddenLimitPage.min"
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
       </div>
 
       <!-- 樣式二 : 靠近中間頁 -->
-      <div v-if="currentPageComponent > hiddenLimitPage.middle &&
-        currentPageComponent <= totalPagesComponent - hiddenLimitPage.middle
-        " class="flex">
+      <div
+        v-if="
+          currentPageComponent > hiddenLimitPage.middle &&
+          currentPageComponent <= totalPagesComponent - hiddenLimitPage.middle
+        "
+        class="flex"
+      >
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page <= hiddenLimitPage.min" :class="{
-            'bg-blue text-white': currentPageComponent == page,
-            'hover:bg-blue-light': currentPageComponent != page,
-          }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="page <= hiddenLimitPage.min"
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
@@ -163,13 +189,18 @@ function checkCurScreen(widthInput?: number) {
           <h6>...</h6>
         </button>
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page <= currentPageComponent + Math.floor(hiddenLimitPage.middle / 2) &&
-            page >= currentPageComponent - Math.floor(hiddenLimitPage.middle / 2)
-            " :class="{
-    'bg-blue text-white': currentPageComponent == page,
-    'hover:bg-blue-light': currentPageComponent != page,
-  }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="
+              page <= currentPageComponent + Math.floor(hiddenLimitPage.middle / 2) &&
+              page >= currentPageComponent - Math.floor(hiddenLimitPage.middle / 2)
+            "
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
@@ -177,11 +208,15 @@ function checkCurScreen(widthInput?: number) {
           <h6>...</h6>
         </button>
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page > totalPagesComponent - hiddenLimitPage.min" :class="{
-            'bg-blue text-white': currentPageComponent == page,
-            'hover:bg-blue-light': currentPageComponent != page,
-          }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="page > totalPagesComponent - hiddenLimitPage.min"
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
@@ -190,11 +225,15 @@ function checkCurScreen(widthInput?: number) {
       <!-- 樣式三 : 靠近最後頁 -->
       <div v-if="currentPageComponent > totalPagesComponent - hiddenLimitPage.middle" class="flex">
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page <= hiddenLimitPage.min" :class="{
-            'bg-blue text-white': currentPageComponent == page,
-            'hover:bg-blue-light': currentPageComponent != page,
-          }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="page <= hiddenLimitPage.min"
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
@@ -202,20 +241,26 @@ function checkCurScreen(widthInput?: number) {
           <h6>...</h6>
         </button>
         <div v-for="page in totalPagesComponent" :key="page">
-          <button v-if="page > totalPagesComponent - hiddenLimitPage.max" :class="{
-            'bg-blue text-white': currentPageComponent == page,
-            'hover:bg-blue-light': currentPageComponent != page,
-          }" class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
-            @click="changePage(page)">
+          <button
+            v-if="page > totalPagesComponent - hiddenLimitPage.max"
+            :class="{
+              'bg-blue text-white': currentPageComponent == page,
+              'hover:bg-blue-light': currentPageComponent != page,
+            }"
+            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            @click="changePage(page)"
+          >
             <h6>{{ page }}</h6>
           </button>
         </div>
       </div>
     </div>
 
-    <button :class="{ 'pointer-events-none opacity-60': currentPageComponent == totalPagesComponent }"
+    <button
+      :class="{ 'pointer-events-none opacity-60': currentPageComponent == totalPagesComponent }"
       class="w-full lg:w-auto border border-blue rounded text-blue py-3 px-5 ms-1.5 hover:bg-blue-light active:bg-blue active:text-white"
-      @click="changePage('next')">
+      @click="changePage('next')"
+    >
       <h6>下一頁</h6>
     </button>
   </div>

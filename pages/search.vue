@@ -9,15 +9,25 @@ useHead({
 /**
  * 初始化
  */
+enum SearchType {
+  KEYWORD = 'keyword', // 關鍵字
+  COMPANY = 'companyName', // 公司
+  JOB_TITLE = 'title', // 職位
+  COMPANY_TYPE = 'type', // 產業
+}
 const route = useRoute();
 const { searchType, param, page } = route.query; // 取得 URL 的搜尋參數
-onMounted(async () => {
+const curSearchType = ref(); // 目前所在頁面
+curSearchType.value = searchType; // 取得 URL 上的 searchType
+onMounted(() => {
   // 第一次進頁面，要搜尋
   // 組合搜尋參數
   searchParam.value = param;
 
   // 搜尋
-  await clickSearch(Number(page));
+  setTimeout(() => {
+    clickSearch(Number(page));
+  }, 1);
 });
 
 /**
@@ -30,9 +40,9 @@ const searchParam = ref();
 
 // 搜尋結果 (公司)
 interface ICompany {
-  taxId: string,
-  companyName: string,
-  latestPostTitle: string[],
+  taxId: string;
+  companyName: string;
+  latestPostTitle: string[];
 }
 const companies = ref<ICompany[]>([]);
 const companiesCount = ref();
@@ -45,12 +55,12 @@ const companyTotalPages = ref(); // 總頁數
 
 // 搜尋結果 (產業)
 interface IType {
-  taxId: string,
-  companyName: string,
-  postCount: number,
-  address: string,
-  phone: string,
-  type: string,
+  taxId: string;
+  companyName: string;
+  postCount: number;
+  address: string;
+  phone: string;
+  type: string;
 }
 const types = ref<IType[]>([]);
 const typesCount = ref();
@@ -59,13 +69,13 @@ const typeTotalPages = ref(); // 總頁數
 
 // 搜尋結果 (職位)
 interface ITitle {
-  taxId: string,
-  companyName: string,
-  postId: number,
-  title: string,
-  phone: string,
-  jobDescription: string,
-  suggestion: string,
+  taxId: string;
+  companyName: string;
+  postId: number;
+  title: string;
+  phone: string;
+  jobDescription: string;
+  suggestion: string;
 }
 const titles = ref<ITitle[]>([]);
 const titlesCount = ref();
@@ -74,7 +84,7 @@ const titleTotalPages = ref(); // 總頁數
 const textWithDot = computed(() => (text?: string) => {
   // 將文字最後一次刪除，並加上 ... ，避免最後一個字是標點符號顯示會很奇怪
   const result = text?.slice(0, text.length - 1);
-  return result + "...";
+  return result + '...';
 });
 
 // 搜尋結果 (關鍵字)
@@ -82,26 +92,26 @@ const keywordCurPage = ref(1); // 目前頁數
 const keywordTotalPages = ref(); // 總頁數
 
 // 排序
-const sortOptions = [
-  { text: '最相關', value: 1 },
-  { text: '時間 近→遠', value: 2 }
-];
-const keywordSort = ref(1);
-const companySort = ref(1);
-const titleSort = ref(1);
-const typeSort = ref(1);
-watch(keywordSort, (newSort, oldSort) => {
-  clickSearch(1);
-});
-watch(companySort, (newSort, oldSort) => {
-  clickSearch(1);
-});
-watch(titleSort, (newSort, oldSort) => {
-  clickSearch(1);
-});
-watch(typeSort, (newSort, oldSort) => {
-  clickSearch(1);
-});
+// const sortOptions = [
+//   { text: '最相關', value: 1 },
+//   { text: '時間 近→遠', value: 2 },
+// ];
+// const keywordSort = ref(1);
+// const companySort = ref(1);
+// const titleSort = ref(1);
+// const typeSort = ref(1);
+// watch(keywordSort, () => {
+//   clickSearch(1);
+// });
+// watch(companySort, () => {
+//   clickSearch(1);
+// });
+// watch(titleSort, () => {
+//   clickSearch(1);
+// });
+// watch(typeSort, () => {
+//   clickSearch(1);
+// });
 
 /**
  * UI function
@@ -120,7 +130,7 @@ function clickSearch(page?: number) {
   const paramObj = {
     searchType: curSearchType.value,
     param: searchParam.value,
-    page
+    page,
   };
   const router = useRouter();
   router.replace({
@@ -161,12 +171,12 @@ async function search() {
   // console.log('搜尋參數', searchParam.value);
 
   // 組合參數
-  let companyNameReq: string = '';
-  let titleReq: string = '';
-  let typeReq: string = '';
-  let pageReq: number = 1;
-  let limitReq: number = limit.value;
-  let sortReq: string = '';
+  let companyNameReq = '';
+  let titleReq = '';
+  let typeReq = '';
+  let pageReq = 1;
+  const limitReq: number = limit.value;
+  // let sortReq = '';
   if (curSearchType.value === SearchType.KEYWORD) {
     companyNameReq = searchParam.value;
     titleReq = searchParam.value;
@@ -189,13 +199,7 @@ async function search() {
 
   // call search api
   await searchApi
-    .getPostResultsByParam(
-      companyNameReq,
-      typeReq,
-      titleReq,
-      pageReq,
-      limitReq,
-      sortReq)
+    .getPostResultsByParam(companyNameReq, typeReq, titleReq, pageReq, limitReq)
     .then(({ companyResults, companyResultsCount, titleResults, titleResultsCount, typeResults, typeResultsCount }) => {
       // console.log("companyResults", companyResults);
       // console.log("titleResults", titleResults);
@@ -220,23 +224,15 @@ async function search() {
 
       // 顯示搜尋結果
       showResult.value = true;
-    })
-    .catch((error) => {
-      console.log('error', error);
+
+      // 移到頁面頂端
+      scrollToTop();
     });
 }
 
 /**
  * 切換頁籤相關
  */
-enum SearchType {
-  KEYWORD = 'keyword', // 關鍵字
-  COMPANY = 'companyName', // 公司
-  JOB_TITLE = 'title', // 職位
-  COMPANY_TYPE = 'type', // 產業
-}
-const curSearchType = ref();
-curSearchType.value = searchType; // 取得 URL 上的 searchType
 
 function changeTab(tab: SearchType) {
   curSearchType.value = tab;
@@ -276,42 +272,56 @@ const forceRender = () => {
 };
 
 function isEmpty(obj: any): boolean {
-  if (typeof obj == 'string') {
+  if (typeof obj === 'string') {
     if (obj && obj.trim()) {
       return false;
     }
-  } else if (typeof obj == 'object') {
+  } else if (typeof obj === 'object') {
     if (obj && obj.length !== 0) {
       return false;
     }
   }
   return true;
 }
+
+function scrollToTop() {
+  window.scrollTo(0, 0);
+}
 </script>
 
 <template>
-  <section class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 lg:pt-40">
+  <section
+    ref="searchSection"
+    class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 lg:pt-40"
+  >
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-4xl flex flex-col justify-center items-center">
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-4xl flex flex-col justify-center items-center"
+    >
       <div class="w-full max-w-[1076px] flex flex-col border-2 border-black-10 bg-white py-5 lg:py-10 px-5 mb-10">
         <div class="w-full flex flex-col lg:flex-row mb-5">
           <div class="w-full lg:w-10/12 flex items-center border border-black-1 rounded me-2 mb-3 lg:mb-0">
             <div
-              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 z-10">
-            </div>
+              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 z-10"
+            ></div>
             <input v-model="searchParam" type="text" class="w-full ps-10 py-3 pe-10" @keyup.enter="enterSearch" />
-            <button class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"
-              @click="clickClear"></button>
+            <button
+              class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"
+              @click="clickClear"
+            ></button>
           </div>
           <base-button class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></base-button>
         </div>
         <!-- 搜尋頁籤 -->
-        <div v-if="showResult"
-          class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1">
+        <div
+          v-if="showResult"
+          class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1"
+        >
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchType.KEYWORD)" @click="changeTab(SearchType.KEYWORD)">
+              :class="tabClass(SearchType.KEYWORD)"
+              @click="changeTab(SearchType.KEYWORD)"
+            >
               <h6 class="hidden lg:block">所有結果</h6>
               <h6 class="block lg:hidden">全部</h6>
             </button>
@@ -319,7 +329,9 @@ function isEmpty(obj: any): boolean {
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchType.COMPANY)" @click="changeTab(SearchType.COMPANY)">
+              :class="tabClass(SearchType.COMPANY)"
+              @click="changeTab(SearchType.COMPANY)"
+            >
               <h6 class="hidden lg:block">找公司</h6>
               <h6 class="block lg:hidden">公司</h6>
             </button>
@@ -327,14 +339,19 @@ function isEmpty(obj: any): boolean {
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchType.JOB_TITLE)" @click="changeTab(SearchType.JOB_TITLE)">
+              :class="tabClass(SearchType.JOB_TITLE)"
+              @click="changeTab(SearchType.JOB_TITLE)"
+            >
               <h6 class="hidden lg:block">找職位</h6>
               <h6 class="block lg:hidden">職位</h6>
             </button>
           </div>
           <div class="py-3 px-3">
-            <button class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out"
-              :class="tabClass(SearchType.COMPANY_TYPE)" @click="changeTab(SearchType.COMPANY_TYPE)">
+            <button
+              class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out"
+              :class="tabClass(SearchType.COMPANY_TYPE)"
+              @click="changeTab(SearchType.COMPANY_TYPE)"
+            >
               <h6 class="hidden lg:block">找產業</h6>
               <h6 class="block lg:hidden">產業</h6>
             </button>
@@ -349,7 +366,7 @@ function isEmpty(obj: any): boolean {
               <div class="caption">
                 第 {{ keywordCurPage }} 頁，共 {{ companiesCount + typesCount + titlesCount }} 筆
               </div>
-              <div class="flex justify-center items-center">
+              <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
                 <label v-for="item in sortOptions" :key="item.value" :for="`keywordSort-${item.value}`"
                   class="flex justify-center cursor-pointer items-center caption me-5">
@@ -359,21 +376,18 @@ function isEmpty(obj: any): boolean {
                     :checked="item.value === keywordSort" />
                   <span :class="{ 'text-blue': item.value === keywordSort }" class="ml-2">{{ item.text }}</span>
                 </label>
-              </div>
+              </div> -->
             </div>
 
             <!-- 關鍵字內容是 "找公司" + "找職位" + "找產業" 組合起來的 -->
-
           </div>
 
           <!-- 找公司 -->
           <div v-if="(isTab(SearchType.KEYWORD) || isTab(SearchType.COMPANY)) && !isEmpty(companies)">
             <!-- 總頁數 & 排序 -->
             <div class="flex justify-between items-center text-black-5 mb-10">
-              <div class="caption">
-                第 {{ companyCurPage }} 頁，共 {{ companiesCount }} 筆
-              </div>
-              <div class="flex justify-center items-center">
+              <div class="caption">第 {{ companyCurPage }} 頁，共 {{ companiesCount }} 筆</div>
+              <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
                 <label v-for="item in sortOptions" :key="item.value" :for="`companySort-${item.value}`"
                   class="flex justify-center cursor-pointer items-center caption me-5">
@@ -383,7 +397,7 @@ function isEmpty(obj: any): boolean {
                     :checked="item.value === companySort" />
                   <span :class="{ 'text-blue': item.value === companySort }" class="ml-2">{{ item.text }}</span>
                 </label>
-              </div>
+              </div> -->
             </div>
 
             <div v-for="company in companies" :key="company.taxId" class="mb-10">
@@ -404,10 +418,8 @@ function isEmpty(obj: any): boolean {
           <div v-if="(isTab(SearchType.KEYWORD) || isTab(SearchType.JOB_TITLE)) && !isEmpty(titles)">
             <!-- 總頁數 & 排序 -->
             <div class="flex justify-between items-center text-black-5 mb-10">
-              <div class="caption">
-                第 {{ titleCurPage }} 頁，共 {{ titlesCount }} 筆
-              </div>
-              <div class="flex justify-center items-center">
+              <div class="caption">第 {{ titleCurPage }} 頁，共 {{ titlesCount }} 筆</div>
+              <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
                 <label v-for="item in sortOptions" :key="item.value" :for="`titleSort-${item.value}`"
                   class="flex justify-center cursor-pointer items-center caption me-5">
@@ -416,15 +428,16 @@ function isEmpty(obj: any): boolean {
                     :checked="item.value === titleSort" />
                   <span :class="{ 'text-blue': item.value === titleSort }" class="ml-2">{{ item.text }}</span>
                 </label>
-              </div>
+              </div> -->
             </div>
             <div v-for="title in titles" :key="title.taxId" class="mb-10">
               <nuxt-link :to="'salary/' + title.postId">
                 <h5 class="text-blue mb-2">{{ title.companyName }} | {{ title.title }} | 真薪話</h5>
               </nuxt-link>
               <p class="caption mb-2">
-                {{ title.companyName }}_{{ title.title }}
-                的薪水、年終獎金、底薪、公司福利，工作內容是<span>{{ textWithDot(title.jobDescription) }}</span>
+                {{ title.companyName }}_{{ title.title }} 的薪水、年終獎金、底薪、公司福利，工作內容是<span>{{
+                  textWithDot(title.jobDescription)
+                }}</span>
                 ，工作建議是<span>{{ textWithDot(title.suggestion) }}</span>
               </p>
               <div class="caption text-black-6"># 找職位</div>
@@ -435,10 +448,8 @@ function isEmpty(obj: any): boolean {
           <div v-if="(isTab(SearchType.KEYWORD) || isTab(SearchType.COMPANY_TYPE)) && !isEmpty(types)">
             <!-- 總頁數 & 排序 -->
             <div class="flex justify-between items-center text-black-5 mb-10">
-              <div class="caption">
-                第 {{ typeCurPage }} 頁，共 {{ typesCount }} 筆
-              </div>
-              <div class="flex justify-center items-center">
+              <div class="caption">第 {{ typeCurPage }} 頁，共 {{ typesCount }} 筆</div>
+              <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
                 <label v-for="item in sortOptions" :key="item.value" :for="`typeSort-${item.value}`"
                   class="flex justify-center cursor-pointer items-center caption me-5">
@@ -447,7 +458,7 @@ function isEmpty(obj: any): boolean {
                     :checked="item.value === typeSort" />
                   <span :class="{ 'text-blue': item.value === typeSort }" class="ml-2">{{ item.text }}</span>
                 </label>
-              </div>
+              </div> -->
             </div>
             <div v-for="comType in types" :key="comType.taxId" class="mb-10">
               <nuxt-link :to="'companies/' + comType.taxId">
@@ -464,35 +475,60 @@ function isEmpty(obj: any): boolean {
           </div>
 
           <!-- 所有結果頁數 -->
-          <pagination-button class="flex justify-center"
+          <pagination-button
             v-if="isTab(SearchType.KEYWORD) && (!isEmpty(companies) || !isEmpty(titles) || !isEmpty(types))"
-            :key="componentKey" :init-page="keywordCurPage" :total-pages="keywordTotalPages"
-            @change-page-event="changePage">
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="keywordCurPage"
+            :total-pages="keywordTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
           <!-- 找公司頁數 -->
-          <pagination-button class="flex justify-center" v-if="isTab(SearchType.COMPANY) && !isEmpty(companies)"
-            :key="componentKey" :init-page="companyCurPage" :total-pages="companyTotalPages"
-            @change-page-event="changePage">
+          <pagination-button
+            v-if="isTab(SearchType.COMPANY) && !isEmpty(companies)"
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="companyCurPage"
+            :total-pages="companyTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
           <!-- 找職位頁數 -->
-          <pagination-button class="flex justify-center" v-if="isTab(SearchType.JOB_TITLE) && !isEmpty(titles)"
-            :key="componentKey" :init-page="titleCurPage" :total-pages="titleTotalPages" @change-page-event="changePage">
+          <pagination-button
+            v-if="isTab(SearchType.JOB_TITLE) && !isEmpty(titles)"
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="titleCurPage"
+            :total-pages="titleTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
           <!-- 找產業頁數 -->
-          <pagination-button class="flex justify-center" v-if="isTab(SearchType.COMPANY_TYPE) && !isEmpty(types)"
-            :key="componentKey" :init-page="typeCurPage" :total-pages="typeTotalPages" @change-page-event="changePage">
+          <pagination-button
+            v-if="isTab(SearchType.COMPANY_TYPE) && !isEmpty(types)"
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="typeCurPage"
+            :total-pages="typeTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
 
           <!-- 查無資料 -->
-          <div v-if="(isTab(SearchType.COMPANY) && isEmpty(companies)) ||
-            (isTab(SearchType.JOB_TITLE) && isEmpty(titles)) ||
-            (isTab(SearchType.COMPANY_TYPE) && isEmpty(types)) ||
-            (isTab(SearchType.KEYWORD) && isEmpty(companies) && isEmpty(titles) && isEmpty(types))
-            ">
+          <div
+            v-if="
+              (isTab(SearchType.COMPANY) && isEmpty(companies)) ||
+              (isTab(SearchType.JOB_TITLE) && isEmpty(titles)) ||
+              (isTab(SearchType.COMPANY_TYPE) && isEmpty(types)) ||
+              (isTab(SearchType.KEYWORD) && isEmpty(companies) && isEmpty(titles) && isEmpty(types))
+            "
+          >
             <h6>查無相關結果，請重新搜尋。</h6>
           </div>
         </div>
       </div>
     </div>
+    {{ y }}
   </section>
 </template>
