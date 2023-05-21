@@ -443,15 +443,13 @@ const rightSideList = reactive([
               <div class="mb-10">
                 <label for="taxId" class="text-black-10">公司統一編號</label>
                 <VField
-                  v-model.number="submitData.taxId"
+                  v-model="submitData.taxId"
                   name="taxId"
                   label="統一編號"
-                  type="number"
                   rules="required|numeric|validationTaxId"
                   :class="{ 'border-red': errors.taxId }"
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
-                  oninput="value=value.replace('-','')"
                 />
                 <VErrorMessage name="taxId" as="div" class="text-red" />
               </div>
