@@ -1,5 +1,5 @@
 {
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -15,14 +15,5 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "vue.codeActions.enabled": false,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "eslint.options": {
-    "extensions": [".html", ".js", ".vue"]
-  },
-  "eslint.validate": ["html", "vue", "javascript"],
-  "vetur.validation.template": false,
-  "vetur.validation.script": false
+  "vue.codeActions.enabled": false
 }
