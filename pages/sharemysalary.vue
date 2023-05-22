@@ -986,8 +986,8 @@ const rightSideList = reactive([
                     </div>
                   </div>
                   <div class="flex mt-auto">
-                    <base-button cate="primary" class="w-full mr-4" to="/payment">NT$ 699</base-button>
-                    <base-button cate="white" class="w-full" to="/payment">了解更多</base-button>
+                    <base-button cate="primary" class="w-full mr-4" to="/order/offer">NT$ 699</base-button>
+                    <base-button cate="white" class="w-full" to="/order/offer">了解更多</base-button>
                   </div>
                 </div>
                 <div class="w-full md:mt-0 mt-5 border border-black-3 rounded p-6 flex flex-col bg-white min-h-[240px]">
@@ -1004,7 +1004,7 @@ const rightSideList = reactive([
                       <i class="icomoon icon-star text-5xl text-blue"></i>
                     </div>
                   </div>
-                  <base-button cate="white" class="w-full mt-auto" to="/payment">NT$ 150</base-button>
+                  <base-button cate="white" class="w-full mt-auto" to="/order/offer">NT$ 150</base-button>
                 </div>
               </div>
               <div class="flex space-x-4 mt-7 border border-black-10 rounded p-6 bg-white">

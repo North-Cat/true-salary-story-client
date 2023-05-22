@@ -180,7 +180,7 @@ async function search() {
         <base-button v-if="!isLogin" to="/login" cate="text-sm" content="登入" class="me-5">
           <span class="icon-person text-2xl mb-1"></span>
         </base-button>
-        <base-button v-if="!isLogin" to="/payment" cate="text-sm" content="加薪計畫">
+        <base-button v-if="!isLogin" to="/order/offer" cate="text-sm" content="加薪計畫">
           <span class="icon-star text-3xl"></span>
         </base-button>
       </div>
@@ -505,7 +505,7 @@ async function search() {
           <base-button v-if="!isLogin" to="/login" cate="secondary" content="登入" class="me-5">
             <span class="icon-person text-xl me-2 mt-1"></span>
           </base-button>
-          <base-button cate="primary" content="加薪計畫" to="/payment">
+          <base-button cate="primary" content="加薪計畫" to="/order/offer">
             <span class="icon-star text-2xl me-2"></span>
           </base-button>
         </div>
@@ -529,7 +529,7 @@ async function search() {
             <div class="flex flex-col">
               <div class="caption mb-3">服務</div>
               <nuxt-link
-                to="/payment"
+                to="/order/offer"
                 class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
               >
                 加薪計畫
