@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { IShareSalaryFormData } from '@/interface/salaryData';
-import salaryPost from '@/components/salary-post.vue';
-import keyword from '@/components/salary-keyword.vue';
-import modal from '@/components/salary-modal.vue';
 useHead({
   title: '薪水分享',
 });
@@ -26,11 +23,11 @@ const redirect = () => {
         class="md-container mx-auto sm:max-w-[500px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
       >
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between">
-          <salary-post :post="post" @click="redirect" />
-          <keyword />
+          <SalaryPost :post="post" @click="redirect" />
+          <SalaryKeyword />
         </div>
       </div>
     </div>
-    <modal :is-visible="isShowModal" @click="isShowModal = false" />
+    <SalaryModal :is-visible="isShowModal" @click="isShowModal = false" />
   </div>
 </template>
