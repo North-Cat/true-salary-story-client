@@ -232,7 +232,7 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <btn content="查看完整內容及薪水" @click="emit('click')" />
+            <BaseButton content="查看完整內容及薪水" @click="emit('click')" />
           </div>
         </div>
       </div>

@@ -19,8 +19,8 @@
               <span class="caption">贈送 2000 積分、無廣告體驗，以及 10% 積分回饋！</span>
             </div>
             <div class="flex justify-between pb-5 px-16">
-              <btn cate="secondary" content="詳細資訊" />
-              <btn content="NT$699" />
+              <BaseButton cate="secondary" content="詳細資訊" />
+              <BaseButton content="NT$699" />
             </div>
           </div>
           <div class="flex pb-5 border-b border-black-1 mb-5 justify-between">
@@ -28,7 +28,7 @@
               <div class="icon-sparkle-checked text-blue text-md mr-3"></div>
               <span class="caption mb-1">每 100 積分可觀看 1 筆薪水情報</span>
             </div>
-            <btn content="馬上訂閱" />
+            <BaseButton content="馬上訂閱" />
           </div>
           <div class="flex pb-5 border-b border-black-1 mb-5 justify-between">
             <div class="flex items-center">
@@ -36,7 +36,7 @@
               <span class="caption mb-1">分享薪水情報</span>
               <span class="caption">分享優質內容可獲得較多積分</span>
             </div>
-            <btn content="開始分享" />
+            <BaseButton content="開始分享" />
           </div>
         </div>
       </div>

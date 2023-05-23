@@ -7,7 +7,7 @@ useHead({
 const { shareSalaryApi } = useApi();
 const { salaryId } = useRoute().params;
 const post = ref<IShareSalaryFormData>({});
-const { result } = await shareSalaryApi.getSalaryInfo('6460b8ddce505393374dc329');
+const { result } = await shareSalaryApi.getSalaryInfo('6468c348abb6863c8509cfee');
 post.value = result;
 const isShowModal = ref(false);
 const redirect = () => {

@@ -16,4 +16,13 @@ export default new (class postShare extends Http {
   public postSalary(submitData: object) {
     return this.post(`/api/salary`, submitData);
   }
+
+  public getSalaryInfo(id: number) {
+    console.log(id);
+    return this.get(`/api/salary/${id}`);
+  }
+
+  public requestSalaryInfo(id: number) {
+    return this.post(`/api/salary/${id}/permission`);
+  }
 })();
