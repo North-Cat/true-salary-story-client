@@ -408,9 +408,9 @@
             <div class="flex flex-col justify-center items-start">
               <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
-&#060;nav-btn &#058;isCircle&#061;&#034;isCircle&#034; &#058;isLeft&#061;&#034;isLeft&#034;&#062;&#060;&#047;nav-btn&#062;
+&#060;NavButton &#058;isCircle&#061;&#034;isCircle&#034; &#058;isLeft&#061;&#034;isLeft&#034;&#062;&#060;&#047;NavButton&#062;
 
-套件路徑: @/components/nav-btn.vue
+套件路徑: @/components/NavButton.vue
 參數說明:
   isCircle: 
       是否為圓, 傳入 Boolean
