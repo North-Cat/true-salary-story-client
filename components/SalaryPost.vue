@@ -122,7 +122,7 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6 v-show="post.monthlySalary">{{ numberRange(post.monthlySalary) }}</h6>
+                    <h6>{{ numberRange(post.monthlySalary) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -131,7 +131,7 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年薪</div>
-                    <h6 v-show="post.yearlySalary">{{ numberRange(post.yearlySalary) }}</h6>
+                    <h6>{{ numberRange(post.yearlySalary) }}</h6>
                   </div>
                 </div>
               </div>
@@ -139,25 +139,25 @@ const truncateText = computed(() => (text: string, maxLength: number) => {
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年終</div>
-                    <h6 v-show="post.yearEndBonus">{{ numberRange(post.yearEndBonus) }}</h6>
+                    <h6>{{ numberRange(post.yearEndBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">三節</div>
-                    <h6 v-show="post.holidayBonus">{{ numberRange(post.holidayBonus) }}</h6>
+                    <h6>{{ numberRange(post.holidayBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">分紅</div>
-                    <h6 v-show="post.profitSharingBonus">{{ numberRange(post.profitSharingBonus) }}</h6>
+                    <h6>{{ numberRange(post.profitSharingBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">其他</div>
-                    <h6 v-show="post.otherBonus">{{ numberRange(post.otherBonus) }}</h6>
+                    <h6>{{ numberRange(post.otherBonus) }}</h6>
                   </div>
                 </div>
               </div>
