@@ -501,7 +501,7 @@ const rightSideList = reactive([
                   v-model="isOfferJob"
                   type="checkbox"
                   name="inService"
-                  class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 rounded accent-blue rounded-2xl"
+                  class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 accent-blue rounded-2xl"
                 />
                 <label for="inService" class="text-gray-700 ml-2 hover:text-blue"
                   >不提供職務名稱（將不會獲得精選）</label
@@ -882,7 +882,7 @@ const rightSideList = reactive([
                       v-if="tagsItem.status === 'good'"
                       :key="`tagsItemGood-${$index}`"
                       :for="`tagsItemGood-${$index}`"
-                      class="cursor-pointer flex p-2 block text-blue bg-white border border-blue rounded text-sm mr-3 mb-3 peer-checked:text-white peer-checked:bg-blue"
+                      class="cursor-pointer p-2 block text-blue bg-white border border-blue rounded text-sm mr-3 mb-3 peer-checked:text-white peer-checked:bg-blue"
                     >
                       <span class="text-sm">{{ tagsItem.text }}</span>
                     </label>
@@ -901,7 +901,7 @@ const rightSideList = reactive([
                       v-if="tagsItem.status === 'bad'"
                       :key="`tagsItemBad-${$index}`"
                       :for="`tagsItemBad-${$index}`"
-                      class="cursor-pointer flex p-2 block text-red bg-white border border-red rounded text-sm mr-3 mb-3 peer-checked:text-white peer-checked:bg-red"
+                      class="cursor-pointer p-2 block text-red bg-white border border-red rounded text-sm mr-3 mb-3 peer-checked:text-white peer-checked:bg-red"
                     >
                       <span class="text-sm">{{ tagsItem.text }}</span>
                     </label>
@@ -910,7 +910,7 @@ const rightSideList = reactive([
                 <ul v-if="submitData.customTags && submitData.customTags[0]" class="flex flex-wrap list-none">
                   <li v-for="(customTagsItem, $index) in submitData.customTags" :key="$index">
                     <button
-                      class="cursor-pointer flex p-2 block text-black-10 bg-white border border-black-6 rounded text-sm mr-3 mb-3 peer-checked:text-white hover:bg-black-1"
+                      class="cursor-pointer p-2 block text-black-10 bg-white border border-black-6 rounded text-sm mr-3 mb-3 peer-checked:text-white hover:bg-black-1"
                       @click.stop.prevent="removeCustomTag(customTagsItem)"
                     >
                       <span class="text-sm"><i class="icomoon icon-cross text-xs mr-2"></i>{{ customTagsItem }}</span>
@@ -1363,6 +1363,7 @@ input[type='number']::-webkit-inner-spin-button {
 
 /* Firefox */
 input[type='number'] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 </style>
