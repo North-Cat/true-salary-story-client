@@ -3063,8 +3063,8 @@
           <!-- md lg text -->
           <h2 class="sm:hidden md:block lg:block">薪水檔案櫃</h2>
           <div class="sm:hidden lg:flex flex-row justify-center items-start">
-            <nav-button :is-circle="true" :is-left="true" class="me-5" @click="postsPrev"></nav-button>
-            <nav-button :is-circle="true" :is-left="false" @click="postsNext"></nav-button>
+            <NavButton :is-circle="true" :is-left="true" class="me-5" @click="postsPrev"></NavButton>
+            <NavButton :is-circle="true" :is-left="false" @click="postsNext"></NavButton>
           </div>
         </div>
 
@@ -3075,7 +3075,7 @@
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
                   <div v-for="(post, index) in popularPost" :key="post.postId">
-                    <post-card
+                    <PostCard
                       v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
                       :class="{ 'me-6': index != (slide - 1) * 3 + 2 }"
                       cate="top"
@@ -3084,12 +3084,12 @@
                       :overtime="post.overtime"
                       :feeling="post.feeling"
                     >
-                    </post-card>
+                    </PostCard>
                   </div>
                 </div>
                 <div class="w-full flex flex-row">
                   <div v-for="(post, index) in latestPost" :key="post.postId">
-                    <post-card
+                    <PostCard
                       v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
                       :class="{ 'me-6': index != (slide - 1) * 3 + 2 }"
                       cate="new"
@@ -3098,7 +3098,7 @@
                       :overtime="post.overtime"
                       :feeling="post.feeling"
                     >
-                    </post-card>
+                    </PostCard>
                   </div>
                 </div>
               </div>
@@ -3113,7 +3113,7 @@
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
                   <div v-for="(post, index) in popularPost" :key="post.postId">
-                    <post-card
+                    <PostCard
                       v-if="index == slide - 1"
                       cate="top"
                       :title="post.title"
@@ -3121,12 +3121,12 @@
                       :overtime="post.overtime"
                       :feeling="post.feeling"
                     >
-                    </post-card>
+                    </PostCard>
                   </div>
                 </div>
                 <div class="w-full flex flex-row">
                   <div v-for="(post, index) in latestPost" :key="post.postId">
-                    <post-card
+                    <PostCard
                       v-if="index == slide - 1"
                       cate="new"
                       :title="post.title"
@@ -3134,7 +3134,7 @@
                       :overtime="post.overtime"
                       :feeling="post.feeling"
                     >
-                    </post-card>
+                    </PostCard>
                   </div>
                 </div>
               </div>
@@ -3159,50 +3159,50 @@
               <div class="flex flex-wrap justify-center items-center">
                 <div class="flex flex-col sm:pe-8 sm:pb-3 md:pb-0 md:pe-6 lg:pe-10 border-r">
                   <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link
+                    <TextLink
                       v-if="index >= 0 && index <= 4"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
                       :class="{ 'mb-3': index % 5 != 4 }"
                       :content="comType"
                       @click="searchCompanytype(comType)"
                     >
-                    </text-link>
+                    </TextLink>
                   </div>
                 </div>
                 <div class="flex flex-col sm:ps-8 sm:pb-3 md:pb-0 md:px-6 lg:px-10 md:border-r">
                   <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link
+                    <TextLink
                       v-if="index >= 5 && index <= 9"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
                       :class="{ 'mb-3': index % 5 != 4 }"
                       :content="comType"
                       @click="searchCompanytype(comType)"
                     >
-                    </text-link>
+                    </TextLink>
                   </div>
                 </div>
                 <div class="flex flex-col sm:pe-8 md:pb-0 md:px-6 lg:px-10 border-r">
                   <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link
+                    <TextLink
                       v-if="index >= 10 && index <= 14"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
                       :class="{ 'mb-3': index % 5 != 4 }"
                       :content="comType"
                       @click="searchCompanytype(comType)"
                     >
-                    </text-link>
+                    </TextLink>
                   </div>
                 </div>
                 <div class="flex flex-col sm:ps-8 md:pb-0 md:ps-6 lg:ps-10">
                   <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link
+                    <TextLink
                       v-if="index >= 15 && index <= 19"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
                       :class="{ 'mb-3': index % 5 != 4 }"
                       :content="comType"
                       @click="searchCompanytype(comType)"
                     >
-                    </text-link>
+                    </TextLink>
                   </div>
                 </div>
               </div>
@@ -3216,8 +3216,8 @@
                 <h5>熱門公司</h5>
               </div>
               <div class="flex">
-                <nav-button class="max-h-fit" :is-circle="false" :is-left="true" @click="comPrev"></nav-button>
-                <nav-button :is-circle="false" :is-left="false" @click="comNext"></nav-button>
+                <NavButton class="max-h-fit" :is-circle="false" :is-left="true" @click="comPrev"></NavButton>
+                <NavButton :is-circle="false" :is-left="false" @click="comNext"></NavButton>
               </div>
             </div>
             <!-- TODO: 公司動態資訊 換頁 -->
@@ -3227,13 +3227,13 @@
                   <slide v-for="slide in popularCompany.length / 5" :key="slide">
                     <div class="w-full flex flex-col">
                       <div v-for="(com, index) in popularCompany" :key="com.taxId">
-                        <text-link
+                        <TextLink
                           v-if="index >= (slide - 1) * 5 && index <= (slide - 1) * 5 + 4"
                           :content="com.name"
                           :end-content="com.postCount + ' 筆'"
                           class="w-full mb-3"
                           :class="{ 'mb-0': index == (slide - 1) * 5 + 4 }"
-                        ></text-link>
+                        ></TextLink>
                       </div>
                     </div>
                   </slide>
@@ -3253,25 +3253,25 @@
               <div class="flex flex-col">
                 <!-- 重點關鍵字 (顯示六個) -->
                 <div class="flex flex-wrap justify-start items-center sm:mb-2 lg:mb-7">
-                  <tag-link
+                  <TagLink
                     v-for="keyword in keywords.slice(0, 6)"
                     :key="keyword"
                     :content="keyword"
                     class="sm:me-2 sm:mb-3 lg:mb-0 lg:me-5"
                     @click="keywordSearch(keyword)"
                   >
-                  </tag-link>
+                  </TagLink>
                 </div>
                 <!-- 其他關鍵字 -->
                 <div class="flex flex-wrap justify-between items-center">
-                  <text-link
+                  <TextLink
                     v-for="keyword in keywords.slice(5, keywords.length)"
                     :key="keyword"
                     :content="keyword"
                     size="sm"
                     @click="keywordSearch(keyword)"
                   >
-                  </text-link>
+                  </TextLink>
                 </div>
               </div>
             </div>
