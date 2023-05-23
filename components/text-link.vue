@@ -16,14 +16,16 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   content: {
     // 文字內容
     type: String,
+    default: 'text',
   },
   endContent: {
     // 句尾文字內容
     type: String,
+    default: '',
   },
   size: {
     // 大小 (lg, sm)

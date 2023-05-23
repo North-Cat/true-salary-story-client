@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   type: {
     type: String as () => 'button' | 'submit' | 'reset',
     default: 'button',

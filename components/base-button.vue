@@ -36,9 +36,11 @@ const props = defineProps({
   content: {
     // 按鈕文字
     type: String,
+    default: '',
   },
   to: {
     type: [String, Object],
+    default: '',
   },
 });
 

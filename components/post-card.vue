@@ -107,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   cate: {
     // 'new':最新; 'top':精選
     type: String,

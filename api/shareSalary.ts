@@ -9,11 +9,11 @@ export default new (class postShare extends Http {
     return this.get(`/api/salary/uniformNumbers/${id}`);
   }
 
-  public getSalaryInfo(id: number) {
-    return this.get(`/api/salary/${id}`);
-  }
-
-  public requestSalaryInfo(id: number) {
-    return this.post(`/api/salary/${id}/permission`);
+  /**
+   * POST 薪資資訊
+   * @params submitData
+   */
+  public postSalary(submitData: object) {
+    return this.post(`/api/salary`, submitData);
   }
 })();

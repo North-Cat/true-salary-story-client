@@ -12,7 +12,10 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     loginWithGoogle() {
-      const backendUrl = 'https://client-api-dev.up.railway.app/social/google';
+      const {
+        public: { apiBase },
+      } = useRuntimeConfig();
+      const backendUrl = `${apiBase}/social/google`;
       window.location.href = backendUrl;
     },
     async tryToFetchProfile(): Promise<void> {
@@ -25,8 +28,7 @@ export const useUserStore = defineStore('user', {
           this.isLogin = true;
           this.isFetchProfileLoading = false;
         })
-        .catch((error) => {
-          console.log('error');
+        .catch(() => {
           this.error();
         });
     },

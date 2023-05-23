@@ -33,6 +33,7 @@ function openDefaultDialog(
   };
   const dialogStore = useDialogStore();
   // 將視窗資訊存入 store
+  // @ts-ignore
   dialogStore.dialogInfo = dialogInfo;
   dialogStore.open(); // 開啟視窗
 }
