@@ -3,6 +3,7 @@ import { ref, watch, computed } from 'vue';
 import {
     offerPointOption, // 積分選單
 } from '@/utilities/options';
+import { showError } from '@/utilities/message';
 
 /**
  * 我的計畫
@@ -19,17 +20,27 @@ const { type, point } = route.query; // 取得 URL 的搜尋參數
 const selectedSingleOfferPrice = ref();
 const selectedSingleOfferPoint = ref();
 selectedSingleOfferPoint.value = point ? Number(point) : offerPointOption[0].value;
+// 依 url 積分取得價格
+mappingSingleOfferPrice();
 watch(selectedSingleOfferPoint, () => {
-    genSingleOfferPrice();
+    mappingSingleOfferPrice();
 });
-onMounted(() => {
-    genSingleOfferPrice();
-});
-function genSingleOfferPrice() {
+// mapping 價格跟積分
+function mappingSingleOfferPrice() {
+    let hasOffer = false;
     for (const item of offerPointOption) {
         if (selectedSingleOfferPoint.value === item.value) {
             selectedSingleOfferPrice.value = item.price;
+            hasOffer = true;
+            break;
         }
+    }
+    if (!hasOffer) {
+        selectedSingleOfferPoint.value = offerPointOption[0].value;
+        selectedSingleOfferPrice.value = offerPointOption[0].price;
+        setTimeout(() => {
+            showError("提示", "無此方案，請重新選擇。");
+        }, 1);
     }
 }
 
@@ -44,6 +55,15 @@ const email = ref();
 email.value = 'occur0324@gmail.com'; // FIXME: call API 取得目前email
 const userPoint = ref();
 userPoint.value = 100; // FIXME: call API 取得目前積分
+const selectedPoint = computed(() => {
+    let point = 0;
+    if (type == offerType.SINGLE) {
+        point = selectedSingleOfferPoint.value;
+    } else if (type == offerType.SUBSCRIPTION) {
+        point = subscriptionPoint;
+    }
+    return point;
+});
 const expectedPoint = computed(() => {
     let point = 0;
     if (type == offerType.SINGLE) {
@@ -53,12 +73,21 @@ const expectedPoint = computed(() => {
     }
     return point;
 });
+const expectedPrice = computed(() => {
+    let price = 0;
+    if (type == offerType.SINGLE) {
+        price = selectedSingleOfferPrice.value;
+    } else if (type == offerType.SUBSCRIPTION) {
+        price = subscriptionPrice;
+    }
+    return price;
+});
 </script>
 
 <template>
     <section class="bg-gray sm:py-10 md:py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
         <div
-            class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-10">
+            class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-15">
             <div class="w-full flex lg:justify-between sm:mb-10 lg:mb-20">
                 <div class="w-1/3 me-3">
                     <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
@@ -166,13 +195,23 @@ const expectedPoint = computed(() => {
                                 <div class="w-full flex-col border-black-1 my-1.5">
                                     <div class="w-full flex">
                                         <div class="w-full flex-col pe-10 border-r border-black-1">
-                                            <div class="flex justify-between mb-5">
-                                                <h6 class="">購買後總積分</h6>
-                                                <h6 class="text-black-6">{{ expectedPoint }}</h6>
+                                            <div class="flex-col pb-5 border-b border-black-1 mb-5">
+                                                <div class="flex justify-between mb-2">
+                                                    <h6 class="text-black-6">現有積分</h6>
+                                                    <h6 class="text-black-6">{{ userPoint }} 積分</h6>
+                                                </div>
+                                                <div class="flex justify-between mb-2">
+                                                    <h6 class="text-black-6">本次購買積分</h6>
+                                                    <h6 class="text-black-6">+ {{ selectedPoint }} 積分</h6>
+                                                </div>
+                                                <div class="flex justify-between mb-2">
+                                                    <h5 class="">購買後總積分</h5>
+                                                    <h5 class="text-black-10">{{ expectedPoint }} 積分</h5>
+                                                </div>
                                             </div>
                                             <div class="flex justify-between">
-                                                <h6 class="">小計</h6>
-                                                <h6 class="">$ 250</h6>
+                                                <h5 class="">小計</h5>
+                                                <h5 class="">$ {{ expectedPrice }} 元</h5>
                                             </div>
                                         </div>
                                         <div class="w-2/5 flex justify-center items-center">
