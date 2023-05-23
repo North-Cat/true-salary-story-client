@@ -18,7 +18,6 @@ export default new (class postShare extends Http {
   }
 
   public getSalaryInfo(id: number) {
-    console.log(id);
     return this.get(`/api/salary/${id}`);
   }
 
