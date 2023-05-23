@@ -8,12 +8,10 @@ useHead({
 
 defineProps<{
   post: IShareSalaryFormData;
+  isLocked: boolean;
 }>();
 
-const emit = defineEmits(['click']);
-
-// TODO
-const isLocked = ref(false);
+const emit = defineEmits(['view']);
 </script>
 
 <template>
@@ -157,7 +155,7 @@ const isLocked = ref(false);
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <BaseButton content="查看完整內容及薪水" @click="emit('click')" />
+            <BaseButton content="查看完整內容及薪水" @click="emit('view')" v-if="!isLocked" />
           </div>
         </div>
       </div>
