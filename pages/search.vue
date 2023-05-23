@@ -290,29 +290,38 @@ function scrollToTop() {
 </script>
 
 <template>
-  <section ref="searchSection"
-    class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 lg:pt-40">
+  <section
+    ref="searchSection"
+    class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 lg:pt-40"
+  >
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-4xl flex flex-col justify-center items-center">
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-4xl flex flex-col justify-center items-center"
+    >
       <div class="w-full max-w-[1076px] flex flex-col border-2 border-black-10 bg-white py-5 lg:py-10 px-5 mb-10">
         <div class="w-full flex flex-col lg:flex-row mb-5">
           <div class="w-full lg:w-10/12 flex items-center border border-black-1 rounded me-2 mb-3 lg:mb-0">
             <div
-              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 z-10">
-            </div>
+              class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 z-10"
+            ></div>
             <input v-model="searchParam" type="text" class="w-full ps-10 py-3 pe-10" @keyup.enter="enterSearch" />
-            <button class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"
-              @click="clickClear"></button>
+            <button
+              class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"
+              @click="clickClear"
+            ></button>
           </div>
           <base-button class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></base-button>
         </div>
         <!-- 搜尋頁籤 -->
-        <div v-if="showResult"
-          class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1">
+        <div
+          v-if="showResult"
+          class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1"
+        >
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchType.KEYWORD)" @click="changeTab(SearchType.KEYWORD)">
+              :class="tabClass(SearchType.KEYWORD)"
+              @click="changeTab(SearchType.KEYWORD)"
+            >
               <h6 class="hidden lg:block">所有結果</h6>
               <h6 class="block lg:hidden">全部</h6>
             </button>
@@ -320,7 +329,9 @@ function scrollToTop() {
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchType.COMPANY)" @click="changeTab(SearchType.COMPANY)">
+              :class="tabClass(SearchType.COMPANY)"
+              @click="changeTab(SearchType.COMPANY)"
+            >
               <h6 class="hidden lg:block">找公司</h6>
               <h6 class="block lg:hidden">公司</h6>
             </button>
@@ -328,14 +339,19 @@ function scrollToTop() {
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(SearchType.JOB_TITLE)" @click="changeTab(SearchType.JOB_TITLE)">
+              :class="tabClass(SearchType.JOB_TITLE)"
+              @click="changeTab(SearchType.JOB_TITLE)"
+            >
               <h6 class="hidden lg:block">找職位</h6>
               <h6 class="block lg:hidden">職位</h6>
             </button>
           </div>
           <div class="py-3 px-3">
-            <button class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out"
-              :class="tabClass(SearchType.COMPANY_TYPE)" @click="changeTab(SearchType.COMPANY_TYPE)">
+            <button
+              class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out"
+              :class="tabClass(SearchType.COMPANY_TYPE)"
+              @click="changeTab(SearchType.COMPANY_TYPE)"
+            >
               <h6 class="hidden lg:block">找產業</h6>
               <h6 class="block lg:hidden">產業</h6>
             </button>
@@ -461,31 +477,53 @@ function scrollToTop() {
           <!-- 所有結果頁數 -->
           <pagination-button
             v-if="isTab(SearchType.KEYWORD) && (!isEmpty(companies) || !isEmpty(titles) || !isEmpty(types))"
-            :key="componentKey" class="flex justify-center" :init-page="keywordCurPage" :total-pages="keywordTotalPages"
-            @change-page-event="changePage">
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="keywordCurPage"
+            :total-pages="keywordTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
           <!-- 找公司頁數 -->
-          <pagination-button v-if="isTab(SearchType.COMPANY) && !isEmpty(companies)" :key="componentKey"
-            class="flex justify-center" :init-page="companyCurPage" :total-pages="companyTotalPages"
-            @change-page-event="changePage">
+          <pagination-button
+            v-if="isTab(SearchType.COMPANY) && !isEmpty(companies)"
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="companyCurPage"
+            :total-pages="companyTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
           <!-- 找職位頁數 -->
-          <pagination-button v-if="isTab(SearchType.JOB_TITLE) && !isEmpty(titles)" :key="componentKey"
-            class="flex justify-center" :init-page="titleCurPage" :total-pages="titleTotalPages"
-            @change-page-event="changePage">
+          <pagination-button
+            v-if="isTab(SearchType.JOB_TITLE) && !isEmpty(titles)"
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="titleCurPage"
+            :total-pages="titleTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
           <!-- 找產業頁數 -->
-          <pagination-button v-if="isTab(SearchType.COMPANY_TYPE) && !isEmpty(types)" :key="componentKey"
-            class="flex justify-center" :init-page="typeCurPage" :total-pages="typeTotalPages"
-            @change-page-event="changePage">
+          <pagination-button
+            v-if="isTab(SearchType.COMPANY_TYPE) && !isEmpty(types)"
+            :key="componentKey"
+            class="flex justify-center"
+            :init-page="typeCurPage"
+            :total-pages="typeTotalPages"
+            @change-page-event="changePage"
+          >
           </pagination-button>
 
           <!-- 查無資料 -->
-          <div v-if="(isTab(SearchType.COMPANY) && isEmpty(companies)) ||
-            (isTab(SearchType.JOB_TITLE) && isEmpty(titles)) ||
-            (isTab(SearchType.COMPANY_TYPE) && isEmpty(types)) ||
-            (isTab(SearchType.KEYWORD) && isEmpty(companies) && isEmpty(titles) && isEmpty(types))
-            ">
+          <div
+            v-if="
+              (isTab(SearchType.COMPANY) && isEmpty(companies)) ||
+              (isTab(SearchType.JOB_TITLE) && isEmpty(titles)) ||
+              (isTab(SearchType.COMPANY_TYPE) && isEmpty(types)) ||
+              (isTab(SearchType.KEYWORD) && isEmpty(companies) && isEmpty(titles) && isEmpty(types))
+            "
+          >
             <h6>查無相關結果，請重新搜尋。</h6>
           </div>
         </div>
