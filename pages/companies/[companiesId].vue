@@ -338,14 +338,14 @@ onClickOutside(filterModal, () => {
           </div>
           <div class="w-full lg:w-2/5 flex items-center">
             <div class="w-1/2 me-3 lg:me-5">
-              <base-button content="請教所有前輩" class="w-full">
+              <BaseButton content="請教所有前輩" class="w-full">
                 <div class="icon-message me-2 -mb-1"></div>
-              </base-button>
+              </BaseButton>
             </div>
             <div class="w-1/2">
-              <base-button content="訂閱情報" cate="secondary" class="w-full">
+              <BaseButton content="訂閱情報" cate="secondary" class="w-full">
                 <div class="icon-plus-circle me-2 -mb-1"></div>
-              </base-button>
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -435,10 +435,10 @@ onClickOutside(filterModal, () => {
                 </div>
                 <div class="w-full border-b border-black-1 mb-3"></div>
                 <div class="flex justify-end">
-                  <base-button cate="gray-text" content="全部重設" class="me-3"></base-button>
-                  <base-button cate="white" content="套用">
+                  <BaseButton cate="gray-text" content="全部重設" class="me-3"></BaseButton>
+                  <BaseButton cate="white" content="套用">
                     <span class="icon-filter text-sm me-2"></span>
-                  </base-button>
+                  </BaseButton>
                 </div>
               </div>
             </div>
@@ -607,7 +607,7 @@ onClickOutside(filterModal, () => {
                         <br />
                         <span>兌換後馬上就能向前輩發問！</span>
                       </div>
-                      <base-button content="查看完整內容及薪水" @click="emit('click')" />
+                      <BaseButton content="查看完整內容及薪水" @click="emit('click')" />
                     </div>
                   </div>
                 </div>
@@ -625,14 +625,14 @@ onClickOutside(filterModal, () => {
             <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-6 lg:px-6 bg-white rounded-b rounded-tr">
               <div class="flex flex-col">
                 <div class="flex flex-wrap justify-between items-center">
-                  <text-link
+                  <TextLink
                     v-for="keyword in keywords"
                     :key="keyword"
                     :content="keyword"
                     size="sm"
                     @click="keywordSearch(keyword)"
                   >
-                  </text-link>
+                  </TextLink>
                 </div>
               </div>
             </div>
@@ -688,14 +688,12 @@ onClickOutside(filterModal, () => {
       </div>
       <div class="w-full border-b border-black-1 mb-3"></div>
       <div class="flex justify-between">
-        <base-button class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></base-button>
-        <base-button class="" cate="gray-text" content="全部重設"></base-button>
-        <base-button class="" cate="white" content="套用">
+        <BaseButton class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></BaseButton>
+        <BaseButton class="" cate="gray-text" content="全部重設"></BaseButton>
+        <BaseButton class="" cate="white" content="套用">
           <span class="icon-filter text-sm me-2"></span>
-        </base-button>
+        </BaseButton>
       </div>
     </div>
   </section>
 </template>
-
-function useHead(arg0: { title: string; }) { throw new Error("Function not implemented."); }

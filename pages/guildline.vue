@@ -314,13 +314,13 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-col justify-center items-center mb-6">
-              <base-button cate="blue-text" content="匿名分享" class="mb-1">
+              <BaseButton cate="blue-text" content="匿名分享" class="mb-1">
                 <span class="icon-edit text-lg me-2"></span>
-              </base-button>
-              <base-button cate="gray-text" content="搜尋" class="mb-1">
+              </BaseButton>
+              <BaseButton cate="gray-text" content="搜尋" class="mb-1">
                 <span class="icon-search text-lg me-2"></span>
-              </base-button>
-              <base-button cate="gray-text" content="訊息" class="mb-1">
+              </BaseButton>
+              <BaseButton cate="gray-text" content="訊息" class="mb-1">
                 <div>
                   <!-- 訊息紅點 -->
                   <span
@@ -328,29 +328,29 @@
                   ></span>
                   <span class="icon-mail text-2xl me-2"></span>
                 </div>
-              </base-button>
-              <base-button cate="yellow-text" content="240 積分" class="mb-1">
+              </BaseButton>
+              <BaseButton cate="yellow-text" content="240 積分" class="mb-1">
                 <span class="icon-star-circle text-xl me-2"></span>
-              </base-button>
-              <base-button cate="secondary" content="登入" class="mb-2">
+              </BaseButton>
+              <BaseButton cate="secondary" content="登入" class="mb-2">
                 <span class="icon-person text-xl me-2"></span>
-              </base-button>
-              <base-button cate="primary" content="加薪計畫" class="mb-2">
+              </BaseButton>
+              <BaseButton cate="primary" content="加薪計畫" class="mb-2">
                 <span class="icon-star text-2xl me-2"></span>
-              </base-button>
-              <base-button cate="gray" content="已訂閱" class="mb-2"> </base-button>
-              <base-button cate="white" content="套用" class="mb-2">
+              </BaseButton>
+              <BaseButton cate="gray" content="已訂閱" class="mb-2"> </BaseButton>
+              <BaseButton cate="white" content="套用" class="mb-2">
                 <span class="icon-filter text-sm me-2"></span>
-              </base-button>
+              </BaseButton>
             </div>
             <div class="flex flex-row justify-center items-center mb-6">
-              <base-button cate="text-sm" content="分享" class="mb-1">
+              <BaseButton cate="text-sm" content="分享" class="mb-1">
                 <span class="icon-edit text-2xl mb-1"></span>
-              </base-button>
-              <base-button cate="text-sm" content="搜尋" class="mb-1">
+              </BaseButton>
+              <BaseButton cate="text-sm" content="搜尋" class="mb-1">
                 <span class="icon-search text-2xl mb-1"></span>
-              </base-button>
-              <base-button cate="text-sm" content="訊息" class="mb-1">
+              </BaseButton>
+              <BaseButton cate="text-sm" content="訊息" class="mb-1">
                 <div class="-mb-1">
                   <!-- 訊息紅點 -->
                   <span
@@ -358,18 +358,18 @@
                   ></span>
                   <span class="icon-mail text-3xl"></span>
                 </div>
-              </base-button>
+              </BaseButton>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
               <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
-&#060;base-button &#058;cate&#061;&#034;cate&#034; &#058;content&#061;&#034;content&#034;&#062;
+&#060;BaseButton &#058;cate&#061;&#034;cate&#034; &#058;content&#061;&#034;content&#034;&#062;
   &#060;svg&#062; icon &#060;&#047;svg&#062;
-&#060;&#047;base-button&#062;
+&#060;&#047;BaseButton&#062;
 
-套件路徑: @/components/base-button.vue
+套件路徑: @/components/BaseButton.vue
 參數說明:
   to: 
       路由, 傳入 String || Object
@@ -396,12 +396,12 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-row justify-center items-start mb-6">
-              <nav-button :is-circle="true" :is-left="true" class="me-5"></nav-button>
-              <nav-button :is-circle="true" :is-left="false"></nav-button>
+              <NavButton :is-circle="true" :is-left="true" class="me-5"></NavButton>
+              <NavButton :is-circle="true" :is-left="false"></NavButton>
             </div>
             <div class="flex flex-row justify-center items-center">
-              <nav-button :is-circle="false" :is-left="true" class="me-5"></nav-button>
-              <nav-button :is-circle="false" :is-left="false"></nav-button>
+              <NavButton :is-circle="false" :is-left="true" class="me-5"></NavButton>
+              <NavButton :is-circle="false" :is-left="false"></NavButton>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
@@ -431,7 +431,7 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-col justify-center items-center mb-6">
-              <post-card
+              <PostCard
                 class="mb-2"
                 cate="top"
                 title="國內業務人員"
@@ -439,15 +439,15 @@
                 overtime="5"
                 feeling="5"
               >
-              </post-card>
-              <post-card
+              </PostCard>
+              <PostCard
                 cate="new"
                 title="國內業務人員"
                 company="櫻花廚房器具_櫻欣興業股份有限公司"
                 overtime="4"
                 feeling="4"
               >
-              </post-card>
+              </PostCard>
             </div>
             <div class="flex flex-col justify-center items-start mb-6">
               <div class="flex mb-5">
@@ -524,15 +524,15 @@
             <div class="flex flex-col justify-center items-start">
               <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
-&#060;post-card 
+&#060;PostCard 
   &#058;cate&#061;&#034;cate&#034; 
   &#058;title&#061;&#034;title&#034; 
   &#058;company&#061;&#034;company&#034; 
   &#058;overtime&#061;&#034;overtime&#034; 
   &#058;feeling&#061;&#034;feeling&#034; &#062;
-&#060;&#047;post-card&#062;
+&#060;&#047;PostCard&#062;
 
-套件路徑: @/components/post-card.vue
+套件路徑: @/components/PostCard.vue
 參數說明:
   cate: 
       類型, 傳入 String , 選項如下
@@ -567,20 +567,20 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-row justify-center items-start">
-              <tag-link class="me-2" content="年前跳槽"></tag-link>
-              <tag-link class="me-2" content="臺灣平均薪資"></tag-link>
-              <tag-link class="me-2" content="2023連假"></tag-link>
-              <tag-link class="me-2" content="真薪話數據調查"></tag-link>
-              <tag-link class="me-2" content="2023基本工資"></tag-link>
+              <TagLink class="me-2" content="年前跳槽"></TagLink>
+              <TagLink class="me-2" content="臺灣平均薪資"></TagLink>
+              <TagLink class="me-2" content="2023連假"></TagLink>
+              <TagLink class="me-2" content="真薪話數據調查"></TagLink>
+              <TagLink class="me-2" content="2023基本工資"></TagLink>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
             <div class="flex flex-col justify-center items-start">
               <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
-&#060;tag-link &#058;content&#061;&#034;content&#034;&#062;&#060;&#047;tag-link&#062;
+&#060;TagLink &#058;content&#061;&#034;content&#034;&#062;&#060;&#047;TagLink&#062;
 
-套件路徑: @/components/tag-link.vue
+套件路徑: @/components/TagLink.vue
 參數說明:
   content: 
       文字內容, 傳入 String
@@ -596,13 +596,9 @@
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-row justify-center items-start">
               <div>
-                <text-link class="mb-2" content="資訊科技"></text-link>
-                <text-link
-                  class="mb-2 w-[350px]"
-                  content="7-11_統一超商股份有限公司"
-                  end-content="12323 筆"
-                ></text-link>
-                <text-link class="mb-2" content="美光薪資結構"></text-link>
+                <TextLink class="mb-2" content="資訊科技"></TextLink>
+                <TextLink class="mb-2 w-[350px]" content="7-11_統一超商股份有限公司" end-content="12323 筆"></TextLink>
+                <TextLink class="mb-2" content="美光薪資結構"></TextLink>
               </div>
             </div>
           </div>
@@ -610,12 +606,12 @@
             <div class="flex flex-col justify-center items-start">
               <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
                 <pre><code>
-&#060;text-link 
+&#060;TextLink 
   &#058;content&#061;&#034;content&#034; 
   &#058;end-content&#061;&#034;end-content&#034;&#062;
-&#060;&#047;text-link&#062;
+&#060;&#047;TextLink&#062;
 
-套件路徑: @/components/text-link.vue
+套件路徑: @/components/TextLink.vue
 參數說明:
   content: 
       文字內容, 傳入 String      
@@ -703,9 +699,9 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-col justify-center items-center">
-              <base-button class="mb-2" @click="clickShowInfo">showInfo</base-button>
-              <base-button class="mb-2" @click="clickShowError">showError</base-button>
-              <base-button class="mb-2" @click="clickShowSuccess">showSuccess</base-button>
+              <BaseButton class="mb-2" @click="clickShowInfo">showInfo</BaseButton>
+              <BaseButton class="mb-2" @click="clickShowError">showError</BaseButton>
+              <BaseButton class="mb-2" @click="clickShowSuccess">showSuccess</BaseButton>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
@@ -763,7 +759,7 @@ confirmFunc:
 
 ====================================================================================
 
-* 若需要客製化彈出視窗內容，可以參考 "@/component/defaultModal.vue" 的樣式
+* 若需要客製化彈出視窗內容，可以參考 "@/component/DefaultModal.vue" 的樣式
 
                                         </code></pre>
               </div>
@@ -778,19 +774,13 @@ confirmFunc:
             <div class="flex flex-col justify-center items-center mb-6">
               <div class="flex flex-col items-center mb-20">
                 <h6 class="mb-5">六頁以下，頁面全顯示</h6>
-                <pagination-button
-                  :init-page="initPage1"
-                  :total-pages="totalPages1"
-                  @change-page-event="callSomeFunc"
-                ></pagination-button>
+                <PaginationButton :init-page="initPage1" :total-pages="totalPages1" @change-page-event="callSomeFunc">
+                </PaginationButton>
               </div>
               <div class="flex flex-col items-center mb-10">
                 <h6 class="mb-5">六頁以上，顯示部分</h6>
-                <pagination-button
-                  :init-page="initPage2"
-                  :total-pages="totalPages2"
-                  @change-page-event="callSomeFunc"
-                ></pagination-button>
+                <PaginationButton :init-page="initPage2" :total-pages="totalPages2" @change-page-event="callSomeFunc">
+                </PaginationButton>
               </div>
             </div>
           </div>
@@ -798,11 +788,11 @@ confirmFunc:
             <div class="flex flex-col justify-center items-start">
               <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
                 <pre><code>
-&#060;pagination-button
+&#060;PaginationButton
 :init-page="initPage"
 :total-pages="totalPages"
 @change-page-event="callSomeFunc"&#062;
-&#060;/pagination-button&#062;
+&#060;/PaginationButton&#062;
 
 js:
 const initPage = ref(1); // 初始選擇頁面
@@ -812,7 +802,7 @@ function callSomeFunc(currentPageFromComponent) {
 }
 
 
-套件路徑: @/components/pagination-button.vue
+套件路徑: @/components/PaginationButton.vue
 參數說明:
 initPage: 
     初始選擇頁面, 傳入 Number, 非必填, 預設 1      

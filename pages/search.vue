@@ -309,7 +309,7 @@ function scrollToTop() {
               @click="clickClear"
             ></button>
           </div>
-          <base-button class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></base-button>
+          <BaseButton class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></BaseButton>
         </div>
         <!-- 搜尋頁籤 -->
         <div
@@ -475,7 +475,7 @@ function scrollToTop() {
           </div>
 
           <!-- 所有結果頁數 -->
-          <pagination-button
+          <PaginationButton
             v-if="isTab(SearchType.KEYWORD) && (!isEmpty(companies) || !isEmpty(titles) || !isEmpty(types))"
             :key="componentKey"
             class="flex justify-center"
@@ -483,9 +483,9 @@ function scrollToTop() {
             :total-pages="keywordTotalPages"
             @change-page-event="changePage"
           >
-          </pagination-button>
+          </PaginationButton>
           <!-- 找公司頁數 -->
-          <pagination-button
+          <PaginationButton
             v-if="isTab(SearchType.COMPANY) && !isEmpty(companies)"
             :key="componentKey"
             class="flex justify-center"
@@ -493,9 +493,9 @@ function scrollToTop() {
             :total-pages="companyTotalPages"
             @change-page-event="changePage"
           >
-          </pagination-button>
+          </PaginationButton>
           <!-- 找職位頁數 -->
-          <pagination-button
+          <PaginationButton
             v-if="isTab(SearchType.JOB_TITLE) && !isEmpty(titles)"
             :key="componentKey"
             class="flex justify-center"
@@ -503,9 +503,9 @@ function scrollToTop() {
             :total-pages="titleTotalPages"
             @change-page-event="changePage"
           >
-          </pagination-button>
+          </PaginationButton>
           <!-- 找產業頁數 -->
-          <pagination-button
+          <PaginationButton
             v-if="isTab(SearchType.COMPANY_TYPE) && !isEmpty(types)"
             :key="componentKey"
             class="flex justify-center"
@@ -513,7 +513,7 @@ function scrollToTop() {
             :total-pages="typeTotalPages"
             @change-page-event="changePage"
           >
-          </pagination-button>
+          </PaginationButton>
 
           <!-- 查無資料 -->
           <div

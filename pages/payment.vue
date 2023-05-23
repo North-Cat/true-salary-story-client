@@ -38,7 +38,7 @@
             </div>
             <div class="flex justify-between pb-5 border-b border-black-1 mb-5">
               <div class="w-9/12 border border-black-1 rounded p-2 me-2">1000 積分</div>
-              <base-button cate="secondary">購買</base-button>
+              <BaseButton cate="secondary">購買</BaseButton>
             </div>
             <div class="h-full flex flex-col justify-between">
               <div class="flex pb-5 border-b border-black-1 mb-5">
@@ -64,7 +64,7 @@
               <div class="icon-fire text-6xl text-blue"></div>
             </div>
             <div class="flex justify-between pb-5 border-b border-black-1 mb-5">
-              <base-button class="w-full">馬上訂閱</base-button>
+              <BaseButton class="w-full">馬上訂閱</BaseButton>
             </div>
             <div class="flex flex-col justify-between">
               <div class="flex pb-5 border-b border-black-1 mb-5">
@@ -165,7 +165,7 @@
                 <div class="caption">請聯繫客服，我們將於上班日回覆您。</div>
               </div>
             </div>
-            <base-button cate="secondary">聯繫客服</base-button>
+            <BaseButton cate="secondary">聯繫客服</BaseButton>
           </div>
         </div>
       </div>

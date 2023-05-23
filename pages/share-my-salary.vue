@@ -799,7 +799,7 @@ const rightSideList = reactive([
                   <br />
                   成為他人的職場貴人！
                 </p>
-                <base-button cate="primary" @click="onNext">下一步</base-button>
+                <BaseButton cate="primary" @click="onNext">下一步</BaseButton>
               </div>
             </div>
             <div v-if="step === 2">
@@ -926,19 +926,19 @@ const rightSideList = reactive([
                     placeholder="自訂評價(每個最多10字)"
                     class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
                   />
-                  <base-button
+                  <BaseButton
                     :disabled="!customTagsText"
                     cate="gray-text"
                     class="absolute inset-y-0 right-0 flex items-center"
                     @click="addCustomTags(customTagsText)"
                   >
                     <i class="icomoon icon-plus"></i>
-                  </base-button>
+                  </BaseButton>
                 </div>
               </div>
               <hr class="my-10" />
               <div class="flex justify-between">
-                <base-button cate="white" @click="onPrev">上一步</base-button>
+                <BaseButton cate="white" @click="onPrev">上一步</BaseButton>
                 <button
                   class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 disabled:bg-black-3 disabled:text-black-6"
                   type="submit"
@@ -986,8 +986,8 @@ const rightSideList = reactive([
                     </div>
                   </div>
                   <div class="flex mt-auto">
-                    <base-button cate="primary" class="w-full mr-4" to="/payment">NT$ 699</base-button>
-                    <base-button cate="white" class="w-full" to="/payment">了解更多</base-button>
+                    <BaseButton cate="primary" class="w-full mr-4" to="/payment">NT$ 699</BaseButton>
+                    <BaseButton cate="white" class="w-full" to="/payment">了解更多</BaseButton>
                   </div>
                 </div>
                 <div class="w-full md:mt-0 mt-5 border border-black-3 rounded p-6 flex flex-col bg-white min-h-[240px]">
@@ -1004,14 +1004,14 @@ const rightSideList = reactive([
                       <i class="icomoon icon-star text-5xl text-blue"></i>
                     </div>
                   </div>
-                  <base-button cate="white" class="w-full mt-auto" to="/payment">NT$ 150</base-button>
+                  <BaseButton cate="white" class="w-full mt-auto" to="/payment">NT$ 150</BaseButton>
                 </div>
               </div>
               <div class="flex space-x-4 mt-7 border border-black-10 rounded p-6 bg-white">
                 <div class="self-center w-3/6">
                   <p class="mb-5 text-xl">想知道加薪的秘訣是什麼嗎?好薪的前輩親自告訴你!</p>
                   <p class="mb-9 text-xl">取得產業前輩專業意見，快速擴展職場人脈!</p>
-                  <base-button cate="primary" class="w-full mt-auto">了解如何請教前輩</base-button>
+                  <BaseButton cate="primary" class="w-full mt-auto">了解如何請教前輩</BaseButton>
                 </div>
                 <div class="w-3/6">
                   <svg
@@ -1324,8 +1324,8 @@ const rightSideList = reactive([
           </VForm>
         </div>
         <div v-if="step === 3" class="mt-4 flex">
-          <base-button cate="white" to="/" class="w-full mr-5">回首頁</base-button>
-          <base-button cate="primary" class="w-full" @click="reset">再次分享</base-button>
+          <BaseButton cate="white" to="/" class="w-full mr-5">回首頁</BaseButton>
+          <BaseButton cate="primary" class="w-full" @click="reset">再次分享</BaseButton>
         </div>
         <div v-if="step !== 3" class="w-full lg:w-2/6 ml-0 lg:ml-[30px] lg:mt-0 md:mt-15">
           <div v-for="(rightSideBlock, $index) in rightSideList" :key="$index" class="mb-4 bg-white rounded p-6">
