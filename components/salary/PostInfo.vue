@@ -1,39 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import { IShareSalaryFormData } from '@/interface/salaryData';
 import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
-import { useUserStore } from '@/store/user';
 
-const user = useUserStore();
-const { isLogin } = storeToRefs(user);
-const router = useRouter();
 const { shareSalaryApi } = useApi();
 const { salaryId } = useRoute().params;
 const post = ref<IShareSalaryFormData>({});
 const { result } = await shareSalaryApi.getSalaryInfo('6468c348abb6863c8509cfee');
 post.value = result;
-const isShowModal = ref(false);
-// TODO
-const point = ref(250);
-const isLocked = ref(false);
-const redirect = () => {
-  if (!isLogin.value) router.push('/login');
-  isShowModal.value = true;
-};
-const unlockPost = async () => {
-  const { message } = await shareSalaryApi.requestSalaryInfo('6468c348abb6863c8509cfee');
-  if (message === '成功') {
-    isLocked.value = true;
-  }
-  isShowModal.value = false;
-};
-useHead({
-  title: '薪水分享',
-});
 
 defineProps<{
-  post: IShareSalaryFormData;
   isLocked: boolean;
 }>();
 

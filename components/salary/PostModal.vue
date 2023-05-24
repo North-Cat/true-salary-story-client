@@ -1,8 +1,8 @@
 <script setup lang="ts">
 defineProps<{
   isVisible: boolean;
-  point: number;
 }>();
+const point = ref(250);
 const emit = defineEmits(['close', 'redeem']);
 </script>
 
