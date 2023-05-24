@@ -11,7 +11,7 @@ const isShowModal = ref(false);
 // TODO
 const isLocked = ref(false);
 const redirect = () => {
-  if (!isLogin.value) router.push('/login');
+  // if (!isLogin.value) router.push('/login');
   isShowModal.value = true;
 };
 const unlockPost = async () => {
@@ -24,5 +24,7 @@ const unlockPost = async () => {
 </script>
 <template>
   <SalaryInfo :is-locked="isLocked" @view="redirect" />
-  <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
+  <teleport to="body">
+    <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
+  </teleport>
 </template>
