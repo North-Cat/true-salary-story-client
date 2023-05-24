@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules'] },
   runtimeConfig: {
     public: {
-      apiBase: 'http://localhost:3000',
+      apiBase: 'https://client-api-dev.up.railway.app',
     },
   },
   telemetry: false,
