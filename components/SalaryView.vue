@@ -23,6 +23,6 @@ const unlockPost = async () => {
 };
 </script>
 <template>
-  <PostInfo :is-locked="isLocked" @view="redirect" />
-  <PostModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
+  <SalaryInfo :is-locked="isLocked" @view="redirect" />
+  <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
 </template>
