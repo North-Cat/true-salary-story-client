@@ -5,23 +5,25 @@ export interface IShareSalaryFormData {
   employmentType: string;
   inService: boolean;
   city: string;
-  workYears: number | string;
-  totalWorkYears: number | string;
-  monthlySalary: number | string;
-  dailySalary: number | string;
-  avgWorkingDaysPerMonth: number | string;
-  hourlySalary: number | string;
-  dailyAverageWorkingHours: number | string;
-  yearEndBonus: number | string;
-  holidayBonus: number | string;
-  profitSharingBonus: number | string;
-  otherBonus: string;
-  overtime: number;
-  feeling: number;
+  workYears: number;
+  totalWorkYears: number;
+  monthlySalary: number;
+  dailySalary: number;
+  avgWorkingDaysPerMonth: number;
+  hourlySalary: number;
+  avgHoursPerDay: number;
+  yearEndBonus: number;
+  holidayBonus: number;
+  profitSharingBonus: number;
+  yearlySalary: number;
+  otherBonus: number;
+  overtime: string;
+  feeling: string;
   jobDescription: string;
   suggestion: string;
   tags?: number[];
   customTags?: string[];
+  createDate: string;
 }
 
 export interface ISalary {
