@@ -514,13 +514,13 @@ onClickOutside(filterModal, () => {
                     <div class="flex flex-col mb-5">
                       <div class="caption text-black-5 mb-1">工作內容</div>
                       <p v-show="post.jobDescription" class="body-sm">
-                        {{ isLocked ? post.jobDescription : useTruncateText(post.jobDescription, 20) }}
+                        {{ isLocked ? post.jobDescription : post.jobDescription && useTruncateText(post.jobDescription, 20) }}
                       </p>
                     </div>
                     <div class="flex flex-col mb-5">
                       <div class="caption text-black-5 mb-1">其他建議</div>
                       <p v-show="post.suggestion" class="body-sm">
-                        {{ isLocked ? post.suggestion : useTruncateText(post.suggestion, 20) }}
+                        {{ isLocked ? post.suggestion : post.suggestion && useTruncateText(post.suggestion, 20) }}
                       </p>
                     </div>
                     <div class="flex flex-wrap mb-5">
