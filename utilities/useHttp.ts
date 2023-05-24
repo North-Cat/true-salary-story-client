@@ -53,7 +53,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     const result = data.value;
     if (error.value || !result) {
       showError('error', error?.value?.data?.message || '系統錯誤');
-      return Promise.reject(error);
+      return Promise.reject(error?.value?.data?.message || '系統錯誤');
       // throw createError({
       //   statusCode: 500,
       //   statusMessage: reqUrl,

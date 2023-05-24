@@ -2,6 +2,7 @@
 import { onClickOutside } from '@vueuse/core';
 import { ref, onMounted, watch, computed } from 'vue';
 import { showInfo } from '@/utilities/message';
+import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
 
 useHead({
   title: '單一公司全部薪水分享',
@@ -204,82 +205,6 @@ const emit = defineEmits(['click']);
 
 // TODO
 const isLocked = ref(false);
-
-const feelingClass = computed(() => (text: string) => {
-  let className = '';
-  switch (text) {
-    case '非常開心':
-      className = 'icon-face-good text-green';
-      break;
-    case '還算愉快':
-      className = 'icon-face-good text-green';
-      break;
-    case '平常心':
-      className = 'icon-face-normal text-yellow';
-      break;
-    case '有苦說不出':
-      className = 'icon-face-bad text-red';
-      break;
-    case '想換工作了':
-      className = 'icon-face-bad text-red';
-      break;
-  }
-  return className;
-});
-
-const overtimeClass = computed(() => (text: string) => {
-  let className = '';
-  switch (text) {
-    case '準時上下班':
-      className = 'icon-time-good text-green';
-      break;
-    case '很少加班':
-      className = 'icon-time-good text-green';
-      break;
-    case '偶爾加班':
-      className = 'icon-time-normal text-yellow';
-      break;
-    case '常常加班':
-      className = 'icon-time-bad text-red';
-      break;
-    case '賣肝拼經濟':
-      className = 'icon-time-bad text-red';
-      break;
-  }
-  return className;
-});
-
-const numberRange = computed(() => (number: number) => {
-  let text = '-';
-  let range = 0;
-  if (number >= 100000) {
-    // 若為六位數，範圍間距為 10k
-    range = 10000;
-  } else if (number >= 1000 && number < 100000) {
-    // 若為四、五位數，範圍間距為 1k
-    range = 1000;
-  }
-
-  let max = Math.ceil(number / range); // ceil 回傳大於等於所給數字的最大整數
-  const min = Math.floor(number / range); // floor 回傳小於等於所給數字的最大整數
-  max = min === max ? (max += 1) : max; // 若為整數 (例 40000) 依上述寫法會變成 40-40k， 則將上限加 1k 變為 40-41k
-
-  if (number >= 100000) {
-    text = `${min * 10} - ${max * 10}k`;
-  } else if (number >= 1000 && number < 100000) {
-    text = `${min} - ${max}k`;
-  } else if (number > 0 && number < 1000) {
-    text = '低於 1k';
-  }
-  return text;
-});
-
-const truncateText = computed(() => (text: string, maxLength: number) => {
-  if (text.length > maxLength) {
-    return text.slice(0, maxLength) + '...';
-  }
-  return text;
-});
 
 // 行動版篩選選單 modal
 const showFilterModal = ref(false);
@@ -497,7 +422,7 @@ onClickOutside(filterModal, () => {
                             </div>
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">月薪</div>
-                              <h6 v-show="post.monthlySalary">{{ numberRange(post.monthlySalary) }}</h6>
+                              <h6 v-show="post.monthlySalary">{{ useNumberRange(post.monthlySalary) }}</h6>
                             </div>
                           </div>
                           <div class="w-full flex justify-start items-center">
@@ -506,7 +431,7 @@ onClickOutside(filterModal, () => {
                             </div>
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">年薪</div>
-                              <h6 v-show="post.yearlySalary">{{ numberRange(post.yearlySalary) }}</h6>
+                              <h6 v-show="post.yearlySalary">{{ useNumberRange(post.yearlySalary) }}</h6>
                             </div>
                           </div>
                         </div>
@@ -514,25 +439,25 @@ onClickOutside(filterModal, () => {
                           <div class="w-full flex justify-start items-center">
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">年終</div>
-                              <h6 v-show="post.yearEndBonus">{{ numberRange(post.yearEndBonus) }}</h6>
+                              <h6 v-show="post.yearEndBonus">{{ useNumberRange(post.yearEndBonus) }}</h6>
                             </div>
                           </div>
                           <div class="w-full flex justify-start items-center">
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">三節</div>
-                              <h6 v-show="post.holidayBonus">{{ numberRange(post.holidayBonus) }}</h6>
+                              <h6 v-show="post.holidayBonus">{{ useNumberRange(post.holidayBonus) }}</h6>
                             </div>
                           </div>
                           <div class="w-full flex justify-start items-center">
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">分紅</div>
-                              <h6 v-show="post.profitSharingBonus">{{ numberRange(post.profitSharingBonus) }}</h6>
+                              <h6 v-show="post.profitSharingBonus">{{ useNumberRange(post.profitSharingBonus) }}</h6>
                             </div>
                           </div>
                           <div class="w-full flex justify-start items-center">
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">其他</div>
-                              <h6 v-show="post.otherBonus">{{ numberRange(post.otherBonus) }}</h6>
+                              <h6 v-show="post.otherBonus">{{ useNumberRange(post.otherBonus) }}</h6>
                             </div>
                           </div>
                         </div>
@@ -541,7 +466,7 @@ onClickOutside(filterModal, () => {
                         <div class="lg:w-1/2 flex justify-between items-center">
                           <div class="w-full flex justify-start items-center">
                             <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                              <span :class="['text-2xl', feelingClass(post.feeling)]"></span>
+                              <span :class="['text-2xl', useFeelingClass(post.feeling)]"></span>
                             </div>
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">上班心情</div>
@@ -550,7 +475,7 @@ onClickOutside(filterModal, () => {
                           </div>
                           <div class="w-full flex justify-start items-center">
                             <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                              <span :class="['text-2xl', overtimeClass(post.overtime)]"></span>
+                              <span :class="['text-2xl', useOvertimeClass(post.overtime)]"></span>
                             </div>
                             <div class="flex flex-col">
                               <div class="caption text-black-5 mb-1">加班頻率</div>
@@ -589,13 +514,13 @@ onClickOutside(filterModal, () => {
                     <div class="flex flex-col mb-5">
                       <div class="caption text-black-5 mb-1">工作內容</div>
                       <p v-show="post.jobDescription" class="body-sm">
-                        {{ isLocked ? post.jobDescription : truncateText(post.jobDescription, 20) }}
+                        {{ isLocked ? post.jobDescription : useTruncateText(post.jobDescription, 20) }}
                       </p>
                     </div>
                     <div class="flex flex-col mb-5">
                       <div class="caption text-black-5 mb-1">其他建議</div>
                       <p v-show="post.suggestion" class="body-sm">
-                        {{ isLocked ? post.suggestion : truncateText(post.suggestion, 20) }}
+                        {{ isLocked ? post.suggestion : useTruncateText(post.suggestion, 20) }}
                       </p>
                     </div>
                     <div class="flex flex-wrap mb-5">
