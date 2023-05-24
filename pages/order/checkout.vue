@@ -4,6 +4,7 @@ import {
     offerPointOption, // 積分選單
 } from '@/utilities/options';
 import { showError } from '@/utilities/message';
+import { useUserStore } from '@/store/user';
 
 /**
  * 我的計畫
@@ -51,29 +52,21 @@ const subscriptionPoint = 2000;
 /**
  * 訂單資訊
  */
+const user = useUserStore();
 const email = ref();
-email.value = 'occur0324@gmail.com'; // FIXME: call API 取得目前email
 const userPoint = ref();
+email.value = user.currentUser ? user.currentUser.email : "";
 userPoint.value = 100; // FIXME: call API 取得目前積分
 const selectedPoint = computed(() => {
-    let point = 0;
-    if (type == offerType.SINGLE) {
-        point = selectedSingleOfferPoint.value;
-    } else if (type == offerType.SUBSCRIPTION) {
-        point = subscriptionPoint;
-    }
-    return point;
+    return getSelectedPoint();
 });
 const expectedPoint = computed(() => {
-    let point = 0;
-    if (type == offerType.SINGLE) {
-        point = userPoint.value + selectedSingleOfferPoint.value;
-    } else if (type == offerType.SUBSCRIPTION) {
-        point = userPoint.value + subscriptionPoint;
-    }
-    return point;
+    return getSelectedPoint() + userPoint.value;
 });
 const expectedPrice = computed(() => {
+    return getExpectedPrice();
+});
+function getExpectedPrice() {
     let price = 0;
     if (type == offerType.SINGLE) {
         price = selectedSingleOfferPrice.value;
@@ -81,7 +74,44 @@ const expectedPrice = computed(() => {
         price = subscriptionPrice;
     }
     return price;
-});
+}
+function getSelectedPoint() {
+    let point = 0;
+    if (type == offerType.SINGLE) {
+        point = selectedSingleOfferPoint.value;
+    } else if (type == offerType.SUBSCRIPTION) {
+        point = subscriptionPoint;
+    }
+    return point;
+}
+
+// 點擊開始付款
+const { orderApi } = useApi();
+let transactionId: string | undefined = undefined;
+async function clickPay() {
+    console.log('test');
+    const data = {
+        purchaseType: type as string,
+        amount: getExpectedPrice()
+    }
+
+    // call api 取得 line pay transactionId
+    await orderApi.postLinePayOrder(data)
+        .then(({ data }) => {
+            transactionId = data.transactionId;
+        })
+
+    // 接著 call api 送出 transactionId
+    // transactionId = '2023-05-24T12:26:35.42828Z_2bae52f8-5ab4-4cdf-8182-e7baf628ad86';
+    if (transactionId) {
+        await orderApi.postLinePayTransaction(transactionId)
+            .then(({ data }) => {
+                console.log(data.paymentUrl);
+                window.open(data.paymentUrl);
+            })
+    }
+
+}
 </script>
 
 <template>
@@ -215,7 +245,7 @@ const expectedPrice = computed(() => {
                                             </div>
                                         </div>
                                         <div class="w-2/5 flex justify-center items-center">
-                                            <base-button class="w-full ms-10">
+                                            <base-button class="w-full ms-10" @click="clickPay">
                                                 <h6>開始付款</h6>
                                                 <div class="icon-right-arrow ms-3"></div>
                                             </base-button>
