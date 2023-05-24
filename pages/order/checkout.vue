@@ -5,6 +5,7 @@ import {
 } from '@/utilities/options';
 import { showError } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
+import { useOrderStore } from '@/store/order';
 
 /**
  * 我的計畫
@@ -86,29 +87,22 @@ function getSelectedPoint() {
 }
 
 // 點擊開始付款
+const order = useOrderStore();
 const { orderApi } = useApi();
-let transactionId: string | undefined = undefined;
 async function clickPay() {
-    console.log('test');
-    const data = {
+    const param = {
         purchaseType: type as string,
         amount: getExpectedPrice()
     }
 
-    // call api 取得 line pay transactionId
-    await orderApi.postLinePayOrder(data)
-        .then(({ data }) => {
-            transactionId = data.transactionId;
-        })
+    // call api 800 取得 line pay transactionId
+    const transactionId = await order.fetchLinePayOrder(param);
+    // const transactionId = '2023-05-24T12:26:35.42828Z_2bae52f8-5ab4-4cdf-8182-e7baf628ad86';
 
-    // 接著 call api 送出 transactionId
-    // transactionId = '2023-05-24T12:26:35.42828Z_2bae52f8-5ab4-4cdf-8182-e7baf628ad86';
+    // 接著 call api 801 送出 transactionId
     if (transactionId) {
-        await orderApi.postLinePayTransaction(transactionId)
-            .then(({ data }) => {
-                console.log(data.paymentUrl);
-                window.open(data.paymentUrl);
-            })
+        const paymentUrl = await order.fetchLinePayTransaction(transactionId);
+        window.open(paymentUrl);
     }
 
 }
