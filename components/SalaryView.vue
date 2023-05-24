@@ -9,10 +9,9 @@ const salaryStore = useSalaryStore();
 const { isLogin } = storeToRefs(userStore);
 const { post, isLocked } = storeToRefs(salaryStore);
 const router = useRouter();
-const { salaryId } = useRoute().params;
+const { salaryId } = useRoute().params as { salaryId: string };
 const isShowModal = ref(false);
 
-// TODO: 使用salaryId
 salaryStore.fetchSalaryInfo(salaryId);
 
 const redirect = () => {
@@ -20,7 +19,6 @@ const redirect = () => {
   isShowModal.value = true;
 };
 const unlockPost = () => {
-  // TODO: 使用salaryId
   salaryStore.fetchPermission(salaryId);
   isShowModal.value = false;
 };
