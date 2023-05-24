@@ -21,6 +21,10 @@ export default new (class postShare extends Http {
     return this.get(`/api/salary/${id}`);
   }
 
+  public getKeywords() {
+    return this.get(`/api/salary/getTopKeyword`);
+  }
+
   public requestSalaryInfo(id: number) {
     return this.post(`/api/salary/${id}/permission`);
   }
