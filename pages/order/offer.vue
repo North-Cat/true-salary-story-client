@@ -3,6 +3,11 @@ import { ref, watch, computed } from 'vue';
 import {
     offerPointOption, // 積分選單
 } from '@/utilities/options';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
+const router = useRouter();
+const userStore = useUserStore();
+const { isLogin } = storeToRefs(userStore);
 
 /**
  * 計畫介紹
@@ -22,22 +27,24 @@ watch(selectedSingleOfferPoint, () => {
     }
 });
 
-function clickSingleOffer() {
-    // 帶著參數導頁至購買頁面
-    const paramObj = {
-        type: offerType.SINGLE,
-        point: selectedSingleOfferPoint.value,
-    };
-    navigateTo({
-        path: '/order/checkout',
-        query: paramObj,
-    });
-}
-function clickSubscriptionOffer() {
-    // 帶著參數導頁至購買頁面
-    const paramObj = {
-        type: offerType.SUBSCRIPTION,
-    };
+function clickOffer(type: offerType) {
+    if (!isLogin.value) {
+        router.push('/login');
+        return;
+    }
+
+    let paramObj = {};
+    if (type === offerType.SINGLE) {
+        paramObj = {
+            type: type,
+            point: selectedSingleOfferPoint.value,
+        };
+    } else if (type === offerType.SUBSCRIPTION) {
+        paramObj = {
+            type: type
+        };
+    }
+
     navigateTo({
         path: '/order/checkout',
         query: paramObj,
@@ -112,7 +119,8 @@ const tabClass = computed(() => (tab: Tab) => {
                                 <BaseFormSelect v-model="selectedSingleOfferPoint" class="h-[48px]"
                                     :options="offerPointOption" name="offer" />
                             </div>
-                            <base-button class="w-1/4 h-[48px]" cate="secondary" @click="clickSingleOffer">購買</base-button>
+                            <base-button class="w-1/4 h-[48px]" cate="secondary"
+                                @click="clickOffer(offerType.SINGLE)">購買</base-button>
                         </div>
                         <div class="h-full flex flex-col justify-between">
                             <div class="flex pb-5 border-b border-black-1 mb-5">
@@ -138,7 +146,7 @@ const tabClass = computed(() => (tab: Tab) => {
                             <div class="icon-fire text-6xl text-blue"></div>
                         </div>
                         <div class="flex justify-between pb-5 border-b border-black-1 mb-5">
-                            <base-button class="w-full" @click="clickSubscriptionOffer">馬上訂閱</base-button>
+                            <base-button class="w-full" @click="clickOffer(offerType.SUBSCRIPTION)">馬上訂閱</base-button>
                         </div>
                         <div class="flex flex-col justify-between">
                             <div class="flex pb-5 border-b border-black-1 mb-5">

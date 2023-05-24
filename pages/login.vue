@@ -26,7 +26,8 @@ const checkLoginStatus = () => {
     tokenCookie.value = jwtToken as string;
     // localStorage.setItem('token', jwtToken as string);
     user.token = jwtToken as string;
-    router.push('/');
+    // 回到登入前的頁面 (因為 google 登入的關係登入佔兩頁，所以回到兩頁前)
+    router.go(-2);
     nextTick(() => {
       tryToFetchProfile();
     });
