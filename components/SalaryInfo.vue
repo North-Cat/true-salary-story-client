@@ -137,13 +137,13 @@ const emit = defineEmits(['view']);
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">工作內容</div>
             <p class="body-sm">
-              {{ isLocked ? post.jobDescription : useTruncateText(post.jobDescription, 20) }}
+              {{ isLocked ? post.jobDescription : post.jobDescription && useTruncateText(post.jobDescription, 20) }}
             </p>
           </div>
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">其他建議</div>
-            <p class="body-sm">
-              {{ isLocked ? post.suggestion : useTruncateText(post.suggestion, 20) }}
+            <p class="body-sm" v-show="post.suggestion">
+              {{ isLocked ? post.suggestion : post.suggestion && useTruncateText(post.suggestion, 20) }}
             </p>
           </div>
           <div class="flex flex-wrap mb-5">

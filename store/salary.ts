@@ -10,7 +10,7 @@ export const useSalaryStore = defineStore('salary', () => {
   const { shareSalaryApi } = useApi();
 
   const fetchSalaryInfo = async (id: number) => {
-    const { result } = await shareSalaryApi.getSalaryInfo('6468c348abb6863c8509cfee');
+    const { result } = await shareSalaryApi.getSalaryInfo(id);
     post.value = result;
   };
 
@@ -20,7 +20,7 @@ export const useSalaryStore = defineStore('salary', () => {
   };
 
   const fetchPermission = async (id: number) => {
-    const { message } = await shareSalaryApi.requestSalaryInfo('6468c348abb6863c8509cfee');
+    const { message } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === '成功') {
       isLocked.value = true;
     }
