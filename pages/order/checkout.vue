@@ -241,10 +241,10 @@ async function clickPay() {
                       </div>
                     </div>
                     <div class="w-2/5 flex justify-center items-center">
-                      <base-button class="w-full ms-10" @click="clickPay">
+                      <BaseButton class="w-full ms-10" @click="clickPay">
                         <h6>開始付款</h6>
                         <div class="icon-right-arrow ms-3"></div>
-                      </base-button>
+                      </BaseButton>
                     </div>
                   </div>
                 </div>
