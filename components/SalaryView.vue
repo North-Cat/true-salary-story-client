@@ -19,7 +19,7 @@ const redirect = () => {
   if (!isLogin.value) router.push('/login');
   isShowModal.value = true;
 };
-const unlockPost = async () => {
+const unlockPost = () => {
   // TODO: 使用salaryId
   salaryStore.fetchPermission(salaryId);
   isShowModal.value = false;
