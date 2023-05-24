@@ -1,7 +1,12 @@
 <script setup lang="ts">
-defineProps<{
-  isVisible: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    isVisible: boolean;
+  }>(),
+  {
+    isVisible: false,
+  },
+);
 // TODO
 const point = ref(250);
 const emit = defineEmits(['close', 'redeem']);

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-const { shareSalaryApi } = useApi();
-const keywords = ref([]);
-const data = await shareSalaryApi.getKeywords();
-keywords.value = data.keywords;
+import { storeToRefs } from 'pinia';
+import { useSalaryStore } from '@/store/salary';
+const salaryStore = useSalaryStore();
+const { keywords } = storeToRefs(salaryStore);
+salaryStore.fetchKeywords();
 </script>
 
 <template>
@@ -11,14 +12,7 @@ keywords.value = data.keywords;
     <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-6 lg:px-6 bg-white rounded-b rounded-tr">
       <div class="flex flex-col">
         <div class="flex flex-wrap justify-between items-center">
-          <TextLink
-            v-for="keyword in keywords"
-            :key="keyword"
-            :content="keyword"
-            size="sm"
-            @click="keywordSearch(keyword)"
-          >
-          </TextLink>
+          <TextLink v-for="keyword in keywords" :key="keyword" :content="keyword" size="sm" @click=""> </TextLink>
         </div>
       </div>
     </div>

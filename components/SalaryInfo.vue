@@ -2,11 +2,15 @@
 import { IShareSalaryFormData } from '@/interface/salaryData';
 import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
 
-defineProps<{
-  post: IShareSalaryFormData;
-  isLocked: boolean;
-}>();
-
+withDefaults(
+  defineProps<{
+    post: IShareSalaryFormData;
+    isLocked: boolean;
+  }>(),
+  {
+    isLocked: false,
+  },
+);
 const emit = defineEmits(['view']);
 </script>
 

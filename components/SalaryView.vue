@@ -2,30 +2,26 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
-import { IShareSalaryFormData } from '@/interface/salaryData';
+import { useSalaryStore } from '@/store/salary';
 
-const user = useUserStore();
-const { isLogin } = storeToRefs(user);
+const userStore = useUserStore();
+const salaryStore = useSalaryStore();
+const { isLogin } = storeToRefs(userStore);
+const { post, isLocked } = storeToRefs(salaryStore);
 const router = useRouter();
 const { salaryId } = useRoute().params;
-const { shareSalaryApi } = useApi();
-const post = ref<IShareSalaryFormData>({});
-// TODO: 使用salaryId
-const { result } = await shareSalaryApi.getSalaryInfo('6468c348abb6863c8509cfee');
-post.value = result;
 const isShowModal = ref(false);
-// TODO
-const isLocked = ref(false);
+
+// TODO: 使用salaryId
+salaryStore.fetchSalaryInfo(salaryId);
+
 const redirect = () => {
   if (!isLogin.value) router.push('/login');
   isShowModal.value = true;
 };
 const unlockPost = async () => {
   // TODO: 使用salaryId
-  const { message } = await shareSalaryApi.requestSalaryInfo('6468c348abb6863c8509cfee');
-  if (message === '成功') {
-    isLocked.value = true;
-  }
+  salaryStore.fetchPermission(salaryId);
   isShowModal.value = false;
 };
 </script>
