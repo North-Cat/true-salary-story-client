@@ -6,15 +6,17 @@ import { useUserStore } from '@/store/user';
 const user = useUserStore();
 const { isLogin } = storeToRefs(user);
 const router = useRouter();
+const { salaryId } = useRoute().params;
 const { shareSalaryApi } = useApi();
 const isShowModal = ref(false);
 // TODO
 const isLocked = ref(false);
 const redirect = () => {
-  // if (!isLogin.value) router.push('/login');
+  if (!isLogin.value) router.push('/login');
   isShowModal.value = true;
 };
 const unlockPost = async () => {
+  // TODO: 使用salaryId
   const { message } = await shareSalaryApi.requestSalaryInfo('6468c348abb6863c8509cfee');
   if (message === '成功') {
     isLocked.value = true;

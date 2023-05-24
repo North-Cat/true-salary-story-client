@@ -2,6 +2,7 @@
 defineProps<{
   isVisible: boolean;
 }>();
+// TODO
 const point = ref(250);
 const emit = defineEmits(['close', 'redeem']);
 </script>

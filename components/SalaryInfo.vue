@@ -6,6 +6,7 @@ import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } fr
 const { shareSalaryApi } = useApi();
 const { salaryId } = useRoute().params;
 const post = ref<IShareSalaryFormData>({});
+// TODO: 使用salaryId
 const { result } = await shareSalaryApi.getSalaryInfo('6468c348abb6863c8509cfee');
 post.value = result;
 
