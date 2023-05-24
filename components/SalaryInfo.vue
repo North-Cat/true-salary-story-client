@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { IShareSalaryFormData } from '@/interface/salaryData';
 import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
 
-const { shareSalaryApi } = useApi();
-const { salaryId } = useRoute().params;
-const post = ref<IShareSalaryFormData>({});
-// TODO: 使用salaryId
-const { result } = await shareSalaryApi.getSalaryInfo('6468c348abb6863c8509cfee');
-post.value = result;
-
 defineProps<{
+  post: IShareSalaryFormData;
   isLocked: boolean;
 }>();
 
