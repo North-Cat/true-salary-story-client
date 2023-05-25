@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { IShareSalaryFormData } from '@/interface/salaryData';
+import { ISalaryDisplayInfo } from '@/interface/salaryData';
 import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
 
 withDefaults(
   defineProps<{
-    post: IShareSalaryFormData;
+    post: ISalaryDisplayInfo;
     isLocked: boolean;
   }>(),
   {
