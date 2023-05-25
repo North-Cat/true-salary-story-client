@@ -67,3 +67,15 @@ export interface ISalaryResult {
   title: string;
   point: number;
 }
+
+export interface IMySalary {
+  postId: string;
+  companyName: string;
+  city: string;
+  title: string;
+  monthlySalary: number;
+  yearlySalary: number;
+  createDate: number;
+  seen: number;
+  employmentType: string;
+}

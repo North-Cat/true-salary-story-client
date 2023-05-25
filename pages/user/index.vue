@@ -29,20 +29,6 @@ const { currentUser } = storeToRefs(user);
             <span>{{ 'Google' }}</span>
           </li>
         </ul>
-        <!-- <div class="mr-3">
-          <input
-            type="text"
-            class="w-full border border-black-1 rounded py-3 px-4 mb-5"
-            placeholder="開始日期"
-          />
-        </div>
-        <div class="mr-3">
-          <input
-            type="text"
-            class="w-full border border-black-1 rounded py-3 px-4 mb-5"
-            placeholder="開始日期"
-          />
-        </div> -->
       </div>
     </div>
   </userLayouts>
