@@ -84,21 +84,26 @@ const tabClass = computed(() => (tab: Tab) => {
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-10">
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-10"
+    >
       <div class="w-full flex flex-col lg:justify-between sm:mb-10 lg:mb-20">
         <!-- 頁籤 -->
         <div class="w-full flex mb-3">
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(Tab.PAYMENT)" @click="changeTab(Tab.PAYMENT)">
+              :class="tabClass(Tab.PAYMENT)"
+              @click="changeTab(Tab.PAYMENT)"
+            >
               <h6>計畫介紹</h6>
             </button>
           </div>
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-              :class="tabClass(Tab.QUESTION)" @click="changeTab(Tab.QUESTION)">
+              :class="tabClass(Tab.QUESTION)"
+              @click="changeTab(Tab.QUESTION)"
+            >
               <h6>常見問答</h6>
             </button>
           </div>
@@ -116,10 +121,15 @@ const tabClass = computed(() => (tab: Tab) => {
             </div>
             <div class="flex justify-between items-center pb-5 border-b border-black-1 mb-5">
               <div class="w-full me-2">
-                <BaseFormSelect v-model="selectedSingleOfferPoint" class="-translate-y-1" :options="offerPointOption"
-                  name="offer" />
+                <BaseFormSelect
+                  v-model="selectedSingleOfferPoint"
+                  class="-translate-y-1"
+                  :options="offerPointOption"
+                  name="offer"
+                />
               </div>
-              <BaseButton class="w-1/4 h-[48px]" cate="secondary" @click="clickOffer(offerType.SINGLE)">購買
+              <BaseButton class="w-1/4 h-[48px]" cate="secondary" @click="clickOffer(offerType.SINGLE)"
+                >購買
               </BaseButton>
             </div>
             <div class="h-full flex flex-col justify-between">
