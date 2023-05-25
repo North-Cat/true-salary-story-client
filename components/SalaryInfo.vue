@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { IShareSalaryFormData } from '@/interface/salaryData';
+import { ISalaryDisplayInfo } from '@/interface/salaryData';
 import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
 
 withDefaults(
   defineProps<{
-    post: IShareSalaryFormData;
+    post: ISalaryDisplayInfo;
     isLocked: boolean;
   }>(),
   {
@@ -28,7 +28,7 @@ const emit = defineEmits(['view']);
             <div class="flex flex-col justify-between">
               <h5>{{ post.companyName }} | {{ post.title }}</h5>
               <div class="flex">
-                <div class="caption text-black-6">{{ post.type }}</div>
+                <div class="caption text-black-6">{{ post.employmentType }}</div>
                 <span class="caption text-black-6 px-3">|</span>
                 <div class="caption text-black-6">{{ post.city }}</div>
                 <span class="caption text-black-6 px-3">|</span>
