@@ -1,16 +1,199 @@
 <script lang="ts" setup>
 import { onClickOutside } from '@vueuse/core';
-import { ref, onMounted, watch, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { showInfo } from '@/utilities/message';
-import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
+import { useSalaryStore } from '@/store/salary';
+import { useSearchStore } from '@/store/search';
+
+const searchStore = useSearchStore();
+// TODO 取得 store 的公司資訊
+//   const { companies, companiesCount, titles, titlesCount, types,
+// typesCount } = storeToRefs(searchStore);
 
 useHead({
   title: '單一公司全部薪水分享',
 });
 
+// 解鎖薪水
+const { searchApi } = useApi();
+const salaryStore = useSalaryStore();
+const userStore = useUserStore();
+const { isLogin } = storeToRefs(userStore);
+const isShowModal = ref(false);
+const redirect = () => {
+  // if (!isLogin.value) {
+  //   router.push('/login')
+  //   return;
+  // };
+  isShowModal.value = true;
+};
+// 對照該薪水是否解鎖
+// TODO: 在 api 取得所有 post 的時候 gen
+// key : salaryId, value :isLocked
+const salaryLockMap = ref<{postId:string, isLocked:boolean}[]>([
+  {
+  postId: '6468c348abb6863c8509cfee',
+  isLocked: false
+  },
+  {
+  postId: 'xxxx2',
+  isLocked: false
+  },
+  {
+  postId: 'xxxx3',
+  isLocked: false
+  },
+  {
+  postId: 'xxxx4',
+  isLocked: false
+  },
+]);
+const unlockPost = async () => {
+  let salaryId = '6468c348abb6863c8509cfee';
+  // 需要有個地方放 salaryId ， 考慮修改 ISalaryDisplayInfo 加個 salaryId
+  const isLocked = await salaryStore.fetchPermission(salaryId);
+  if (typeof isLocked === 'boolean'){
+    salaryLockMap.value = salaryLockMap.value.map(item => item.postId == salaryId ? {postId:salaryId, isLocked:isLocked} : item );
+  }
+  isShowModal.value = false;
+};
+
+const checkIsLocked = computed(() => (postId:string) => {
+  const salary = salaryLockMap.value.find(item => item.postId === postId);
+  return salary?.isLocked;
+});
+
+// 假資料
+const posts = [
+  {
+    // postId: '1234',
+    taxId: 'xxxxxx',
+    companyName: 'OOO 資訊科技有限公司1',
+    title: '設計師',
+    employmentType: '資訊工程',
+    inService: true,
+    city: '台北',
+    workYears: 3,
+    totalWorkYears: 3,
+    yearlySalary: 700000,
+    monthlySalary: 40000,
+    dailySalary: 1000,
+    avgWorkingDaysPerMonth: 20,
+    hourlySalary: 100,
+    avgHoursPerDay: 8,
+    yearEndBonus: 40000,
+    holidayBonus: 1000,
+    profitSharingBonus: 1000,
+    otherBonus: 1000,
+    overtime: '準時上下班',
+    feeling: '非常開心',
+    jobDescription:
+      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
+    suggestion:
+      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
+    createDate: '2023-05-20',
+    customTags: ['有提供零食', '升遷透明'],
+  },
+  {
+    // postId: '1234',
+    taxId: 'xxxxxx',
+    companyName: 'OOO 資訊科技有限公司2',
+    title: '設計師',
+    employmentType: '資訊工程',
+    inService: true,
+    city: '台北',
+    workYears: 3,
+    totalWorkYears: 3,
+    yearlySalary: 700000,
+    monthlySalary: 40000,
+    dailySalary: 1000,
+    avgWorkingDaysPerMonth: 20,
+    hourlySalary: 100,
+    avgHoursPerDay: 8,
+    yearEndBonus: 40000,
+    holidayBonus: 1000,
+    profitSharingBonus: 1000,
+    otherBonus: 1000,
+    overtime: '準時上下班',
+    feeling: '非常開心',
+    jobDescription:
+      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
+    suggestion:
+      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
+    createDate: '2023-05-20',
+    customTags: ['有提供零食', '升遷透明'],
+  },
+  {
+    // postId: '1234',
+    taxId: 'xxxxxx',
+    companyName: 'OOO 資訊科技有限公司3',
+    title: '設計師',
+    employmentType: '資訊工程',
+    inService: true,
+    city: '台北',
+    workYears: 3,
+    totalWorkYears: 3,
+    yearlySalary: 700000,
+    monthlySalary: 40000,
+    dailySalary: 1000,
+    avgWorkingDaysPerMonth: 20,
+    hourlySalary: 100,
+    avgHoursPerDay: 8,
+    yearEndBonus: 40000,
+    holidayBonus: 1000,
+    profitSharingBonus: 1000,
+    otherBonus: 1000,
+    overtime: '準時上下班',
+    feeling: '非常開心',
+    jobDescription:
+      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
+    suggestion:
+      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
+    createDate: '2023-05-20',
+    customTags: ['有提供零食', '升遷透明'],
+  },
+  {
+    // postId: '1234',
+    taxId: 'xxxxxx',
+    companyName: 'OOO 資訊科技有限公司4',
+    title: '設計師',
+    employmentType: '資訊工程',
+    inService: true,
+    city: '台北',
+    workYears: 3,
+    totalWorkYears: 3,
+    yearlySalary: 700000,
+    monthlySalary: 40000,
+    dailySalary: 1000,
+    avgWorkingDaysPerMonth: 20,
+    hourlySalary: 100,
+    avgHoursPerDay: 8,
+    yearEndBonus: 40000,
+    holidayBonus: 1000,
+    profitSharingBonus: 1000,
+    otherBonus: 1000,
+    overtime: '準時上下班',
+    feeling: '非常開心',
+    jobDescription:
+      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
+    suggestion:
+      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
+    createDate: '2023-05-20',
+    customTags: ['有提供零食', '升遷透明'],
+  },
+];
+// 過濾職位的薪水資料
+const postsFilterWithTitle = [];
+
+/**
+ * 篩選相關
+ */
 // 職位
 const titleOptions = ['全部', '業務', '高級專員'];
 const titleValue = ref<string[]>([]);
+titleValue.value = ['全部']; // 預設全部
 watch(titleValue, () => {
   showInfo('', titleValue.value.join('|'));
 });
@@ -22,189 +205,25 @@ const sortOptions = [
   { text: '心情 好→壞', value: 4 },
 ];
 const sortValue = ref();
+sortValue.value = sortOptions[0].value; // 預設依時間排序
 watch(sortValue, () => {
   showInfo('', sortValue.value);
 });
-// 關鍵字
-const keywords = ref<string[]>([]);
-onMounted(() => {
-  keywords.value = [
-    '新代科技',
-    '廣積科技',
-    '達爾科技',
-    '二億企業股份有限公司',
-    '金屬中心',
-    '聯府塑膠年終',
-    '健鼎科技',
-    '台灣神隆',
-    '住華科技',
-    '大力卜',
-    '國泰人壽襄理薪水',
-    '鎧暘科技',
-    '奇鋐科技',
-    '威芯科技有限公司',
-    '南山人壽協理',
-    '先進光電',
-    '樹森開發股份有限公司',
-  ];
-});
-
-// 點擊關鍵字搜尋
-function keywordSearch(keyword: string) {
-  const paramObj = !keyword.trim()
-    ? undefined
-    : {
-        searchType: 'keyword',
-        param: keyword.trim(),
-        page: 1, // 搜尋第一頁
-      };
-  if (!paramObj) {
-    showInfo('提示', '請輸入搜尋條件');
-    return;
-  }
-  search(paramObj);
-}
-// 帶著參數導頁至搜尋頁面
-async function search(paramObj: { searchType: string; param: string; page: number }) {
-  await navigateTo({
-    path: '/search',
-    query: paramObj,
-  });
-}
 
 /**
- * 切版用資料，之後要替換成 component
+ * function
  */
-// import { IShareSalaryFormData } from '@/interface/salaryData';
-// defineProps<{
-//   post: IShareSalaryFormData;
-// }>();
-const route = useRoute();
-const taxId = route.path; // 取得 URL 的搜尋參數
-console.log();
-const posts = [
-  {
-    postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司',
-    title: '設計師',
-    type: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    tags: ['有提供零食', '升遷透明'],
-  },
-  {
-    postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司',
-    title: '設計師',
-    type: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    tags: ['有提供零食', '升遷透明'],
-  },
-  {
-    postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司',
-    title: '設計師',
-    type: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    tags: ['有提供零食', '升遷透明'],
-  },
-  {
-    postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司',
-    title: '設計師',
-    type: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    tags: ['有提供零食', '升遷透明'],
-  },
-];
+async function getCompanySalary() {
+  const { companiesId } = useRoute().params as { companiesId: string };
+  // call search 單一公司全部薪水 api
+  await searchStore.fetchSearchCompanySalary(companiesId);
+  // 過濾所選職位
+    // TODO
+  
+  // 排序
+    // TODO
+}
 
-const emit = defineEmits(['click']);
-
-// TODO
-const isLocked = ref(false);
 
 // 行動版篩選選單 modal
 const showFilterModal = ref(false);
@@ -212,6 +231,12 @@ const filterModal = ref(null);
 onClickOutside(filterModal, () => {
   showFilterModal.value = false;
 });
+
+/**
+ * 初始化
+ */
+ getCompanySalary();
+
 </script>
 <template>
   <section class="companies">
@@ -261,7 +286,7 @@ onClickOutside(filterModal, () => {
             </svg>
             <h2 class="hidden lg:flex ms-5 leading-[46px]">OOO 資訊科技有限公司</h2>
           </div>
-          <div class="w-full lg:w-2/5 flex items-center">
+          <div class="w-full lg:w-2/6 flex items-center">
             <div class="w-1/2 me-3 lg:me-5">
               <BaseButton content="請教所有前輩" class="w-full">
                 <div class="icon-message me-2 -mb-1"></div>
@@ -282,7 +307,7 @@ onClickOutside(filterModal, () => {
       >
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between items-start sm:mb-6 lg:mb-20">
           <!-- lg 左半邊 -->
-          <div class="w-full lg:w-3/5 flex flex-col justify-center items-start me-6">
+          <div class="w-full lg:w-4/6 flex flex-col justify-center items-start">
             <!-- 公司概況 -->
             <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
               <div class="bg-black-10 text-white py-3 px-5 rounded-t">
@@ -316,7 +341,7 @@ onClickOutside(filterModal, () => {
             </div>
 
             <!-- lg 薪水情報 -->
-            <div class="hidden w-full lg:flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
+            <div class="hidden w-full lg:flex flex-col justify-center items-start sm:mb-8 lg:mb-8">
               <div class="bg-black-10 text-white py-3 px-5 rounded-t">
                 <h5>薪水情報</h5>
               </div>
@@ -368,9 +393,9 @@ onClickOutside(filterModal, () => {
               </div>
             </div>
 
-            <!-- sm 薪水情報 -->
-            <div class="lg:hidden w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
-              <div class="w-full flex justify-between">
+            <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-0">
+              <!-- sm 薪水情報篩選 -->
+              <div class=" lg:hidden w-full flex justify-between">
                 <div class="bg-black-10 text-white py-3 px-5 rounded-t">
                   <h5>薪水情報</h5>
                 </div>
@@ -382,190 +407,17 @@ onClickOutside(filterModal, () => {
                   <h6>篩選</h6>
                 </button>
               </div>
-              <div
-                class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-6 lg:px-6 bg-white rounded-b"
-              >
-                這裡要替換成薪資資訊
+              <div v-for="(post,index) in posts"
+              :key="index" class="sm:mb-0 lg:mb-6">
+                <SalaryInfo :is-locked="checkIsLocked('6468c348abb6863c8509cfee')" :post="post" @view="redirect" />
               </div>
             </div>
 
-            <!-- 薪資資訊 -->
-            <div
-              v-for="post in posts"
-              :key="post.postId"
-              class="border-2 rounded flex flex-col justify-start items-start w-full bg-white sm:mb-8 lg:mb-6"
-            >
-              <div class="w-full flex flex-col">
-                <div class="flex flex-col">
-                  <div class="p-6 flex flex-col">
-                    <div class="flex mb-5">
-                      <div class="w-[48px] h-[48px] flex justify-center items-center rounded bg-blue-light mr-[18px]">
-                        <span class="icon-sparkle-checked text-3xl text-blue-dark"></span>
-                      </div>
-                      <div class="flex flex-col justify-between">
-                        <h5>{{ post.companyName }} | {{ post.title }}</h5>
-                        <div class="flex">
-                          <div class="caption text-black-6">{{ post.type }}</div>
-                          <span class="caption text-black-6 px-3">|</span>
-                          <div class="caption text-black-6">{{ post.city }}</div>
-                          <span class="caption text-black-6 px-3">|</span>
-                          <div class="caption text-black-6">{{ post.createDate + ' 分享' }}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="flex flex-col pb-5 border-b border-b-black-1 mb-5">
-                      <div class="w-full flex flex-col lg:flex-row justify-between mb-5 gap-y-4">
-                        <div class="lg:w-1/2 flex justify-between items-center">
-                          <div class="w-full flex justify-start items-center">
-                            <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                              <span class="icon-coin text-2xl text-blue"></span>
-                            </div>
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">月薪</div>
-                              <h6 v-show="post.monthlySalary">{{ useNumberRange(post.monthlySalary) }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                              <span class="icon-coin text-2xl text-blue"></span>
-                            </div>
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">年薪</div>
-                              <h6 v-show="post.yearlySalary">{{ useNumberRange(post.yearlySalary) }}</h6>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="lg:w-1/2 flex justify-between items-center">
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">年終</div>
-                              <h6 v-show="post.yearEndBonus">{{ useNumberRange(post.yearEndBonus) }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">三節</div>
-                              <h6 v-show="post.holidayBonus">{{ useNumberRange(post.holidayBonus) }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">分紅</div>
-                              <h6 v-show="post.profitSharingBonus">{{ useNumberRange(post.profitSharingBonus) }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">其他</div>
-                              <h6 v-show="post.otherBonus">{{ useNumberRange(post.otherBonus) }}</h6>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="w-full flex flex-col lg:flex-row justify-between gap-y-4">
-                        <div class="lg:w-1/2 flex justify-between items-center">
-                          <div class="w-full flex justify-start items-center">
-                            <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                              <span :class="['text-2xl', useFeelingClass(post.feeling)]"></span>
-                            </div>
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">上班心情</div>
-                              <h6>{{ post.feeling }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                              <span :class="['text-2xl', useOvertimeClass(post.overtime)]"></span>
-                            </div>
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">加班頻率</div>
-                              <h6>{{ post.overtime }}</h6>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="lg:w-1/2 flex justify-between items-center">
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">在職年資</div>
-                              <h6>{{ post.workYears + ' 年' }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">個人總年資</div>
-                              <h6>{{ post.totalWorkYears + ' 年' }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">日均工時</div>
-                              <h6>{{ post.avgHoursPerDay + ' 小時' }}</h6>
-                            </div>
-                          </div>
-                          <div class="w-full flex justify-start items-center">
-                            <div class="flex flex-col">
-                              <div class="caption text-black-5 mb-1">在職狀況</div>
-                              <h6>{{ post.inService ? '仍在職' : '已離職' }}</h6>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="flex flex-col mb-5">
-                      <div class="caption text-black-5 mb-1">工作內容</div>
-                      <p v-show="post.jobDescription" class="body-sm">
-                        {{
-                          isLocked
-                            ? post.jobDescription
-                            : post.jobDescription && useTruncateText(post.jobDescription, 20)
-                        }}
-                      </p>
-                    </div>
-                    <div class="flex flex-col mb-5">
-                      <div class="caption text-black-5 mb-1">其他建議</div>
-                      <p v-show="post.suggestion" class="body-sm">
-                        {{ isLocked ? post.suggestion : post.suggestion && useTruncateText(post.suggestion, 20) }}
-                      </p>
-                    </div>
-                    <div class="flex flex-wrap mb-5">
-                      <span v-for="tag in post.tags" :key="tag" class="body-sm text-black-5 me-5"> #{{ tag }} </span>
-                    </div>
-                    <div class="flex justify-between p-4 bg-blue-light">
-                      <div class="text-blue">
-                        <span>想了解只有員工才知道的職場心聲？</span>
-                        <br />
-                        <span>兌換後馬上就能向前輩發問！</span>
-                      </div>
-                      <BaseButton content="查看完整內容及薪水" @click="emit('click')" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- lg 右半邊 -->
           <!-- 熱門關鍵字 -->
-          <div class="w-full lg:w-2/5 flex flex-col justify-center items-start">
-            <div class="bg-black-10 text-white py-3 px-5 rounded-t">
-              <h5>#熱門關鍵字</h5>
-            </div>
-            <!-- TODO: 關鍵字動態資訊 -->
-            <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-6 lg:px-6 bg-white rounded-b rounded-tr">
-              <div class="flex flex-col">
-                <div class="flex flex-wrap justify-between items-center">
-                  <TextLink
-                    v-for="keyword in keywords"
-                    :key="keyword"
-                    :content="keyword"
-                    size="sm"
-                    @click="keywordSearch(keyword)"
-                  >
-                  </TextLink>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SalaryKeyword />
         </div>
       </div>
     </div>
@@ -624,5 +476,8 @@ onClickOutside(filterModal, () => {
         </BaseButton>
       </div>
     </div>
+    <teleport to="body">
+      <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
+    </teleport>
   </section>
 </template>

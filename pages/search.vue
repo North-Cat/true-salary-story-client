@@ -1,14 +1,17 @@
 <script lang="ts" setup>
 import { showInfo } from '~/utilities/message';
-const { searchApi } = useApi();
+import { useSearchStore } from '@/store/search';
+import { storeToRefs } from 'pinia';
 
 useHead({
   title: '搜尋',
 });
 
-/**
- * 初始化
- */
+const searchStore = useSearchStore();
+  const { companies, companiesCount, titles, titlesCount, types,
+typesCount } = storeToRefs(searchStore);
+
+
 enum SearchType {
   KEYWORD = 'keyword', // 關鍵字
   COMPANY = 'companyName', // 公司
@@ -19,16 +22,6 @@ const route = useRoute();
 const { searchType, param, page } = route.query; // 取得 URL 的搜尋參數
 const curSearchType = ref(); // 目前所在頁面
 curSearchType.value = searchType; // 取得 URL 上的 searchType
-onMounted(() => {
-  // 第一次進頁面，要搜尋
-  // 組合搜尋參數
-  searchParam.value = param;
-
-  // 搜尋
-  setTimeout(() => {
-    clickSearch(Number(page));
-  }, 1);
-});
 
 /**
  * 參數宣告
@@ -37,15 +30,9 @@ onMounted(() => {
 const limit = ref(2);
 // 搜尋參數
 const searchParam = ref();
+searchParam.value = param;
 
 // 搜尋結果 (公司)
-interface ICompany {
-  taxId: string;
-  companyName: string;
-  latestPostTitle: string[];
-}
-const companies = ref<ICompany[]>([]);
-const companiesCount = ref();
 const companyLatestPostTitle = computed(() => (titles?: string[]) => {
   const titleText = titles ? titles.join('、') : undefined;
   return titleText;
@@ -54,31 +41,10 @@ const companyCurPage = ref(1); // 目前頁數
 const companyTotalPages = ref(); // 總頁數
 
 // 搜尋結果 (產業)
-interface IType {
-  taxId: string;
-  companyName: string;
-  postCount: number;
-  address: string;
-  phone: string;
-  type: string;
-}
-const types = ref<IType[]>([]);
-const typesCount = ref();
 const typeCurPage = ref(1); // 目前頁數
 const typeTotalPages = ref(); // 總頁數
 
 // 搜尋結果 (職位)
-interface ITitle {
-  taxId: string;
-  companyName: string;
-  postId: number;
-  title: string;
-  phone: string;
-  jobDescription: string;
-  suggestion: string;
-}
-const titles = ref<ITitle[]>([]);
-const titlesCount = ref();
 const titleCurPage = ref(1); // 目前頁數
 const titleTotalPages = ref(); // 總頁數
 const textWithDot = computed(() => (text?: string) => {
@@ -163,12 +129,6 @@ function clickClear() {
  */
 // 搜尋 api
 async function search() {
-  // console.log('目前頁數(關鍵字)', keywordCurPage.value);
-  // console.log('目前頁數(公司)', companyCurPage.value);
-  // console.log('目前頁數(產業)', typeCurPage.value);
-  // console.log('目前頁數(職位)', titleCurPage.value);
-  // console.log('搜尋類型', curSearchType.value);
-  // console.log('搜尋參數', searchParam.value);
 
   // 組合參數
   let companyNameReq = '';
@@ -198,36 +158,19 @@ async function search() {
   }
 
   // call search api
-  await searchApi
-    .getPostResultsByParam(companyNameReq, typeReq, titleReq, pageReq, limitReq)
-    .then(({ companyResults, companyResultsCount, titleResults, titleResultsCount, typeResults, typeResultsCount }) => {
-      // console.log("companyResults", companyResults);
-      // console.log("titleResults", titleResults);
-      // console.log("typeResults", typeResults);
+  await searchStore.fetchSearch(companyNameReq, typeReq, titleReq, pageReq, limitReq);
 
-      // 取得結果
-      companies.value = companyResults;
-      titles.value = titleResults;
-      types.value = typeResults;
+  // 計算頁數
+  companyTotalPages.value = Math.ceil(companiesCount.value / limit.value);
+  titleTotalPages.value = Math.ceil(titlesCount.value / limit.value);
+  typeTotalPages.value = Math.ceil(typesCount.value / limit.value);
+  keywordTotalPages.value = Math.ceil((companiesCount.value + typesCount.value + titlesCount.value) / limit.value);
 
-      // 計算頁數
-      companiesCount.value = companyResultsCount;
-      companyTotalPages.value = Math.ceil(companiesCount.value / limit.value);
+  // 顯示搜尋結果
+  showResult.value = true;
 
-      titlesCount.value = titleResultsCount;
-      titleTotalPages.value = Math.ceil(titlesCount.value / limit.value);
-
-      typesCount.value = typeResultsCount;
-      typeTotalPages.value = Math.ceil(typesCount.value / limit.value);
-
-      keywordTotalPages.value = Math.ceil((companiesCount.value + typesCount.value + titlesCount.value) / limit.value);
-
-      // 顯示搜尋結果
-      showResult.value = true;
-
-      // 移到頁面頂端
-      scrollToTop();
-    });
+  // 移到頁面頂端
+  scrollToTop();
 }
 
 /**
@@ -270,7 +213,6 @@ const componentKey = ref(0);
 const forceRender = () => {
   componentKey.value += 1;
 };
-
 function isEmpty(obj: any): boolean {
   if (typeof obj === 'string') {
     if (obj && obj.trim()) {
@@ -283,10 +225,17 @@ function isEmpty(obj: any): boolean {
   }
   return true;
 }
-
 function scrollToTop() {
   window.scrollTo(0, 0);
 }
+
+/**
+ * 初始化
+ */
+// 第一次進頁面要搜尋
+clickSearch(Number(page));
+
+
 </script>
 
 <template>
