@@ -123,7 +123,12 @@ async function clickPay() {
             <div
               class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr">
               <!-- (單買) 加薪計畫 -->
+              <div v-if="type === offerType.SINGLE" class="w-full flex flex-col rounded me-3">
+                <div class="flex justify-between items-center mb-5">
+                  <div class="flex flex-col">
+                    <h4 class="text-black-6 mb-3">{{ selectedSingleOfferPoint }} 積分</h4>
                     <h6 class="text-black-10">$ {{ selectedSingleOfferPrice }} 元</h6>
+                  </div>
                   <div class="icon-star-circle text-5xl"></div>
                 </div>
                 <div class="flex justify-between items-center pb-5 border-b border-black-1 mb-5">
@@ -208,8 +213,14 @@ async function clickPay() {
                       {{ currentUser.email }}
                     </div>
                     <p class="caption flex items-center text-black-6">
+                      <span class="icon-info text-lg me-1"></span>輸入常用 E-mail 信箱，以利寄送發票中獎通知
+                    </p>
+                  </div>
+                  <div class="w-full flex-col">
+                    <h6 class="mb-2">付款方式</h6>
                     <div class="w-full flex border border-black-1 rounded py-4 px-4 mb-1">
                       <img src="@/assets/img/line-pay.svg" alt="LINE Pay" class="me-2" />
+                      <span class="caption flex items-center text-black-6">＊可使用 LINE Points 折抵消費</span>
                     </div>
                   </div>
                 </div>
