@@ -7,10 +7,12 @@ const router = useRouter();
 const { tryToFetchProfile } = user;
 definePageMeta({
   layout: false,
+  middleware: 'logged-in-redirect',
 });
 useHead({
   title: '登入',
 });
+
 
 const loginHandler = (params: string) => {
   if (params === 'google') {
@@ -26,9 +28,13 @@ const checkLoginStatus = () => {
     tokenCookie.value = jwtToken as string;
     // localStorage.setItem('token', jwtToken as string);
     user.token = jwtToken as string;
-    // 回到登入前的頁面 (因為 google 登入的關係登入佔兩頁，所以回到兩頁前)
-    // router.go(-2);
-    router.push('/');
+    // 回到登入前的頁面
+    const redirectToCookie = useCookie('redirectTo');
+    let redirectUrl = '/'
+    if (redirectToCookie.value) {
+      redirectUrl = redirectToCookie.value;
+    }
+    navigateTo(redirectUrl);
     nextTick(() => {
       tryToFetchProfile();
     });

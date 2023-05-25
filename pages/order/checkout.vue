@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { ref, watch, computed } from 'vue';
 import {
   offerPointOption, // 積分選單
@@ -6,6 +7,7 @@ import {
 import { showError } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
 import { useOrderStore } from '@/store/order';
+
 
 definePageMeta({
   middleware: 'auth',
@@ -58,9 +60,8 @@ const subscriptionPoint = 2000;
  * 訂單資訊
  */
 const user = useUserStore();
-const email = ref();
+const { currentUser } = storeToRefs(user);
 const userPoint = ref();
-email.value = user.currentUser ? user.currentUser.email : '';
 userPoint.value = 100; // FIXME: call API 取得目前積分
 const selectedPoint = computed(() => {
   return getSelectedPoint();
@@ -112,24 +113,17 @@ async function clickPay() {
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-15"
-    >
-      <div class="w-full flex lg:justify-between sm:mb-10 lg:mb-20">
-        <div class="w-1/3 me-3">
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center mt-8 lg:mt-15">
+      <div class="w-full flex flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
+        <div class="w-full lg:w-1/3 lg:me-3">
           <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
             <div class="bg-black-10 text-white py-3 px-5 rounded-t">
               <h5>我的計畫</h5>
             </div>
             <div
-              class="w-full border-2 border-black-10 py-5 px-5 md:py-5 md:px-5 lg:py-5 lg:px-5 bg-white rounded-b rounded-tr"
-            >
+              class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr">
               <!-- (單買) 加薪計畫 -->
-              <div v-if="type === offerType.SINGLE" class="w-full flex flex-col py-5 px-6 rounded me-3">
-                <div class="flex justify-between items-center mb-5">
-                  <div class="flex flex-col">
-                    <h4 class="text-black-6 mb-3">{{ selectedSingleOfferPoint }} 積分</h4>
                     <h6 class="text-black-10">$ {{ selectedSingleOfferPrice }} 元</h6>
-                  </div>
                   <div class="icon-star-circle text-5xl"></div>
                 </div>
                 <div class="flex justify-between items-center pb-5 border-b border-black-1 mb-5">
@@ -158,7 +152,7 @@ async function clickPay() {
               </div>
 
               <!-- (訂閱) 加薪計畫 -->
-              <div v-if="type === offerType.SUBSCRIPTION" class="w-full flex flex-col py-5 px-6 rounded me-3">
+              <div v-if="type === offerType.SUBSCRIPTION" class="w-full flex flex-col rounded me-3">
                 <div class="flex justify-between items-center mb-5">
                   <div class="flex flex-col">
                     <h4 class="text-blue mb-3">加薪計畫</h4>
@@ -197,34 +191,31 @@ async function clickPay() {
             </div>
           </div>
         </div>
-        <div class="w-2/3 ms-3">
+        <div class="w-full lg:w-2/3 lg:ms-3">
           <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
             <div class="bg-black-10 text-white py-3 px-5 rounded-t">
               <h5>訂單資訊</h5>
             </div>
             <div
-              class="w-full border-2 border-black-10 py-5 px-5 md:py-5 md:px-5 lg:py-5 lg:px-5 bg-white rounded-b rounded-tr"
-            >
-              <div class="w-full flex flex-col py-5 px-6 rounded me-3">
+              class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr">
+              <div class="w-full flex flex-col rounded me-3">
                 <div class="flex-col pb-10 border-b border-black-1 mb-10">
                   <div class="w-full flex-col mb-10">
                     <h6 class="mb-2">常用 E-mail 信箱</h6>
-                    <input v-model="email" type="text" class="w-full border border-black-1 rounded py-3 px-4 mb-1" />
+                    <!-- <input v-model="currentUser.email" type="text" 
+                      class="w-full border border-black-1 rounded py-3 px-4 mb-1" /> -->
+                    <div class="w-full flex border border-black-1 rounded py-4 px-4 mb-1">
+                      {{ currentUser.email }}
+                    </div>
                     <p class="caption flex items-center text-black-6">
-                      <span class="icon-info text-lg me-1"></span>輸入常用 E-mail 信箱，以利寄送發票中獎通知
-                    </p>
-                  </div>
-                  <div class="w-full flex-col">
-                    <h6 class="mb-2">付款方式</h6>
                     <div class="w-full flex border border-black-1 rounded py-4 px-4 mb-1">
                       <img src="@/assets/img/line-pay.svg" alt="LINE Pay" class="me-2" />
-                      <span class="caption flex items-center text-black-6">＊可使用 LINE Points 折抵消費</span>
                     </div>
                   </div>
                 </div>
                 <div class="w-full flex-col border-black-1 my-1.5">
-                  <div class="w-full flex">
-                    <div class="w-full flex-col pe-10 border-r border-black-1">
+                  <div class="w-full flex flex-col lg:flex-row">
+                    <div class="w-full flex-col lg:pe-10 lg:border-r lg:border-black-1">
                       <div class="flex-col pb-5 border-b border-black-1 mb-5">
                         <div class="flex justify-between mb-2">
                           <h6 class="text-black-6">現有積分</h6>
@@ -244,8 +235,8 @@ async function clickPay() {
                         <h5 class="">$ {{ expectedPrice }} 元</h5>
                       </div>
                     </div>
-                    <div class="w-2/5 flex justify-center items-center">
-                      <BaseButton class="w-full ms-10" @click="clickPay">
+                    <div class="w-full lg:w-2/5 flex justify-center items-center">
+                      <BaseButton class="w-full mt-5 lg:ms-10" @click="clickPay">
                         <h6>開始付款</h6>
                         <div class="icon-right-arrow ms-3"></div>
                       </BaseButton>
