@@ -38,6 +38,8 @@ export const useUserStore = defineStore('user', {
       }
     },
     error() {
+      const redirectToCookie = useCookie('redirectTo');
+      redirectToCookie.value = null;
       const tokenCookie = useCookie('token');
       tokenCookie.value = null;
       this.isLogin = false;
