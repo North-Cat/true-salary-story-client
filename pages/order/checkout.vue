@@ -8,7 +8,6 @@ import { showError } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
 import { useOrderStore } from '@/store/order';
 
-
 definePageMeta({
   middleware: 'auth',
 });
@@ -113,7 +112,8 @@ async function clickPay() {
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center mt-8 lg:mt-15">
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center mt-8 lg:mt-15"
+    >
       <div class="w-full flex flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
         <div class="w-full lg:w-1/3 lg:me-3">
           <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
@@ -121,7 +121,8 @@ async function clickPay() {
               <h5>我的計畫</h5>
             </div>
             <div
-              class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr">
+              class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr"
+            >
               <!-- (單買) 加薪計畫 -->
               <div v-if="type === offerType.SINGLE" class="w-full flex flex-col rounded me-3">
                 <div class="flex justify-between items-center mb-5">
@@ -133,8 +134,12 @@ async function clickPay() {
                 </div>
                 <div class="flex justify-between items-center pb-5 border-b border-black-1 mb-5">
                   <div class="w-full">
-                    <BaseFormSelect v-model="selectedSingleOfferPoint" class="h-[48px]" :options="offerPointOption"
-                      name="offer" />
+                    <BaseFormSelect
+                      v-model="selectedSingleOfferPoint"
+                      class="h-[48px]"
+                      :options="offerPointOption"
+                      name="offer"
+                    />
                   </div>
                 </div>
                 <div class="h-full flex flex-col justify-between">
@@ -198,7 +203,8 @@ async function clickPay() {
               <h5>訂單資訊</h5>
             </div>
             <div
-              class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr">
+              class="w-full border-2 border-black-10 py-6 px-6 md:py-5 md:px-5 lg:py-6 lg:px-8 bg-white rounded-b rounded-tr"
+            >
               <div class="w-full flex flex-col rounded me-3">
                 <div class="flex-col pb-10 border-b border-black-1 mb-10">
                   <div class="w-full flex-col mb-10">

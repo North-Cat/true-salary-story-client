@@ -3,7 +3,6 @@ import { useUserStore } from '@/store/user';
 
 const user = useUserStore();
 const route = useRoute();
-const router = useRouter();
 const { tryToFetchProfile } = user;
 definePageMeta({
   layout: false,
@@ -12,7 +11,6 @@ definePageMeta({
 useHead({
   title: '登入',
 });
-
 
 const loginHandler = (params: string) => {
   if (params === 'google') {
@@ -30,7 +28,7 @@ const checkLoginStatus = () => {
     user.token = jwtToken as string;
     // 回到登入前的頁面
     const redirectToCookie = useCookie('redirectTo');
-    let redirectUrl = '/'
+    let redirectUrl = '/';
     if (redirectToCookie.value) {
       redirectUrl = redirectToCookie.value;
     }
@@ -56,7 +54,8 @@ onMounted(() => {
       <div class="mt-10">
         <div
           class="bg-black-1 flex cursor-pointer justify-center items-center py-4 px-5 mt-3 w-full hover:text-black-6 rounded-lg"
-          @click="loginHandler('google')">
+          @click="loginHandler('google')"
+        >
           <img src="~/assets/img/google.svg" alt="" width="20" class="mr-2" /><span>使用 Google 繼續</span>
         </div>
       </div>
