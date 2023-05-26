@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { RouteLocationRaw } from 'vue-router';
+import { RouteLocationRaw, useRoute } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
-import { useRoute } from 'vue-router'
+
 const route = useRoute();
 const router = useRouter();
 const showUserList = ref(false);
@@ -150,7 +150,7 @@ async function search() {
   });
 
   // 若已經在搜尋頁面，則重新整理
-  if (route.path == '/search'){
+  if (route.path === '/search') {
     setTimeout(() => {
       window.location.reload();
     }, 1);

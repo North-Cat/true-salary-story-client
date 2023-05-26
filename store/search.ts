@@ -25,6 +25,18 @@ export const useSearchStore = defineStore('search', () => {
     jobDescription: string;
     suggestion: string;
   }
+  interface IPost {
+    postId: string;
+    title: string;
+    companyName: string;
+    feeling: string;
+    overtime: string;
+  }
+  interface ITopCompany {
+    taxId: string;
+    companyName: string;
+    postCount: number;
+  }
 
   /**
    * 搜尋結果
@@ -41,6 +53,29 @@ export const useSearchStore = defineStore('search', () => {
    */
   const companyPost = ref<ISalaryDisplayInfo[]>();
   const companyPostCount = ref();
+
+  /**
+   * 熱門 / 最新 薪水資訊
+   */
+  const latestPosts = ref<IPost[]>([]); // 最新薪水
+  const popularPosts = ref<IPost[]>([]); // 熱門薪水
+  const popularCompanies = ref<ITopCompany[]>([]); // 熱門公司
+
+  /**
+   * function
+   */
+  // call api 302 取得熱門薪資資訊
+  const fetchTopPost = async () => {
+    const { latestPost, popularPost } = await searchApi.getTopPost();
+    latestPosts.value = latestPost;
+    popularPosts.value = popularPost;
+  };
+
+  // call api 302 取得熱門薪資資訊
+  const fetchTopCompany = async () => {
+    const { companies } = await searchApi.getTopCompany();
+    popularCompanies.value = companies;
+  };
 
   // call api 305 依條件搜尋薪資資訊
   const fetchSearch = async (companyName: string, type: string, title: string, page: number, limit: number) => {
@@ -217,7 +252,12 @@ export const useSearchStore = defineStore('search', () => {
     typesCount,
     companyPost,
     companyPostCount,
+    latestPosts,
+    popularPosts,
+    popularCompanies,
     fetchSearch,
     fetchSearchCompanySalary,
+    fetchTopPost,
+    fetchTopCompany,
   };
 });

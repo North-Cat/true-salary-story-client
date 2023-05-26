@@ -3069,12 +3069,12 @@
         </div>
 
         <!-- md lg carousel -->
-        <div class="sm:hidden md:hidden lg:block lg:w-full">
+        <div v-if="popularPosts && popularPosts.length != 0" class="sm:hidden md:hidden lg:block lg:w-full">
           <carousel ref="postCarousel" class="w-full" :items-to-show="1" wrap-around>
-            <slide v-for="slide in popularPost.length / 3" :key="slide" style="margin-top: 25px; margin-bottom: 25px">
+            <slide v-for="slide in popularPosts.length / 3" :key="slide" style="margin-top: 25px; margin-bottom: 25px">
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
-                  <div v-for="(post, index) in popularPost" :key="post.postId">
+                  <div v-for="(post, index) in popularPosts" :key="post.postId">
                     <PostCard
                       v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
                       :class="{ 'me-6': index != (slide - 1) * 3 + 2 }"
@@ -3088,7 +3088,7 @@
                   </div>
                 </div>
                 <div class="w-full flex flex-row">
-                  <div v-for="(post, index) in latestPost" :key="post.postId">
+                  <div v-for="(post, index) in latestPosts" :key="post.postId">
                     <PostCard
                       v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
                       :class="{ 'me-6': index != (slide - 1) * 3 + 2 }"
@@ -3107,12 +3107,12 @@
         </div>
 
         <!-- sm carousel -->
-        <div class="sm:block sm:w-full lg:hidden">
+        <div v-if="popularPosts && popularPosts.length != 0" class="sm:block sm:w-full lg:hidden">
           <carousel ref="smPostCarousel" class="w-full" :items-to-show="1.5" wrap-around snap-align="start">
-            <slide v-for="slide in popularPost.length" :key="slide">
+            <slide v-for="slide in popularPosts.length" :key="slide">
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
-                  <div v-for="(post, index) in popularPost" :key="post.postId">
+                  <div v-for="(post, index) in popularPosts" :key="post.postId">
                     <PostCard
                       v-if="index == slide - 1"
                       cate="top"
@@ -3125,7 +3125,7 @@
                   </div>
                 </div>
                 <div class="w-full flex flex-row">
-                  <div v-for="(post, index) in latestPost" :key="post.postId">
+                  <div v-for="(post, index) in latestPosts" :key="post.postId">
                     <PostCard
                       v-if="index == slide - 1"
                       cate="new"
@@ -3221,15 +3221,18 @@
               </div>
             </div>
             <!-- TODO: 公司動態資訊 換頁 -->
-            <div class="w-full border-2 border-black-10 sm:py-5 sm:px-5 lg:py-10 lg:px-8 bg-white">
+            <div
+              v-if="popularCompanies && popularCompanies.length != 0"
+              class="w-full border-2 border-black-10 sm:py-5 sm:px-5 lg:py-10 lg:px-8 bg-white"
+            >
               <div class="w-full">
                 <carousel ref="comCarousel" class="w-full" :items-to-show="1" wrap-around>
-                  <slide v-for="slide in popularCompany.length / 5" :key="slide">
+                  <slide v-for="slide in popularCompanies.length / 4" :key="slide">
                     <div class="w-full flex flex-col">
-                      <div v-for="(com, index) in popularCompany" :key="com.taxId">
+                      <div v-for="(com, index) in popularCompanies" :key="com.taxId">
                         <TextLink
                           v-if="index >= (slide - 1) * 5 && index <= (slide - 1) * 5 + 4"
-                          :content="com.name"
+                          :content="com.companyName"
                           :end-content="com.postCount + ' 筆'"
                           class="w-full mb-3"
                           :class="{ 'mb-0': index == (slide - 1) * 5 + 4 }"
@@ -3263,7 +3266,7 @@
                   </TagLink>
                 </div>
                 <!-- 其他關鍵字 -->
-                <div class="flex flex-wrap justify-between items-center">
+                <div v-if="keywords && keywords.length != 0" class="flex flex-wrap justify-between items-center">
                   <TextLink
                     v-for="keyword in keywords.slice(5, keywords.length)"
                     :key="keyword"
@@ -3283,10 +3286,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import { showInfo } from '@/utilities/message';
+import { useSearchStore } from '@/store/search';
+
+const searchStore = useSearchStore();
+const { latestPosts, popularPosts, popularCompanies } = storeToRefs(searchStore);
 
 /**
  * 搜尋相關
@@ -3331,230 +3339,16 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
 }
 
 // 薪水檔案櫃
-interface IPost {
-  postId: string;
-  title: string;
-  companyName: string;
-  feeling: string;
-  overtime: string;
-}
-const latestPost = ref<IPost[]>([]); // 最新
-const popularPost = ref<IPost[]>([]); // 熱門
+// interface IPost {
+//   postId: string;
+//   title: string;
+//   companyName: string;
+//   feeling: string;
+//   overtime: string;
+// }
+// const latestPosts = ref<IPost[]>([]); // 最新
+// const popularPosts = ref<IPost[]>([]); // 熱門
 const postCarousel = ref(); // 輪播元件
-latestPost.value = [
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷1',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷2',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷3',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷4',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷5',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷6',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷7',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷8',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷9',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷10',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷11',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷12',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷13',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷14',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷15',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-];
-popularPost.value = [
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任1',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任2',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任3',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任4',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任5',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任6',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任7',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任8',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任9',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任10',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任11',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任12',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任13',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任14',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任15',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-];
 function postsNext() {
   // 下一頁
   postCarousel.value.next();
@@ -3595,165 +3389,13 @@ popularCompanyType.value = [
 ];
 
 // 熱門公司
-interface ICompany {
-  taxId: string;
-  name: string;
-  postCount: number;
-}
-const popularCompany = ref<ICompany[]>([]);
+// interface ICompany {
+//   taxId: string;
+//   name: string;
+//   postCount: number;
+// }
+// const popularCompanies = ref<ICompany[]>([]);
 const comCarousel = ref(); // 輪播元件
-popularCompany.value = [
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-];
 function comNext() {
   // 下一頁
   comCarousel.value.next();
@@ -3843,4 +3485,18 @@ keywords.value = [
   '台積電',
   '中強光電',
 ];
+
+function init() {
+  // 取得熱門薪水
+  searchStore.fetchTopPost();
+  // 取得熱門公司
+  searchStore.fetchTopCompany();
+  // 取得產業
+  // TODO
+}
+
+/**
+ * 初始化
+ */
+init();
 </script>
