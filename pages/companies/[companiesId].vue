@@ -4,7 +4,7 @@ import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useSalaryStore } from '@/store/salary';
-// import { useSearchStore } from '@/store/search';
+import { useSearchStore } from '@/store/search';
 import { ISalaryDisplayInfo } from '@/interface/salaryData';
 
 const searchStore = useSearchStore();
@@ -102,7 +102,8 @@ async function getCompanySalary(page: string) {
   sortWithCondition();
 
   // 計算總頁數
-  totalPages.value = Math.ceil(companyPostCount / limit.value);
+  totalPages.value = Math.ceil(companyPostCount.value / limit.value);
+  curPage.value = page;
   // 重新選染頁數
   forceRender();
 }
@@ -185,11 +186,10 @@ function resetFilter() {
   getCompanySalary(1);
 }
 // 頁數
-const limit = ref(10);
+const limit = ref(5);
 const curPage = ref();
 curPage.value = 1;
-const totalPages = ref(10);
-totalPages.value = 6;
+const totalPages = ref(1);
 function changePage(page) {
   getCompanySalary(page);
 }
@@ -389,6 +389,7 @@ getCompanySalary(1);
             </div>
 
             <PaginationButton
+              v-if="companyPost.length != 0"
               :key="componentKey"
               class="w-full flex justify-center -mt-5 lg:mt-5"
               :init-page="curPage"

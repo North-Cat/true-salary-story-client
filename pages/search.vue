@@ -36,15 +36,15 @@ const companyLatestPostTitle = computed(() => (titles?: string[]) => {
   return titleText;
 });
 const companyCurPage = ref(1); // 目前頁數
-const companyTotalPages = ref(); // 總頁數
+const companyTotalPages = ref(1); // 總頁數
 
 // 搜尋結果 (產業)
 const typeCurPage = ref(1); // 目前頁數
-const typeTotalPages = ref(); // 總頁數
+const typeTotalPages = ref(1); // 總頁數
 
 // 搜尋結果 (職位)
 const titleCurPage = ref(1); // 目前頁數
-const titleTotalPages = ref(); // 總頁數
+const titleTotalPages = ref(1); // 總頁數
 const textWithDot = computed(() => (text?: string) => {
   // 將文字最後一次刪除，並加上 ... ，避免最後一個字是標點符號顯示會很奇怪
   const result = text?.slice(0, text.length - 1);
@@ -53,7 +53,7 @@ const textWithDot = computed(() => (text?: string) => {
 
 // 搜尋結果 (關鍵字)
 const keywordCurPage = ref(1); // 目前頁數
-const keywordTotalPages = ref(); // 總頁數
+const keywordTotalPages = ref(1); // 總頁數
 
 // 排序
 // const sortOptions = [
@@ -168,6 +168,8 @@ async function search() {
 
   // 移到頁面頂端
   scrollToTop();
+
+  forceRender();
 }
 
 /**
@@ -222,9 +224,12 @@ function isEmpty(obj: any): boolean {
   }
   return true;
 }
-function scrollToTop() {
-  window.scrollTo(0, 0);
-}
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
 
 /**
  * 初始化

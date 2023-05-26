@@ -215,6 +215,8 @@ export const useSearchStore = defineStore('search', () => {
     titlesCount,
     types,
     typesCount,
+    companyPost,
+    companyPostCount,
     fetchSearch,
     fetchSearchCompanySalary,
   };

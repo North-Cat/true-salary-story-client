@@ -3,6 +3,8 @@ import { storeToRefs } from 'pinia';
 import { RouteLocationRaw } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
+import { useRoute } from 'vue-router'
+const route = useRoute();
 const router = useRouter();
 const showUserList = ref(false);
 const user = useUserStore();
@@ -146,6 +148,13 @@ async function search() {
     path: '/search',
     query: paramObj,
   });
+
+  // 若已經在搜尋頁面，則重新整理
+  if (route.path == '/search'){
+    setTimeout(() => {
+      window.location.reload();
+    }, 1);
+  }
 }
 </script>
 
