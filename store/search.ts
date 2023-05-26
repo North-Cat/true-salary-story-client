@@ -74,6 +74,18 @@ export const useSearchStore = defineStore('search', () => {
   // call api 302 取得熱門薪資資訊
   const fetchTopCompany = async () => {
     const { companies } = await searchApi.getTopCompany();
+    // 不足 5 的倍數，用預設補足 (畫面顯示所需)
+    const lackCount = 5 - (companies.length % 5);
+    if (lackCount !== 0) {
+      const sample = {
+        taxId: undefined,
+        companyName: undefined,
+        postCount: undefined,
+      };
+      for (let i = 0; i < lackCount; i++) {
+        companies.push(sample);
+      }
+    }
     popularCompanies.value = companies;
   };
 

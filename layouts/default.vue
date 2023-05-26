@@ -332,7 +332,7 @@ async function search() {
           <img src="../assets/img/LOGO.png" alt="LOGO" />
         </nuxt-link>
         <div class="sm:hidden md:flex flex-row justify-center items-center">
-          <BaseButton cate="blue-text" content="匿名分享" class="me-0" to="/sharemysalary">
+          <BaseButton cate="blue-text" content="匿名分享" class="me-0" to="/share-my-salary">
             <span class="icon-edit text-lg me-2"></span>
           </BaseButton>
           <div class="relative">

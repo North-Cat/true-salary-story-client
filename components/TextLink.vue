@@ -1,5 +1,6 @@
 <template>
   <button
+    v-if="content && content.trim()"
     class="text-black-10 px-2 py-2 rounded flex justify-between hover:bg-black-1 transition duration-150 ease-in-out truncate"
   >
     <div class="w-full flex justify-between">
@@ -20,7 +21,7 @@ defineProps({
   content: {
     // 文字內容
     type: String,
-    default: 'text',
+    default: '',
   },
   endContent: {
     // 句尾文字內容

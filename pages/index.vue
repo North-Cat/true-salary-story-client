@@ -31,11 +31,11 @@
                     class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3 focus:outline-none"
                     type="text"
                     placeholder="搜尋、公司、職位、產業..."
-                    @keyup.enter="keywordSearch(searchParam.keyword)"
+                    @keyup.enter="searchKeyword(searchParam.keyword)"
                   />
                   <button
                     class="flex justify-center items-center bg-black-10 py-3 px-8"
-                    @click="keywordSearch(searchParam.keyword)"
+                    @click="searchKeyword(searchParam.keyword)"
                   >
                     <span class="icon-search text-white text-xl"></span>
                   </button>
@@ -3227,7 +3227,7 @@
             >
               <div class="w-full">
                 <carousel ref="comCarousel" class="w-full" :items-to-show="1" wrap-around>
-                  <slide v-for="slide in popularCompanies.length / 4" :key="slide">
+                  <slide v-for="slide in popularCompanies.length / 5" :key="slide">
                     <div class="w-full flex flex-col">
                       <div v-for="(com, index) in popularCompanies" :key="com.taxId">
                         <TextLink
@@ -3236,6 +3236,7 @@
                           :end-content="com.postCount + ' 筆'"
                           class="w-full mb-3"
                           :class="{ 'mb-0': index == (slide - 1) * 5 + 4 }"
+                          @click="searchCompany(com.taxId)"
                         ></TextLink>
                       </div>
                     </div>
@@ -3261,18 +3262,18 @@
                     :key="keyword"
                     :content="keyword"
                     class="sm:me-2 sm:mb-3 lg:mb-0 lg:me-5"
-                    @click="keywordSearch(keyword)"
+                    @click="searchKeyword(keyword)"
                   >
                   </TagLink>
                 </div>
                 <!-- 其他關鍵字 -->
-                <div v-if="keywords && keywords.length != 0" class="flex flex-wrap justify-between items-center">
+                <div v-if="keywords && keywords.length != 0" class="flex flex-wrap justify-start items-center">
                   <TextLink
                     v-for="keyword in keywords.slice(5, keywords.length)"
                     :key="keyword"
                     :content="keyword"
                     size="sm"
-                    @click="keywordSearch(keyword)"
+                    @click="searchKeyword(keyword)"
                   >
                   </TextLink>
                 </div>
@@ -3292,7 +3293,10 @@ import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import { showInfo } from '@/utilities/message';
 import { useSearchStore } from '@/store/search';
+import { useSalaryStore } from '@/store/salary';
 
+const salaryStore = useSalaryStore();
+const { keywords } = storeToRefs(salaryStore);
 const searchStore = useSearchStore();
 const { latestPosts, popularPosts, popularCompanies } = storeToRefs(searchStore);
 
@@ -3307,7 +3311,7 @@ const searchParam = ref({
   companyType: '', // 產業
 });
 // 點擊關鍵字搜尋
-function keywordSearch(keyword: string) {
+function searchKeyword(keyword: string) {
   const paramObj = !keyword.trim()
     ? undefined
     : {
@@ -3330,6 +3334,10 @@ function searchCompanytype(type: string) {
   };
   search(paramObj);
 }
+// 點擊搜尋
+function searchCompany(taxId: string) {
+  navigateTo('companies/' + taxId);
+}
 // 帶著參數導頁至搜尋頁面
 async function search(paramObj: { searchType: string; param: string; page: number }) {
   await navigateTo({
@@ -3339,15 +3347,6 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
 }
 
 // 薪水檔案櫃
-// interface IPost {
-//   postId: string;
-//   title: string;
-//   companyName: string;
-//   feeling: string;
-//   overtime: string;
-// }
-// const latestPosts = ref<IPost[]>([]); // 最新
-// const popularPosts = ref<IPost[]>([]); // 熱門
 const postCarousel = ref(); // 輪播元件
 function postsNext() {
   // 下一頁
@@ -3389,12 +3388,6 @@ popularCompanyType.value = [
 ];
 
 // 熱門公司
-// interface ICompany {
-//   taxId: string;
-//   name: string;
-//   postCount: number;
-// }
-// const popularCompanies = ref<ICompany[]>([]);
 const comCarousel = ref(); // 輪播元件
 function comNext() {
   // 下一頁
@@ -3405,87 +3398,6 @@ function comPrev() {
   comCarousel.value.prev();
 }
 
-// 關鍵字
-const keywords = ref<string[]>([]);
-keywords.value = [
-  '新代科技',
-  '廣積科技',
-  '達爾科技',
-  '二億企業股份有限公司',
-  '金屬中心',
-  '聯府塑膠年終',
-  '健鼎科技',
-  '台灣神隆',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-];
-
 function init() {
   // 取得熱門薪水
   searchStore.fetchTopPost();
@@ -3493,6 +3405,8 @@ function init() {
   searchStore.fetchTopCompany();
   // 取得產業
   // TODO
+  // 取得關鍵字
+  salaryStore.fetchKeywords();
 }
 
 /**
