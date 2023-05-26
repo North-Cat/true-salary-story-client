@@ -1,16 +1,14 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia';
 import { showInfo } from '~/utilities/message';
 import { useSearchStore } from '@/store/search';
-import { storeToRefs } from 'pinia';
 
 useHead({
   title: '搜尋',
 });
 
 const searchStore = useSearchStore();
-  const { companies, companiesCount, titles, titlesCount, types,
-typesCount } = storeToRefs(searchStore);
-
+const { companies, companiesCount, titles, titlesCount, types, typesCount } = storeToRefs(searchStore);
 
 enum SearchType {
   KEYWORD = 'keyword', // 關鍵字
@@ -129,7 +127,6 @@ function clickClear() {
  */
 // 搜尋 api
 async function search() {
-
   // 組合參數
   let companyNameReq = '';
   let titleReq = '';
@@ -234,8 +231,6 @@ function scrollToTop() {
  */
 // 第一次進頁面要搜尋
 clickSearch(Number(page));
-
-
 </script>
 
 <template>

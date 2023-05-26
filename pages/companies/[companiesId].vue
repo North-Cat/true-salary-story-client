@@ -1,202 +1,79 @@
 <script lang="ts" setup>
-import { onClickOutside } from '@vueuse/core';
-import { ref, watch, computed } from 'vue';
-import { showInfo } from '@/utilities/message';
+// import { onClickOutside } from '@vueuse/core';
+import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useSalaryStore } from '@/store/salary';
-import { useSearchStore } from '@/store/search';
+// import { useSearchStore } from '@/store/search';
+import { ISalaryDisplayInfo } from '@/interface/salaryData';
 
 const searchStore = useSearchStore();
 // TODO 取得 store 的公司資訊
-//   const { companies, companiesCount, titles, titlesCount, types,
-// typesCount } = storeToRefs(searchStore);
+const { companyPost, companyPostCount } = storeToRefs(searchStore);
 
 useHead({
   title: '單一公司全部薪水分享',
 });
 
 // 解鎖薪水
-const { searchApi } = useApi();
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
 const isShowModal = ref(false);
 const redirect = () => {
-  // if (!isLogin.value) {
-  //   router.push('/login')
-  //   return;
-  // };
+  if (!isLogin.value) {
+    router.push('/login');
+    return;
+  }
   isShowModal.value = true;
 };
 // 對照該薪水是否解鎖
 // TODO: 在 api 取得所有 post 的時候 gen
 // key : salaryId, value :isLocked
-const salaryLockMap = ref<{postId:string, isLocked:boolean}[]>([
+const salaryLockMap = ref<{ postId: string; isLocked: boolean }[]>([
   {
-  postId: '6468c348abb6863c8509cfee',
-  isLocked: false
+    postId: '6468c348abb6863c8509cfee',
+    isLocked: false,
   },
   {
-  postId: 'xxxx2',
-  isLocked: false
+    postId: 'xxxx2',
+    isLocked: false,
   },
   {
-  postId: 'xxxx3',
-  isLocked: false
+    postId: 'xxxx3',
+    isLocked: false,
   },
   {
-  postId: 'xxxx4',
-  isLocked: false
+    postId: 'xxxx4',
+    isLocked: false,
   },
 ]);
 const unlockPost = async () => {
-  let salaryId = '6468c348abb6863c8509cfee';
+  const salaryId = '6468c348abb6863c8509cfee';
   // 需要有個地方放 salaryId ， 考慮修改 ISalaryDisplayInfo 加個 salaryId
   const isLocked = await salaryStore.fetchPermission(salaryId);
-  if (typeof isLocked === 'boolean'){
-    salaryLockMap.value = salaryLockMap.value.map(item => item.postId == salaryId ? {postId:salaryId, isLocked:isLocked} : item );
+  if (typeof isLocked === 'boolean') {
+    salaryLockMap.value = salaryLockMap.value.map((item) =>
+      item.postId === salaryId ? { postId: salaryId, isLocked } : item,
+    );
   }
   isShowModal.value = false;
 };
 
-const checkIsLocked = computed(() => (postId:string) => {
-  const salary = salaryLockMap.value.find(item => item.postId === postId);
+const checkIsLocked = computed(() => (postId: string) => {
+  const salary = salaryLockMap.value.find((item) => item.postId === postId);
   return salary?.isLocked;
 });
-
-// 假資料
-const posts = [
-  {
-    // postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司1',
-    title: '設計師',
-    employmentType: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    customTags: ['有提供零食', '升遷透明'],
-  },
-  {
-    // postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司2',
-    title: '設計師',
-    employmentType: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    customTags: ['有提供零食', '升遷透明'],
-  },
-  {
-    // postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司3',
-    title: '設計師',
-    employmentType: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    customTags: ['有提供零食', '升遷透明'],
-  },
-  {
-    // postId: '1234',
-    taxId: 'xxxxxx',
-    companyName: 'OOO 資訊科技有限公司4',
-    title: '設計師',
-    employmentType: '資訊工程',
-    inService: true,
-    city: '台北',
-    workYears: 3,
-    totalWorkYears: 3,
-    yearlySalary: 700000,
-    monthlySalary: 40000,
-    dailySalary: 1000,
-    avgWorkingDaysPerMonth: 20,
-    hourlySalary: 100,
-    avgHoursPerDay: 8,
-    yearEndBonus: 40000,
-    holidayBonus: 1000,
-    profitSharingBonus: 1000,
-    otherBonus: 1000,
-    overtime: '準時上下班',
-    feeling: '非常開心',
-    jobDescription:
-      '對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。公司設計目前為缺少人手的草創期，或許初期壓力會很大沒有蜜月期， 但相信對於有實力的設計師而言應該不是什麼問題，不過由於商業模式為舊有模式，因此對於設計師而言這裡可能學不到很多會專注在執行製作，發揮空間較授限。',
-    suggestion:
-      '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
-    createDate: '2023-05-20',
-    customTags: ['有提供零食', '升遷透明'],
-  },
-];
-// 過濾職位的薪水資料
-const postsFilterWithTitle = [];
 
 /**
  * 篩選相關
  */
+// 過濾職位的薪水資料
+const filteredPosts = ref<ISalaryDisplayInfo[]>([]);
 // 職位
-const titleOptions = ['全部', '業務', '高級專員'];
-const titleValue = ref<string[]>([]);
-titleValue.value = ['全部']; // 預設全部
-watch(titleValue, () => {
-  showInfo('', titleValue.value.join('|'));
-});
+const titleOptions = ref(['全部']);
+const titleConditions = ref<string[]>([]);
+titleConditions.value = ['全部']; // 預設全部
 // 排序
 const sortOptions = [
   { text: '分享時間 近→遠', value: 1 },
@@ -204,39 +81,135 @@ const sortOptions = [
   { text: '在職年資 長→短', value: 3 },
   { text: '心情 好→壞', value: 4 },
 ];
-const sortValue = ref();
-sortValue.value = sortOptions[0].value; // 預設依時間排序
-watch(sortValue, () => {
-  showInfo('', sortValue.value);
-});
+const sortConditions = ref();
+sortConditions.value = sortOptions[0].value; // 預設依時間排序
 
 /**
  * function
  */
-async function getCompanySalary() {
+async function getCompanySalary(page: string) {
   const { companiesId } = useRoute().params as { companiesId: string };
   // call search 單一公司全部薪水 api
-  await searchStore.fetchSearchCompanySalary(companiesId);
-  // 過濾所選職位
-    // TODO
-  
-  // 排序
-    // TODO
-}
+  await searchStore.fetchSearchCompanySalary(companiesId, page, limit.value);
 
+  // 取得所有職位選項
+  genTitleConditions();
+
+  // 依職位過濾
+  filterWithTitleCondition();
+
+  // 排序
+  sortWithCondition();
+
+  // 計算總頁數
+  totalPages.value = Math.ceil(companyPostCount / limit.value);
+  // 重新選染頁數
+  forceRender();
+}
+function filterWithTitleCondition() {
+  if (titleConditions.value.includes('全部')) {
+    filteredPosts.value = companyPost.value;
+    return;
+  }
+  filteredPosts.value = companyPost.value.filter((item) => {
+    let isPass = false;
+    for (const condition of titleConditions.value) {
+      if (item.title === condition) {
+        isPass = true;
+        break;
+      }
+    }
+    return isPass;
+  });
+}
+function sortWithCondition() {
+  let compare;
+  if (sortConditions.value === 1) {
+    // 時間近→遠
+    compare = function (a, b) {
+      return new Date(b.createDate) - new Date(a.createDate);
+    };
+  } else if (sortConditions.value === 2) {
+    // 年薪 高→低
+    compare = function (a, b) {
+      return b.yearlySalary - a.yearlySalary;
+    };
+  } else if (sortConditions.value === 3) {
+    // 在職年資 長→短
+    compare = function (a, b) {
+      return b.workYears - a.workYears;
+    };
+  } else if (sortConditions.value === 4) {
+    // 心情 好→壞
+    compare = function (a, b) {
+      return mapFeeling(a.feeling) - mapFeeling(b.feeling);
+    };
+  }
+  filteredPosts.value.sort(compare);
+}
+function mapFeeling(str: string) {
+  switch (str) {
+    case '非常開心':
+      return 1;
+    case '還算愉快':
+      return 2;
+    case '平常心':
+      return 3;
+    case '有苦說不出':
+      return 4;
+    case '想換工作了':
+      return 5;
+  }
+}
+function genTitleConditions() {
+  companyPost.value.forEach((post) =>
+    titleOptions.value.includes(post.title) ? titleOptions.value : titleOptions.value.push(post.title),
+  );
+}
+function changeTitleConditions(condition: string) {
+  if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
+    titleConditions.value = ['全部'];
+  } else {
+    const allIndex = titleConditions.value.indexOf('全部');
+    if (allIndex !== -1) {
+      titleConditions.value.splice(allIndex, 1);
+    }
+  }
+}
+function resetFilter() {
+  // 排序重設
+  sortConditions.value = sortOptions[0].value;
+  // 職位重設
+  titleConditions.value = ['全部'];
+  // 重新查詢
+  getCompanySalary(1);
+}
+// 頁數
+const limit = ref(10);
+const curPage = ref();
+curPage.value = 1;
+const totalPages = ref(10);
+totalPages.value = 6;
+function changePage(page) {
+  getCompanySalary(page);
+}
+// 重新渲染頁數
+const componentKey = ref(0);
+const forceRender = () => {
+  componentKey.value += 1;
+};
 
 // 行動版篩選選單 modal
 const showFilterModal = ref(false);
 const filterModal = ref(null);
-onClickOutside(filterModal, () => {
-  showFilterModal.value = false;
-});
+// onClickOutside(filterModal, () => {
+//   showFilterModal.value = false;
+// });
 
 /**
  * 初始化
  */
- getCompanySalary();
-
+getCompanySalary(1);
 </script>
 <template>
   <section class="companies">
@@ -307,7 +280,7 @@ onClickOutside(filterModal, () => {
       >
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between items-start sm:mb-6 lg:mb-20">
           <!-- lg 左半邊 -->
-          <div class="w-full lg:w-4/6 flex flex-col justify-center items-start">
+          <div class="w-full lg:w-4/6 flex flex-col justify-center items-start mb-10 lg:mb-0">
             <!-- 公司概況 -->
             <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
               <div class="bg-black-10 text-white py-3 px-5 rounded-t">
@@ -358,14 +331,14 @@ onClickOutside(filterModal, () => {
                   >
                     <input
                       :id="`sort-${item.value}`"
-                      v-model="sortValue"
+                      v-model="sortConditions"
                       type="radio"
                       :value="item.value"
                       name="sort"
                       class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue"
-                      :checked="item.value === sortValue"
+                      :checked="item.value === sortConditions"
                     />
-                    <span :class="{ 'text-blue': item.value === sortValue }" class="ml-2">{{ item.text }}</span>
+                    <span :class="{ 'text-blue': item.value === sortConditions }" class="ml-2">{{ item.text }}</span>
                   </label>
                 </div>
 
@@ -374,19 +347,22 @@ onClickOutside(filterModal, () => {
                   <label v-for="item in titleOptions" :key="item" :for="`title-sort-${item}`" class="me-5">
                     <input
                       :id="`title-sort-${item}`"
-                      v-model="titleValue"
+                      v-model="titleConditions"
                       type="checkbox"
                       :value="item"
                       name="title-sort"
                       class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 accent-blue rounded-2xl translate-y-[3px]"
+                      @change="changeTitleConditions(item)"
                     />
-                    <span :class="{ 'text-blue': titleValue.includes(item) }" class="caption ml-2">{{ item }}</span>
+                    <span :class="{ 'text-blue': titleConditions.includes(item) }" class="caption ml-2">{{
+                      item
+                    }}</span>
                   </label>
                 </div>
                 <div class="w-full border-b border-black-1 mb-3"></div>
                 <div class="flex justify-end">
-                  <BaseButton cate="gray-text" content="全部重設" class="me-3"></BaseButton>
-                  <BaseButton cate="white" content="套用">
+                  <BaseButton cate="gray-text" content="全部重設" class="me-3" @click="resetFilter"></BaseButton>
+                  <BaseButton cate="white" content="套用" @click="getCompanySalary(1)">
                     <span class="icon-filter text-sm me-2"></span>
                   </BaseButton>
                 </div>
@@ -395,7 +371,7 @@ onClickOutside(filterModal, () => {
 
             <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-0">
               <!-- sm 薪水情報篩選 -->
-              <div class=" lg:hidden w-full flex justify-between">
+              <div class="lg:hidden w-full flex justify-between">
                 <div class="bg-black-10 text-white py-3 px-5 rounded-t">
                   <h5>薪水情報</h5>
                 </div>
@@ -407,12 +383,19 @@ onClickOutside(filterModal, () => {
                   <h6>篩選</h6>
                 </button>
               </div>
-              <div v-for="(post,index) in posts"
-              :key="index" class="sm:mb-0 lg:mb-6">
+              <div v-for="(post, index) in filteredPosts" :key="index" class="sm:mb-0 lg:mb-6">
                 <SalaryInfo :is-locked="checkIsLocked('6468c348abb6863c8509cfee')" :post="post" @view="redirect" />
               </div>
             </div>
 
+            <PaginationButton
+              :key="componentKey"
+              class="w-full flex justify-center -mt-5 lg:mt-5"
+              :init-page="curPage"
+              :total-pages="totalPages"
+              @change-page-event="changePage"
+            >
+            </PaginationButton>
           </div>
 
           <!-- lg 右半邊 -->
@@ -439,14 +422,14 @@ onClickOutside(filterModal, () => {
           >
             <input
               :id="`sort-${item.value}`"
-              v-model="sortValue"
+              v-model="sortConditions"
               type="radio"
               :value="item.value"
               name="sort"
               class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue"
-              :checked="item.value === sortValue"
+              :checked="item.value === sortConditions"
             />
-            <span :class="{ 'text-blue': item.value === sortValue }" class="ml-2">{{ item.text }}</span>
+            <span :class="{ 'text-blue': item.value === sortConditions }" class="ml-2">{{ item.text }}</span>
           </label>
         </div>
       </div>
@@ -457,21 +440,38 @@ onClickOutside(filterModal, () => {
           <label v-for="item in titleOptions" :key="item" :for="`title-sort-${item}`" class="me-5">
             <input
               :id="`title-sort-${item}`"
-              v-model="titleValue"
+              v-model="titleConditions"
               type="checkbox"
               :value="item"
               name="title-sort"
               class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 accent-blue rounded-2xl translate-y-[3px]"
+              @change="changeTitleConditions(item)"
             />
-            <span :class="{ 'text-blue': titleValue.includes(item) }" class="caption ml-2">{{ item }}</span>
+            <span :class="{ 'text-blue': titleConditions.includes(item) }" class="caption ml-2">{{ item }}</span>
           </label>
         </div>
       </div>
       <div class="w-full border-b border-black-1 mb-3"></div>
       <div class="flex justify-between">
         <BaseButton class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></BaseButton>
-        <BaseButton class="" cate="gray-text" content="全部重設"></BaseButton>
-        <BaseButton class="" cate="white" content="套用">
+        <BaseButton
+          class=""
+          cate="gray-text"
+          content="全部重設"
+          @click="
+            resetFilter();
+            showFilterModal = false;
+          "
+        ></BaseButton>
+        <BaseButton
+          class=""
+          cate="white"
+          content="套用"
+          @click="
+            getCompanySalary(1);
+            showFilterModal = false;
+          "
+        >
           <span class="icon-filter text-sm me-2"></span>
         </BaseButton>
       </div>
