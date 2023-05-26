@@ -215,7 +215,7 @@ async function clickPay() {
                       {{ currentUser.email }}
                     </div>
                     <p class="caption flex items-center text-black-6">
-                      <span class="icon-info text-lg me-1"></span>輸入常用 E-mail 信箱，以利寄送發票中獎通知
+                      <span class="icon-info text-lg me-1"></span>此 E-mail 信箱用於寄送發票中獎通知
                     </p>
                   </div>
                   <div class="w-full flex-col">
