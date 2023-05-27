@@ -59,9 +59,9 @@ const subscriptionPoint = 2000;
  * 訂單資訊
  */
 const user = useUserStore();
-const { currentUser } = storeToRefs(user);
+const { currentUser, currentPoint } = storeToRefs(user);
 const userPoint = ref();
-userPoint.value = 100; // FIXME: call API 取得目前積分
+userPoint.value = currentPoint.value;
 const selectedPoint = computed(() => {
   return getSelectedPoint();
 });

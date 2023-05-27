@@ -8,7 +8,7 @@ const route = useRoute();
 const router = useRouter();
 const showUserList = ref(false);
 const user = useUserStore();
-const { isLogin, currentUser, isFetchProfileLoading } = storeToRefs(user);
+const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
   logout();
@@ -180,7 +180,7 @@ async function search() {
             <span class="icon-mail text-3xl"></span>
           </div>
         </BaseButton>
-        <BaseButton v-if="isLogin" cate="text-sm" content="150">
+        <BaseButton v-if="isLogin" cate="text-sm" :content="currentPoint.toString()">
           <span class="icon-star-circle text-2xl mb-1"></span>
         </BaseButton>
         <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
@@ -446,7 +446,7 @@ async function search() {
               <span class="icon-mail text-2xl me-2"></span>
             </div>
           </BaseButton>
-          <BaseButton v-if="isLogin" cate="yellow-text" content="240 積分" class="me-8">
+          <BaseButton v-if="isLogin" cate="yellow-text" :content="`${currentPoint} 積分`" class="me-8">
             <span class="icon-star-circle text-xl me-2"></span>
           </BaseButton>
           <div class="relative">

@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
       currentUser: {} as ILoginUserInfo,
       token: '',
       isFetchProfileLoading: false,
+      currentPoint: 0,
     };
   },
   actions: {
@@ -27,6 +28,7 @@ export const useUserStore = defineStore('user', {
           this.currentUser = user as unknown as ILoginUserInfo;
           this.isLogin = true;
           this.isFetchProfileLoading = false;
+          this.currentPoint = user && user.points ? user.points.point : 0;
         })
         .catch(() => {
           this.error();
