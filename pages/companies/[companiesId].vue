@@ -5,24 +5,33 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useSalaryStore } from '@/store/salary';
 import { useSearchStore } from '@/store/search';
-import { ISalaryDisplayInfo } from '@/interface/salaryData';
 
 const searchStore = useSearchStore();
 // TODO 取得 store 的公司資訊
-const { companyPost, companyPostCount } = storeToRefs(searchStore);
+const {
+  companyPost,
+  companyPostCount,
+  companyName,
+  companyFeeling,
+  companyOvertime,
+  companyAvgMonthlySalary,
+  companyTotalPostCount,
+  companyTitles,
+} = storeToRefs(searchStore);
 
 useHead({
   title: '單一公司全部薪水分享',
 });
 
 // 解鎖薪水
+const { companiesId } = useRoute().params as { companiesId: string };
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
 const isShowModal = ref(false);
 const redirect = () => {
   if (!isLogin.value) {
-    router.push('/login');
+    navigateTo('/login');
     return;
   }
   isShowModal.value = true;
@@ -68,8 +77,6 @@ const checkIsLocked = computed(() => (postId: string) => {
 /**
  * 篩選相關
  */
-// 過濾職位的薪水資料
-const filteredPosts = ref<ISalaryDisplayInfo[]>([]);
 // 職位
 const titleOptions = ref(['全部']);
 const titleConditions = ref<string[]>([]);
@@ -87,95 +94,30 @@ sortConditions.value = sortOptions[0].value; // 預設依時間排序
 /**
  * function
  */
-async function getCompanySalary(page: string) {
-  const { companiesId } = useRoute().params as { companiesId: string };
+function init() {
+  // 取得公司概況
+  getCompanyInfo();
+  // 取得公司所有職位
+  getCompanyTitles();
+  // 查詢
+  getCompanySalary(1);
+}
+function getCompanyInfo() {
+  searchStore.fetchCompanyInfo(companiesId);
+}
+async function getCompanyTitles() {
+  await searchStore.fetchCompanyTitles(companiesId);
+  companyTitles.value.forEach((title: string) => titleOptions.value.push(title));
+}
+// 依條件查詢公司薪資資訊
+async function getCompanySalary(page: number) {
   // call search 單一公司全部薪水 api
   await searchStore.fetchSearchCompanySalary(companiesId, page, limit.value);
-
-  // 取得所有職位選項
-  genTitleConditions();
-
-  // 依職位過濾
-  filterWithTitleCondition();
-
-  // 排序
-  sortWithCondition();
-
   // 計算總頁數
   totalPages.value = Math.ceil(companyPostCount.value / limit.value);
   curPage.value = page;
   // 重新選染頁數
   forceRender();
-}
-function filterWithTitleCondition() {
-  if (titleConditions.value.includes('全部')) {
-    filteredPosts.value = companyPost.value;
-    return;
-  }
-  filteredPosts.value = companyPost.value.filter((item) => {
-    let isPass = false;
-    for (const condition of titleConditions.value) {
-      if (item.title === condition) {
-        isPass = true;
-        break;
-      }
-    }
-    return isPass;
-  });
-}
-function sortWithCondition() {
-  let compare;
-  if (sortConditions.value === 1) {
-    // 時間近→遠
-    compare = function (a, b) {
-      return new Date(b.createDate) - new Date(a.createDate);
-    };
-  } else if (sortConditions.value === 2) {
-    // 年薪 高→低
-    compare = function (a, b) {
-      return b.yearlySalary - a.yearlySalary;
-    };
-  } else if (sortConditions.value === 3) {
-    // 在職年資 長→短
-    compare = function (a, b) {
-      return b.workYears - a.workYears;
-    };
-  } else if (sortConditions.value === 4) {
-    // 心情 好→壞
-    compare = function (a, b) {
-      return mapFeeling(a.feeling) - mapFeeling(b.feeling);
-    };
-  }
-  filteredPosts.value.sort(compare);
-}
-function mapFeeling(str: string) {
-  switch (str) {
-    case '非常開心':
-      return 1;
-    case '還算愉快':
-      return 2;
-    case '平常心':
-      return 3;
-    case '有苦說不出':
-      return 4;
-    case '想換工作了':
-      return 5;
-  }
-}
-function genTitleConditions() {
-  companyPost.value.forEach((post) =>
-    titleOptions.value.includes(post.title) ? titleOptions.value : titleOptions.value.push(post.title),
-  );
-}
-function changeTitleConditions(condition: string) {
-  if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
-    titleConditions.value = ['全部'];
-  } else {
-    const allIndex = titleConditions.value.indexOf('全部');
-    if (allIndex !== -1) {
-      titleConditions.value.splice(allIndex, 1);
-    }
-  }
 }
 function resetFilter() {
   // 排序重設
@@ -190,7 +132,7 @@ const limit = ref(5);
 const curPage = ref();
 curPage.value = 1;
 const totalPages = ref(1);
-function changePage(page) {
+function changePage(page: number) {
   getCompanySalary(page);
 }
 // 重新渲染頁數
@@ -198,18 +140,62 @@ const componentKey = ref(0);
 const forceRender = () => {
   componentKey.value += 1;
 };
-
 // 行動版篩選選單 modal
 const showFilterModal = ref(false);
 const filterModal = ref(null);
 // onClickOutside(filterModal, () => {
 //   showFilterModal.value = false;
 // });
+const computedMonthlySalary = computed(() => {
+  return `${Math.floor(companyAvgMonthlySalary.value / 1000)} k`;
+});
+const computedFeelingClass = computed(() => {
+  let className = '';
+  switch (companyFeeling.value) {
+    case '非常開心':
+      className = 'text-green';
+      break;
+    case '還算愉快':
+      className = 'text-green';
+      break;
+    case '平常心':
+      className = 'text-yellow';
+      break;
+    case '有苦說不出':
+      className = 'text-red';
+      break;
+    case '想換工作了':
+      className = 'text-red';
+      break;
+  }
+  return className;
+});
+const computedOvertimeClass = computed(() => {
+  let className = '';
+  switch (companyOvertime.value) {
+    case '準時上下班':
+      className = 'text-green';
+      break;
+    case '很少加班':
+      className = 'text-green';
+      break;
+    case '偶爾加班':
+      className = 'text-yellow';
+      break;
+    case '常常加班':
+      className = 'text-red';
+      break;
+    case '賣肝拼經濟':
+      className = 'text-red';
+      break;
+  }
+  return className;
+});
 
 /**
  * 初始化
  */
-getCompanySalary(1);
+init();
 </script>
 <template>
   <section class="companies">
@@ -222,7 +208,7 @@ getCompanySalary(1);
           <div class="mx-3">|</div>
           <nuxt-link to="/search?searchType=type&param=資訊科技&page=1">資訊科技</nuxt-link>
           <div class="mx-3">></div>
-          <nuxt-link to="/companies/98765432">OOO資訊科技有限公司</nuxt-link>
+          <nuxt-link to="/companies/98765432">{{ companyName }}</nuxt-link>
         </div>
         <div class="w-full flex flex-col lg:flex-row lg:justify-between">
           <div class="w-full lg:w-3/5 flex me-6 mb-5 lg:mb-0">
@@ -241,7 +227,7 @@ getCompanySalary(1);
                 fill="white"
               />
             </svg>
-            <h4 class="flex lg:hidden ms-5">OOO 資訊科技有限公司</h4>
+            <h4 class="flex lg:hidden ms-5">{{ companyName }}</h4>
             <!-- lg -->
             <svg
               class="hidden lg:flex"
@@ -257,7 +243,7 @@ getCompanySalary(1);
                 fill="white"
               />
             </svg>
-            <h2 class="hidden lg:flex ms-5 leading-[46px]">OOO 資訊科技有限公司</h2>
+            <h2 class="hidden lg:flex ms-5 leading-[46px]">{{ companyName }}</h2>
           </div>
           <div class="w-full lg:w-2/6 flex items-center">
             <div class="w-1/2 me-3 lg:me-5">
@@ -290,24 +276,24 @@ getCompanySalary(1);
                 class="w-full border-2 border-black-10 py-5 px-5 md:py-5 md:px-5 lg:py-5 lg:px-5 bg-white rounded-b rounded-tr"
               >
                 <div class="flex flex-wrap justify-between items-center">
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">上班心情</div>
-                    <h4 class="text-red">想換工作</h4>
+                    <h4 :class="computedFeelingClass" class="text-">{{ companyFeeling }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
-                    <h4 class="text-green">很少加班</h4>
+                    <h4 :class="computedOvertimeClass">{{ companyOvertime }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">平均月薪</div>
-                    <h4>55K</h4>
+                    <h4>{{ computedMonthlySalary }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">薪水情報</div>
-                    <h4>129</h4>
+                    <h4>{{ companyTotalPostCount }}</h4>
                   </div>
                 </div>
               </div>
@@ -383,13 +369,27 @@ getCompanySalary(1);
                   <h6>篩選</h6>
                 </button>
               </div>
-              <div v-for="(post, index) in filteredPosts" :key="index" class="sm:mb-0 lg:mb-6">
-                <SalaryInfo :is-locked="checkIsLocked('6468c348abb6863c8509cfee')" :post="post" @view="redirect" />
+              <div v-if="companyPost && companyPost.length != 0">
+                <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
+                  <SalaryInfo :is-locked="checkIsLocked('6468c348abb6863c8509cfee')" :post="post" @view="redirect" />
+                </div>
+              </div>
+              <div
+                v-else
+                class="w-full lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white"
+              >
+                <div class="w-full flex flex-col p-6">
+                  <div class="flex flex-col">
+                    <div class="p-6 flex flex-col">
+                      <h6>查無相關結果，請重新搜尋。</h6>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <PaginationButton
-              v-if="companyPost.length != 0"
+              v-if="companyPost && companyPost.length != 0"
               :key="componentKey"
               class="w-full flex justify-center -mt-5 lg:mt-5"
               :init-page="curPage"

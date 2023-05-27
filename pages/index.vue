@@ -1018,20 +1018,26 @@
                     <div class="bg-black-10 text-white py-2 px-4">
                       <h6>薪水情報</h6>
                     </div>
-                    <!-- TODO: 動態資訊 -->
-                    <div class="border-2 border-black-10 py-2 px-4">
-                      <h4 class="sm:block md:hidden lg:hidden"><span class="text-blue">263,655</span>則</h4>
-                      <h3 class="sm:hidden md:block lg:block"><span class="text-blue">263,655</span>則</h3>
+                    <div class="border-2 border-black-10 py-2 px-4 flex justify-end" style="min-width: 110px">
+                      <h4 class="sm:block md:hidden lg:hidden">
+                        <span class="text-blue">{{ postCountFormat }} </span> 則
+                      </h4>
+                      <h3 class="sm:hidden md:block lg:block">
+                        <span class="text-blue">{{ postCountFormat }} </span> 則
+                      </h3>
                     </div>
                   </div>
                   <div class="flex flex-col justify-center items-start mb-10">
                     <div class="bg-black-10 text-white py-2 px-4">
                       <h6>可請教的前輩</h6>
                     </div>
-                    <!-- TODO: 動態資訊 -->
-                    <div class="border-2 border-black-10 py-2 px-4">
-                      <h4 class="sm:block md:hidden lg:hidden"><span class="text-blue">263,655</span>則</h4>
-                      <h3 class="sm:hidden md:block lg:block"><span class="text-blue">263,655</span>則</h3>
+                    <div class="border-2 border-black-10 py-2 px-4 flex justify-end" style="min-width: 140px">
+                      <h4 class="sm:block md:hidden lg:hidden">
+                        <span class="text-blue">{{ userCountFormat }} </span> 位
+                      </h4>
+                      <h3 class="sm:hidden md:block lg:block">
+                        <span class="text-blue">{{ userCountFormat }} </span> 位
+                      </h3>
                     </div>
                   </div>
                 </div>
@@ -1539,7 +1545,7 @@
         <h2 class="sm:hidden md:block lg:block mb-15">透過資訊交換 找到更滿意的待遇</h2>
 
         <div
-          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10"
+          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
         >
           <div
             class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
@@ -1690,7 +1696,7 @@
         </div>
 
         <div
-          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10"
+          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
         >
           <div
             class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15 sm:order-last lg:order-first"
@@ -2125,7 +2131,7 @@
         </div>
 
         <div
-          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10"
+          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
         >
           <div
             class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
@@ -2475,7 +2481,7 @@
         </div>
 
         <div
-          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10"
+          class="max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
         >
           <div
             class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15 sm:order-last lg:order-first"
@@ -3151,14 +3157,15 @@
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
           <!-- 找產業 -->
           <div class="flex flex-col justify-center items-start sm:mb-10 lg:mb-0">
-            <div class="bg-black-10 text-white py-3 px-5">
+            <div class="bg-black-10 text-white py-3 px-5 rounded-t">
               <h5>找產業</h5>
             </div>
-            <!-- TODO: 產業動態資訊 -->
-            <div class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-10 lg:px-10 bg-white">
+            <div
+              class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-[46px] lg:px-10 bg-white rounded-b rounded-tr"
+            >
               <div class="flex flex-wrap justify-center items-center">
-                <div class="flex flex-col sm:pe-8 sm:pb-3 md:pb-0 md:pe-6 lg:pe-10 border-r">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:pe-8 sm:pb-3 md:pb-0 md:pe-6 lg:pe-10 border-r">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
                     <TextLink
                       v-if="index >= 0 && index <= 4"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
@@ -3169,8 +3176,8 @@
                     </TextLink>
                   </div>
                 </div>
-                <div class="flex flex-col sm:ps-8 sm:pb-3 md:pb-0 md:px-6 lg:px-10 md:border-r">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:ps-8 sm:pb-3 md:pb-0 md:px-6 lg:px-10 md:border-r">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
                     <TextLink
                       v-if="index >= 5 && index <= 9"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
@@ -3181,8 +3188,8 @@
                     </TextLink>
                   </div>
                 </div>
-                <div class="flex flex-col sm:pe-8 md:pb-0 md:px-6 lg:px-10 border-r">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:pe-8 md:pb-0 md:px-6 lg:px-10 border-r">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
                     <TextLink
                       v-if="index >= 10 && index <= 14"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
@@ -3193,8 +3200,8 @@
                     </TextLink>
                   </div>
                 </div>
-                <div class="flex flex-col sm:ps-8 md:pb-0 md:ps-6 lg:ps-10">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:ps-8 md:pb-0 md:ps-6 lg:ps-10">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
                     <TextLink
                       v-if="index >= 15 && index <= 19"
                       class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
@@ -3212,7 +3219,7 @@
           <!-- 熱門公司 -->
           <div class="flex flex-col justify-center items-start w-full lg:max-w-[416px]">
             <div class="w-full flex justify-between">
-              <div class="bg-black-10 text-white py-3 px-5 h-[48px]">
+              <div class="bg-black-10 text-white py-3 px-5 h-[48px] rounded-t">
                 <h5>熱門公司</h5>
               </div>
               <div class="flex">
@@ -3220,16 +3227,15 @@
                 <NavButton :is-circle="false" :is-left="false" @click="comNext"></NavButton>
               </div>
             </div>
-            <!-- TODO: 公司動態資訊 換頁 -->
             <div
               v-if="popularCompanies && popularCompanies.length != 0"
-              class="w-full border-2 border-black-10 sm:py-5 sm:px-5 lg:py-10 lg:px-8 bg-white"
+              class="w-full border-2 border-black-10 sm:py-5 sm:px-5 lg:py-10 lg:px-8 bg-white rounded-b"
             >
               <div class="w-full">
                 <carousel ref="comCarousel" class="w-full" :items-to-show="1" wrap-around>
                   <slide v-for="slide in popularCompanies.length / 5" :key="slide">
                     <div class="w-full flex flex-col">
-                      <div v-for="(com, index) in popularCompanies" :key="com.taxId">
+                      <div v-for="(com, index) in popularCompanies" :key="com.taxId + index">
                         <TextLink
                           v-if="index >= (slide - 1) * 5 && index <= (slide - 1) * 5 + 4"
                           :content="com.companyName"
@@ -3249,11 +3255,10 @@
         <div class="w-full">
           <!-- 熱門關鍵字 -->
           <div class="flex flex-col justify-center items-start">
-            <div class="bg-black-10 text-white py-3 px-5">
+            <div class="bg-black-10 text-white py-3 px-5 rounded-t">
               <h5>#熱門關鍵字</h5>
             </div>
-            <!-- TODO: 關鍵字動態資訊 -->
-            <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-10 lg:px-16 bg-white">
+            <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-10 lg:px-16 bg-white rounded-b rounded-tr">
               <div class="flex flex-col">
                 <!-- 重點關鍵字 (顯示六個) -->
                 <div class="flex flex-wrap justify-start items-center sm:mb-2 lg:mb-7">
@@ -3298,7 +3303,16 @@ import { useSalaryStore } from '@/store/salary';
 const salaryStore = useSalaryStore();
 const { keywords } = storeToRefs(salaryStore);
 const searchStore = useSearchStore();
-const { latestPosts, popularPosts, popularCompanies } = storeToRefs(searchStore);
+const { latestPosts, popularPosts, popularCompanies, popularCompanyType, userCount, postCount } =
+  storeToRefs(searchStore);
+
+// 使用者/薪水數量
+const postCountFormat = computed(() => {
+  return postCount.value.toLocaleString();
+});
+const userCountFormat = computed(() => {
+  return userCount.value.toLocaleString();
+});
 
 /**
  * 搜尋相關
@@ -3357,36 +3371,6 @@ function postsPrev() {
   postCarousel.value.prev();
 }
 
-// 熱門產業
-const popularCompanyType = ref<string[]>([]);
-popularCompanyType.value = [
-  '資訊科技',
-  'A2資訊科技',
-  'A3資訊科技',
-  'we資訊科技weqeeeeeeeeeeeweA4',
-  'A5資訊科技',
-  'B1資訊科技',
-  'B2資訊科技',
-  'B3資訊科技',
-  'B4資訊科技',
-  'B5資訊科技',
-  'C1資訊科技',
-  'C2資訊科技',
-  'C3資訊科技',
-  'C4資訊科技',
-  'C5資訊科技',
-  'D1資訊科技',
-  'D2資訊科技',
-  'D3資訊科技',
-  'D4資訊科技',
-  'D5資訊科技',
-  'E1資訊科技',
-  'E2資訊科技',
-  'E3資訊科技',
-  'E4資訊科技',
-  'E5資訊科技',
-];
-
 // 熱門公司
 const comCarousel = ref(); // 輪播元件
 function comNext() {
@@ -3399,12 +3383,14 @@ function comPrev() {
 }
 
 function init() {
+  // 取得首頁初始化資訊
+  searchStore.fetchHomeInit();
   // 取得熱門薪水
   searchStore.fetchTopPost();
   // 取得熱門公司
   searchStore.fetchTopCompany();
   // 取得產業
-  // TODO
+  searchStore.fetchTopCompanyType();
   // 取得關鍵字
   salaryStore.fetchKeywords();
 }

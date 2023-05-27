@@ -172,7 +172,6 @@ async function search() {
         <BaseButton cate="text-sm" content="搜尋" @click="showSearchModalSm = !showSearchModalSm">
           <span class="icon-search text-2xl mb-1"></span>
         </BaseButton>
-        <!-- TODO: 取得是否登入 -->
         <BaseButton v-if="isLogin" cate="text-sm" content="訊息">
           <div class="-mb-1">
             <!-- 訊息紅點 -->
@@ -186,7 +185,7 @@ async function search() {
         <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
           <span class="icon-person-circle text-2xl mb-1"></span>
         </BaseButton>
-        <BaseButton v-if="!isLogin" to="/login" cate="text-sm" content="登入" class="me-5">
+        <BaseButton v-if="!isLogin" to="/login" cate="text-sm" content="登入">
           <span class="icon-person text-2xl mb-1"></span>
         </BaseButton>
         <BaseButton v-if="!isLogin" to="/order/offer" cate="text-sm" content="加薪計畫">
