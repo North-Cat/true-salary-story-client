@@ -98,7 +98,7 @@ function checkCurScreen(widthInput?: number) {
   <div class="pagination flex">
     <button
       :class="{ 'pointer-events-none opacity-60': currentPageComponent == 1 }"
-      class="w-full lg:w-auto border border-blue rounded text-blue py-3 px-5 me-1.5 hover:bg-blue-light active:bg-blue active:text-white"
+      class="w-full lg:w-auto border border-blue rounded bg-white text-blue py-3 px-5 me-1.5 hover:bg-blue-light active:bg-blue active:text-white"
       @click="changePage('prev')"
     >
       <h6>上一頁</h6>
@@ -124,7 +124,7 @@ function checkCurScreen(widthInput?: number) {
         :key="page"
         :class="{
           'bg-blue text-white': currentPageComponent == page,
-          'hover:bg-blue-light': currentPageComponent != page,
+          'bg-white hover:bg-blue-light': currentPageComponent != page,
         }"
         class="border border-blue rounded text-blue py-1 px-3 lg:py-3 lg:px-5 mx-1.5 active:bg-blue active:text-white"
         @click="changePage(page)"
@@ -141,7 +141,7 @@ function checkCurScreen(widthInput?: number) {
             v-if="page <= hiddenLimitPage.max"
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
             class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
@@ -157,9 +157,9 @@ function checkCurScreen(widthInput?: number) {
             v-if="page > totalPagesComponent - hiddenLimitPage.min"
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
-            class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
+            class="border border-blue rounded \ text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
           >
             <h6>{{ page }}</h6>
@@ -180,7 +180,7 @@ function checkCurScreen(widthInput?: number) {
             v-if="page <= hiddenLimitPage.min"
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
             class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
@@ -199,7 +199,7 @@ function checkCurScreen(widthInput?: number) {
             "
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
             class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
@@ -215,7 +215,7 @@ function checkCurScreen(widthInput?: number) {
             v-if="page > totalPagesComponent - hiddenLimitPage.min"
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
             class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
@@ -232,7 +232,7 @@ function checkCurScreen(widthInput?: number) {
             v-if="page <= hiddenLimitPage.min"
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
             class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
@@ -248,7 +248,7 @@ function checkCurScreen(widthInput?: number) {
             v-if="page > totalPagesComponent - hiddenLimitPage.max"
             :class="{
               'bg-blue text-white': currentPageComponent == page,
-              'hover:bg-blue-light': currentPageComponent != page,
+              'bg-white hover:bg-blue-light': currentPageComponent != page,
             }"
             class="border border-blue rounded text-blue py-3 px-5 mx-1.5 active:bg-blue active:text-white"
             @click="changePage(page)"
@@ -261,7 +261,7 @@ function checkCurScreen(widthInput?: number) {
 
     <button
       :class="{ 'pointer-events-none opacity-60': currentPageComponent == totalPagesComponent }"
-      class="w-full lg:w-auto border border-blue rounded text-blue py-3 px-5 ms-1.5 hover:bg-blue-light active:bg-blue active:text-white"
+      class="w-full lg:w-auto border border-blue rounded bg-white text-blue py-3 px-5 ms-1.5 hover:bg-blue-light active:bg-blue active:text-white"
       @click="changePage('next')"
     >
       <h6>下一頁</h6>

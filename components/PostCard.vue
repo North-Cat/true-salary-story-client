@@ -28,35 +28,35 @@
       <div class="flex justify-start items-center">
         <!-- 加班狀況 start -->
         <div
-          v-if="overtime == '1'"
+          v-if="overtime == '準時上下班'"
           class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-time-good text-sm"></span>
           <span class="ms-1">準時上下班</span>
         </div>
         <div
-          v-else-if="overtime == '2'"
+          v-else-if="overtime == '很少加班'"
           class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-time-good text-sm"></span>
           <span class="ms-1">很少加班</span>
         </div>
         <div
-          v-else-if="overtime == '3'"
+          v-else-if="overtime == '偶爾加班'"
           class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-time-normal text-sm"></span>
           <span class="ms-1">偶爾加班</span>
         </div>
         <div
-          v-else-if="overtime == '4'"
+          v-else-if="overtime == '常常加班'"
           class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-time-bad text-sm"></span>
           <span class="ms-1">常常加班</span>
         </div>
         <div
-          v-else-if="overtime == '5'"
+          v-else-if="overtime == '賣肝拼經濟'"
           class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-time-bad text-sm"></span>
@@ -66,35 +66,35 @@
 
         <!-- 上班心情 start -->
         <div
-          v-if="feeling == '1'"
+          v-if="feeling == '非常開心'"
           class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-face-good text-sm"></span>
           <span class="ms-1">非常開心</span>
         </div>
         <div
-          v-else-if="feeling == '2'"
+          v-else-if="feeling == '還算愉快'"
           class="caption border border-green text-green fill-green rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-face-good text-sm"></span>
           <span class="ms-1">還算愉快</span>
         </div>
         <div
-          v-else-if="feeling == '3'"
+          v-else-if="feeling == '平常心'"
           class="caption border border-yellow text-yellow fill-yellow rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-face-normal text-sm"></span>
           <span class="ms-1">平常心</span>
         </div>
         <div
-          v-else-if="feeling == '4'"
+          v-else-if="feeling == '有苦說不出'"
           class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-face-bad text-sm"></span>
           <span class="ms-1">有苦說不出</span>
         </div>
         <div
-          v-else-if="feeling == '5'"
+          v-else-if="feeling == '想換工作了'"
           class="caption border border-red text-red fill-red rounded-full flex justify-center items-center px-3 py-1 sm:me-1 md:me-2"
         >
           <span class="icon-face-bad text-sm"></span>

@@ -47,7 +47,7 @@ export const useSalaryStore = defineStore('salary', () => {
 
   const fetchPermission = async (id: string) => {
     const { message } = await shareSalaryApi.requestSalaryInfo(id);
-    if (message === '成功') {
+    if (message === 'success') {
       isLocked.value = true;
     }
   };
