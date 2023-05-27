@@ -33,10 +33,35 @@ export default new (class search extends Http {
   }
 
   /**
+   * 306 查詢單一公司所有職位
+   * @params taxId
+   */
+  public getCompanyTitles(taxId: string) {
+    return this.get(`/api/salary/company/${taxId}/title`);
+  }
+
+  /**
+   * 307 查詢單一公司全部薪水資訊
+   * @params id
+   */
+  public getCompanySalaries(taxId: string) {
+    // FIXME
+    return this.get(`/api/salary/company/${taxId}?`);
+  }
+
+  /**
    * 308 查詢熱門產業
    * @params id
    */
   public getTopCompanyType() {
     return this.get('/api/salary/getTopCompanyType');
+  }
+
+  /**
+   * 309 查詢單一公司概況
+   * @params taxId
+   */
+  public getCompanyInfo(taxId: string) {
+    return this.get(`/api/salary/company/${taxId}/infos`);
   }
 })();

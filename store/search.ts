@@ -37,10 +37,6 @@ export const useSearchStore = defineStore('search', () => {
     companyName: string;
     postCount: number;
   }
-  interface ITopType {
-    type: string;
-    count: string;
-  }
 
   /**
    * 搜尋結果
@@ -55,8 +51,14 @@ export const useSearchStore = defineStore('search', () => {
   /**
    * 單一公司所有薪水
    */
-  const companyPost = ref<ISalaryDisplayInfo[]>();
-  const companyPostCount = ref();
+  const companyName = ref(); // 公司名稱
+  const companyFeeling = ref(); // 公司概況 : 上班心情
+  const companyOvertime = ref(); // 公司概況 : 加班頻率
+  const companyAvgMonthlySalary = ref(); // 公司概況 : 平均月薪
+  const companyTotalPostCount = ref(); // 公司概況 : 薪水情報
+  const companyTitles = ref(); // 公司所有職位
+  const companyPost = ref<ISalaryDisplayInfo[]>(); // 查詢出來的單一公司薪資資訊
+  const companyPostCount = ref(); // 查詢出來的單一公司薪資資訊數量
 
   /**
    * 熱門資訊
@@ -75,7 +77,7 @@ export const useSearchStore = defineStore('search', () => {
   /**
    * function
    */
-  // call api 302 取得熱門薪資資訊
+  // call api 301 取得首頁初始資訊
   const fetchHomeInit = async () => {
     const { registeredUsers, publishedPosts } = await searchApi.getHomeInit();
     userCount.value = registeredUsers;
@@ -112,6 +114,12 @@ export const useSearchStore = defineStore('search', () => {
     titlesCount.value = titleResultsCount;
     types.value = typeResults;
     typesCount.value = typeResultsCount;
+  };
+
+  // call api 306 查詢單一公司所有職位
+  const fetchCompanyTitles = async (taxId: string) => {
+    const { result } = await searchApi.getCompanyTitles(taxId);
+    companyTitles.value = result;
   };
 
   // call api 307 依統編搜尋公司所有薪資資訊
@@ -286,6 +294,16 @@ export const useSearchStore = defineStore('search', () => {
     }
   };
 
+  // call api 309 查詢單一公司概況
+  const fetchCompanyInfo = async (taxId: string) => {
+    const { result } = await searchApi.getCompanyInfo(taxId);
+    companyName.value = result.companyName;
+    companyFeeling.value = result.feeling;
+    companyOvertime.value = result.overtime;
+    companyAvgMonthlySalary.value = result.avgMonthlySalary;
+    companyTotalPostCount.value = result.postCount;
+  };
+
   return {
     companies,
     companiesCount,
@@ -301,11 +319,19 @@ export const useSearchStore = defineStore('search', () => {
     popularCompanyType,
     postCount,
     userCount,
+    companyName,
+    companyFeeling,
+    companyOvertime,
+    companyAvgMonthlySalary,
+    companyTotalPostCount,
+    companyTitles,
     fetchHomeInit,
     fetchSearch,
     fetchSearchCompanySalary,
     fetchTopPost,
     fetchTopCompany,
     fetchTopCompanyType,
+    fetchCompanyInfo,
+    fetchCompanyTitles,
   };
 });
