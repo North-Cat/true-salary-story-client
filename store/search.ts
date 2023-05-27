@@ -67,8 +67,21 @@ export const useSearchStore = defineStore('search', () => {
   const popularCompanyType = ref<string[]>([]); // 熱門產業
 
   /**
+   * 首頁初始化資訊
+   */
+  const userCount = ref<number>(0); // 使用者總數量
+  const postCount = ref<number>(0); // 分享薪水總數量
+
+  /**
    * function
    */
+  // call api 302 取得熱門薪資資訊
+  const fetchHomeInit = async () => {
+    const { registeredUsers, publishedPosts } = await searchApi.getHomeInit();
+    userCount.value = registeredUsers;
+    postCount.value = publishedPosts;
+  };
+
   // call api 302 取得熱門薪資資訊
   const fetchTopPost = async () => {
     const { latestPost, popularPost } = await searchApi.getTopPost();
@@ -286,6 +299,9 @@ export const useSearchStore = defineStore('search', () => {
     popularPosts,
     popularCompanies,
     popularCompanyType,
+    postCount,
+    userCount,
+    fetchHomeInit,
     fetchSearch,
     fetchSearchCompanySalary,
     fetchTopPost,

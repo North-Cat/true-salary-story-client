@@ -2,6 +2,13 @@ import Http from '@/utilities/useHttp';
 
 export default new (class search extends Http {
   /**
+   * 300 取得首頁初始化資訊
+   */
+  public getHomeInit() {
+    return this.get('/api/public/statistics');
+  }
+
+  /**
    * 302 取得熱門薪資資訊
    */
   public getTopPost() {
