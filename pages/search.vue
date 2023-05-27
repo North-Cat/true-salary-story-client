@@ -25,7 +25,7 @@ curSearchType.value = searchType; // 取得 URL 上的 searchType
  * 參數宣告
  */
 // 每頁顯示幾筆
-const limit = ref(2);
+const limit = ref(6);
 // 搜尋參數
 const searchParam = ref();
 searchParam.value = param;
@@ -244,14 +244,14 @@ clickSearch(Number(page));
 <template>
   <section
     ref="searchSection"
-    class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 lg:pt-40"
+    class="search bg-gray py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden pt-16 md:pt-40 lg:pt-40"
   >
     <div
       class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-4xl flex flex-col justify-center items-center"
     >
       <div class="w-full max-w-[1076px] flex flex-col border-2 border-black-10 bg-white py-5 lg:py-10 px-5 mb-10">
-        <div class="w-full flex flex-col lg:flex-row mb-5">
-          <div class="w-full lg:w-10/12 flex items-center border border-black-1 rounded me-2 mb-3 lg:mb-0">
+        <div class="w-full flex flex-col md:flex-row mb-5">
+          <div class="w-full md:w-10/12 flex items-center border border-black-1 rounded me-2 mb-3 lg:mb-0">
             <div
               class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 z-10"
             ></div>
@@ -261,7 +261,7 @@ clickSearch(Number(page));
               @click="clickClear"
             ></button>
           </div>
-          <BaseButton class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></BaseButton>
+          <BaseButton class="w-full md:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></BaseButton>
         </div>
         <!-- 搜尋頁籤 -->
         <div class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1">
@@ -271,8 +271,8 @@ clickSearch(Number(page));
               :class="tabClass(SearchType.KEYWORD)"
               @click="changeTab(SearchType.KEYWORD)"
             >
-              <h6 class="hidden lg:block">所有結果</h6>
-              <h6 class="block lg:hidden">全部</h6>
+              <h6 class="hidden md:block">所有結果</h6>
+              <h6 class="block md:hidden">全部</h6>
             </button>
           </div>
           <div class="py-3 px-3">
@@ -281,8 +281,8 @@ clickSearch(Number(page));
               :class="tabClass(SearchType.COMPANY)"
               @click="changeTab(SearchType.COMPANY)"
             >
-              <h6 class="hidden lg:block">找公司</h6>
-              <h6 class="block lg:hidden">公司</h6>
+              <h6 class="hidden md:block">找公司</h6>
+              <h6 class="block md:hidden">公司</h6>
             </button>
           </div>
           <div class="py-3 px-3">
@@ -291,8 +291,8 @@ clickSearch(Number(page));
               :class="tabClass(SearchType.JOB_TITLE)"
               @click="changeTab(SearchType.JOB_TITLE)"
             >
-              <h6 class="hidden lg:block">找職位</h6>
-              <h6 class="block lg:hidden">職位</h6>
+              <h6 class="hidden md:block">找職位</h6>
+              <h6 class="block md:hidden">職位</h6>
             </button>
           </div>
           <div class="py-3 px-3">
@@ -301,8 +301,8 @@ clickSearch(Number(page));
               :class="tabClass(SearchType.COMPANY_TYPE)"
               @click="changeTab(SearchType.COMPANY_TYPE)"
             >
-              <h6 class="hidden lg:block">找產業</h6>
-              <h6 class="block lg:hidden">產業</h6>
+              <h6 class="hidden md:block">找產業</h6>
+              <h6 class="block md:hidden">產業</h6>
             </button>
           </div>
         </div>
@@ -334,7 +334,7 @@ clickSearch(Number(page));
           <!-- 找公司 -->
           <div v-if="(isTab(SearchType.KEYWORD) || isTab(SearchType.COMPANY)) && !isEmpty(companies)">
             <!-- 總頁數 & 排序 -->
-            <div class="flex justify-between items-center text-black-5 mb-10">
+            <div v-if="isTab(SearchType.COMPANY)" class="flex justify-between items-center text-black-5 mb-10">
               <div class="caption">第 {{ companyCurPage }} 頁，共 {{ companiesCount }} 筆</div>
               <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
@@ -366,7 +366,7 @@ clickSearch(Number(page));
           <!-- 找職位 -->
           <div v-if="(isTab(SearchType.KEYWORD) || isTab(SearchType.JOB_TITLE)) && !isEmpty(titles)">
             <!-- 總頁數 & 排序 -->
-            <div class="flex justify-between items-center text-black-5 mb-10">
+            <div v-if="isTab(SearchType.JOB_TITLE)" class="flex justify-between items-center text-black-5 mb-10">
               <div class="caption">第 {{ titleCurPage }} 頁，共 {{ titlesCount }} 筆</div>
               <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
@@ -396,7 +396,7 @@ clickSearch(Number(page));
           <!-- 找產業 -->
           <div v-if="(isTab(SearchType.KEYWORD) || isTab(SearchType.COMPANY_TYPE)) && !isEmpty(types)">
             <!-- 總頁數 & 排序 -->
-            <div class="flex justify-between items-center text-black-5 mb-10">
+            <div v-if="isTab(SearchType.COMPANY_TYPE)" class="flex justify-between items-center text-black-5 mb-10">
               <div class="caption">第 {{ typeCurPage }} 頁，共 {{ typesCount }} 筆</div>
               <!-- <div class="flex justify-center items-center">
                 <div class="caption me-5">排序</div>
