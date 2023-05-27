@@ -4,13 +4,17 @@ import { useSalaryStore } from '@/store/salary';
 useHead({
   title: '我的薪水',
 });
+// definePageMeta({
+//   middleware: 'auth',
+// });
 const salaryStore = useSalaryStore();
 const { post } = storeToRefs(salaryStore);
+const paginationButton = ref();
 const limit = ref(5);
-const searchParam = {
+const searchParam = reactive({
   company: '',
   page: 1,
-};
+});
 const data = {
   results: [
     {
@@ -35,22 +39,205 @@ const data = {
       employmentType: '全職',
       seen: 0,
     },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
+    {
+      postId: '6468c348abb6863c8509cfee',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '兼職',
+      seen: 100,
+    },
+    {
+      postId: '646b85b5ea03930f66cd6a5a',
+      companyName: '卯咪股份有限公司',
+      city: '台北',
+      title: '工程師',
+      monthlySalary: '40000',
+      yearlySalary: '480000',
+      createDate: '2023/4/12',
+      employmentType: '全職',
+      seen: 0,
+    },
   ],
-  totalCount: 23,
+  totalCount: 17,
 };
 const search = () => {
   console.log('search');
+  searchParam.page = 1;
+  paginationButton.value.currentPageComponent = 1;
 };
-const callSomeFunc = (val: number) => {
+const onChangePage = (val: number) => {
   searchParam.page = val;
-  search();
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 };
 const totalPage = computed(() => {
   return Math.ceil(data.totalCount / limit.value);
 });
-// definePageMeta({
-//   middleware: 'auth',
-// });
+const currentResultsList = computed(() => {
+  const startIndex = (searchParam.page - 1) * limit.value;
+  const endIndex = startIndex + limit.value;
+  return data.results.slice(startIndex, endIndex);
+});
 </script>
 <template>
   <userLayouts>
@@ -67,10 +254,10 @@ const totalPage = computed(() => {
           @keyup.enter="search"
         />
       </div>
-      <span>第{{ 2 }}頁,共{{ 23 }}筆</span>
+      <span>第{{ searchParam.page }}頁,共{{ data.totalCount || data.results.length }}筆</span>
     </div>
     <div class="divide-y divide-black-3">
-      <div v-for="(item, $index) in data.results" :key="$index" class="py-5">
+      <div v-for="(item, $index) in currentResultsList" :key="$index" class="py-5">
         <nuxt-link :to="`/salary/${item.postId}`">
           <div class="flex justify-between mb-4 items-center">
             <h4 class="text-lg text-blue">{{ item.title }}</h4>
@@ -94,10 +281,11 @@ const totalPage = computed(() => {
       </div>
     </div>
     <PaginationButton
+      ref="paginationButton"
       class="flex justify-center mt-6"
       :init-page="searchParam.page"
       :total-pages="totalPage"
-      @change-page-event="callSomeFunc"
+      @change-page-event="onChangePage"
     >
     </PaginationButton>
   </userLayouts>

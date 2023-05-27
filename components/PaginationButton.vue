@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useWindowSize } from '@vueuse/core';
-
 const emit = defineEmits(['changePageEvent']); // 換頁要呼叫的方法 (會回傳給父元件目前頁數)
 const props = defineProps({
   initPage: {
@@ -17,6 +16,9 @@ const props = defineProps({
 });
 const currentPageComponent = ref(props.initPage);
 const totalPagesComponent = ref(props.totalPages);
+defineExpose({
+  currentPageComponent,
+});
 function changePage(page: string | number) {
   if (page === 'prev') {
     // 上一頁
