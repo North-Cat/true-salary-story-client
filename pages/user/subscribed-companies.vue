@@ -1,123 +1,25 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { useSalaryStore } from '@/store/salary';
+import { useUserStore } from '@/store/user';
+import { openConfirmModal } from '@/utilities/dialog';
 useHead({
   title: '薪水訂閱',
 });
 definePageMeta({
   middleware: 'auth',
 });
-const salaryStore = useSalaryStore();
-const { post } = storeToRefs(salaryStore);
+const useStore = useUserStore();
+const { subscribeCompaniesList } = storeToRefs(useStore);
 const paginationButton = ref();
 const limit = ref(10);
 const searchParam = reactive({
-  company: '',
+  keyword: '',
   page: 1,
+  limit: limit.value,
 });
-const data = {
-  results: [
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-    {
-      taxId: '22555003',
-      companyName: '臺灣塑膠工業股份有限公司',
-      shared: 67,
-      address: '台北市中山',
-    },
-    {
-      taxId: '75708007',
-      companyName: '統一超商股份有限公司',
-      shared: 1200,
-      address: '新竹市力行六路8號',
-    },
-  ],
-  totalCount: 16,
-};
-const search = () => {
-  console.log('search');
+useStore.tryToFetchSubscribeCompanies(searchParam);
+const search = async () => {
+  await useStore.tryToFetchSubscribeCompanies(searchParam);
   searchParam.page = 1;
   paginationButton.value.currentPageComponent = 1;
 };
@@ -129,15 +31,21 @@ const onChangePage = (val: number) => {
   });
 };
 const totalPage = computed(() => {
-  return Math.ceil(data.totalCount / limit.value);
+  return Math.ceil(subscribeCompaniesList.value.totalCount / limit.value);
 });
 const currentResultsList = computed(() => {
   const startIndex = (searchParam.page - 1) * limit.value;
   const endIndex = startIndex + limit.value;
-  return data.results.slice(startIndex, endIndex);
+  return subscribeCompaniesList?.value?.result ? subscribeCompaniesList?.value?.result.slice(startIndex, endIndex) : [];
 });
-const umSubscribe = (id: string) => {
-  console.log(id, '取消訂閱');
+const onCheckUnSubscribe = (id: string) => {
+  const unSubscribe = async () => {
+    await useStore.deleteSubscribeCompany(id);
+    await useStore.tryToFetchSubscribeCompanies(searchParam);
+  };
+  const title = '取消訂閱';
+  const message = `確定是否要取消訂閱?`;
+  openConfirmModal(title, message, unSubscribe);
 };
 </script>
 <template>
@@ -148,19 +56,24 @@ const umSubscribe = (id: string) => {
           class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10"
         ></div>
         <input
-          v-model="searchParam.company"
+          v-model="searchParam.keyword"
           type="text"
           class="w-full ps-10 py-3 pe-5"
           placeholder="搜尋公司名稱"
           @keyup.enter="search"
         />
       </div>
-      <span>第{{ searchParam.page }}頁,共{{ data.totalCount || data.results.length }}筆</span>
+      <span
+        >第{{ searchParam.page }}頁,共{{
+          subscribeCompaniesList.totalCount || subscribeCompaniesList.result.length
+        }}筆</span
+      >
     </div>
-    <div class="divide-y divide-black-3 min-h-[255px]">
+    <div v-if="currentResultsList.length > 0" class="divide-y divide-black-3 min-h-[255px]">
       <div v-for="(item, $index) in currentResultsList" :key="$index" class="py-5 flex">
-        <nuxt-link :to="`/companies/${item.taxId}`" class="flex">
+        <nuxt-link :to="`/companies/${item.company.companyId}`" class="flex">
           <div class="mr-3">
+            <!-- <img v-if="item.company.photo" :src="item.company.photo" alt="" /> -->
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="48" height="48" rx="4" fill="#5FA8FF" />
               <path
@@ -170,19 +83,20 @@ const umSubscribe = (id: string) => {
             </svg>
           </div>
           <div>
-            <h4 class="text-base mb-1">{{ item.companyName }}</h4>
+            <h4 class="text-base mb-1">{{ item.company.companyName }}</h4>
             <div class="text-sm text-black-6">
-              <span>{{ item.address }}</span> <span class="text-[0.2rem] relative bottom-[2px] px-1">|</span> 共
-              {{ item.shared }} 則
+              <span>{{ item.company.address }}</span> <span class="text-[0.2rem] relative bottom-[2px] px-1">|</span> 共
+              {{ item.company.shared }} 則
             </div>
           </div>
         </nuxt-link>
         <div class="ml-auto">
-          <BaseButton cate="gray" @click="umSubscribe(item.taxId)">已訂閱</BaseButton>
+          <BaseButton cate="gray" @click="onCheckUnSubscribe(item.company.companyId)">已訂閱</BaseButton>
         </div>
       </div>
     </div>
     <PaginationButton
+      v-if="totalPage > 0"
       ref="paginationButton"
       class="flex justify-center mt-6"
       :init-page="searchParam.page"

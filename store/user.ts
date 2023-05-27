@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia';
 import { ILoginUserInfo } from '~/interface/user';
-const { userApi } = useApi();
+import { IMySalaryResponse } from '~/interface/salaryData';
+import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
+const { userApi, subscribeApi } = useApi();
 export const useUserStore = defineStore('user', () => {
+  // 登入相關
   const isLogin = ref(false);
   const currentUser = ref<ILoginUserInfo>({});
   const token = ref('');
@@ -43,6 +46,45 @@ export const useUserStore = defineStore('user', () => {
     isFetchProfileLoading.value = false;
     navigateTo('/');
   };
+
+  // 會員管理相關
+  const mySalary = ref({
+    result: [],
+    totalCount: 0,
+  } as IMySalaryResponse);
+  const tryToFetchMySalary = async (data: {
+    keyword: string | number | undefined;
+    limit?: number | undefined;
+    page: number;
+  }) => {
+    const result = await userApi.getMySalary(data);
+    mySalary.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
+  const subscribeCompaniesList = ref({
+    result: [],
+    totalCount: 0,
+  } as ISubscribeCompaniesResponse);
+  const tryToFetchSubscribeCompanies = async (data: {
+    keyword: string | number | undefined;
+    limit?: number | undefined;
+    page: number;
+  }) => {
+    const result = await subscribeApi.getSubscribeCompanies(data);
+    console.log(result);
+    subscribeCompaniesList.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
+  const deleteSubscribeCompany = async (id: string) => {
+    await subscribeApi.deleteSubscribeCompany(id);
+  };
+
   return {
     tryToFetchProfile,
     isLogin,
@@ -51,5 +93,10 @@ export const useUserStore = defineStore('user', () => {
     token,
     logout,
     loginWithGoogle,
+    mySalary,
+    tryToFetchMySalary,
+    tryToFetchSubscribeCompanies,
+    subscribeCompaniesList,
+    deleteSubscribeCompany,
   };
 });

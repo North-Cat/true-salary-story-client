@@ -79,3 +79,8 @@ export interface IMySalary {
   seen: number;
   employmentType: string;
 }
+
+export interface IMySalaryResponse {
+  result: IMySalary[];
+  totalCount: number;
+}
