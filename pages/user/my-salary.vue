@@ -4,9 +4,9 @@ import { useSalaryStore } from '@/store/salary';
 useHead({
   title: '我的薪水',
 });
-// definePageMeta({
-//   middleware: 'auth',
-// });
+definePageMeta({
+  middleware: 'auth',
+});
 const salaryStore = useSalaryStore();
 const { post } = storeToRefs(salaryStore);
 const paginationButton = ref();
@@ -17,28 +17,6 @@ const searchParam = reactive({
 });
 const data = {
   results: [
-    {
-      postId: '6468c348abb6863c8509cfee',
-      companyName: '卯咪股份有限公司',
-      city: '台北',
-      title: '工程師',
-      monthlySalary: '40000',
-      yearlySalary: '480000',
-      createDate: '2023/4/12',
-      employmentType: '兼職',
-      seen: 100,
-    },
-    {
-      postId: '646b85b5ea03930f66cd6a5a',
-      companyName: '卯咪股份有限公司',
-      city: '台北',
-      title: '工程師',
-      monthlySalary: '40000',
-      yearlySalary: '480000',
-      createDate: '2023/4/12',
-      employmentType: '全職',
-      seen: 0,
-    },
     {
       postId: '6468c348abb6863c8509cfee',
       companyName: '卯咪股份有限公司',
@@ -256,7 +234,7 @@ const currentResultsList = computed(() => {
       </div>
       <span>第{{ searchParam.page }}頁,共{{ data.totalCount || data.results.length }}筆</span>
     </div>
-    <div class="divide-y divide-black-3">
+    <div class="divide-y divide-black-3 min-h-[255px]">
       <div v-for="(item, $index) in currentResultsList" :key="$index" class="py-5">
         <nuxt-link :to="`/salary/${item.postId}`">
           <div class="flex justify-between mb-4 items-center">

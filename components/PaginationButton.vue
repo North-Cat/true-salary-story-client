@@ -18,6 +18,7 @@ const currentPageComponent = ref(props.initPage);
 const totalPagesComponent = ref(props.totalPages);
 defineExpose({
   currentPageComponent,
+  totalPagesComponent,
 });
 function changePage(page: string | number) {
   if (page === 'prev') {
