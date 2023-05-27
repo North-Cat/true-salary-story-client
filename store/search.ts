@@ -37,6 +37,10 @@ export const useSearchStore = defineStore('search', () => {
     companyName: string;
     postCount: number;
   }
+  interface ITopType {
+    type: string;
+    count: string;
+  }
 
   /**
    * 搜尋結果
@@ -55,11 +59,12 @@ export const useSearchStore = defineStore('search', () => {
   const companyPostCount = ref();
 
   /**
-   * 熱門 / 最新 薪水資訊
+   * 熱門資訊
    */
   const latestPosts = ref<IPost[]>([]); // 最新薪水
   const popularPosts = ref<IPost[]>([]); // 熱門薪水
   const popularCompanies = ref<ITopCompany[]>([]); // 熱門公司
+  const popularCompanyType = ref<string[]>([]); // 熱門產業
 
   /**
    * function
@@ -71,19 +76,14 @@ export const useSearchStore = defineStore('search', () => {
     popularPosts.value = popularPost;
   };
 
-  // call api 302 取得熱門薪資資訊
+  // call api 303 取得熱門公司資訊
   const fetchTopCompany = async () => {
     const { companies } = await searchApi.getTopCompany();
-    // 不足 5 的倍數，用預設補足 (畫面顯示所需)
+    // 不足 5 的倍數，重複前面的資訊補足數量 (畫面顯示所需)
     const lackCount = 5 - (companies.length % 5);
     if (lackCount !== 0) {
-      const sample = {
-        taxId: undefined,
-        companyName: undefined,
-        postCount: undefined,
-      };
       for (let i = 0; i < lackCount; i++) {
-        companies.push(sample);
+        companies.push(companies[i]);
       }
     }
     popularCompanies.value = companies;
@@ -101,7 +101,7 @@ export const useSearchStore = defineStore('search', () => {
     typesCount.value = typeResultsCount;
   };
 
-  // call api 依統編搜尋公司所有薪資資訊
+  // call api 307 依統編搜尋公司所有薪資資訊
   const fetchSearchCompanySalary = async (taxId: string, page: number, limit: number) => {
     // const { data } = await searchApi.xxx;
     // 假資料
@@ -255,6 +255,24 @@ export const useSearchStore = defineStore('search', () => {
     ];
   };
 
+  // call api 308 查詢熱門產業
+  const fetchTopCompanyType = async () => {
+    const { companyTypes } = await searchApi.getTopCompanyType();
+
+    // 不足 20 個，重複前面的資訊補足數量 (畫面顯示所需)
+    const lackCount = 20 - companyTypes.length;
+    if (lackCount !== 0) {
+      for (let i = 0; i < lackCount; i++) {
+        companyTypes.push(companyTypes[i]);
+      }
+    }
+
+    popularCompanyType.value = [];
+    for (const item of companyTypes) {
+      popularCompanyType.value.push(item.type);
+    }
+  };
+
   return {
     companies,
     companiesCount,
@@ -267,9 +285,11 @@ export const useSearchStore = defineStore('search', () => {
     latestPosts,
     popularPosts,
     popularCompanies,
+    popularCompanyType,
     fetchSearch,
     fetchSearchCompanySalary,
     fetchTopPost,
     fetchTopCompany,
+    fetchTopCompanyType,
   };
 });

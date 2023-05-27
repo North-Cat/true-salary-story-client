@@ -24,4 +24,12 @@ export default new (class search extends Http {
       `/api/salary/search?companyName=${companyName}&type=${type}&title=${title}&page=${page}&limit=${limit}`,
     );
   }
+
+  /**
+   * 308 查詢熱門產業
+   * @params id
+   */
+  public getTopCompanyType() {
+    return this.get('/api/salary/getTopCompanyType');
+  }
 })();

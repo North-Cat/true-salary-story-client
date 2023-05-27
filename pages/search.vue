@@ -225,10 +225,13 @@ function isEmpty(obj: any): boolean {
   return true;
 }
 const scrollToTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
+  if (process.client) {
+    // 避免出現 window is not defined 問題，需確認目前已經到 client
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
 };
 
 /**
@@ -254,17 +257,14 @@ clickSearch(Number(page));
             ></div>
             <input v-model="searchParam" type="text" class="w-full ps-10 py-3 pe-10" @keyup.enter="enterSearch" />
             <button
-              class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3 z-10"
+              class="icon-cross text-black-5 absolute inset-y-0 right-0 flex items-center pe-3"
               @click="clickClear"
             ></button>
           </div>
           <BaseButton class="w-full lg:w-2/12 h-[48px]" content="搜尋" @click="clickSearch(1)"></BaseButton>
         </div>
         <!-- 搜尋頁籤 -->
-        <div
-          v-if="showResult"
-          class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1"
-        >
+        <div class="w-full flex justify-center lg:justify-start flex-wrap pb-3 mb-10 border-b border-black-1">
           <div class="py-3 px-3">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
