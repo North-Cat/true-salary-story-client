@@ -3089,6 +3089,7 @@
                       :company="post.companyName"
                       :overtime="post.overtime"
                       :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
                     >
                     </PostCard>
                   </div>
@@ -3103,6 +3104,7 @@
                       :company="post.companyName"
                       :overtime="post.overtime"
                       :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
                     >
                     </PostCard>
                   </div>
@@ -3126,6 +3128,7 @@
                       :company="post.companyName"
                       :overtime="post.overtime"
                       :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
                     >
                     </PostCard>
                   </div>
@@ -3139,6 +3142,7 @@
                       :company="post.companyName"
                       :overtime="post.overtime"
                       :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
                     >
                     </PostCard>
                   </div>
@@ -3362,6 +3366,9 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
 
 // 薪水檔案櫃
 const postCarousel = ref(); // 輪播元件
+async function clickPostCard(postId:string){
+  await navigateTo('salary/' + postId);
+}
 function postsNext() {
   // 下一頁
   postCarousel.value.next();
