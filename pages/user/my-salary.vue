@@ -66,7 +66,11 @@ const totalPage = computed(() => {
                 <span>{{ item.employmentType }}</span>
               </div>
               <div>
-                <span class="mr-5">月薪: {{ item.monthlySalary }}</span>
+                <span class="mr-5">
+                  <template v-if="!!item.monthlySalary"> 月薪: {{ item.monthlySalary }} </template>
+                  <template v-else-if="!!item.hourlySalary"> 時薪: {{ item.hourlySalary }} </template>
+                  <template v-else> 日薪: {{ item.dailySalary }} </template>
+                </span>
                 <span>年薪: {{ item.yearlySalary }}</span>
               </div>
             </div>

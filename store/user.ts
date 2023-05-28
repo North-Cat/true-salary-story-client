@@ -2,7 +2,8 @@ import { defineStore } from 'pinia';
 import { ILoginUserInfo } from '~/interface/user';
 import { IMySalaryResponse } from '~/interface/salaryData';
 import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
-const { userApi, subscribeApi } = useApi();
+import { IMyOrdersListResponse } from '~/interface/order';
+const { userApi, subscribeApi, orderApi } = useApi();
 export const useUserStore = defineStore('user', () => {
   // 登入相關
   const isLogin = ref(false);
@@ -74,7 +75,6 @@ export const useUserStore = defineStore('user', () => {
     page: number;
   }) => {
     const result = await subscribeApi.getSubscribeCompanies(data);
-    console.log(result);
     subscribeCompaniesList.value = {
       result: result.result || [],
       totalCount: result.totalCount || 0,
@@ -83,6 +83,18 @@ export const useUserStore = defineStore('user', () => {
 
   const deleteSubscribeCompany = async (id: string) => {
     await subscribeApi.deleteSubscribeCompany(id);
+  };
+
+  const myOrdersList = ref({
+    result: [],
+    totalCount: 0,
+  } as IMyOrdersListResponse);
+  const tryToFetchMyOrdersList = async () => {
+    const result = await orderApi.getOrdersList();
+    myOrdersList.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
   };
 
   return {
@@ -98,5 +110,7 @@ export const useUserStore = defineStore('user', () => {
     tryToFetchSubscribeCompanies,
     subscribeCompaniesList,
     deleteSubscribeCompany,
+    myOrdersList,
+    tryToFetchMyOrdersList,
   };
 });

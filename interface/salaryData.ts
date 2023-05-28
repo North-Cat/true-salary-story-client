@@ -74,6 +74,8 @@ export interface IMySalary {
   city: string;
   title: string;
   monthlySalary: number;
+  hourlySalary: number;
+  dailySalary: number;
   yearlySalary: number;
   createDate: number;
   seen: number;

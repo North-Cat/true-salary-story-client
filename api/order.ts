@@ -17,4 +17,12 @@ export default new (class order extends Http {
   public postLinePayTransaction(transactionId: string) {
     return this.post(`/linepay/${transactionId}`);
   }
+
+  /**
+   * GET 積分明細
+   *
+   */
+  public getOrdersList() {
+    return this.get(`/api/account/order/list`);
+  }
 })();

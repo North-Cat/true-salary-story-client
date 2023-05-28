@@ -25,6 +25,7 @@ const search = async () => {
 };
 const onChangePage = (val: number) => {
   searchParam.page = val;
+  useStore.tryToFetchSubscribeCompanies(searchParam);
   window.scrollTo({
     top: 0,
     behavior: 'smooth',

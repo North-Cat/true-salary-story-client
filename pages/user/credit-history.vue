@@ -185,7 +185,7 @@ const onChangePage = (val: number) => {
           @click="changeTab(item)"
         >
           <h6>
-            <template v-if="item === 'get'">全部</template>
+            <template v-if="item === 'get'">取得</template>
             <template v-else-if="item === 'used'">已使用</template>
             <template v-else>全部</template>
             ({{ filterListCount(item) }})
