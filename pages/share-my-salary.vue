@@ -590,7 +590,7 @@ const rightSideList = reactive([
                             placeholder="月薪 EX: 35000"
                             oninput="value=value.replace('-','')"
                           />
-                          <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
+                          <span class="absolute top-2 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
                           </span>
                           <span class="text-black-6 text-sm">單位為元</span>
