@@ -47,7 +47,7 @@ export const useSalaryStore = defineStore('salary', () => {
     keywords.value = data.keywords;
   };
 
-  const fetchPermission = async (id: string) : Promise<boolean> => {
+  const fetchPermission = async (id: string): Promise<boolean> => {
     const { message } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
       post.value.isLocked = true;

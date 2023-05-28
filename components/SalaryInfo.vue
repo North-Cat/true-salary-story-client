@@ -4,7 +4,7 @@ import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } fr
 
 defineProps<{
   post: ISalaryDisplayInfo;
-}>()
+}>();
 const emit = defineEmits(['view']);
 </script>
 
@@ -131,7 +131,9 @@ const emit = defineEmits(['view']);
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">工作內容</div>
             <p class="body-sm">
-              {{ post.isLocked ? post.jobDescription : post.jobDescription && useTruncateText(post.jobDescription, 20) }}
+              {{
+                post.isLocked ? post.jobDescription : post.jobDescription && useTruncateText(post.jobDescription, 20)
+              }}
             </p>
           </div>
           <div class="flex flex-col mb-5">

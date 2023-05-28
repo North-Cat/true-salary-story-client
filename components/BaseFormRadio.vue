@@ -42,7 +42,7 @@ const props = defineProps({
 </script>
 <template>
   <div class="text-black-10" :class="{ 'mb-2': !description }">{{ label }}</div>
-  <span v-if="description" class="block mb-2 mt-1 text-sm text-black-6" v-html="description"></span>
+  <span v-if="description" class="block mb-2 mt-1 text-sm text-black-6" v-text="description"></span>
   <div v-if="isButtonStyle" class="flex items-center justify-center">
     <label
       v-for="(item, $index) in options"

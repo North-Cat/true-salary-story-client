@@ -61,7 +61,7 @@ onClickOutside(target, () => {
     <label v-if="!hiddenLabel" :for="name" :class="{ 'mb-2 block': !description, hidden: hiddenLabel }">{{
       label
     }}</label>
-    <span v-if="description" class="block mt-1 mb-2 text-sm text-black-6" v-html="description"></span>
+    <span v-if="description" class="block mt-1 mb-2 text-sm text-black-6" v-text="description"></span>
     <div ref="target" class="relative">
       <div class="relative block" @click.stop="dropdown = !dropdown">
         <VField

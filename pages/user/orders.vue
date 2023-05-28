@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
-import { IMyOrdersList, IMyOrdersListResponse } from '~/interface/order';
+import { IMyOrdersList } from '~/interface/order';
 useHead({
   title: '訂單總覽',
 });
@@ -106,7 +106,6 @@ const totalPage = computed(() => {
 });
 watch(totalPage, (newTotalPage, oldTotalPage) => {
   nextTick(() => {
-    console.log(newTotalPage, oldTotalPage);
     if (newTotalPage !== oldTotalPage) {
       paginationButton.value.totalPagesComponent = newTotalPage;
     }
