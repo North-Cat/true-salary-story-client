@@ -3,10 +3,10 @@ import { useUserStore } from '@/store/user';
 
 const user = useUserStore();
 const route = useRoute();
-const router = useRouter();
 const { tryToFetchProfile } = user;
 definePageMeta({
   layout: false,
+  middleware: 'logged-in-redirect',
 });
 useHead({
   title: '登入',
@@ -22,11 +22,17 @@ const checkLoginStatus = () => {
   const jwtToken = route.query.token;
   if (jwtToken) {
     // user.isLogin = true;
-    const tokenCookie = useCookie('token');
+    const tokenCookie = useCookie('token', { maxAge: 60 * 60 });
     tokenCookie.value = jwtToken as string;
     // localStorage.setItem('token', jwtToken as string);
     user.token = jwtToken as string;
-    router.push('/');
+    // 回到登入前的頁面
+    const redirectToCookie = useCookie('redirectTo');
+    let redirectUrl = '/';
+    if (redirectToCookie.value) {
+      redirectUrl = redirectToCookie.value;
+    }
+    navigateTo(redirectUrl);
     nextTick(() => {
       tryToFetchProfile();
     });

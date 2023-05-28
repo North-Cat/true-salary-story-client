@@ -1,18 +1,88 @@
 <script lang="ts" setup>
-import { onClickOutside } from '@vueuse/core';
-import { ref, onMounted, watch } from 'vue';
-import { showInfo } from '@/utilities/message';
+// import { onClickOutside } from '@vueuse/core';
+import { ref, computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
+import { useSalaryStore } from '@/store/salary';
+import { useSearchStore } from '@/store/search';
+
+const searchStore = useSearchStore();
+// TODO 取得 store 的公司資訊
+const {
+  companyPost,
+  companyPostCount,
+  companyName,
+  companyFeeling,
+  companyOvertime,
+  companyAvgMonthlySalary,
+  companyTotalPostCount,
+  companyTitles,
+} = storeToRefs(searchStore);
 
 useHead({
   title: '單一公司全部薪水分享',
 });
 
+// 解鎖薪水
+const { companiesId } = useRoute().params as { companiesId: string };
+const salaryStore = useSalaryStore();
+const userStore = useUserStore();
+const { isLogin } = storeToRefs(userStore);
+const isShowModal = ref(false);
+const selectedPostId = ref();
+const redirect = (postId: string) => {
+  selectedPostId.value = postId;
+  if (!isLogin.value) {
+    navigateTo('/login');
+    return;
+  }
+  isShowModal.value = true;
+};
+// 對照該薪水是否解鎖
+// TODO: 在 api 取得所有 post 的時候 gen
+// key : salaryId, value :isLocked
+// const salaryLockMap = ref<{ postId: string; isLocked: boolean }[]>([
+//   {
+//     postId: '6468c348abb6863c8509cfee',
+//     isLocked: false,
+//   },
+//   {
+//     postId: 'xxxx2',
+//     isLocked: false,
+//   },
+//   {
+//     postId: 'xxxx3',
+//     isLocked: false,
+//   },
+//   {
+//     postId: 'xxxx4',
+//     isLocked: false,
+//   },
+// ]);
+const unlockPost = async () => {
+  // FIXME 改接 API
+  // const isLocked = await salaryStore.fetchPermission(selectedPostId.value);
+  const isLocked = true;
+  if (typeof isLocked === 'boolean' && companyPost && companyPost.value) {
+    for (const item of companyPost.value) {
+      item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
+    }
+  }
+  isShowModal.value = false;
+};
+
+// const checkIsLocked = computed(() => (postId: string) => {
+//   const salary = salaryLockMap.value.find((item) => item.postId === postId);
+//   return salary?.isLocked;
+// });
+
+/**
+ * 篩選相關
+ */
 // 職位
-const titleOptions = ['全部', '業務', '高級專員'];
-const titleValue = ref<string[]>([]);
-watch(titleValue, () => {
-  showInfo('', titleValue.value.join('|'));
-});
+const titleOptions = ref(['全部']);
+const titleConditions = ref<string[]>([]);
+titleConditions.value = ['全部']; // 預設全部
 // 排序
 const sortOptions = [
   { text: '分享時間 近→遠', value: 1 },
@@ -20,122 +90,124 @@ const sortOptions = [
   { text: '在職年資 長→短', value: 3 },
   { text: '心情 好→壞', value: 4 },
 ];
-const sortValue = ref();
-watch(sortValue, () => {
-  showInfo('', sortValue.value);
-});
-// 關鍵字
-const keywords = ref<string[]>([]);
-onMounted(() => {
-  keywords.value = [
-    '新代科技',
-    '廣積科技',
-    '達爾科技',
-    '二億企業股份有限公司',
-    '金屬中心',
-    '聯府塑膠年終',
-    '健鼎科技',
-    '台灣神隆',
-    '住華科技',
-    '大力卜',
-    '國泰人壽襄理薪水',
-    '鎧暘科技',
-    '奇鋐科技',
-    '威芯科技有限公司',
-    '南山人壽協理',
-    '先進光電',
-    '樹森開發股份有限公司',
-    '米約科技',
-    '中勤實業股份有限公司',
-    '精英電腦薪水',
-    '天陽航太',
-    '研華',
-    '神準科技',
-    '台積電',
-    '中強光電',
-    '住華科技',
-    '大力卜',
-    '國泰人壽襄理薪水',
-    '鎧暘科技',
-    '奇鋐科技',
-    '威芯科技有限公司',
-    '南山人壽協理',
-    '先進光電',
-    '樹森開發股份有限公司',
-    '米約科技',
-    '中勤實業股份有限公司',
-    '精英電腦薪水',
-    '天陽航太',
-    '研華',
-    '神準科技',
-    '台積電',
-    '中強光電',
-    '住華科技',
-    '大力卜',
-    '國泰人壽襄理薪水',
-    '鎧暘科技',
-    '奇鋐科技',
-    '威芯科技有限公司',
-    '南山人壽協理',
-    '先進光電',
-    '樹森開發股份有限公司',
-    '米約科技',
-    '中勤實業股份有限公司',
-    '精英電腦薪水',
-    '天陽航太',
-    '研華',
-    '神準科技',
-    '台積電',
-    '中強光電',
-    '住華科技',
-    '大力卜',
-    '國泰人壽襄理薪水',
-    '鎧暘科技',
-    '奇鋐科技',
-    '威芯科技有限公司',
-    '南山人壽協理',
-    '先進光電',
-    '樹森開發股份有限公司',
-    '米約科技',
-    '中勤實業股份有限公司',
-    '精英電腦薪水',
-    '天陽航太',
-    '研華',
-    '神準科技',
-    '台積電',
-    '中強光電',
-  ];
-});
+const sortConditions = ref();
+sortConditions.value = sortOptions[0].value; // 預設依時間排序
 
-// 點擊關鍵字搜尋
-function keywordSearch(keyword: string) {
-  const paramObj = !keyword.trim()
-    ? undefined
-    : {
-        searchType: 'keyword',
-        param: keyword.trim(),
-        page: 1, // 搜尋第一頁
-      };
-  if (!paramObj) {
-    showInfo('提示', '請輸入搜尋條件');
-    return;
+/**
+ * function
+ */
+function init() {
+  // 取得公司概況
+  getCompanyInfo();
+  // 取得公司所有職位
+  getCompanyTitles();
+  // 查詢
+  getCompanySalary(1);
+}
+function getCompanyInfo() {
+  searchStore.fetchCompanyInfo(companiesId);
+}
+async function getCompanyTitles() {
+  await searchStore.fetchCompanyTitles(companiesId);
+  companyTitles.value.forEach((title: string) => titleOptions.value.push(title));
+}
+// 依條件查詢公司薪資資訊
+async function getCompanySalary(page: number) {
+  // call search 單一公司全部薪水 api
+  await searchStore.fetchSearchCompanySalary(companiesId, page, limit.value);
+  // 計算總頁數
+  totalPages.value = Math.ceil(companyPostCount.value / limit.value);
+  curPage.value = page;
+  // 重新選染頁數
+  forceRender();
+}
+function changeTitleConditions(condition: string) {
+  if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
+    titleConditions.value = ['全部'];
+  } else {
+    const allIndex = titleConditions.value.indexOf('全部');
+    if (allIndex !== -1) {
+      titleConditions.value.splice(allIndex, 1);
+    }
   }
-  search(paramObj);
 }
-// 帶著參數導頁至搜尋頁面
-async function search(paramObj: { searchType: string; param: string; page: number }) {
-  await navigateTo({
-    path: '/search',
-    query: paramObj,
-  });
+function resetFilter() {
+  // 排序重設
+  sortConditions.value = sortOptions[0].value;
+  // 職位重設
+  titleConditions.value = ['全部'];
+  // 重新查詢
+  getCompanySalary(1);
 }
-
+// 頁數
+const limit = ref(5);
+const curPage = ref();
+curPage.value = 1;
+const totalPages = ref(1);
+function changePage(page: number) {
+  getCompanySalary(page);
+}
+// 重新渲染頁數
+const componentKey = ref(0);
+const forceRender = () => {
+  componentKey.value += 1;
+};
 // 行動版篩選選單 modal
 const showFilterModal = ref(false);
 const filterModal = ref(null);
-onClickOutside(filterModal, () => {
-  showFilterModal.value = false;
+// onClickOutside(filterModal, () => {
+//   showFilterModal.value = false;
+// });
+const computedMonthlySalary = computed(() => {
+  return `${Math.floor(companyAvgMonthlySalary.value / 1000)} k`;
 });
+const computedFeelingClass = computed(() => {
+  let className = '';
+  switch (companyFeeling.value) {
+    case '非常開心':
+      className = 'text-green';
+      break;
+    case '還算愉快':
+      className = 'text-green';
+      break;
+    case '平常心':
+      className = 'text-yellow';
+      break;
+    case '有苦說不出':
+      className = 'text-red';
+      break;
+    case '想換工作了':
+      className = 'text-red';
+      break;
+  }
+  return className;
+});
+const computedOvertimeClass = computed(() => {
+  let className = '';
+  switch (companyOvertime.value) {
+    case '準時上下班':
+      className = 'text-green';
+      break;
+    case '很少加班':
+      className = 'text-green';
+      break;
+    case '偶爾加班':
+      className = 'text-yellow';
+      break;
+    case '常常加班':
+      className = 'text-red';
+      break;
+    case '賣肝拼經濟':
+      className = 'text-red';
+      break;
+  }
+  return className;
+});
+
+/**
+ * 初始化
+ */
+init();
 </script>
 <template>
   <section class="companies">
@@ -148,7 +220,7 @@ onClickOutside(filterModal, () => {
           <div class="mx-3">|</div>
           <nuxt-link to="/search?searchType=type&param=資訊科技&page=1">資訊科技</nuxt-link>
           <div class="mx-3">></div>
-          <nuxt-link to="/companies/98765432">OOO資訊科技有限公司</nuxt-link>
+          <nuxt-link to="/companies/98765432">{{ companyName }}</nuxt-link>
         </div>
         <div class="w-full flex flex-col lg:flex-row lg:justify-between">
           <div class="w-full lg:w-3/5 flex me-6 mb-5 lg:mb-0">
@@ -167,7 +239,7 @@ onClickOutside(filterModal, () => {
                 fill="white"
               />
             </svg>
-            <h4 class="flex lg:hidden ms-5">OOO 資訊科技有限公司</h4>
+            <h4 class="flex lg:hidden ms-5">{{ companyName }}</h4>
             <!-- lg -->
             <svg
               class="hidden lg:flex"
@@ -183,18 +255,18 @@ onClickOutside(filterModal, () => {
                 fill="white"
               />
             </svg>
-            <h2 class="hidden lg:flex ms-5 leading-[46px]">OOO 資訊科技有限公司</h2>
+            <h2 class="hidden lg:flex ms-5 leading-[46px]">{{ companyName }}</h2>
           </div>
-          <div class="w-full lg:w-2/5 flex items-center">
+          <div class="w-full lg:w-2/6 flex items-center">
             <div class="w-1/2 me-3 lg:me-5">
-              <base-button content="請教所有前輩" class="w-full">
+              <BaseButton content="請教所有前輩" class="w-full">
                 <div class="icon-message me-2 -mb-1"></div>
-              </base-button>
+              </BaseButton>
             </div>
             <div class="w-1/2">
-              <base-button content="訂閱情報" cate="secondary" class="w-full">
+              <BaseButton content="訂閱情報" cate="secondary" class="w-full">
                 <div class="icon-plus-circle me-2 -mb-1"></div>
-              </base-button>
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -206,7 +278,7 @@ onClickOutside(filterModal, () => {
       >
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between items-start sm:mb-6 lg:mb-20">
           <!-- lg 左半邊 -->
-          <div class="w-full lg:w-3/5 flex flex-col justify-center items-start me-6">
+          <div class="w-full lg:w-4/6 flex flex-col justify-center items-start mb-10 lg:mb-0">
             <!-- 公司概況 -->
             <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
               <div class="bg-black-10 text-white py-3 px-5 rounded-t">
@@ -216,31 +288,31 @@ onClickOutside(filterModal, () => {
                 class="w-full border-2 border-black-10 py-5 px-5 md:py-5 md:px-5 lg:py-5 lg:px-5 bg-white rounded-b rounded-tr"
               >
                 <div class="flex flex-wrap justify-between items-center">
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">上班心情</div>
-                    <h4 class="text-red">想換工作</h4>
+                    <h4 :class="computedFeelingClass" class="text-">{{ companyFeeling }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
-                    <h4 class="text-green">很少加班</h4>
+                    <h4 :class="computedOvertimeClass">{{ companyOvertime }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">平均月薪</div>
-                    <h4>55K</h4>
+                    <h4>{{ computedMonthlySalary }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
-                  <div class="flex flex-col items-center py-2 px-6 w-[150px]">
+                  <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">薪水情報</div>
-                    <h4>129</h4>
+                    <h4>{{ companyTotalPostCount }}</h4>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- lg 薪水情報 -->
-            <div class="hidden w-full lg:flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
+            <div class="hidden w-full lg:flex flex-col justify-center items-start sm:mb-8 lg:mb-8">
               <div class="bg-black-10 text-white py-3 px-5 rounded-t">
                 <h5>薪水情報</h5>
               </div>
@@ -257,14 +329,14 @@ onClickOutside(filterModal, () => {
                   >
                     <input
                       :id="`sort-${item.value}`"
-                      v-model="sortValue"
+                      v-model="sortConditions"
                       type="radio"
                       :value="item.value"
                       name="sort"
                       class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue"
-                      :checked="item.value === sortValue"
+                      :checked="item.value === sortConditions"
                     />
-                    <span :class="{ 'text-blue': item.value === sortValue }" class="ml-2">{{ item.text }}</span>
+                    <span :class="{ 'text-blue': item.value === sortConditions }" class="ml-2">{{ item.text }}</span>
                   </label>
                 </div>
 
@@ -273,28 +345,31 @@ onClickOutside(filterModal, () => {
                   <label v-for="item in titleOptions" :key="item" :for="`title-sort-${item}`" class="me-5">
                     <input
                       :id="`title-sort-${item}`"
-                      v-model="titleValue"
+                      v-model="titleConditions"
                       type="checkbox"
                       :value="item"
                       name="title-sort"
                       class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 accent-blue rounded-2xl translate-y-[3px]"
+                      @change="changeTitleConditions(item)"
                     />
-                    <span :class="{ 'text-blue': titleValue.includes(item) }" class="caption ml-2">{{ item }}</span>
+                    <span :class="{ 'text-blue': titleConditions.includes(item) }" class="caption ml-2">{{
+                      item
+                    }}</span>
                   </label>
                 </div>
                 <div class="w-full border-b border-black-1 mb-3"></div>
                 <div class="flex justify-end">
-                  <base-button cate="gray-text" content="全部重設" class="me-3"></base-button>
-                  <base-button cate="white" content="套用">
+                  <BaseButton cate="gray-text" content="全部重設" class="me-3" @click="resetFilter"></BaseButton>
+                  <BaseButton cate="white" content="套用" @click="getCompanySalary(1)">
                     <span class="icon-filter text-sm me-2"></span>
-                  </base-button>
+                  </BaseButton>
                 </div>
               </div>
             </div>
 
-            <!-- sm 薪水情報 -->
-            <div class="lg:hidden w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
-              <div class="w-full flex justify-between">
+            <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-0">
+              <!-- sm 薪水情報篩選 -->
+              <div class="lg:hidden w-full flex justify-between">
                 <div class="bg-black-10 text-white py-3 px-5 rounded-t">
                   <h5>薪水情報</h5>
                 </div>
@@ -306,86 +381,39 @@ onClickOutside(filterModal, () => {
                   <h6>篩選</h6>
                 </button>
               </div>
+              <div v-if="companyPost && companyPost.length != 0">
+                <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
+                  <SalaryInfo :post="post" @view="redirect" />
+                </div>
+              </div>
               <div
-                class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-6 lg:px-6 bg-white rounded-b"
+                v-else
+                class="w-full lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white"
               >
-                這裡要替換成薪資資訊
+                <div class="w-full flex flex-col p-6">
+                  <div class="flex flex-col">
+                    <div class="p-6 flex flex-col">
+                      <h6>查無相關結果，請重新搜尋。</h6>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- 薪資資訊 -->
-            <div class="w-full flex flex-col justify-center items-start sm:mb-6 lg:mb-6">
-              <div
-                class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-6 lg:px-6 bg-white rounded"
-              >
-                <div class="flex mb-6">
-                  <div class="caption me-10">這裡要替換</div>
-                  <label
-                    v-for="item in sortOptions"
-                    :key="item.value"
-                    :for="`sort-${item.value}`"
-                    class="flex-1 relative cursor-pointer items-center inline-flex justify-start caption me-5"
-                  >
-                    <input
-                      :id="`sort-${item.value}`"
-                      v-model="sortValue"
-                      type="radio"
-                      :value="item.value"
-                      name="sort"
-                      class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue"
-                      :checked="item.value === sortValue"
-                    />
-                    <span :class="{ 'text-blue': item.value === sortValue }" class="ml-2">{{ item.text }}</span>
-                  </label>
-                </div>
-
-                <div class="flex mb-5">
-                  <div class="caption me-10">職位</div>
-                  <label v-for="item in titleOptions" :key="item" :for="`title-sort-${item}`" class="me-5">
-                    <input
-                      :id="`title-sort-${item}`"
-                      v-model="titleValue"
-                      type="checkbox"
-                      :value="item"
-                      name="title-sort"
-                      class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 accent-blue rounded-2xl translate-y-[3px]"
-                    />
-                    <span :class="{ 'text-blue': titleValue.includes(item) }" class="caption ml-2">{{ item }}</span>
-                  </label>
-                </div>
-                <div class="w-full border-b border-black-1 mb-3"></div>
-                <div class="flex justify-end">
-                  <base-button cate="gray-text" content="全部重設" class="me-3"></base-button>
-                  <base-button cate="white" content="套用">
-                    <span class="icon-filter text-sm me-2"></span>
-                  </base-button>
-                </div>
-              </div>
-            </div>
+            <PaginationButton
+              v-if="companyPost && companyPost.length != 0"
+              :key="componentKey"
+              class="w-full flex justify-center -mt-5 lg:mt-5"
+              :init-page="curPage"
+              :total-pages="totalPages"
+              @change-page-event="changePage"
+            >
+            </PaginationButton>
           </div>
 
           <!-- lg 右半邊 -->
           <!-- 熱門關鍵字 -->
-          <div class="w-full lg:w-2/5 flex flex-col justify-center items-start">
-            <div class="bg-black-10 text-white py-3 px-5 rounded-t">
-              <h5>#熱門關鍵字</h5>
-            </div>
-            <!-- TODO: 關鍵字動態資訊 -->
-            <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-6 lg:px-6 bg-white rounded-b rounded-tr">
-              <div class="flex flex-col">
-                <div class="flex flex-wrap justify-between items-center">
-                  <text-link
-                    v-for="keyword in keywords"
-                    :key="keyword"
-                    :content="keyword"
-                    size="sm"
-                    @click="keywordSearch(keyword)"
-                  >
-                  </text-link>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SalaryKeyword />
         </div>
       </div>
     </div>
@@ -407,14 +435,14 @@ onClickOutside(filterModal, () => {
           >
             <input
               :id="`sort-${item.value}`"
-              v-model="sortValue"
+              v-model="sortConditions"
               type="radio"
               :value="item.value"
               name="sort"
               class="appearance-none w-[20px] h-[20px] relative after:content-[''] after:absolute after:top-1/2 after:translate-y-[-50%] after:right-0 after:w-[15px] after:h-[15px] after:border after:border-black-6 after:border-solid after:rounded-full checked:after:border-[6px] checked:after:border-blue"
-              :checked="item.value === sortValue"
+              :checked="item.value === sortConditions"
             />
-            <span :class="{ 'text-blue': item.value === sortValue }" class="ml-2">{{ item.text }}</span>
+            <span :class="{ 'text-blue': item.value === sortConditions }" class="ml-2">{{ item.text }}</span>
           </label>
         </div>
       </div>
@@ -425,26 +453,44 @@ onClickOutside(filterModal, () => {
           <label v-for="item in titleOptions" :key="item" :for="`title-sort-${item}`" class="me-5">
             <input
               :id="`title-sort-${item}`"
-              v-model="titleValue"
+              v-model="titleConditions"
               type="checkbox"
               :value="item"
               name="title-sort"
               class="bg-gray-50 border-black-10 focus:ring-blue h-4 w-4 accent-blue rounded-2xl translate-y-[3px]"
+              @change="changeTitleConditions(item)"
             />
-            <span :class="{ 'text-blue': titleValue.includes(item) }" class="caption ml-2">{{ item }}</span>
+            <span :class="{ 'text-blue': titleConditions.includes(item) }" class="caption ml-2">{{ item }}</span>
           </label>
         </div>
       </div>
       <div class="w-full border-b border-black-1 mb-3"></div>
       <div class="flex justify-between">
-        <base-button class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></base-button>
-        <base-button class="" cate="gray-text" content="全部重設"></base-button>
-        <base-button class="" cate="white" content="套用">
+        <BaseButton class="" cate="gray-text" content="關閉" @click="showFilterModal = false"></BaseButton>
+        <BaseButton
+          class=""
+          cate="gray-text"
+          content="全部重設"
+          @click="
+            resetFilter();
+            showFilterModal = false;
+          "
+        ></BaseButton>
+        <BaseButton
+          class=""
+          cate="white"
+          content="套用"
+          @click="
+            getCompanySalary(1);
+            showFilterModal = false;
+          "
+        >
           <span class="icon-filter text-sm me-2"></span>
-        </base-button>
+        </BaseButton>
       </div>
     </div>
+    <teleport to="body">
+      <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
+    </teleport>
   </section>
 </template>
-
-function useHead(arg0: { title: string; }) { throw new Error("Function not implemented."); }

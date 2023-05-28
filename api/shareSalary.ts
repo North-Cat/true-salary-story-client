@@ -8,4 +8,24 @@ export default new (class postShare extends Http {
   public getUniformNumbers(id: number | string) {
     return this.get(`/api/salary/uniformNumbers/${id}`);
   }
+
+  /**
+   * POST 薪資資訊
+   * @params submitData
+   */
+  public postSalary(submitData: object) {
+    return this.post(`/api/salary`, submitData);
+  }
+
+  public getSalaryInfo(id: string) {
+    return this.get(`/api/salary/${id}`);
+  }
+
+  public getKeywords() {
+    return this.get(`/api/salary/getTopKeyword`);
+  }
+
+  public requestSalaryInfo(id: string) {
+    return this.post(`/api/salary/${id}/permission`);
+  }
 })();

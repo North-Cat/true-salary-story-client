@@ -61,10 +61,11 @@ onClickOutside(target, () => {
     <label v-if="!hiddenLabel" :for="name" :class="{ 'mb-2 block': !description, hidden: hiddenLabel }">{{
       label
     }}</label>
-    <span v-if="description" class="block mt-1 mb-2 text-sm text-black-6" v-html="description"></span>
+    <span v-if="description" class="block mt-1 mb-2 text-sm text-black-6" v-text="description"></span>
     <div ref="target" class="relative">
       <div class="relative block" @click.stop="dropdown = !dropdown">
         <VField
+          :ref="name"
           v-model.trim="selectText"
           :name="name"
           :label="label"
@@ -75,7 +76,6 @@ onClickOutside(target, () => {
           :class="{ 'mt-2': hiddenLabel }"
           :placeholder="placeholder"
         />
-
         <!-- <input :id="name" :value="selectText" type="text" :name="name" :placeholder="placeholder" readonly
           class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
         <slot>

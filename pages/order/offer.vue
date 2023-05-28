@@ -1,11 +1,84 @@
+<script setup lang="ts">
+import { ref, watch, computed } from 'vue';
+import {
+  offerPointOption, // 積分選單
+} from '@/utilities/options';
+
+/**
+ * 計畫介紹
+ */
+enum offerType {
+  SINGLE = 'single',
+  SUBSCRIPTION = 'subscription',
+}
+// 目前選擇的方案
+const selectedSingleOfferPrice = ref(offerPointOption[0].price);
+const selectedSingleOfferPoint = ref(offerPointOption[0].value);
+watch(selectedSingleOfferPoint, () => {
+  for (const item of offerPointOption) {
+    if (selectedSingleOfferPoint.value === item.value) {
+      selectedSingleOfferPrice.value = item.price;
+    }
+  }
+});
+
+function clickOffer(type: offerType) {
+  let paramObj = {};
+  if (type === offerType.SINGLE) {
+    paramObj = {
+      type,
+      point: selectedSingleOfferPoint.value,
+    };
+  } else if (type === offerType.SUBSCRIPTION) {
+    paramObj = {
+      type,
+    };
+  }
+
+  navigateTo({
+    path: '/order/checkout',
+    query: paramObj,
+  });
+}
+
+// 常見問題
+const questionIndex = ref(0);
+function open(index: number) {
+  questionIndex.value === index ? (questionIndex.value = 0) : (questionIndex.value = index);
+}
+function isOpen(index: number): boolean {
+  return questionIndex.value === index;
+}
+
+// 共用
+enum Tab {
+  PAYMENT = 'payment', // 計畫介紹
+  QUESTION = 'question', // 常見問答
+}
+// 目前在哪個頁籤, 預設 "計畫介紹"
+const curTab = ref();
+curTab.value = Tab.PAYMENT;
+
+function changeTab(tab: Tab) {
+  curTab.value = tab;
+}
+function isTab(tab: Tab): boolean {
+  return curTab.value === tab;
+}
+const tabClass = computed(() => (tab: Tab) => {
+  const className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
+  return className;
+});
+</script>
+
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-10"
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center mt-5 lg:mt-10"
     >
       <div class="w-full flex flex-col lg:justify-between sm:mb-10 lg:mb-20">
         <!-- 頁籤 -->
-        <div class="w-full flex">
+        <div class="w-full flex mb-3">
           <div class="py-3 pe-6">
             <button
               class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
@@ -27,18 +100,22 @@
         </div>
 
         <!-- 計畫介紹 -->
-        <div v-if="isTab(Tab.PAYMENT)" class="w-full flex border-2 border-black-10 p-6 bg-white">
-          <div class="w-1/3 flex flex-col border border-black-1 py-5 px-6 rounded me-3">
+        <div v-if="isTab(Tab.PAYMENT)" class="w-full flex flex-col lg:flex-row border-2 border-black-10 p-6 bg-white">
+          <div class="w-full lg:w-1/3 flex flex-col border border-black-1 py-5 px-6 rounded me-3 mb-5">
             <div class="flex justify-between items-center mb-5">
               <div class="flex flex-col">
-                <h4 class="text-black-6 mb-3">100 積分</h4>
-                <h6 class="text-black-10">$ 150 元</h6>
+                <h4 class="text-black-6 mb-3">{{ selectedSingleOfferPoint }} 積分</h4>
+                <h6 class="text-black-10">$ {{ selectedSingleOfferPrice }} 元</h6>
               </div>
               <div class="icon-star-circle text-5xl"></div>
             </div>
-            <div class="flex justify-between pb-5 border-b border-black-1 mb-5">
-              <div class="w-9/12 border border-black-1 rounded p-2 me-2">1000 積分</div>
-              <base-button cate="secondary">購買</base-button>
+            <div class="flex flex-col lg:flex-row justify-between items-baseline pb-5 border-b border-black-1 mb-5">
+              <div class="w-full mb-2 lg:mb-0 lg:me-2">
+                <BaseFormSelect v-model="selectedSingleOfferPoint" class="" :options="offerPointOption" name="offer" />
+              </div>
+              <BaseButton class="w-full lg:w-1/4 h-[48px]" cate="secondary" @click="clickOffer(offerType.SINGLE)"
+                >購買
+              </BaseButton>
             </div>
             <div class="h-full flex flex-col justify-between">
               <div class="flex pb-5 border-b border-black-1 mb-5">
@@ -55,7 +132,7 @@
             </div>
           </div>
 
-          <div class="w-1/3 flex flex-col border border-black-1 py-5 px-6 rounded me-3">
+          <div class="w-full lg:w-1/3 flex flex-col border border-black-1 py-5 px-6 rounded me-3 mb-5">
             <div class="flex justify-between items-center mb-5">
               <div class="flex flex-col">
                 <h4 class="text-blue mb-3">加薪計畫</h4>
@@ -63,8 +140,8 @@
               </div>
               <div class="icon-fire text-6xl text-blue"></div>
             </div>
-            <div class="flex justify-between pb-5 border-b border-black-1 mb-5">
-              <base-button class="w-full">馬上訂閱</base-button>
+            <div class="flex pb-5 border-b border-black-1 mb-5 mt-1">
+              <BaseButton class="w-full" @click="clickOffer(offerType.SUBSCRIPTION)">馬上訂閱</BaseButton>
             </div>
             <div class="flex flex-col justify-between">
               <div class="flex pb-5 border-b border-black-1 mb-5">
@@ -95,12 +172,12 @@
             </div>
           </div>
 
-          <div class="w-1/3 flex flex-col border border-black-1 py-5 px-6 rounded">
-            <div class="h-full flex flex-col pb-5 mb-5 justify-center items-center">
+          <div class="w-full lg:w-1/3 flex flex-col border border-black-1 py-5 px-6 rounded">
+            <div class="h-full flex flex-col justify-center items-center py-5">
               <div class="flex flex-col">
                 <div class="caption mb-5">支援下列付款方式</div>
                 <div class="text-md">
-                  <img src="../assets/img/line-pay.svg" alt="LINE Pay" />
+                  <img src="@/assets/img/line-pay.svg" alt="LINE Pay" />
                 </div>
               </div>
             </div>
@@ -165,41 +242,10 @@
                 <div class="caption">請聯繫客服，我們將於上班日回覆您。</div>
               </div>
             </div>
-            <base-button cate="secondary">聯繫客服</base-button>
+            <BaseButton cate="secondary">聯繫客服</BaseButton>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-// 常見問題
-const questionIndex = ref(0);
-function open(index: number) {
-  questionIndex.value === index ? (questionIndex.value = 0) : (questionIndex.value = index);
-}
-function isOpen(index: number): boolean {
-  return questionIndex.value === index;
-}
-
-// 共用
-enum Tab {
-  PAYMENT = 'payment', // 計畫介紹
-  QUESTION = 'question', // 常見問答
-}
-// 目前在哪個頁籤, 預設 "計畫介紹"
-const curTab = ref();
-curTab.value = Tab.PAYMENT;
-
-function changeTab(tab: Tab) {
-  curTab.value = tab;
-}
-function isTab(tab: Tab): boolean {
-  return curTab.value === tab;
-}
-const tabClass = computed(() => (tab: Tab) => {
-  const className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
-  return className;
-});
-</script>

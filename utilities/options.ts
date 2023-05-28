@@ -79,10 +79,10 @@ export const cityOptions = [
     text: '連江',
     value: '連江',
   },
-  {
-    text: '國外',
-    value: '國外',
-  },
+  // {
+  //   text: '國外',
+  //   value: '國外',
+  // },
 ];
 
 export const yearsOfServiceOptions = [
@@ -450,77 +450,115 @@ export const feelingOptions = [
 export const tagsOptions = [
   {
     text: '有升遷管道',
-    value: 1,
+    value: '有升遷管道',
     status: 'good',
   },
   {
     text: '固定加薪',
-    value: 2,
+    value: '固定加薪',
     status: 'good',
   },
   {
     text: '免費零食/水果',
-    value: 3,
+    value: '免費零食/水果',
     status: 'good',
   },
   {
     text: '員工聚餐/旅遊',
-    value: 4,
+    value: '員工聚餐/旅遊',
     status: 'good',
   },
   {
     text: '三節獎金',
-    value: 5,
+    value: '三節獎金',
     status: 'good',
   },
   {
     text: '公司制度完善',
-    value: 6,
+    value: '公司制度完善',
     status: 'good',
   },
   {
     text: '年終獎金',
-    value: 7,
+    value: '年終獎金',
     status: 'good',
   },
   {
     text: '工作環境佳',
-    value: 8,
+    value: '工作環境佳',
     status: 'good',
   },
   {
     text: '有教育訓練',
-    value: 9,
+    value: '有教育訓練',
     status: 'good',
   },
   {
     text: '辦公室政治',
-    value: 10,
+    value: '辦公室政治',
     status: 'bad',
   },
   {
     text: '內部效率不佳',
-    value: 11,
+    value: '內部效率不佳',
     status: 'bad',
   },
   {
     text: '無明確升遷管道',
-    value: 12,
+    value: '無明確升遷管道',
     status: 'bad',
   },
   {
     text: '薪資成長緩慢',
-    value: 13,
+    value: '薪資成長緩慢',
     status: 'bad',
   },
   {
     text: '沒有完善制度',
-    value: 14,
+    value: '沒有完善制度',
     status: 'bad',
   },
   {
     text: '常態加班',
-    value: 15,
+    value: '常態加班',
     status: 'bad',
+  },
+];
+
+export const offerPointOption = [
+  {
+    text: '100 積分',
+    value: 100,
+    price: 150,
+  },
+  {
+    text: '200 積分',
+    value: 200,
+    price: 300,
+  },
+  {
+    text: '300 積分',
+    value: 300,
+    price: 450,
+  },
+  {
+    text: '400 積分',
+    value: 400,
+    price: 600,
+  },
+  {
+    text: '500 積分',
+    value: 500,
+    price: 750,
+  },
+  {
+    text: '1000 積分',
+    value: 1000,
+    price: 1500,
+  },
+  {
+    text: '1500 積分',
+    value: 1500,
+    price: 2250,
   },
 ];

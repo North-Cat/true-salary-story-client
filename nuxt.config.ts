@@ -7,7 +7,12 @@ export default defineNuxtConfig({
       apiBase: 'https://client-api-dev.up.railway.app',
     },
   },
+  telemetry: false,
   css: ['@/assets/css/tailwind.css', '@/assets/css/style.css', '@/assets/css/icon.css'],
+  sourcemap: {
+    server: true,
+    client: true,
+  },
 
   // nitro: {
   //   devProxy: {

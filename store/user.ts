@@ -1,49 +1,119 @@
 import { defineStore } from 'pinia';
 import { ILoginUserInfo } from '~/interface/user';
-const { userApi } = useApi();
-export const useUserStore = defineStore('user', {
-  state: () => {
-    return {
-      isLogin: false,
-      currentUser: {} as ILoginUserInfo,
-      token: '',
-      isFetchProfileLoading: false,
-    };
-  },
-  actions: {
-    loginWithGoogle() {
-      const backendUrl = 'https://client-api-dev.up.railway.app/social/google';
-      window.location.href = backendUrl;
-    },
-    async tryToFetchProfile(): Promise<void> {
-      this.isFetchProfileLoading = true;
+import { IMySalaryResponse } from '~/interface/salaryData';
+import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
+import { IMyOrdersListResponse } from '~/interface/order';
+const { userApi, subscribeApi, orderApi } = useApi();
+export const useUserStore = defineStore('user', () => {
+  // 登入相關
+  const isLogin = ref(false);
+  const currentUser = ref<ILoginUserInfo>({});
+  const token = ref('');
+  const isFetchProfileLoading = ref(false);
+  const currentPoint = ref(0);
+  const loginWithGoogle = () => {
+    const {
+      public: { apiBase },
+    } = useRuntimeConfig();
+    const backendUrl = `${apiBase}/social/google`;
+    window.location.href = backendUrl;
+  };
+  const tryToFetchProfile = async () => {
+    isFetchProfileLoading.value = true;
+    await userApi
+      .getUserProfile()
+      .then(({ data: { user } }) => {
+        currentUser.value = user as unknown as ILoginUserInfo;
+        isLogin.value = true;
+        currentPoint.value = user && user.points ? user.points.point : 0;
+        isFetchProfileLoading.value = false;
+      })
+      .catch(() => {
+        error();
+      });
+  };
+  const logout = async () => {
+    const { data } = await userApi.postLogout();
+    if (data) {
+      error();
+    } else {
+      error();
+    }
+  };
+  const error = () => {
+    const redirectToCookie = useCookie('redirectTo');
+    redirectToCookie.value = null;
+    const tokenCookie = useCookie('token');
+    tokenCookie.value = null;
+    isLogin.value = false;
+    isFetchProfileLoading.value = false;
+    navigateTo('/');
+  };
 
-      await userApi
-        .getUserProfile()
-        .then(({ data: { user } }) => {
-          this.currentUser = user as unknown as ILoginUserInfo;
-          this.isLogin = true;
-          this.isFetchProfileLoading = false;
-        })
-        .catch((error) => {
-          console.log('error');
-          this.error();
-        });
-    },
-    async logout(): Promise<void> {
-      const { data } = await userApi.postLogout();
-      if (data) {
-        this.error();
-      } else {
-        this.error();
-      }
-    },
-    error() {
-      const tokenCookie = useCookie('token');
-      tokenCookie.value = null;
-      this.isLogin = false;
-      this.isFetchProfileLoading = false;
-      navigateTo('/');
-    },
-  },
+  // 會員管理相關
+  const mySalary = ref({
+    result: [],
+    totalCount: 0,
+  } as IMySalaryResponse);
+  const tryToFetchMySalary = async (data: {
+    keyword: string | number | undefined;
+    limit?: number | undefined;
+    page: number;
+  }) => {
+    const result = await userApi.getMySalary(data);
+    mySalary.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
+  const subscribeCompaniesList = ref({
+    result: [],
+    totalCount: 0,
+  } as ISubscribeCompaniesResponse);
+  const tryToFetchSubscribeCompanies = async (data: {
+    keyword: string | number | undefined;
+    limit?: number | undefined;
+    page: number;
+  }) => {
+    const result = await subscribeApi.getSubscribeCompanies(data);
+    subscribeCompaniesList.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
+  const deleteSubscribeCompany = async (id: string) => {
+    await subscribeApi.deleteSubscribeCompany(id);
+  };
+
+  const myOrdersList = ref({
+    result: [],
+    totalCount: 0,
+  } as IMyOrdersListResponse);
+  const tryToFetchMyOrdersList = async () => {
+    const result = await orderApi.getOrdersList();
+    myOrdersList.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
+  return {
+    tryToFetchProfile,
+    isLogin,
+    currentUser,
+    isFetchProfileLoading,
+    token,
+    logout,
+    loginWithGoogle,
+    mySalary,
+    tryToFetchMySalary,
+    tryToFetchSubscribeCompanies,
+    subscribeCompaniesList,
+    deleteSubscribeCompany,
+    myOrdersList,
+    tryToFetchMyOrdersList,
+    currentPoint,
+  };
 });

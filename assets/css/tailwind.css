@@ -66,6 +66,12 @@
     filter: drop-shadow(0px -2px 8px rgba(43, 43, 49, 0.1));
     backdrop-filter: blur(4px);
   }
+  th {
+    @apply border-b-2 border-b-black-5 py-5 text-left;
+  }
+  td {
+    @apply border-b border-b-black-5 py-5;
+  }
 }
 @layer utilities {
   .my-notification .vue-notification {

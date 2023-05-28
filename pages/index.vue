@@ -25,9 +25,14 @@
                   class="w-full h-full flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out sm:mb-8 lg:mb-20">
                   <input v-model="searchParam.keyword"
                     class="w-full border border-slate-400 px-2 text-black-10 placeholder-black-3 focus:outline-none"
-                    type="text" placeholder="搜尋、公司、職位、產業..." @keyup.enter="keywordSearch(searchParam.keyword)" />
-                  <button class="flex justify-center items-center bg-black-10 py-3 px-8"
-                    @click="keywordSearch(searchParam.keyword)">
+                    type="text"
+                    placeholder="搜尋、公司、職位、產業..."
+                    @keyup.enter="searchKeyword(searchParam.keyword)"
+                  />
+                  <button
+                    class="flex justify-center items-center bg-black-10 py-3 px-8"
+                    @click="searchKeyword(searchParam.keyword)"
+                  >
                     <span class="icon-search text-white text-xl"></span>
                   </button>
                 </div>
@@ -716,20 +721,26 @@
                     <div class="bg-black-10 text-white py-2 px-4">
                       <h6>薪水情報</h6>
                     </div>
-                    <!-- TODO: 動態資訊 -->
-                    <div class="border-2 border-black-10 py-2 px-4">
-                      <h4 class="sm:block md:hidden lg:hidden"><span class="text-blue">{{ postCountFormat }}</span>則</h4>
-                      <h3 class="sm:hidden md:block lg:block"><span class="text-blue">{{ postCountFormat }}</span>則</h3>
+                    <div class="border-2 border-black-10 py-2 px-4 flex justify-end" style="min-width: 110px">
+                      <h4 class="sm:block md:hidden lg:hidden">
+                        <span class="text-blue">{{ postCountFormat }} </span> 則
+                      </h4>
+                      <h3 class="sm:hidden md:block lg:block">
+                        <span class="text-blue">{{ postCountFormat }} </span> 則
+                      </h3>
                     </div>
                   </div>
                   <div class="flex flex-col justify-center items-start mb-10">
                     <div class="bg-black-10 text-white py-2 px-4">
                       <h6>可請教的前輩</h6>
                     </div>
-                    <!-- TODO: 動態資訊 -->
-                    <div class="border-2 border-black-10 py-2 px-4">
-                      <h4 class="sm:block md:hidden lg:hidden"><span class="text-blue">{{ userCountFormat }}</span>則</h4>
-                      <h3 class="sm:hidden md:block lg:block"><span class="text-blue">{{ userCountFormat }}</span>則</h3>
+                    <div class="border-2 border-black-10 py-2 px-4 flex justify-end" style="min-width: 140px">
+                      <h4 class="sm:block md:hidden lg:hidden">
+                        <span class="text-blue">{{ userCountFormat }} </span> 位
+                      </h4>
+                      <h3 class="sm:hidden md:block lg:block">
+                        <span class="text-blue">{{ userCountFormat }} </span> 位
+                      </h3>
                     </div>
                   </div>
                 </div>
@@ -1125,7 +1136,8 @@
         <h2 class="sm:hidden md:block lg:block mb-15">透過資訊交換 找到更滿意的待遇</h2>
 
         <div
-          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10">
+          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
+        >
           <div
             class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0">
             <svg width="257" height="176" viewBox="0 0 257 176" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1241,7 +1253,8 @@
         </div>
 
         <div
-          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10">
+          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
+        >
           <div
             class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15 sm:order-last lg:order-first">
             <h5 class="md:hidden lg:hidden mb-3">不看官方數字，只看「真實經驗」</h5>
@@ -1568,7 +1581,8 @@
         </div>
 
         <div
-          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10">
+          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
+        >
           <div
             class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0">
             <svg width="213" height="193" viewBox="0 0 213 193" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1835,7 +1849,8 @@
         </div>
 
         <div
-          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10">
+          class="info-block max-w-[1076px] flex sm:flex-col lg:flex-row lg:flex-wrap border-2 border-black-10 bg-white sm:py-5 md:py-10 lg:py-10 sm:mb-5 md:mb-10 lg:mb-10 rounded"
+        >
           <div
             class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15 sm:order-last lg:order-first">
             <h5 class="md:hidden lg:hidden mb-3">結伴同行的力量</h5>
@@ -2279,30 +2294,44 @@
           <!-- md lg text -->
           <h2 class="sm:hidden md:block lg:block">薪水檔案櫃</h2>
           <div class="sm:hidden lg:flex flex-row justify-center items-start">
-            <nav-button :is-circle="true" :is-left="true" class="me-5" @click="postsPrev"></nav-button>
-            <nav-button :is-circle="true" :is-left="false" @click="postsNext"></nav-button>
+            <NavButton :is-circle="true" :is-left="true" class="me-5" @click="postsPrev"></NavButton>
+            <NavButton :is-circle="true" :is-left="false" @click="postsNext"></NavButton>
           </div>
         </div>
 
         <!-- md lg carousel -->
-        <div class="post-block sm:hidden md:hidden lg:block lg:w-full">
+        <div v-if="popularPosts && popularPosts.length != 0" class="sm:hidden md:hidden lg:block lg:w-full">
           <carousel ref="postCarousel" class="w-full" :items-to-show="1" wrap-around>
-            <slide v-for="slide in popularPost.length / 3" :key="slide" style="margin-top: 25px; margin-bottom: 25px">
+            <slide v-for="slide in popularPosts.length / 3" :key="slide" style="margin-top: 25px; margin-bottom: 25px">
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
-                  <div v-for="(post, index) in popularPost" :key="post.postId">
-                    <post-card v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
-                      :class="{ 'me-6': index != (slide - 1) * 3 + 2 }" cate="top" :title="post.title"
-                      :company="post.companyName" :overtime="post.overtime" :feeling="post.feeling">
-                    </post-card>
+                  <div v-for="(post, index) in popularPosts" :key="post.postId">
+                    <PostCard
+                      v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
+                      :class="{ 'me-6': index != (slide - 1) * 3 + 2 }"
+                      cate="top"
+                      :title="post.title"
+                      :company="post.companyName"
+                      :overtime="post.overtime"
+                      :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
+                    >
+                    </PostCard>
                   </div>
                 </div>
                 <div class="w-full flex flex-row">
-                  <div v-for="(post, index) in latestPost" :key="post.postId">
-                    <post-card v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
-                      :class="{ 'me-6': index != (slide - 1) * 3 + 2 }" cate="new" :title="post.title"
-                      :company="post.companyName" :overtime="post.overtime" :feeling="post.feeling">
-                    </post-card>
+                  <div v-for="(post, index) in latestPosts" :key="post.postId">
+                    <PostCard
+                      v-if="index >= (slide - 1) * 3 && index <= (slide - 1) * 3 + 2"
+                      :class="{ 'me-6': index != (slide - 1) * 3 + 2 }"
+                      cate="new"
+                      :title="post.title"
+                      :company="post.companyName"
+                      :overtime="post.overtime"
+                      :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
+                    >
+                    </PostCard>
                   </div>
                 </div>
               </div>
@@ -2311,22 +2340,36 @@
         </div>
 
         <!-- sm carousel -->
-        <div class="sm:block sm:w-full lg:hidden">
+        <div v-if="popularPosts && popularPosts.length != 0" class="sm:block sm:w-full lg:hidden">
           <carousel ref="smPostCarousel" class="w-full" :items-to-show="1.5" wrap-around snap-align="start">
-            <slide v-for="slide in popularPost.length" :key="slide">
+            <slide v-for="slide in popularPosts.length" :key="slide">
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
-                  <div v-for="(post, index) in popularPost" :key="post.postId">
-                    <post-card v-if="index == slide - 1" cate="top" :title="post.title" :company="post.companyName"
-                      :overtime="post.overtime" :feeling="post.feeling">
-                    </post-card>
+                  <div v-for="(post, index) in popularPosts" :key="post.postId">
+                    <PostCard
+                      v-if="index == slide - 1"
+                      cate="top"
+                      :title="post.title"
+                      :company="post.companyName"
+                      :overtime="post.overtime"
+                      :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
+                    >
+                    </PostCard>
                   </div>
                 </div>
                 <div class="w-full flex flex-row">
-                  <div v-for="(post, index) in latestPost" :key="post.postId">
-                    <post-card v-if="index == slide - 1" cate="new" :title="post.title" :company="post.companyName"
-                      :overtime="post.overtime" :feeling="post.feeling">
-                    </post-card>
+                  <div v-for="(post, index) in latestPosts" :key="post.postId">
+                    <PostCard
+                      v-if="index == slide - 1"
+                      cate="new"
+                      :title="post.title"
+                      :company="post.companyName"
+                      :overtime="post.overtime"
+                      :feeling="post.feeling"
+                      @click="clickPostCard(post.postId)"
+                    >
+                    </PostCard>
                   </div>
                 </div>
               </div>
@@ -2342,40 +2385,59 @@
         <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
           <!-- 找產業 -->
           <div class="link-block flex flex-col justify-center items-start sm:mb-10 lg:mb-0">
-            <div class="bg-black-10 text-white py-3 px-5">
+            <div class="bg-black-10 text-white py-3 px-5 rounded-t">
               <h5>找產業</h5>
             </div>
-            <!-- TODO: 產業動態資訊 -->
-            <div class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-10 lg:px-10 bg-white">
+            <div
+              class="w-full border-2 border-black-10 sm:py-5 sm:px-10 md:py-5 md:px-5 lg:py-[46px] lg:px-10 bg-white rounded-b rounded-tr"
+            >
               <div class="flex flex-wrap justify-center items-center">
-                <div class="flex flex-col sm:pe-8 sm:pb-3 md:pb-0 md:pe-6 lg:pe-10 border-r">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link v-if="index >= 0 && index <= 4" class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
-                      :class="{ 'mb-3': index % 5 != 4 }" :content="comType" @click="searchCompanytype(comType)">
-                    </text-link>
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:pe-8 sm:pb-3 md:pb-0 md:pe-6 lg:pe-10 border-r">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
+                    <TextLink
+                      v-if="index >= 0 && index <= 4"
+                      class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
+                      :class="{ 'mb-3': index % 5 != 4 }"
+                      :content="comType"
+                      @click="searchCompanytype(comType)"
+                    >
+                    </TextLink>
                   </div>
                 </div>
-                <div class="flex flex-col sm:ps-8 sm:pb-3 md:pb-0 md:px-6 lg:px-10 md:border-r">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link v-if="index >= 5 && index <= 9" class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
-                      :class="{ 'mb-3': index % 5 != 4 }" :content="comType" @click="searchCompanytype(comType)">
-                    </text-link>
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:ps-8 sm:pb-3 md:pb-0 md:px-6 lg:px-10 md:border-r">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
+                    <TextLink
+                      v-if="index >= 5 && index <= 9"
+                      class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
+                      :class="{ 'mb-3': index % 5 != 4 }"
+                      :content="comType"
+                      @click="searchCompanytype(comType)"
+                    >
+                    </TextLink>
                   </div>
                 </div>
-                <div class="flex flex-col sm:pe-8 md:pb-0 md:px-6 lg:px-10 border-r">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link v-if="index >= 10 && index <= 14"
-                      class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]" :class="{ 'mb-3': index % 5 != 4 }"
-                      :content="comType" @click="searchCompanytype(comType)">
-                    </text-link>
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:pe-8 md:pb-0 md:px-6 lg:px-10 border-r">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
+                    <TextLink
+                      v-if="index >= 10 && index <= 14"
+                      class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
+                      :class="{ 'mb-3': index % 5 != 4 }"
+                      :content="comType"
+                      @click="searchCompanytype(comType)"
+                    >
+                    </TextLink>
                   </div>
                 </div>
-                <div class="flex flex-col sm:ps-8 md:pb-0 md:ps-6 lg:ps-10">
-                  <div v-for="(comType, index) in popularCompanyType" :key="comType">
-                    <text-link v-if="index >= 15 && index <= 19"
-                      class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]" :class="{ 'mb-3': index % 5 != 4 }"
-                      :content="comType" @click="searchCompanytype(comType)">
-                    </text-link>
+                <div class="w-1/2 md:w-1/4 flex flex-col sm:ps-8 md:pb-0 md:ps-6 lg:ps-10">
+                  <div v-for="(comType, index) in popularCompanyType" :key="comType + index">
+                    <TextLink
+                      v-if="index >= 15 && index <= 19"
+                      class="sm:max-w-[100px] md:max-w-[100px] lg:max-w-[120px]"
+                      :class="{ 'mb-3': index % 5 != 4 }"
+                      :content="comType"
+                      @click="searchCompanytype(comType)"
+                    >
+                    </TextLink>
                   </div>
                 </div>
               </div>
@@ -2385,24 +2447,31 @@
           <!-- 熱門公司 -->
           <div class="link-block flex flex-col justify-center items-start w-full lg:max-w-[416px]">
             <div class="w-full flex justify-between">
-              <div class="bg-black-10 text-white py-3 px-5 h-[48px]">
+              <div class="bg-black-10 text-white py-3 px-5 h-[48px] rounded-t">
                 <h5>熱門公司</h5>
               </div>
               <div class="flex">
-                <nav-button class="max-h-fit" :is-circle="false" :is-left="true" @click="comPrev"></nav-button>
-                <nav-button :is-circle="false" :is-left="false" @click="comNext"></nav-button>
+                <NavButton class="max-h-fit" :is-circle="false" :is-left="true" @click="comPrev"></NavButton>
+                <NavButton :is-circle="false" :is-left="false" @click="comNext"></NavButton>
               </div>
             </div>
-            <!-- TODO: 公司動態資訊 換頁 -->
-            <div class="w-full border-2 border-black-10 sm:py-5 sm:px-5 lg:py-10 lg:px-8 bg-white">
+            <div
+              v-if="popularCompanies && popularCompanies.length != 0"
+              class="w-full border-2 border-black-10 sm:py-5 sm:px-5 lg:py-10 lg:px-8 bg-white rounded-b"
+            >
               <div class="w-full">
                 <carousel ref="comCarousel" class="w-full" :items-to-show="1" wrap-around>
-                  <slide v-for="slide in popularCompany.length / 5" :key="slide">
+                  <slide v-for="slide in popularCompanies.length / 5" :key="slide">
                     <div class="w-full flex flex-col">
-                      <div v-for="(com, index) in popularCompany" :key="com.taxId">
-                        <text-link v-if="index >= (slide - 1) * 5 && index <= (slide - 1) * 5 + 4" :content="com.name"
-                          :end-content="com.postCount + ' 筆'" class="w-full mb-3"
-                          :class="{ 'mb-0': index == (slide - 1) * 5 + 4 }"></text-link>
+                      <div v-for="(com, index) in popularCompanies" :key="com.taxId + index">
+                        <TextLink
+                          v-if="index >= (slide - 1) * 5 && index <= (slide - 1) * 5 + 4"
+                          :content="com.companyName"
+                          :end-content="com.postCount + ' 筆'"
+                          class="w-full mb-3"
+                          :class="{ 'mb-0': index == (slide - 1) * 5 + 4 }"
+                          @click="searchCompany(com.taxId)"
+                        ></TextLink>
                       </div>
                     </div>
                   </slide>
@@ -2414,23 +2483,32 @@
         <div class="w-full">
           <!-- 熱門關鍵字 -->
           <div class="link-block flex flex-col justify-center items-start">
-            <div class="bg-black-10 text-white py-3 px-5">
+            <div class="bg-black-10 text-white py-3 px-5 rounded-t">
               <h5>#熱門關鍵字</h5>
             </div>
-            <!-- TODO: 關鍵字動態資訊 -->
-            <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-10 lg:px-16 bg-white">
+            <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-10 lg:px-16 bg-white rounded-b rounded-tr">
               <div class="flex flex-col">
                 <!-- 重點關鍵字 (顯示六個) -->
                 <div class="flex flex-wrap justify-start items-center sm:mb-2 lg:mb-7">
-                  <tag-link v-for="keyword in keywords.slice(0, 6)" :key="keyword" :content="keyword"
-                    class="sm:me-2 sm:mb-3 lg:mb-0 lg:me-5" @click="keywordSearch(keyword)">
-                  </tag-link>
+                  <TagLink
+                    v-for="keyword in keywords.slice(0, 6)"
+                    :key="keyword"
+                    :content="keyword"
+                    class="sm:me-2 sm:mb-3 lg:mb-0 lg:me-5"
+                    @click="searchKeyword(keyword)"
+                  >
+                  </TagLink>
                 </div>
                 <!-- 其他關鍵字 -->
-                <div class="flex flex-wrap justify-between items-center">
-                  <text-link v-for="keyword in keywords.slice(5, keywords.length)" :key="keyword" :content="keyword"
-                    size="sm" @click="keywordSearch(keyword)">
-                  </text-link>
+                <div v-if="keywords && keywords.length != 0" class="flex flex-wrap justify-start items-center">
+                  <TextLink
+                    v-for="keyword in keywords.slice(5, keywords.length)"
+                    :key="keyword"
+                    :content="keyword"
+                    size="sm"
+                    @click="searchKeyword(keyword)"
+                  >
+                  </TextLink>
                 </div>
               </div>
             </div>
@@ -2442,10 +2520,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
 import { showInfo } from '@/utilities/message';
+import { useSearchStore } from '@/store/search';
+import { useSalaryStore } from '@/store/salary';
+
+const salaryStore = useSalaryStore();
+const { keywords } = storeToRefs(salaryStore);
+const searchStore = useSearchStore();
+const { latestPosts, popularPosts, popularCompanies, popularCompanyType, userCount, postCount } =
+  storeToRefs(searchStore);
+
+// 使用者/薪水數量
+const postCountFormat = computed(() => {
+  return postCount.value.toLocaleString();
+});
+const userCountFormat = computed(() => {
+  return userCount.value.toLocaleString();
+});
 
 /**
  * 搜尋相關
@@ -2458,7 +2553,7 @@ const searchParam = ref({
   companyType: '', // 產業
 });
 // 點擊關鍵字搜尋
-function keywordSearch(keyword: string) {
+function searchKeyword(keyword: string) {
   const paramObj = !keyword.trim()
     ? undefined
     : {
@@ -2480,6 +2575,10 @@ function searchCompanytype(type: string) {
     page: 1, // 搜尋第一頁
   };
   search(paramObj);
+}
+// 點擊搜尋
+function searchCompany(taxId: string) {
+  navigateTo('companies/' + taxId);
 }
 // 帶著參數導頁至搜尋頁面
 async function search(paramObj: { searchType: string; param: string; page: number }) {
@@ -2505,230 +2604,10 @@ userNumber = 2655;
 
 
 // 薪水檔案櫃
-interface IPost {
-  postId: string;
-  title: string;
-  companyName: string;
-  feeling: string;
-  overtime: string;
-}
-const latestPost = ref<IPost[]>([]); // 最新
-const popularPost = ref<IPost[]>([]); // 熱門
 const postCarousel = ref(); // 輪播元件
-latestPost.value = [
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷1',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷2',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷3',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷4',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷5',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷6',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷7',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷8',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷9',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷10',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷11',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷12',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷13',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷14',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '行銷15',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-];
-popularPost.value = [
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任1',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任2',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任3',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任4',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任5',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任6',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任7',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任8',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任9',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任10',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任11',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任12',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任13',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任14',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-  {
-    postId: (Math.random() * 100).toString(),
-    title: '業務主任15',
-    companyName: '逞牆科技股份有限公司',
-    feeling: '2',
-    overtime: '4',
-  },
-];
+async function clickPostCard(postId:string){
+  await navigateTo('salary/' + postId);
+}
 function postsNext() {
   // 下一頁
   postCarousel.value.next();
@@ -2738,196 +2617,8 @@ function postsPrev() {
   postCarousel.value.prev();
 }
 
-// 熱門產業
-const popularCompanyType = ref<string[]>([]);
-popularCompanyType.value = [
-  '資訊科技',
-  'A2資訊科技',
-  'A3資訊科技',
-  'we資訊科技weqeeeeeeeeeeeweA4',
-  'A5資訊科技',
-  'B1資訊科技',
-  'B2資訊科技',
-  'B3資訊科技',
-  'B4資訊科技',
-  'B5資訊科技',
-  'C1資訊科技',
-  'C2資訊科技',
-  'C3資訊科技',
-  'C4資訊科技',
-  'C5資訊科技',
-  'D1資訊科技',
-  'D2資訊科技',
-  'D3資訊科技',
-  'D4資訊科技',
-  'D5資訊科技',
-  'E1資訊科技',
-  'E2資訊科技',
-  'E3資訊科技',
-  'E4資訊科技',
-  'E5資訊科技',
-];
-
 // 熱門公司
-interface ICompany {
-  taxId: string;
-  name: string;
-  postCount: number;
-}
-const popularCompany = ref<ICompany[]>([]);
 const comCarousel = ref(); // 輪播元件
-popularCompany.value = [
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司1',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司2',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司3',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司4',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司5',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-  {
-    taxId: (Math.random() * 100).toString(),
-    name: '友達光電股份有限公司6',
-    postCount: 2345,
-  },
-];
 function comNext() {
   // 下一頁
   comCarousel.value.next();
@@ -2936,88 +2627,6 @@ function comPrev() {
   // 上一頁
   comCarousel.value.prev();
 }
-
-// 關鍵字
-const keywords = ref<string[]>([]);
-keywords.value = [
-  '新代科技',
-  '廣積科技',
-  '達爾科技',
-  '二億企業股份有限公司',
-  '金屬中心',
-  '聯府塑膠年終',
-  '健鼎科技',
-  '台灣神隆',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-  '住華科技',
-  '大力卜',
-  '國泰人壽襄理薪水',
-  '鎧暘科技',
-  '奇鋐科技',
-  '威芯科技有限公司',
-  '南山人壽協理',
-  '先進光電',
-  '樹森開發股份有限公司',
-  '米約科技',
-  '中勤實業股份有限公司',
-  '精英電腦薪水',
-  '天陽航太',
-  '研華',
-  '神準科技',
-  '台積電',
-  '中強光電',
-];
-
 
 
 // 動畫
@@ -3234,6 +2843,23 @@ onMounted(() => {
 //   ctx.revert(); // <- Easy Cleanup!
 // });
 
+function init() {
+  // 取得首頁初始化資訊
+  searchStore.fetchHomeInit();
+  // 取得熱門薪水
+  searchStore.fetchTopPost();
+  // 取得熱門公司
+  searchStore.fetchTopCompany();
+  // 取得產業
+  searchStore.fetchTopCompanyType();
+  // 取得關鍵字
+  salaryStore.fetchKeywords();
+}
+
+/**
+ * 初始化
+ */
+init();
 </script>
 
 <style>

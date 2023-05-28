@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { RouteLocationRaw } from 'vue-router';
+import { RouteLocationRaw, useRoute } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
+
+const route = useRoute();
 const router = useRouter();
 const showUserList = ref(false);
 const user = useUserStore();
-const { isLogin, currentUser, isFetchProfileLoading } = storeToRefs(user);
+const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
   logout();
@@ -146,6 +148,13 @@ async function search() {
     path: '/search',
     query: paramObj,
   });
+
+  // 若已經在搜尋頁面，則重新整理
+  if (route.path === '/search') {
+    setTimeout(() => {
+      window.location.reload();
+    }, 1);
+  }
 }
 </script>
 
@@ -157,32 +166,31 @@ async function search() {
       aria-label="行動版選單"
     >
       <div class="flex justify-between">
-        <base-button cate="text-sm" content="分享">
+        <BaseButton cate="text-sm" content="分享">
           <span class="icon-edit text-2xl mb-1"></span>
-        </base-button>
-        <base-button cate="text-sm" content="搜尋" @click="showSearchModalSm = !showSearchModalSm">
+        </BaseButton>
+        <BaseButton cate="text-sm" content="搜尋" @click="showSearchModalSm = !showSearchModalSm">
           <span class="icon-search text-2xl mb-1"></span>
-        </base-button>
-        <!-- TODO: 取得是否登入 -->
-        <base-button v-if="isLogin" cate="text-sm" content="訊息">
+        </BaseButton>
+        <BaseButton v-if="isLogin" cate="text-sm" content="訊息">
           <div class="-mb-1">
             <!-- 訊息紅點 -->
             <span class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
             <span class="icon-mail text-3xl"></span>
           </div>
-        </base-button>
-        <base-button v-if="isLogin" cate="text-sm" content="150">
+        </BaseButton>
+        <BaseButton v-if="isLogin" cate="text-sm" :content="currentPoint.toString()">
           <span class="icon-star-circle text-2xl mb-1"></span>
-        </base-button>
-        <base-button v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
+        </BaseButton>
+        <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
           <span class="icon-person-circle text-2xl mb-1"></span>
-        </base-button>
-        <base-button v-if="!isLogin" to="/login" cate="text-sm" content="登入" class="me-5">
+        </BaseButton>
+        <BaseButton v-if="!isLogin" to="/login" cate="text-sm" content="登入">
           <span class="icon-person text-2xl mb-1"></span>
-        </base-button>
-        <base-button v-if="!isLogin" to="/payment" cate="text-sm" content="加薪計畫">
+        </BaseButton>
+        <BaseButton v-if="!isLogin" to="/order/offer" cate="text-sm" content="加薪計畫">
           <span class="icon-star text-3xl"></span>
-        </base-button>
+        </BaseButton>
       </div>
       <div v-if="showUserList" class="fixed shadow bg-white w-full p-5 rounded left-0 right-0 top-[-544px]" style="">
         <div class="flex justify-between pb-3 border-b border-b-black-5">
@@ -199,7 +207,7 @@ async function search() {
         </div>
         <ul class="list-none pt-2 pb-2">
           <li v-for="userItem in userList" :key="userItem.title">
-            <base-button
+            <BaseButton
               v-if="userItem.to"
               cate="text-sm"
               class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn"
@@ -211,8 +219,8 @@ async function search() {
                 </span>
                 {{ userItem.title }}
               </div>
-            </base-button>
-            <base-button
+            </BaseButton>
+            <BaseButton
               v-if="userItem.click"
               class="rounded py-5 px-3 bg-transparent group hover:bg-blue-light hover:text-blue w-full"
               @click="userItem.click"
@@ -220,7 +228,7 @@ async function search() {
               <span class="text-black-10 group-hover:text-blue">
                 {{ userItem.title }}
               </span>
-            </base-button>
+            </BaseButton>
           </li>
         </ul>
       </div>
@@ -309,7 +317,7 @@ async function search() {
               />
             </div>
           </div>
-          <base-button cate="secondary" class="w-full" @click="search"> 搜尋 </base-button>
+          <BaseButton cate="secondary" class="w-full" @click="search"> 搜尋 </BaseButton>
         </div>
       </div>
     </nav>
@@ -323,18 +331,18 @@ async function search() {
           <img src="../assets/img/LOGO.png" alt="LOGO" />
         </nuxt-link>
         <div class="sm:hidden md:flex flex-row justify-center items-center">
-          <base-button cate="blue-text" content="匿名分享" class="me-0" to="/sharemysalary">
+          <BaseButton cate="blue-text" content="匿名分享" class="me-0" to="/share-my-salary">
             <span class="icon-edit text-lg me-2"></span>
-          </base-button>
+          </BaseButton>
           <div class="relative">
-            <base-button
+            <BaseButton
               cate="gray-text"
               content="搜尋"
               :class="{ 'me-8': !isLogin }"
               @click="showSearchModal = !showSearchModal"
             >
               <span class="icon-search text-lg me-2"></span>
-            </base-button>
+            </BaseButton>
             <div
               v-if="showSearchModal"
               ref="searchModal"
@@ -426,22 +434,22 @@ async function search() {
                     />
                   </div>
                 </div>
-                <base-button cate="secondary" class="w-full" @click="search"> 搜尋 </base-button>
+                <BaseButton cate="secondary" class="w-full" @click="search"> 搜尋 </BaseButton>
               </div>
             </div>
           </div>
-          <base-button v-if="isLogin" cate="gray-text" content="訊息">
+          <BaseButton v-if="isLogin" cate="gray-text" content="訊息">
             <div>
               <!-- 訊息紅點 -->
               <span class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
               <span class="icon-mail text-2xl me-2"></span>
             </div>
-          </base-button>
-          <base-button v-if="isLogin" cate="yellow-text" content="240 積分" class="me-8">
+          </BaseButton>
+          <BaseButton v-if="isLogin" cate="yellow-text" :content="`${currentPoint} 積分`" class="me-8">
             <span class="icon-star-circle text-xl me-2"></span>
-          </base-button>
+          </BaseButton>
           <div class="relative">
-            <base-button
+            <BaseButton
               v-if="isLogin"
               class="rounded-full overflow-hidden me-8 bg-transparent hover:bg-transparent"
               type="button"
@@ -454,7 +462,7 @@ async function search() {
                 </div>
               </div>
               <img v-else class="w-12 h-12 rounded-full" :src="currentUser.profilePicture" alt="圖片" />
-            </base-button>
+            </BaseButton>
             <div
               v-if="showUserList"
               class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
@@ -474,7 +482,7 @@ async function search() {
               </div>
               <ul class="list-none pt-2 pb-2">
                 <li v-for="userItem in userList" :key="userItem.title">
-                  <base-button
+                  <BaseButton
                     v-if="userItem.to"
                     cate="text-sm"
                     class="rounded py-5 px-3 text-left w-full group hover:bg-blue-light hover:text-blue showUserList-item-btn"
@@ -488,8 +496,8 @@ async function search() {
                       </span>
                       {{ userItem.title }}
                     </div>
-                  </base-button>
-                  <base-button
+                  </BaseButton>
+                  <BaseButton
                     v-if="userItem.click"
                     class="rounded py-5 px-3 bg-transparent group hover:bg-blue-light hover:text-blue w-full"
                     @click="userItem.click"
@@ -497,17 +505,17 @@ async function search() {
                     <span class="text-black-10 group-hover:text-blue">
                       {{ userItem.title }}
                     </span>
-                  </base-button>
+                  </BaseButton>
                 </li>
               </ul>
             </div>
           </div>
-          <base-button v-if="!isLogin" to="/login" cate="secondary" content="登入" class="me-5">
+          <BaseButton v-if="!isLogin" to="/login" cate="secondary" content="登入" class="me-5">
             <span class="icon-person text-xl me-2 mt-1"></span>
-          </base-button>
-          <base-button cate="primary" content="加薪計畫" to="/payment">
+          </BaseButton>
+          <BaseButton cate="primary" content="加薪計畫" to="/order/offer">
             <span class="icon-star text-2xl me-2"></span>
-          </base-button>
+          </BaseButton>
         </div>
       </div>
     </nav>
@@ -529,7 +537,7 @@ async function search() {
             <div class="flex flex-col">
               <div class="caption mb-3">服務</div>
               <nuxt-link
-                to="/payment"
+                to="/order/offer"
                 class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
               >
                 加薪計畫
