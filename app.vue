@@ -7,6 +7,7 @@ useHead({
 </script>
 <template>
   <div>
+    <VitePwaManifest />
     <!-- modal -->
     <default-modal></default-modal>
     <!-- message -->
