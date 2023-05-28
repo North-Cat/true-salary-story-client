@@ -29,7 +29,9 @@ const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
 const isShowModal = ref(false);
-const redirect = () => {
+const selectedPostId = ref();
+const redirect = (postId: string) => {
+  selectedPostId.value = postId;
   if (!isLogin.value) {
     navigateTo('/login');
     return;
@@ -39,40 +41,40 @@ const redirect = () => {
 // 對照該薪水是否解鎖
 // TODO: 在 api 取得所有 post 的時候 gen
 // key : salaryId, value :isLocked
-const salaryLockMap = ref<{ postId: string; isLocked: boolean }[]>([
-  {
-    postId: '6468c348abb6863c8509cfee',
-    isLocked: false,
-  },
-  {
-    postId: 'xxxx2',
-    isLocked: false,
-  },
-  {
-    postId: 'xxxx3',
-    isLocked: false,
-  },
-  {
-    postId: 'xxxx4',
-    isLocked: false,
-  },
-]);
+// const salaryLockMap = ref<{ postId: string; isLocked: boolean }[]>([
+//   {
+//     postId: '6468c348abb6863c8509cfee',
+//     isLocked: false,
+//   },
+//   {
+//     postId: 'xxxx2',
+//     isLocked: false,
+//   },
+//   {
+//     postId: 'xxxx3',
+//     isLocked: false,
+//   },
+//   {
+//     postId: 'xxxx4',
+//     isLocked: false,
+//   },
+// ]);
 const unlockPost = async () => {
-  const salaryId = '6468c348abb6863c8509cfee';
-  // 需要有個地方放 salaryId ， 考慮修改 ISalaryDisplayInfo 加個 salaryId
-  const isLocked = await salaryStore.fetchPermission(salaryId);
-  if (typeof isLocked === 'boolean') {
-    salaryLockMap.value = salaryLockMap.value.map((item) =>
-      item.postId === salaryId ? { postId: salaryId, isLocked } : item,
-    );
+  // FIXME 改接 API
+  // const isLocked = await salaryStore.fetchPermission(selectedPostId.value);
+  const isLocked = true;
+  if (typeof isLocked === 'boolean' && companyPost && companyPost.value) {
+    for (const item of companyPost.value) {
+      item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
+    }
   }
   isShowModal.value = false;
 };
 
-const checkIsLocked = computed(() => (postId: string) => {
-  const salary = salaryLockMap.value.find((item) => item.postId === postId);
-  return salary?.isLocked;
-});
+// const checkIsLocked = computed(() => (postId: string) => {
+//   const salary = salaryLockMap.value.find((item) => item.postId === postId);
+//   return salary?.isLocked;
+// });
 
 /**
  * 篩選相關
@@ -118,6 +120,16 @@ async function getCompanySalary(page: number) {
   curPage.value = page;
   // 重新選染頁數
   forceRender();
+}
+function changeTitleConditions(condition: string) {
+  if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
+    titleConditions.value = ['全部'];
+  } else {
+    const allIndex = titleConditions.value.indexOf('全部');
+    if (allIndex !== -1) {
+      titleConditions.value.splice(allIndex, 1);
+    }
+  }
 }
 function resetFilter() {
   // 排序重設
@@ -371,7 +383,7 @@ init();
               </div>
               <div v-if="companyPost && companyPost.length != 0">
                 <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
-                  <SalaryInfo :is-locked="checkIsLocked('6468c348abb6863c8509cfee')" :post="post" @view="redirect" />
+                  <SalaryInfo :post="post" @view="redirect" />
                 </div>
               </div>
               <div

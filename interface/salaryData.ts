@@ -25,6 +25,7 @@ export interface IShareSalaryFormData {
 }
 
 export interface ISalaryDisplayInfo {
+  postId: string;
   taxId: string;
   companyName: string;
   title: string;
@@ -50,6 +51,7 @@ export interface ISalaryDisplayInfo {
   tags?: number[];
   customTags?: string[];
   createDate: string;
+  isLocked: boolean;
 }
 
 export interface ISalary {

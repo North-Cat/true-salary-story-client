@@ -7,7 +7,7 @@ import { useSalaryStore } from '@/store/salary';
 const userStore = useUserStore();
 const salaryStore = useSalaryStore();
 const { isLogin } = storeToRefs(userStore);
-const { post, isLocked } = storeToRefs(salaryStore);
+const { post } = storeToRefs(salaryStore);
 const router = useRouter();
 const { salaryId } = useRoute().params as { salaryId: string };
 const isShowModal = ref(false);
@@ -24,7 +24,7 @@ const unlockPost = () => {
 };
 </script>
 <template>
-  <SalaryInfo :is-locked="isLocked" :post="post" @view="redirect" />
+  <SalaryInfo :post="post" @view="redirect" />
   <teleport to="body">
     <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
   </teleport>

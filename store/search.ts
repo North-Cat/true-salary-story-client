@@ -129,7 +129,7 @@ export const useSearchStore = defineStore('search', () => {
     companyPostCount.value = 10;
     companyPost.value = [
       {
-        // postId: '1234',
+        postId: '1234',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司100',
         title: '設計師1',
@@ -156,9 +156,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2022-11-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: true,
       },
       {
-        // postId: '1234',
+        postId: '12345',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司10',
         title: '設計師1',
@@ -185,9 +186,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2022-12-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
       {
-        // postId: '1234',
+        postId: '123456',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司2',
         title: '設計師2',
@@ -214,9 +216,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2023-03-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
       {
-        // postId: '1234',
+        postId: '12345678',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司3',
         title: '設計師3',
@@ -243,9 +246,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2023-04-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
       {
-        // postId: '1234',
+        postId: '123456789',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司4',
         title: '設計師4',
@@ -272,6 +276,7 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2020-05-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
     ];
   };
