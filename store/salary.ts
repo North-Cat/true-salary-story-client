@@ -5,6 +5,7 @@ export const useSalaryStore = defineStore('salary', () => {
   const tempSalary = ref<ISalary>({});
   const keywords = ref([]);
   const post = ref<ISalaryDisplayInfo>({
+    postId: '',
     taxId: '',
     companyName: '',
     title: '',
@@ -30,6 +31,7 @@ export const useSalaryStore = defineStore('salary', () => {
     tags: [],
     customTags: [],
     createDate: '',
+    isLocked: false,
   });
   // TODO
   const isLocked = ref(false);
@@ -45,18 +47,19 @@ export const useSalaryStore = defineStore('salary', () => {
     keywords.value = data.keywords;
   };
 
-  const fetchPermission = async (id: string) => {
+  const fetchPermission = async (id: string) : Promise<boolean> => {
     const { message } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === '成功') {
-      isLocked.value = true;
+      post.value.isLocked = true;
+      return post.value.isLocked;
     }
+    return false;
   };
   return {
     tempSalaryFormData,
     tempSalary,
     post,
     keywords,
-    isLocked,
     fetchSalaryInfo,
     fetchKeywords,
     fetchPermission,
