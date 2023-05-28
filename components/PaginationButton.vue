@@ -81,14 +81,14 @@ function checkCurScreen(widthInput?: number) {
   const curWidth = widthInput || width.value;
   if (curWidth < mdScreen) {
     curScreen.value = Screen.SM;
-    showLimitPage.value = 3;
+  } else if (curWidth >= mdScreen && curWidth < lgScreen) {
+    curScreen.value = Screen.MD;
+    showLimitPage.value = 4;
     hiddenLimitPage.value = {
       min: 1,
       middle: 1,
       max: 2,
     };
-  } else if (curWidth >= mdScreen && curWidth < lgScreen) {
-    curScreen.value = Screen.MD;
   } else if (curWidth >= lgScreen) {
     curScreen.value = Screen.LG;
   }
@@ -98,7 +98,7 @@ function checkCurScreen(widthInput?: number) {
   <div class="pagination flex">
     <button
       :class="{ 'pointer-events-none opacity-60': currentPageComponent == 1 }"
-      class="w-full lg:w-auto border border-blue rounded bg-white text-blue py-3 px-5 me-1.5 hover:bg-blue-light active:bg-blue active:text-white"
+      class="w-full md:w-auto border border-blue rounded bg-white text-blue py-3 px-5 me-1.5 hover:bg-blue-light active:bg-blue active:text-white"
       @click="changePage('prev')"
     >
       <h6>上一頁</h6>
@@ -118,7 +118,7 @@ function checkCurScreen(widthInput?: number) {
     </div>
 
     <!-- (PC) 總頁數 <= 上限，顯示所有頁數 -->
-    <div v-if="totalPagesComponent <= showLimitPage && curScreen == Screen.LG">
+    <div v-if="totalPagesComponent <= showLimitPage && (curScreen == Screen.LG || curScreen == Screen.MD)">
       <button
         v-for="page in totalPagesComponent"
         :key="page"
@@ -126,14 +126,17 @@ function checkCurScreen(widthInput?: number) {
           'bg-blue text-white': currentPageComponent == page,
           'bg-white hover:bg-blue-light': currentPageComponent != page,
         }"
-        class="border border-blue rounded text-blue py-1 px-3 lg:py-3 lg:px-5 mx-1.5 active:bg-blue active:text-white"
+        class="border border-blue rounded text-blue py-1 px-3 md:py-3 md:px-5 mx-1.5 active:bg-blue active:text-white"
         @click="changePage(page)"
       >
         <h6>{{ page }}</h6>
       </button>
     </div>
     <!-- (PC) 總頁數 > 上限，隱藏部分頁數避免過長 -->
-    <div v-if="totalPagesComponent > showLimitPage && curScreen == Screen.LG" class="flex flex-col">
+    <div
+      v-if="totalPagesComponent > showLimitPage && (curScreen == Screen.LG || curScreen == Screen.MD)"
+      class="flex flex-col"
+    >
       <!-- 樣式一 : 靠近第一頁 -->
       <div v-if="currentPageComponent <= hiddenLimitPage.middle" class="flex">
         <div v-for="page in totalPagesComponent" :key="page">
@@ -261,7 +264,7 @@ function checkCurScreen(widthInput?: number) {
 
     <button
       :class="{ 'pointer-events-none opacity-60': currentPageComponent == totalPagesComponent }"
-      class="w-full lg:w-auto border border-blue rounded bg-white text-blue py-3 px-5 ms-1.5 hover:bg-blue-light active:bg-blue active:text-white"
+      class="w-full md:w-auto border border-blue rounded bg-white text-blue py-3 px-5 ms-1.5 hover:bg-blue-light active:bg-blue active:text-white"
       @click="changePage('next')"
     >
       <h6>下一頁</h6>

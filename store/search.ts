@@ -51,19 +51,39 @@ export const useSearchStore = defineStore('search', () => {
   /**
    * 單一公司所有薪水
    */
-  const companyPost = ref<ISalaryDisplayInfo[]>();
-  const companyPostCount = ref();
+  const companyName = ref(); // 公司名稱
+  const companyFeeling = ref(); // 公司概況 : 上班心情
+  const companyOvertime = ref(); // 公司概況 : 加班頻率
+  const companyAvgMonthlySalary = ref(); // 公司概況 : 平均月薪
+  const companyTotalPostCount = ref(); // 公司概況 : 薪水情報
+  const companyTitles = ref(); // 公司所有職位
+  const companyPost = ref<ISalaryDisplayInfo[]>(); // 查詢出來的單一公司薪資資訊
+  const companyPostCount = ref(); // 查詢出來的單一公司薪資資訊數量
 
   /**
-   * 熱門 / 最新 薪水資訊
+   * 熱門資訊
    */
   const latestPosts = ref<IPost[]>([]); // 最新薪水
   const popularPosts = ref<IPost[]>([]); // 熱門薪水
   const popularCompanies = ref<ITopCompany[]>([]); // 熱門公司
+  const popularCompanyType = ref<string[]>([]); // 熱門產業
+
+  /**
+   * 首頁初始化資訊
+   */
+  const userCount = ref<number>(0); // 使用者總數量
+  const postCount = ref<number>(0); // 分享薪水總數量
 
   /**
    * function
    */
+  // call api 301 取得首頁初始資訊
+  const fetchHomeInit = async () => {
+    const { registeredUsers, publishedPosts } = await searchApi.getHomeInit();
+    userCount.value = registeredUsers;
+    postCount.value = publishedPosts;
+  };
+
   // call api 302 取得熱門薪資資訊
   const fetchTopPost = async () => {
     const { latestPost, popularPost } = await searchApi.getTopPost();
@@ -71,19 +91,14 @@ export const useSearchStore = defineStore('search', () => {
     popularPosts.value = popularPost;
   };
 
-  // call api 302 取得熱門薪資資訊
+  // call api 303 取得熱門公司資訊
   const fetchTopCompany = async () => {
     const { companies } = await searchApi.getTopCompany();
-    // 不足 5 的倍數，用預設補足 (畫面顯示所需)
+    // 不足 5 的倍數，重複前面的資訊補足數量 (畫面顯示所需)
     const lackCount = 5 - (companies.length % 5);
     if (lackCount !== 0) {
-      const sample = {
-        taxId: undefined,
-        companyName: undefined,
-        postCount: undefined,
-      };
       for (let i = 0; i < lackCount; i++) {
-        companies.push(sample);
+        companies.push(companies[i]);
       }
     }
     popularCompanies.value = companies;
@@ -101,14 +116,20 @@ export const useSearchStore = defineStore('search', () => {
     typesCount.value = typeResultsCount;
   };
 
-  // call api 依統編搜尋公司所有薪資資訊
+  // call api 306 查詢單一公司所有職位
+  const fetchCompanyTitles = async (taxId: string) => {
+    const { result } = await searchApi.getCompanyTitles(taxId);
+    companyTitles.value = result;
+  };
+
+  // call api 307 依統編搜尋公司所有薪資資訊
   const fetchSearchCompanySalary = async (taxId: string, page: number, limit: number) => {
     // const { data } = await searchApi.xxx;
     // 假資料
     companyPostCount.value = 10;
     companyPost.value = [
       {
-        // postId: '1234',
+        postId: '1234',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司100',
         title: '設計師1',
@@ -135,9 +156,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2022-11-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: true,
       },
       {
-        // postId: '1234',
+        postId: '12345',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司10',
         title: '設計師1',
@@ -164,9 +186,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2022-12-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
       {
-        // postId: '1234',
+        postId: '123456',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司2',
         title: '設計師2',
@@ -193,9 +216,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2023-03-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
       {
-        // postId: '1234',
+        postId: '12345678',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司3',
         title: '設計師3',
@@ -222,9 +246,10 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2023-04-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
       {
-        // postId: '1234',
+        postId: '123456789',
         taxId: 'xxxxxx',
         companyName: 'OOO 資訊科技有限公司4',
         title: '設計師4',
@@ -251,8 +276,37 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2020-05-20',
         customTags: ['有提供零食', '升遷透明'],
+        isLocked: false,
       },
     ];
+  };
+
+  // call api 308 查詢熱門產業
+  const fetchTopCompanyType = async () => {
+    const { companyTypes } = await searchApi.getTopCompanyType();
+
+    // 不足 20 個，重複前面的資訊補足數量 (畫面顯示所需)
+    const lackCount = 20 - companyTypes.length;
+    if (lackCount !== 0) {
+      for (let i = 0; i < lackCount; i++) {
+        companyTypes.push(companyTypes[i]);
+      }
+    }
+
+    popularCompanyType.value = [];
+    for (const item of companyTypes) {
+      popularCompanyType.value.push(item.type);
+    }
+  };
+
+  // call api 309 查詢單一公司概況
+  const fetchCompanyInfo = async (taxId: string) => {
+    const { result } = await searchApi.getCompanyInfo(taxId);
+    companyName.value = result.companyName;
+    companyFeeling.value = result.feeling;
+    companyOvertime.value = result.overtime;
+    companyAvgMonthlySalary.value = result.avgMonthlySalary;
+    companyTotalPostCount.value = result.postCount;
   };
 
   return {
@@ -267,9 +321,22 @@ export const useSearchStore = defineStore('search', () => {
     latestPosts,
     popularPosts,
     popularCompanies,
+    popularCompanyType,
+    postCount,
+    userCount,
+    companyName,
+    companyFeeling,
+    companyOvertime,
+    companyAvgMonthlySalary,
+    companyTotalPostCount,
+    companyTitles,
+    fetchHomeInit,
     fetchSearch,
     fetchSearchCompanySalary,
     fetchTopPost,
     fetchTopCompany,
+    fetchTopCompanyType,
+    fetchCompanyInfo,
+    fetchCompanyTitles,
   };
 });

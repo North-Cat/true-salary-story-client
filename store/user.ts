@@ -10,6 +10,7 @@ export const useUserStore = defineStore('user', () => {
   const currentUser = ref<ILoginUserInfo>({});
   const token = ref('');
   const isFetchProfileLoading = ref(false);
+  const currentPoint = ref(0);
   const loginWithGoogle = () => {
     const {
       public: { apiBase },
@@ -24,6 +25,7 @@ export const useUserStore = defineStore('user', () => {
       .then(({ data: { user } }) => {
         currentUser.value = user as unknown as ILoginUserInfo;
         isLogin.value = true;
+        currentPoint.value = user && user.points ? user.points.point : 0;
         isFetchProfileLoading.value = false;
       })
       .catch(() => {
@@ -112,5 +114,6 @@ export const useUserStore = defineStore('user', () => {
     deleteSubscribeCompany,
     myOrdersList,
     tryToFetchMyOrdersList,
+    currentPoint,
   };
 });
