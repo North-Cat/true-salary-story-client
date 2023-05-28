@@ -27,7 +27,6 @@ definePageMeta({
   middleware: 'auth',
 });
 const { shareSalaryApi } = useApi();
-const router = useRouter();
 const submitData = reactive<IShareSalaryFormData>({
   taxId: '',
   companyName: '',
@@ -147,6 +146,7 @@ const tryToGetUniformNumbers = async () => {
 // === 驗證結束 === //
 
 const user = useUserStore();
+const { tryToFetchProfile } = user;
 // const salary = useSalaryStore();
 const { currentUser } = storeToRefs(user);
 const salaryTypes = ref('monthly');
@@ -317,6 +317,7 @@ const onSubmit = async () => {
         step.value = 3;
       });
       resetSubmitData();
+      tryToFetchProfile();
       scrollTop();
     })
     .catch((error) => {
@@ -585,7 +586,7 @@ const rightSideList = reactive([
                             :class="{ 'border-red': errors.monthlySalary }"
                             :rules="salaryTypes === 'monthly' ? 'required|numeric' : 'numeric'"
                             class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
-                            placeholder="月薪"
+                            placeholder="月薪 EX: 35000"
                             oninput="value=value.replace('-','')"
                           />
                           <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
@@ -610,7 +611,7 @@ const rightSideList = reactive([
                               :class="{ 'border-red': errors.dailySalary }"
                               :rules="salaryTypes === 'daily' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
-                              placeholder="日薪"
+                              placeholder="日薪 EX:1000"
                               oninput="value=value.replace('-','')"
                             />
                             <VErrorMessage name="dailySalary" as="div" class="text-red" />
@@ -645,7 +646,7 @@ const rightSideList = reactive([
                             <VField
                               v-model.number="salaryTypesField[salaryTypes].salary"
                               name="hourlySalary"
-                              label="時薪"
+                              label="時薪 EX:176"
                               type="number"
                               :class="{ 'border-red': errors.hourlySalary }"
                               :rules="salaryTypes === 'hourly' ? 'required|numeric' : 'numeric'"
@@ -986,7 +987,9 @@ const rightSideList = reactive([
                     </div>
                   </div>
                   <div class="flex mt-auto">
-                    <BaseButton cate="primary" class="w-full mr-4" to="/order/offer">NT$ 699</BaseButton>
+                    <BaseButton cate="primary" class="w-full mr-4" to="/order/checkout?type=subscription"
+                      >NT$ 699</BaseButton
+                    >
                     <BaseButton cate="white" class="w-full" to="/order/offer">了解更多</BaseButton>
                   </div>
                 </div>
@@ -1004,7 +1007,9 @@ const rightSideList = reactive([
                       <i class="icomoon icon-star text-5xl text-blue"></i>
                     </div>
                   </div>
-                  <BaseButton cate="white" class="w-full mt-auto" to="/order/offer">NT$ 150</BaseButton>
+                  <BaseButton cate="white" class="w-full mt-auto" to="/order/checkout?type=single&point=1000"
+                    >NT$ 150</BaseButton
+                  >
                 </div>
               </div>
               <div class="flex space-x-4 mt-7 border border-black-10 rounded p-6 bg-white">
