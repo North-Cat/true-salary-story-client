@@ -11,14 +11,27 @@ const useStore = useUserStore();
 const { mySalary } = storeToRefs(useStore);
 const paginationButton = ref();
 const limit = ref(5);
+const loading = ref(false);
+const isSearch = ref(false);
+loading.value = true;
 const searchParam = reactive({
   limit: limit.value,
   keyword: '',
   page: 1,
 });
-useStore.tryToFetchMySalary(searchParam);
+useStore.tryToFetchMySalary(searchParam).finally(() => {
+  loading.value = false;
+});
 const search = () => {
-  useStore.tryToFetchMySalary(searchParam);
+  loading.value = true;
+  useStore.tryToFetchMySalary(searchParam).finally(() => {
+    loading.value = false;
+  });
+  if (searchParam.keyword) {
+    isSearch.value = true;
+  } else {
+    isSearch.value = false;
+  }
   searchParam.page = 1;
   paginationButton.value.currentPageComponent = 1;
 };
@@ -28,7 +41,10 @@ const onChangePage = (val: number) => {
     top: 0,
     behavior: 'smooth',
   });
-  useStore.tryToFetchMySalary(searchParam);
+  loading.value = true;
+  useStore.tryToFetchMySalary(searchParam).finally(() => {
+    loading.value = false;
+  });
 };
 const totalPage = computed(() => {
   return Math.ceil(mySalary.value.totalCount / limit.value);
@@ -36,7 +52,7 @@ const totalPage = computed(() => {
 </script>
 <template>
   <userLayouts>
-    <template v-if="mySalary.result.length > 0">
+    <template v-if="!loading">
       <div class="flex justify-between items-center mb-4">
         <div class="flex items-center border border-black-1 rounded">
           <div
@@ -50,46 +66,54 @@ const totalPage = computed(() => {
             @keyup.enter="search"
           />
         </div>
-        <span>第{{ searchParam.page }}頁,共{{ mySalary.totalCount }}筆</span>
+        <span v-if="mySalary.totalCount">第{{ searchParam.page }}頁,共{{ mySalary.totalCount }}筆</span>
       </div>
-      <div class="divide-y divide-black-3 min-h-[255px]">
-        <div v-for="(item, $index) in mySalary.result" :key="$index" class="py-5">
-          <nuxt-link :to="`/salary/${item.postId}`">
-            <div class="flex justify-between mb-4 items-center">
-              <h4 class="text-lg text-blue">{{ item.title }}</h4>
-              <span>{{ item.seen > 0 ? `${item.seen}人已看過` : '尚未被人發掘' }}</span>
-            </div>
-            <div class="flex justify-between">
-              <div>
-                <div class="mb-3">{{ item.companyName }}</div>
-                <div class="mb-2">
-                  <span class="mr-5">{{ item.city }}</span>
-                  <span>{{ item.employmentType }}</span>
+      <template v-if="mySalary.result.length > 0 || isSearch">
+        <BaseNull v-if="mySalary.result.length === 0 && isSearch" content="查無資料" />
+        <template v-else>
+          <div class="divide-y divide-black-3 min-h-[255px]">
+            <div v-for="(item, $index) in mySalary.result" :key="$index" class="py-5">
+              <nuxt-link :to="`/salary/${item.postId}`">
+                <div class="flex justify-between mb-4 items-center">
+                  <h4 class="text-lg text-blue">{{ item.title }}</h4>
+                  <span>{{ item.seen > 0 ? `${item.seen}人已看過` : '尚未被人發掘' }}</span>
                 </div>
-                <div>
-                  <span class="mr-5">
-                    <template v-if="!!item.monthlySalary"> 月薪: {{ item.monthlySalary }} </template>
-                    <template v-else-if="!!item.hourlySalary"> 時薪: {{ item.hourlySalary }} </template>
-                    <template v-else> 日薪: {{ item.dailySalary }} </template>
-                  </span>
-                  <span>年薪: {{ item.yearlySalary }}</span>
+                <div class="flex justify-between">
+                  <div>
+                    <div class="mb-3">{{ item.companyName }}</div>
+                    <div class="mb-2">
+                      <span class="mr-5">{{ item.city }}</span>
+                      <span>{{ item.employmentType }}</span>
+                    </div>
+                    <div>
+                      <span class="mr-5">
+                        <template v-if="!!item.monthlySalary"> 月薪: {{ item.monthlySalary }} </template>
+                        <template v-else-if="!!item.hourlySalary"> 時薪: {{ item.hourlySalary }} </template>
+                        <template v-else> 日薪: {{ item.dailySalary }} </template>
+                      </span>
+                      <span>年薪: {{ item.yearlySalary }}</span>
+                    </div>
+                  </div>
+                  <div class="self-end">{{ item.createDate }} 分享</div>
                 </div>
-              </div>
-              <div class="self-end">{{ item.createDate }} 分享</div>
+              </nuxt-link>
             </div>
-          </nuxt-link>
-        </div>
-      </div>
-      <PaginationButton
-        v-show="totalPage > 0"
-        ref="paginationButton"
-        class="flex justify-center mt-6"
-        :init-page="searchParam.page"
-        :total-pages="totalPage"
-        @change-page-event="onChangePage"
-      >
-      </PaginationButton>
+          </div>
+          <PaginationButton
+            v-show="totalPage > 0"
+            ref="paginationButton"
+            class="flex justify-center mt-6"
+            :init-page="searchParam.page"
+            :total-pages="totalPage"
+            @change-page-event="onChangePage"
+          >
+          </PaginationButton>
+        </template>
+      </template>
+      <BaseNull v-else content="沒有資料" />
     </template>
-    <BaseNull v-else content="沒有資料" />
+    <div v-else class="min-h-[330px] flex items-center justify-center">
+      <BaseLoading />
+    </div>
   </userLayouts>
 </template>

@@ -27,6 +27,7 @@ definePageMeta({
   middleware: 'auth',
 });
 const { shareSalaryApi } = useApi();
+const router = useRouter();
 const submitData = reactive<IShareSalaryFormData>({
   taxId: '',
   companyName: '',
@@ -592,6 +593,7 @@ const rightSideList = reactive([
                           <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
                           </span>
+                          <span class="text-black-6 text-sm">單位為元</span>
                         </div>
                         <VErrorMessage name="monthlySalary" as="div" class="text-red" />
                       </template>
@@ -611,9 +613,10 @@ const rightSideList = reactive([
                               :class="{ 'border-red': errors.dailySalary }"
                               :rules="salaryTypes === 'daily' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
-                              placeholder="日薪 EX:1000"
+                              placeholder="日薪 EX: 1000"
                               oninput="value=value.replace('-','')"
                             />
+                            <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
@@ -646,14 +649,15 @@ const rightSideList = reactive([
                             <VField
                               v-model.number="salaryTypesField[salaryTypes].salary"
                               name="hourlySalary"
-                              label="時薪 EX:176"
+                              label="時薪"
                               type="number"
                               :class="{ 'border-red': errors.hourlySalary }"
                               :rules="salaryTypes === 'hourly' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
-                              placeholder="時薪"
+                              placeholder="時薪 EX: 176"
                               oninput="value=value.replace('-','')"
                             />
+                            <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="hourlySalary" as="div" class="text-red" />
                           </div>
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">

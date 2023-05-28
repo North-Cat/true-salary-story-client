@@ -11,6 +11,7 @@ export interface IOrderDetailsPackage {
 export interface IMyOrdersList {
   _id: string;
   status: string;
+  createdAt: Date;
   orderDetails: {
     amount: number;
     currency: string;

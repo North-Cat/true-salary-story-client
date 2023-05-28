@@ -28,6 +28,7 @@ const fetch = async (url: string, options?: any, headers?: any) => {
     // const customHeaders = { token: useCookie('token').value, ...headers };
 
     const { data, error } = await useFetch(reqUrl, {
+      initialCache: false,
       ...options,
       onRequest({ options }) {
         const token = useCookie('token');

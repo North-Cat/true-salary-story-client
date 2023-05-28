@@ -15,6 +15,8 @@ interface IPointDetails {
 const limit = ref(10);
 const page = ref(1);
 const paginationButton = ref();
+const loading = ref(false);
+loading.value = true;
 const data = {
   result: [
     {
@@ -101,6 +103,7 @@ const data = {
   ],
   totalCount: 12,
 };
+loading.value = false;
 /**
  * 搜尋相關
  */
@@ -176,58 +179,63 @@ const onChangePage = (val: number) => {
 </script>
 <template>
   <userLayouts>
-    <template v-if="data.result.length > 0">
-      <!-- 切換 -->
-      <div class="w-full flex mb-2">
-        <div v-for="(item, $index) in SearchType" :key="$index" class="py-3 pe-6">
-          <button
-            class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-            :class="tabClass(item)"
-            @click="changeTab(item)"
-          >
-            <h6>
-              <template v-if="item === 'get'">取得</template>
-              <template v-else-if="item === 'used'">已使用</template>
-              <template v-else>全部</template>
-              ({{ filterListCount(item) }})
-            </h6>
-          </button>
+    <template v-if="!loading">
+      <template v-if="data.result.length > 0">
+        <!-- 切換 -->
+        <div class="w-full flex mb-2">
+          <div v-for="(item, $index) in SearchType" :key="$index" class="py-3 pe-6">
+            <button
+              class="pb-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+              :class="tabClass(item)"
+              @click="changeTab(item)"
+            >
+              <h6>
+                <template v-if="item === 'get'">取得</template>
+                <template v-else-if="item === 'used'">已使用</template>
+                <template v-else>全部</template>
+                ({{ filterListCount(item) }})
+              </h6>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="w-full min-h-[240px]">
-        <table class="table-auto w-full" aria-describedby="積分明細">
-          <thead class="">
-            <tr>
-              <th align="left">項目</th>
-              <th>積分</th>
-              <th align="left">時間</th>
-              <th align="left">期限</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, $index) in currentResultsList" :key="$index">
-              <td>{{ item.remark }}</td>
-              <td>
-                <span :class="item.updatePoint > 0 ? 'text-green' : item.updatePoint < 0 ? 'text-red' : ''">{{
-                  item.updatePoint
-                }}</span>
-              </td>
-              <td>{{ item.startDate }}</td>
-              <td>{{ item.endDate || '' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <PaginationButton
-        v-show="totalPage > 0"
-        ref="paginationButton"
-        class="flex justify-center mt-6"
-        :init-page="page"
-        :total-pages="totalPage"
-        @change-page-event="onChangePage"
-      >
-      </PaginationButton>
+        <div class="w-full min-h-[240px]">
+          <table class="table-auto w-full" aria-describedby="積分明細">
+            <thead class="">
+              <tr>
+                <th align="left">項目</th>
+                <th>積分</th>
+                <th align="left">時間</th>
+                <th align="left">期限</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, $index) in currentResultsList" :key="$index">
+                <td>{{ item.remark }}</td>
+                <td>
+                  <span :class="item.updatePoint > 0 ? 'text-green' : item.updatePoint < 0 ? 'text-red' : ''">{{
+                    item.updatePoint
+                  }}</span>
+                </td>
+                <td>{{ item.startDate }}</td>
+                <td>{{ item.endDate || '' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <PaginationButton
+          v-show="totalPage > 0"
+          ref="paginationButton"
+          class="flex justify-center mt-6"
+          :init-page="page"
+          :total-pages="totalPage"
+          @change-page-event="onChangePage"
+        >
+        </PaginationButton>
+      </template>
+      <BaseNull v-else content="目前沒有使用/購買積分" />
     </template>
-    <BaseNull v-else content="目前沒有使用/購買積分" />
+    <div v-else class="min-h-[330px] flex items-center justify-center">
+      <BaseLoading />
+    </div>
   </userLayouts>
 </template>
