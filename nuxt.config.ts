@@ -20,7 +20,6 @@ export default defineNuxtConfig({
       short_name: '真薪話',
       description: '最真實的薪水行情 Web App',
       display: 'standalone',
-      orientation: 'landscape',
       theme_color: '#366BAB',
       icons: [
         {
