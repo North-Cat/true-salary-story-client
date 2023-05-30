@@ -3366,7 +3366,7 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
 
 // 薪水檔案櫃
 const postCarousel = ref(); // 輪播元件
-async function clickPostCard(postId:string){
+async function clickPostCard(postId: string) {
   await navigateTo('salary/' + postId);
 }
 function postsNext() {

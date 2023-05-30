@@ -68,10 +68,3 @@ export const useNumberRange = computed(() => (number: number) => {
   }
   return text;
 });
-
-export const useTruncateText = computed(() => (text: string, maxLength: number) => {
-  if (text.length > maxLength) {
-    return text.slice(0, maxLength) + '...';
-  }
-  return text;
-});

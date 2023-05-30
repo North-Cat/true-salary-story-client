@@ -31,15 +31,14 @@ export const useSalaryStore = defineStore('salary', () => {
     tags: [],
     customTags: [],
     createDate: '',
-    isLocked: false,
   });
-  // TODO
-  const isLocked = ref(false);
+  const isLocked = ref(true);
   const { shareSalaryApi } = useApi();
 
   const fetchSalaryInfo = async (id: string) => {
     const { result } = await shareSalaryApi.getSalaryInfo(id);
-    post.value = result;
+    post.value = result.post;
+    isLocked.value = result.isLocked;
   };
 
   const fetchKeywords = async () => {
@@ -47,18 +46,17 @@ export const useSalaryStore = defineStore('salary', () => {
     keywords.value = data.keywords;
   };
 
-  const fetchPermission = async (id: string): Promise<boolean> => {
-    const { message } = await shareSalaryApi.requestSalaryInfo(id);
+  const fetchPermission = async (id: string) => {
+    const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
-      post.value.isLocked = true;
-      return post.value.isLocked;
+      fetchSalaryInfo(result.postId);
     }
-    return false;
   };
   return {
     tempSalaryFormData,
     tempSalary,
     post,
+    isLocked,
     keywords,
     fetchSalaryInfo,
     fetchKeywords,
