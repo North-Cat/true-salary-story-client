@@ -1,4 +1,6 @@
-export interface IShareSalaryFormData {
+export interface IShareSalary {
+  postId: string;
+  companyType: string;
   taxId: string;
   companyName: string;
   title: string;
@@ -11,41 +13,14 @@ export interface IShareSalaryFormData {
   dailySalary: number | string;
   avgWorkingDaysPerMonth: number | string;
   hourlySalary: number | string;
-  dailyAverageWorkingHours: number | string;
+  avgHoursPerDay: number | string;
+  yearlySalary: number | string;
   yearEndBonus: number | string;
   holidayBonus: number | string;
   profitSharingBonus: number | string;
-  otherBonus: string;
-  overtime: number;
-  feeling: number;
-  jobDescription: string;
-  suggestion: string;
-  tags?: number[];
-  customTags?: string[];
-}
-
-export interface ISalaryDisplayInfo {
-  postId: string;
-  taxId: string;
-  companyName: string;
-  title: string;
-  employmentType: string;
-  inService: boolean;
-  city: string;
-  workYears: number;
-  totalWorkYears: number;
-  monthlySalary: number;
-  dailySalary: number;
-  avgWorkingDaysPerMonth: number;
-  hourlySalary: number;
-  avgHoursPerDay: number;
-  yearEndBonus: number;
-  holidayBonus: number;
-  profitSharingBonus: number;
-  yearlySalary: number;
-  otherBonus: number;
-  overtime: string;
-  feeling: string;
+  otherBonus: number | string;
+  overtime: number | string;
+  feeling: number | string;
   jobDescription: string;
   suggestion: string;
   tags?: number[];
@@ -59,7 +34,7 @@ export interface ISalary {
     total: number | string;
     tempTotal: number | string;
     avgWorkingDaysPerMonth?: number | string;
-    dailyAverageWorkingHours?: number | string;
+    avgHoursPerDay?: number | string;
   };
 }
 

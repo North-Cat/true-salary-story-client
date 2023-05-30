@@ -19,7 +19,7 @@ import {
 } from '~/utilities/options';
 import { useUserStore } from '@/store/user';
 // import { useSalaryStore } from '@/store/salary';
-import { IShareSalaryFormData, ISalary, ISalaryResult } from '~/interface/salaryData';
+import { IShareSalary, ISalary, ISalaryResult } from '~/interface/salaryData';
 useHead({
   title: '匿名分享',
 });
@@ -28,7 +28,7 @@ definePageMeta({
 });
 const { shareSalaryApi } = useApi();
 const router = useRouter();
-const submitData = reactive<IShareSalaryFormData>({
+const submitData = reactive<IShareSalary>({
   taxId: '',
   companyName: '',
   title: '',
@@ -41,7 +41,7 @@ const submitData = reactive<IShareSalaryFormData>({
   dailySalary: '',
   avgWorkingDaysPerMonth: '',
   hourlySalary: '',
-  dailyAverageWorkingHours: '',
+  avgHoursPerDay: '',
   yearEndBonus: '',
   holidayBonus: '',
   profitSharingBonus: '',
@@ -169,7 +169,7 @@ const salaryTypesField: ISalary = reactive({
   },
   hourly: {
     salary: '',
-    dailyAverageWorkingHours: '',
+    avgHoursPerDay: '',
     avgWorkingDaysPerMonth: '',
     total: '',
     tempTotal: '',
@@ -181,7 +181,7 @@ watch(
     salaryTypesField.daily.salary,
     salaryTypesField.daily.avgWorkingDaysPerMonth,
     salaryTypesField.hourly.salary,
-    salaryTypesField.hourly.dailyAverageWorkingHours,
+    salaryTypesField.hourly.avgHoursPerDay,
     salaryTypesField.hourly.avgWorkingDaysPerMonth,
   ],
   () => {
@@ -257,7 +257,7 @@ const resetSubmitData = () => {
     dailySalary: '',
     avgWorkingDaysPerMonth: '',
     hourlySalary: '',
-    dailyAverageWorkingHours: '',
+    avgHoursPerDay: '',
     yearEndBonus: '',
     holidayBonus: '',
     profitSharingBonus: '',
@@ -283,7 +283,7 @@ const resetSubmitData = () => {
     },
     hourly: {
       salary: '',
-      dailyAverageWorkingHours: '',
+      avgHoursPerDay: '',
       avgWorkingDaysPerMonth: '',
       total: '',
       tempTotal: '',
@@ -300,14 +300,14 @@ const onConfirm = async () => {
   }
 };
 const onSubmit = async () => {
-  const { salary, total, avgWorkingDaysPerMonth, dailyAverageWorkingHours } = salaryTypesField[salaryTypes.value];
+  const { salary, total, avgWorkingDaysPerMonth, avgHoursPerDay } = salaryTypesField[salaryTypes.value];
   const data = {
     ...submitData,
     monthlySalary: salaryTypes.value === 'monthly' ? salary : undefined,
     dailySalary: salaryTypes.value === 'daily' ? salary : undefined,
     hourlySalary: salaryTypes.value === 'hourly' ? salary : undefined,
     avgWorkingDaysPerMonth,
-    dailyAverageWorkingHours,
+    avgHoursPerDay,
     yearlySalary: total,
   };
   await shareSalaryApi
@@ -341,7 +341,7 @@ const chnagSalaryTotal = () => {
   const dailySalary = Number(salaryTypesField.daily.salary);
   const dailyAvgWorkingDays = Number(salaryTypesField.daily.avgWorkingDaysPerMonth);
   const hourlySalary = Number(salaryTypesField.hourly.salary);
-  const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.dailyAverageWorkingHours);
+  const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.avgHoursPerDay);
   const hourlyAvgWorkingDays = Number(salaryTypesField.hourly.avgWorkingDaysPerMonth);
   if (isNumber(monthlySalary)) {
     salaryTypesField.monthly.total = calculateTotal(monthlySalary, 12) + othersBouns();
@@ -665,9 +665,9 @@ const rightSideList = reactive([
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect
-                              v-model="salaryTypesField[salaryTypes].dailyAverageWorkingHours"
+                              v-model="salaryTypesField[salaryTypes].avgHoursPerDay"
                               :options="workingHoursOptions"
-                              name="dailyAverageWorkingHours"
+                              name="avgHoursPerDay"
                               placeholder="日均工時"
                               :required="salaryTypes === 'hourly' ? 'required' : ''"
                               label="日均工時"

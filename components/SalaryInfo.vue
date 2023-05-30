@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ISalaryDisplayInfo } from '@/interface/salaryData';
+import { IShareSalary } from '@/interface/salaryData';
 import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
 
 defineProps<{
-  post: ISalaryDisplayInfo;
+  post: IShareSalary;
   isLocked: boolean;
 }>();
 const emit = defineEmits(['view']);

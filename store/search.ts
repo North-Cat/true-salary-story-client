@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ISalaryDisplayInfo } from '@/interface/salaryData';
+import { IShareSalary } from '@/interface/salaryData';
 
 export const useSearchStore = defineStore('search', () => {
   const { searchApi } = useApi();
@@ -57,7 +57,7 @@ export const useSearchStore = defineStore('search', () => {
   const companyAvgMonthlySalary = ref(); // 公司概況 : 平均月薪
   const companyTotalPostCount = ref(); // 公司概況 : 薪水情報
   const companyTitles = ref(); // 公司所有職位
-  const companyPost = ref<ISalaryDisplayInfo[]>(); // 查詢出來的單一公司薪資資訊
+  const companyPost = ref<IShareSalary[]>(); // 查詢出來的單一公司薪資資訊
   const companyPostCount = ref(); // 查詢出來的單一公司薪資資訊數量
 
   /**
@@ -131,6 +131,7 @@ export const useSearchStore = defineStore('search', () => {
       {
         postId: '1234',
         taxId: 'xxxxxx',
+        companyType: '菸酒',
         companyName: 'OOO 資訊科技有限公司100',
         title: '設計師1',
         employmentType: '資訊工程',
@@ -156,11 +157,11 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2022-11-20',
         customTags: ['有提供零食', '升遷透明'],
-        isLocked: true,
       },
       {
         postId: '12345',
         taxId: 'xxxxxx',
+        companyType: '菸酒',
         companyName: 'OOO 資訊科技有限公司10',
         title: '設計師1',
         employmentType: '資訊工程',
@@ -186,11 +187,11 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2022-12-20',
         customTags: ['有提供零食', '升遷透明'],
-        isLocked: false,
       },
       {
         postId: '123456',
         taxId: 'xxxxxx',
+        companyType: '菸酒',
         companyName: 'OOO 資訊科技有限公司2',
         title: '設計師2',
         employmentType: '資訊工程',
@@ -216,11 +217,11 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2023-03-20',
         customTags: ['有提供零食', '升遷透明'],
-        isLocked: false,
       },
       {
         postId: '12345678',
         taxId: 'xxxxxx',
+        companyType: '菸酒',
         companyName: 'OOO 資訊科技有限公司3',
         title: '設計師3',
         employmentType: '資訊工程',
@@ -246,11 +247,11 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2023-04-20',
         customTags: ['有提供零食', '升遷透明'],
-        isLocked: false,
       },
       {
         postId: '123456789',
         taxId: 'xxxxxx',
+        companyType: '菸酒',
         companyName: 'OOO 資訊科技有限公司4',
         title: '設計師4',
         employmentType: '資訊工程',
@@ -276,7 +277,6 @@ export const useSearchStore = defineStore('search', () => {
           '公司目前營運尚未上軌道，亦即目前無法給出獎金，只能給出固定月薪，但對於想接觸類似產業的人來說，是不錯的起點。',
         createDate: '2020-05-20',
         customTags: ['有提供零食', '升遷透明'],
-        isLocked: false,
       },
     ];
   };
