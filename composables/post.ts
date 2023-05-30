@@ -1,44 +1,36 @@
 import { computed } from 'vue';
 
-export const useFeelingClass = computed(() => (text: string) => {
+export const useFeelingClass = computed(() => (text: string, withIcon = false) => {
   let className = '';
   switch (text) {
     case '非常開心':
-      className = 'icon-face-good text-green';
-      break;
     case '還算愉快':
-      className = 'icon-face-good text-green';
+      className = withIcon ? 'icon-face-good text-green' : 'text-green';
       break;
     case '平常心':
-      className = 'icon-face-normal text-yellow';
+      className = withIcon ? 'icon-face-normal text-yellow' : 'text-yellow';
       break;
     case '有苦說不出':
-      className = 'icon-face-bad text-red';
-      break;
     case '想換工作了':
-      className = 'icon-face-bad text-red';
+      className = withIcon ? 'icon-face-bad text-red' : 'text-red';
       break;
   }
   return className;
 });
 
-export const useOvertimeClass = computed(() => (text: string) => {
+export const useOvertimeClass = computed(() => (text: string, withIcon = false) => {
   let className = '';
   switch (text) {
     case '準時上下班':
-      className = 'icon-time-good text-green';
-      break;
     case '很少加班':
-      className = 'icon-time-good text-green';
+      className = withIcon ? 'icon-time-good text-green' : 'text-green';
       break;
     case '偶爾加班':
-      className = 'icon-time-normal text-yellow';
+      className = withIcon ? 'icon-time-normal text-yellow' : 'text-yellow';
       break;
     case '常常加班':
-      className = 'icon-time-bad text-red';
-      break;
     case '賣肝拼經濟':
-      className = 'icon-time-bad text-red';
+      className = withIcon ? 'icon-time-bad text-red' : 'text-red';
       break;
   }
   return className;

@@ -3,8 +3,9 @@
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
-import { useSalaryStore } from '@/store/salary';
 import { useSearchStore } from '@/store/search';
+import { useSalaryStore } from '@/store/salary';
+import { useOvertimeClass, useFeelingClass } from '@/composables/post';
 
 const searchStore = useSearchStore();
 // TODO 取得 store 的公司資訊
@@ -28,6 +29,7 @@ const { companiesId } = useRoute().params as { companiesId: string };
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
+const { isLocked } = storeToRefs(salaryStore);
 const isShowModal = ref(false);
 const selectedPostId = ref();
 const redirect = (postId: string) => {
@@ -38,27 +40,7 @@ const redirect = (postId: string) => {
   }
   isShowModal.value = true;
 };
-// 對照該薪水是否解鎖
-// TODO: 在 api 取得所有 post 的時候 gen
-// key : salaryId, value :isLocked
-// const salaryLockMap = ref<{ postId: string; isLocked: boolean }[]>([
-//   {
-//     postId: '6468c348abb6863c8509cfee',
-//     isLocked: false,
-//   },
-//   {
-//     postId: 'xxxx2',
-//     isLocked: false,
-//   },
-//   {
-//     postId: 'xxxx3',
-//     isLocked: false,
-//   },
-//   {
-//     postId: 'xxxx4',
-//     isLocked: false,
-//   },
-// ]);
+
 const unlockPost = async () => {
   // FIXME 改接 API
   // const isLocked = await salaryStore.fetchPermission(selectedPostId.value);
@@ -70,11 +52,6 @@ const unlockPost = async () => {
   }
   isShowModal.value = false;
 };
-
-// const checkIsLocked = computed(() => (postId: string) => {
-//   const salary = salaryLockMap.value.find((item) => item.postId === postId);
-//   return salary?.isLocked;
-// });
 
 /**
  * 篩選相關
@@ -160,48 +137,6 @@ const filterModal = ref(null);
 // });
 const computedMonthlySalary = computed(() => {
   return `${Math.floor(companyAvgMonthlySalary.value / 1000)} k`;
-});
-const computedFeelingClass = computed(() => {
-  let className = '';
-  switch (companyFeeling.value) {
-    case '非常開心':
-      className = 'text-green';
-      break;
-    case '還算愉快':
-      className = 'text-green';
-      break;
-    case '平常心':
-      className = 'text-yellow';
-      break;
-    case '有苦說不出':
-      className = 'text-red';
-      break;
-    case '想換工作了':
-      className = 'text-red';
-      break;
-  }
-  return className;
-});
-const computedOvertimeClass = computed(() => {
-  let className = '';
-  switch (companyOvertime.value) {
-    case '準時上下班':
-      className = 'text-green';
-      break;
-    case '很少加班':
-      className = 'text-green';
-      break;
-    case '偶爾加班':
-      className = 'text-yellow';
-      break;
-    case '常常加班':
-      className = 'text-red';
-      break;
-    case '賣肝拼經濟':
-      className = 'text-red';
-      break;
-  }
-  return className;
 });
 
 /**
@@ -290,12 +225,12 @@ init();
                 <div class="flex flex-wrap justify-between items-center">
                   <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">上班心情</div>
-                    <h4 :class="computedFeelingClass" class="text-">{{ companyFeeling }}</h4>
+                    <h4 :class="useFeelingClass(companyFeeling)" class="text-">{{ companyFeeling }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
                   <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
-                    <h4 :class="computedOvertimeClass">{{ companyOvertime }}</h4>
+                    <h4 :class="useOvertimeClass(companyOvertime)">{{ companyOvertime }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
                   <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
@@ -383,7 +318,7 @@ init();
               </div>
               <div v-if="companyPost && companyPost.length != 0">
                 <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
-                  <SalaryInfo :post="post" @view="redirect" />
+                  <SalaryInfo :post="post" :is-locked="isLocked" @view="redirect" />
                 </div>
               </div>
               <div

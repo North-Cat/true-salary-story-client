@@ -84,7 +84,7 @@ const emit = defineEmits(['view']);
               <div class="lg:w-1/2 flex justify-between items-center">
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                    <span :class="['text-2xl', useFeelingClass(post.feeling)]"></span>
+                    <span :class="['text-2xl', useFeelingClass(post.feeling, true)]"></span>
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">上班心情</div>
@@ -93,7 +93,7 @@ const emit = defineEmits(['view']);
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                    <span :class="['text-2xl', useOvertimeClass(post.overtime)]"></span>
+                    <span :class="['text-2xl', useOvertimeClass(post.overtime, true)]"></span>
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
