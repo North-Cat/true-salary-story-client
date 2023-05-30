@@ -41,15 +41,16 @@ const redirect = (postId: string) => {
   isShowModal.value = true;
 };
 
-const unlockPost = async () => {
+const unlockPost = () => {
   // FIXME 改接 API
   // const isLocked = await salaryStore.fetchPermission(selectedPostId.value);
-  const isLocked = true;
-  if (typeof isLocked === 'boolean' && companyPost && companyPost.value) {
-    for (const item of companyPost.value) {
-      item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
-    }
-  }
+  // const isLocked = true;
+  // if (typeof isLocked === 'boolean' && companyPost && companyPost.value) {
+  //   for (const item of companyPost.value) {
+  //     item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
+  //   }
+  // }
+  salaryStore.fetchPermission(selectedPostId.value);
   isShowModal.value = false;
 };
 

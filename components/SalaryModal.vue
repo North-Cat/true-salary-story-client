@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
+
+const userStore = useUserStore();
+const { currentPoint } = storeToRefs(userStore);
 withDefaults(
   defineProps<{
     isVisible: boolean;
@@ -7,8 +12,6 @@ withDefaults(
     isVisible: false,
   },
 );
-// TODO
-const point = ref(250);
 const emit = defineEmits(['close', 'redeem']);
 </script>
 
@@ -17,14 +20,14 @@ const emit = defineEmits(['close', 'redeem']);
     <div v-if="isVisible" class="z-10 fixed inset-0 flex items-center justify-center bg-black-3 bg-opacity-50">
       <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
         <div class="flex items-center justify-between">
-          <h4>{{ point }} 積分</h4>
+          <h4>{{ currentPoint }} 積分</h4>
           <button class="px-2 py-1 text-sm tracking-widest" @click="emit('close')">
             <i class="icon-cross text-lg"></i>
           </button>
         </div>
         <div class="mt-4">
           <div class="mb-4 body">
-            <template v-if="point === 0">
+            <template v-if="currentPoint === 0">
               <div class="p-4 bg-blue-light mb-5">
                 <div class="flex justify-between items-center">
                   <h4 class="text-blue mb-3">加薪計畫</h4>
