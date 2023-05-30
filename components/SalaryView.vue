@@ -25,7 +25,5 @@ const unlockPost = () => {
 </script>
 <template>
   <SalaryInfo :post="post" :is-locked="isLocked" @view="redirect" />
-  <teleport to="body">
-    <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
-  </teleport>
+  <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
 </template>

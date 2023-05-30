@@ -424,8 +424,6 @@ init();
         </BaseButton>
       </div>
     </div>
-    <teleport to="body">
-      <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
-    </teleport>
+    <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
   </section>
 </template>
