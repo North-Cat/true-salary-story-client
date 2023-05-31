@@ -246,7 +246,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="w-full lg:w-4/6 pl-4" :class="{ isMobile: width < 678, isActive: step === 2 }">
+      <div class="w-full lg:w-4/6 lg:pl-4" :class="{ isMobile: width < 678, isActive: step === 2 }">
         <BaseButton cate="gray-text" class="px-0 py-0 mb-2 lg:hidden" @click="goBack"
           ><i class="icon-left-arrow pr-3"></i>返回</BaseButton
         >
