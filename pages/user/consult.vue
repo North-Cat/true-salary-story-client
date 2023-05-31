@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { is } from '@vee-validate/rules';
+import { useWindowSize } from '@vueuse/core';
 
 useHead({
   title: '請教記錄',
@@ -7,10 +7,15 @@ useHead({
 definePageMeta({
   middleware: 'auth',
 });
+interface Requester {
+  isRead: boolean;
+}
+const { width } = useWindowSize();
 const isActive = ref('');
 const search = ref('');
 const message = ref<HTMLInputElement | null>(null);
 const room = ref<HTMLInputElement | null>(null);
+const step = ref(1);
 const rightSide = [
   {
     consultId: '111',
@@ -164,28 +169,31 @@ const chatRooms = {
     },
   ],
 };
-const onClick = (item: { consultId: string; isRead: boolean }) => {
+const onClick = (item: { requester: Requester; consultId: string }) => {
   isActive.value = item.consultId;
   rightSide.forEach((rightSideItem) => {
     if (item.consultId === rightSideItem.consultId) {
-      item.isRead = true;
+      item.requester.isRead = true;
     }
   });
+  step.value = 2;
 };
 const tempIsSend = ref(false);
-const adjustTextareaHeight = ({ isSend = false }) => {
+const adjustTextareaHeight = ({ isSend = false }: { isSend?: boolean }) => {
+  console.log(isSend);
   const textarea = message.value as HTMLInputElement;
   if (isSend || (!isSend && tempIsSend.value && search.value !== '')) {
-    textarea.style.height = 'auto';
+    textarea.style.height = '64px';
+    search.value = '';
   } else {
-    textarea.style.height = 'auto';
+    textarea.style.height = '64px';
     textarea.style.height = `${textarea.scrollHeight + 2}px`;
   }
   tempIsSend.value = isSend;
 };
 const sendMessage = (e: { key: string; preventDefault: () => void }) => {
   const trimmedMessage = search.value.trim();
-  if ((e.key === 'Enter' && search.value === '') || trimmedMessage === '' || trimmedMessage === '\n') {
+  if ((e.key === 'Enter' && search.value === '') || trimmedMessage === '') {
     e.preventDefault();
     return;
   }
@@ -201,22 +209,36 @@ const scrollToBottom = () => {
   const chatRoom = room.value as HTMLInputElement;
   chatRoom.scrollTop = chatRoom?.scrollHeight;
 };
+const goBack = () => {
+  step.value = 1;
+  isActive.value = '';
+};
 onMounted(() => {
   scrollToBottom();
 });
 </script>
 <template>
   <userLayouts>
-    <div class="flex">
-      <div class="w-2/6 h-[500px] overflow-y-scroll overscroll-contain">
+    <div class="lg:flex">
+      <div
+        class="w-full lg:w-2/6 h-[500px] overflow-y-scroll lg:overscroll-contain"
+        :class="{ isMobile: width < 678, isActive: step === 1 }"
+      >
         <div class="divide-y divide-black-3">
           <div v-for="(item, $index) in rightSide" :key="$index" class="">
             <button :class="{ 'bg-black-1': isActive === item.consultId }" class="p-3 w-full" @click="onClick(item)">
               <div>
-                <h5 class="text-lg text-blue text-base text-left">{{ '職務' }}</h5>
+                <h5
+                  class="text-lg text-blue text-base text-left"
+                  :class="{ 'text-blue-dark': isActive === item.consultId }"
+                >
+                  {{ '職務' }}
+                </h5>
                 <p class="text-sm text-left">{{ '公司名稱' }}</p>
                 <div class="flex justify-between text-sm">
-                  <p class="truncate pr-2">{{ item.requester.message }}</p>
+                  <p class="truncate pr-2" :class="{ 'text-black-5': item.requester.isRead }">
+                    {{ item.requester.message }}
+                  </p>
                   <span class="shirnk">{{ '2023/04/12' }}</span>
                 </div>
               </div>
@@ -224,7 +246,10 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="w-4/6 pl-4">
+      <div class="w-full lg:w-4/6 pl-4" :class="{ isMobile: width < 678, isActive: step === 2 }">
+        <BaseButton cate="gray-text" class="px-0 py-0 mb-2 lg:hidden" @click="goBack"
+          ><i class="icon-left-arrow pr-3"></i>返回</BaseButton
+        >
         <div>
           <h5 class="text-lg text-blue text-base text-left">{{ '職務' }}</h5>
           <p class="text-sm text-left">{{ '公司名稱' }}</p>
@@ -252,8 +277,8 @@ onMounted(() => {
             name="chatInput"
             placeholder="輸入文字..."
             rows="1"
-            class="resize-none w-full border border-black-1 rounded py-2 px-4 mt-2 max-h-[200px] min-h-[45px] resize-none overflow-y-auto"
-            @input="adjustTextareaHeight"
+            class="resize-none w-full border border-black-1 rounded py-2 px-4 mt-2 max-h-[200px] min-h-[64px] resize-none overflow-y-auto"
+            @input="adjustTextareaHeight({ isSend: false })"
             @keydown.enter.exact="sendMessage"
           />
         </div>
@@ -261,3 +286,13 @@ onMounted(() => {
     </div>
   </userLayouts>
 </template>
+<style scoped>
+.isMobile {
+  @media screen and (max-width: 678px) {
+    display: none;
+  }
+}
+.isMobile.isActive {
+  display: block;
+}
+</style>
