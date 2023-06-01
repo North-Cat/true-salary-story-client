@@ -191,7 +191,7 @@ async function search() {
         <BaseButton v-if="isLogin" cate="text-sm" :content="currentPoint.toString()">
           <span class="icon-star-circle text-2xl mb-1"></span>
         </BaseButton>
-        <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserListSm = !showUserListSm">
+        <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showSearchModalSm = !showSearchModalSm">
           <span class="icon-person-circle text-2xl mb-1"></span>
         </BaseButton>
         <BaseButton v-if="!isLogin" to="/login" cate="text-sm" content="登入">
