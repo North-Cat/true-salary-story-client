@@ -37,6 +37,9 @@ module.exports = {
         nav: '0px -2px 8px rgba(43, 43, 49, 0.1)',
         input: '0px 2px 8px rgba(82, 154, 242, 0.3), 0px 0px 4px rgba(82, 154, 242, 0.1)',
       },
+      dropShadow: {
+        modal: '0px -2px 8px rgba(43, 43, 49, 0.1)',
+      },
       padding: {
         15: '60px',
       },

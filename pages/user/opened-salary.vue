@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 useHead({
-  title: '我的薪水',
+  title: '已解鎖薪水',
 });
 definePageMeta({
   middleware: 'auth',
@@ -78,7 +78,7 @@ const totalPage = computed(() => {
               <nuxt-link :to="`/salary/${item.postId}`">
                 <div class="flex justify-between mb-4 items-center">
                   <h4 class="text-lg text-blue">{{ item.title }}</h4>
-                  <span class="text-black-5">{{ item.seen > 0 ? `${item.seen}人已看過` : '尚未被人發掘' }}</span>
+                  <!-- <span class="text-black-5">{{ item.seen > 0 ? `${item.seen}人已看過` : '尚未被人發掘' }}</span> -->
                 </div>
                 <div class="md:flex justify-between">
                   <div>

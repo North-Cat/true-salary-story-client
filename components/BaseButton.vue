@@ -48,32 +48,32 @@ const btnClasses = computed(() => {
   let className = '';
   switch (props.cate) {
     case 'primary':
-      className = 'flex-row text-white fill-white bg-blue hover:bg-black-10';
+      className = 'py-3 px-5 flex-row text-white fill-white bg-blue hover:bg-black-10';
       break;
     case 'secondary':
-      className = 'flex-row text-white fill-white bg-black-10 hover:bg-blue';
+      className = 'py-3 px-5 flex-row text-white fill-white bg-black-10 hover:bg-blue';
       break;
     case 'white':
-      className = 'flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light';
+      className = 'py-3 px-5 flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light';
       break;
     case 'gray':
-      className = 'flex-row text-black-6 fill-black-6 bg-dark hover:bg-gray-light';
+      className = 'py-3 px-5 flex-row text-black-6 fill-black-6 bg-dark hover:bg-gray-light';
       break;
     case 'gray-text':
-      className = 'flex-row text-black-6 fill-black-6 hover:text-black-10 hover:fill-black-10';
+      className = 'py-3 px-5 flex-row text-black-6 fill-black-6 hover:text-black-10 hover:fill-black-10';
       break;
     case 'blue-text':
-      className = 'flex-row text-blue fill-blue hover:text-black-10 hover:fill-black-10';
+      className = 'py-3 px-5 flex-row text-blue fill-blue hover:text-black-10 hover:fill-black-10';
       break;
     case 'yellow-text':
-      className = 'flex-row text-yellow fill-yellow hover:text-blue hover:fill-blue';
+      className = 'py-3 px-5 flex-row text-yellow fill-yellow hover:text-blue hover:fill-blue';
       break;
     case 'text-sm':
-      className = 'flex-col text-black-6 fill-black-6 hover:text-black-10 hover:fill-black-10';
+      className = 'py-3 px-2 flex-col text-black-6 fill-black-6 hover:text-black-10 hover:fill-black-10';
       break;
     default:
       className = 'flex-row text-white fill-white bg-blue hover:bg-black-10';
   }
-  return `flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out ${className}`;
+  return `flex justify-center items-center rounded transition duration-300 ease-in-out ${className}`;
 });
 </script>

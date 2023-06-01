@@ -7,6 +7,15 @@ import { useUserStore } from '@/store/user';
 const route = useRoute();
 const router = useRouter();
 const showUserList = ref(false);
+const userListModal = ref(null);
+onClickOutside(userListModal, () => {
+  showUserList.value = false;
+});
+const showUserListSm = ref(false);
+const userListModalSm = ref(null);
+onClickOutside(userListModalSm, () => {
+  showUserListSm.value = false;
+});
 const user = useUserStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
@@ -160,13 +169,13 @@ async function search() {
 
 <template>
   <div class="default-layout">
-    <!-- sm nav -->
+    <!-- sm md nav -->
     <nav
-      class="z-10 fixed md:hidden bg-white/80 w-full h-[77px] bottom-0 left-0 pb-2 px-4 shadow-nav backdrop-blur-sm"
+      class="z-10 fixed lg:hidden bg-white/80 w-full h-[85px] bottom-0 left-0 px-4 md:px-24 shadow-nav backdrop-blur-sm"
       aria-label="行動版選單"
     >
       <div class="flex justify-between">
-        <BaseButton cate="text-sm" content="分享">
+        <BaseButton cate="text-sm" content="分享" to="/share-my-salary">
           <span class="icon-edit text-2xl mb-1"></span>
         </BaseButton>
         <BaseButton cate="text-sm" content="搜尋" @click="showSearchModalSm = !showSearchModalSm">
@@ -182,7 +191,7 @@ async function search() {
         <BaseButton v-if="isLogin" cate="text-sm" :content="currentPoint.toString()">
           <span class="icon-star-circle text-2xl mb-1"></span>
         </BaseButton>
-        <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
+        <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserListSm = !showUserListSm">
           <span class="icon-person-circle text-2xl mb-1"></span>
         </BaseButton>
         <BaseButton v-if="!isLogin" to="/login" cate="text-sm" content="登入">
@@ -192,7 +201,12 @@ async function search() {
           <span class="icon-star text-3xl"></span>
         </BaseButton>
       </div>
-      <div v-if="showUserList" class="fixed shadow bg-white w-full p-5 rounded left-0 right-0 top-[-544px]" style="">
+      <div
+        v-if="showUserListSm"
+        ref="userListModalSm"
+        class="fixed drop-shadow-modal bg-white w-full p-5 rounded left-0 right-0 bottom-[84px]"
+        style=""
+      >
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">
             {{ currentUser.displayName }}
@@ -200,7 +214,7 @@ async function search() {
           <div>
             <!-- FIX: 複製UID -->
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserList = false">
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserListSm = false">
               <i class="icomoon icon-cross"></i>
             </button>
           </div>
@@ -235,7 +249,7 @@ async function search() {
       <div
         v-if="showSearchModalSm"
         ref="searchModalSm"
-        class="fixed shadow bg-white w-full p-5 rounded left-0 right-0 bottom-[77px]"
+        class="fixed drop-shadow-modal bg-white w-full p-5 rounded left-0 right-0 bottom-[84px]"
         style=""
       >
         <div class="flex justify-between pb-3 border-b border-b-black-5">
@@ -321,7 +335,7 @@ async function search() {
         </div>
       </div>
     </nav>
-    <!-- md lg nav -->
+    <!-- lg nav -->
     <nav
       class="z-10 fixed top-0 left-0 bg-white/80 w-full sm:py-3 sm:px-3 md:py-6 md:px-10 lg:py-6 lg:px-10 shadow-nav backdrop-blur-sm"
       aria-label="平板電腦版選單"
@@ -330,7 +344,7 @@ async function search() {
         <nuxt-link to="/" class="sm:w-[80px] md:w-[150px] lg:w-[150px]">
           <img src="../assets/img/LOGO.png" alt="LOGO" />
         </nuxt-link>
-        <div class="sm:hidden md:flex flex-row justify-center items-center">
+        <div class="hidden lg:flex flex-row justify-center items-center">
           <BaseButton cate="blue-text" content="匿名分享" class="me-0" to="/share-my-salary">
             <span class="icon-edit text-lg me-2"></span>
           </BaseButton>
@@ -465,6 +479,7 @@ async function search() {
             </BaseButton>
             <div
               v-if="showUserList"
+              ref="userListModal"
               class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
               style="right: -100%"
             >

@@ -29,6 +29,15 @@ const userList = ref([
     },
   },
   {
+    title: '已解鎖薪水',
+    icon: 'icon-sparkle-checked',
+    type: 'link',
+    id: 'user-opened-salary',
+    to: {
+      name: 'user-opened-salary',
+    },
+  },
+  {
     title: '薪水訂閱',
     icon: 'icon-plus-circle',
     type: 'link',
@@ -77,9 +86,9 @@ const userList = ref([
 ]);
 </script>
 <template>
-  <section class="user bg-gray pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
+  <section class="user bg-gray pt-[42px] md:pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
     <div
-      class="container mx-auto max-w-full md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
+      class="md:container mx-auto max-w-full md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
     >
       <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
         <!-- 側邊選單 -->
@@ -126,7 +135,7 @@ const userList = ref([
           </div>
         </div>
         <!-- 頁面內容 -->
-        <div class="lg:w-4/6 border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
+        <div class="lg:w-4/6 md:border-2 border-black-10 mt-0 md:mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
           <!-- 切頁 -->
           <div class="w-100 p-6 bg-black-10 text-white">
             <template v-if="$route.name === 'user'">
@@ -139,7 +148,7 @@ const userList = ref([
               {{ userList.find((item) => item.id === $route.name)?.title || '會員資訊' }}
             </template>
           </div>
-          <div class="min-h-full md:min-h-[300px] p-6">
+          <div class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6">
             <slot />
           </div>
           <!-- <PostManagement v-if="isPage(Page.POST)"/>

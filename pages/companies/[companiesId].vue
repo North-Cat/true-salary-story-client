@@ -50,7 +50,10 @@ const unlockPost = () => {
   //     item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
   //   }
   // }
+<<<<<<< HEAD
   salaryStore.fetchPermission(selectedPostId.value);
+=======
+>>>>>>> develop
   isShowModal.value = false;
 };
 
@@ -63,10 +66,10 @@ const titleConditions = ref<string[]>([]);
 titleConditions.value = ['全部']; // 預設全部
 // 排序
 const sortOptions = [
-  { text: '分享時間 近→遠', value: 1 },
-  { text: '分享年薪 高→低', value: 2 },
-  { text: '在職年資 長→短', value: 3 },
-  { text: '心情 好→壞', value: 4 },
+  { text: '分享時間 近→遠', value: '1' },
+  { text: '分享年薪 高→低', value: '2' },
+  { text: '在職年資 長→短', value: '3' },
+  { text: '心情 好→壞', value: '4' },
 ];
 const sortConditions = ref();
 sortConditions.value = sortOptions[0].value; // 預設依時間排序
@@ -92,7 +95,13 @@ async function getCompanyTitles() {
 // 依條件查詢公司薪資資訊
 async function getCompanySalary(page: number) {
   // call search 單一公司全部薪水 api
-  await searchStore.fetchSearchCompanySalary(companiesId, page, limit.value);
+  await searchStore.fetchSearchCompanySalary(
+    companiesId,
+    sortConditions.value,
+    titleConditions.value,
+    page,
+    limit.value,
+  );
   // 計算總頁數
   totalPages.value = Math.ceil(companyPostCount.value / limit.value);
   curPage.value = page;
