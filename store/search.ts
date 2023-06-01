@@ -123,7 +123,13 @@ export const useSearchStore = defineStore('search', () => {
   };
 
   // call api 307 依統編搜尋公司所有薪資資訊
-  const fetchSearchCompanySalary = async (taxId: string, sortOption: string, titleOption: string[], page: number, limit: number) => {
+  const fetchSearchCompanySalary = async (
+    taxId: string,
+    sortOption: string,
+    titleOption: string[],
+    page: number,
+    limit: number,
+  ) => {
     const { result } = await searchApi.getCompanySalaries(taxId, sortOption, titleOption, page, limit);
     // FIXME假資料
     companyPostCount.value = 10;

@@ -114,7 +114,13 @@ async function getCompanyTitles() {
 // 依條件查詢公司薪資資訊
 async function getCompanySalary(page: number) {
   // call search 單一公司全部薪水 api
-  await searchStore.fetchSearchCompanySalary(companiesId, sortConditions.value, titleConditions.value, page, limit.value);
+  await searchStore.fetchSearchCompanySalary(
+    companiesId,
+    sortConditions.value,
+    titleConditions.value,
+    page,
+    limit.value,
+  );
   // 計算總頁數
   totalPages.value = Math.ceil(companyPostCount.value / limit.value);
   curPage.value = page;

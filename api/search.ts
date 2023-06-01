@@ -45,7 +45,9 @@ export default new (class search extends Http {
    * @params id
    */
   public getCompanySalaries(taxId: string, sortOption: string, titleOption: string[], page: number, limit: number) {
-    return this.get(`/api/salary/company/${taxId}?sortOption=${sortOption}&titleOption=${titleOption}&page=${page}&limit=${limit}`);
+    return this.get(
+      `/api/salary/company/${taxId}?sortOption=${sortOption}&titleOption=${titleOption}&page=${page}&limit=${limit}`,
+    );
   }
 
   /**
