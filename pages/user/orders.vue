@@ -98,8 +98,8 @@ const totalPage = computed(() => {
 });
 watch(totalPage, (newTotalPage, oldTotalPage) => {
   nextTick(() => {
-    if (newTotalPage !== oldTotalPage) {
-      paginationButton.value.totalPagesComponent = newTotalPage;
+    if (newTotalPage !== oldTotalPage && paginationButton.value) {
+      paginationButton.value.totalPagesComponent = newTotalPage || 1;
     }
   });
 });
@@ -131,7 +131,7 @@ const formatData = (createdAt: Date) => {
               </button>
             </div>
           </div>
-          <div class="ml-auto pl-3 shrink-0 py-3">
+          <div v-if="currentResultsList.length > 0" class="ml-auto pl-3 shrink-0 py-3">
             <span>第{{ page }}頁,共{{ filterListCount(curSearchType) }}筆</span>
           </div>
         </div>
@@ -157,6 +157,7 @@ const formatData = (createdAt: Date) => {
             </tbody>
           </table>
         </div>
+        <BaseNull v-else content="此頁沒有資料" />
         <PaginationButton
           v-show="totalPage > 0"
           ref="paginationButton"

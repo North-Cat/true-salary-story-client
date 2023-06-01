@@ -81,8 +81,8 @@ const totalPage = computed(() => {
   return Math.ceil(filterListCount(curSearchType.value) / limit.value);
 });
 watch(totalPage, (newTotalPage, oldTotalPage) => {
-  if (newTotalPage !== oldTotalPage) {
-    paginationButton.value.totalPagesComponent = newTotalPage;
+  if (newTotalPage !== oldTotalPage && paginationButton.value) {
+    paginationButton.value.totalPagesComponent = newTotalPage || 1;
   }
 });
 const onChangePage = (val: number) => {
@@ -142,6 +142,7 @@ const formatData = (createdAt: Date) => {
             </tbody>
           </table>
         </div>
+        <BaseNull v-else content="此頁沒有資料" />
         <PaginationButton
           v-show="totalPage > 0"
           ref="paginationButton"
