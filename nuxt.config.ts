@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@vite-pwa/nuxt'],
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt'],
+  // when open pwa add this module '@vite-pwa/nuxt'
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-gtag'],
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules'] },
   runtimeConfig: {
     public: {
@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   sourcemap: {
     server: true,
     client: true,
+  },
+  gtag: {
+    id: 'G-KBE06V0GZ4',
   },
   // pwa: {
   //   registerType: 'autoUpdate',
