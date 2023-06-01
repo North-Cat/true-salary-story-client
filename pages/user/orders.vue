@@ -19,7 +19,7 @@ useStore.tryToFetchMyOrdersList().finally(() => {
   loading.value = false;
 });
 /**
- * 搜尋相關
+ * tab
  */
 const curSearchType = ref('all');
 enum SearchType {
