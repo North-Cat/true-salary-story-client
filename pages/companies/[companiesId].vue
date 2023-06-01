@@ -50,10 +50,7 @@ const unlockPost = () => {
   //     item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
   //   }
   // }
-<<<<<<< HEAD
   salaryStore.fetchPermission(selectedPostId.value);
-=======
->>>>>>> develop
   isShowModal.value = false;
 };
 
