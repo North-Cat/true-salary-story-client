@@ -11,7 +11,11 @@ const showUserList = ref(false);
 const userListModal = ref(null);
 onClickOutside(userListModal, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('account-button') == -1){ 
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('account-button') == -1
+  ) {
     showUserList.value = false;
   }
 });
@@ -19,7 +23,11 @@ const showUserListSm = ref(false);
 const userListModalSm = ref(null);
 onClickOutside(userListModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('account-button') == -1){ 
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('account-button') == -1
+  ) {
     showUserListSm.value = false;
   }
 });
@@ -111,7 +119,11 @@ const showSearchModal = ref(false);
 const searchModal = ref(null);
 onClickOutside(searchModal, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('search-button') == -1){ 
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('search-button') == -1
+  ) {
     showSearchModal.value = false;
   }
 });
@@ -119,7 +131,11 @@ const showSearchModalSm = ref(false);
 const searchModalSm = ref(null);
 onClickOutside(searchModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('search-button') == -1){ 
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('search-button') == -1
+  ) {
     showSearchModalSm.value = false;
   }
 });
@@ -186,7 +202,11 @@ const showPointModal = ref(false);
 const pointModal = ref(null);
 onClickOutside(pointModal, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('point-button') == -1){
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('point-button') == -1
+  ) {
     showPointModal.value = false;
   }
 });
@@ -194,17 +214,21 @@ const showPointModalSm = ref(false);
 const pointModalSm = ref(null);
 onClickOutside(pointModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('point-button') == -1){
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('point-button') == -1
+  ) {
     showPointModalSm.value = false;
   }
 });
 // 若已經在積分頁面，則重新整理
-function checkReload(){
+function checkReload() {
   if (route.path === '/order/checkout') {
-      setTimeout(() => {
-        window.location.reload();
-      }, 1);
-    }
+    setTimeout(() => {
+      window.location.reload();
+    }, 1);
+  }
 }
 
 /**
@@ -215,7 +239,11 @@ const showMessageModal = ref(false);
 const messageModal = ref(null);
 onClickOutside(messageModal, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('message-button') == -1 ){
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('message-button') == -1
+  ) {
     showMessageModal.value = false;
   }
 });
@@ -223,13 +251,14 @@ const showMessageModalSm = ref(false);
 const messageModalSm = ref(null);
 onClickOutside(messageModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (e.target.nodeName == 'svg' || e.target.parentNode?.nodeName == 'svg' || e.target.className.indexOf('message-button') == -1){
+  if (
+    e.target.nodeName == 'svg' ||
+    e.target.parentNode?.nodeName == 'svg' ||
+    e.target.className.indexOf('message-button') == -1
+  ) {
     showMessageModalSm.value = false;
   }
 });
-
-
-
 </script>
 
 <template>
@@ -249,17 +278,23 @@ onClickOutside(messageModalSm, (e) => {
           <span class="icon-search text-2xl mb-1 search-button"></span>
         </BaseButton>
         <!-- 訊息 sm md -->
-        <BaseButton v-if="isLogin" cate="text-sm" class="message-button" @click="showMessageModalSm = !showMessageModalSm">
+        <BaseButton
+          v-if="isLogin"
+          cate="text-sm"
+          class="message-button"
+          @click="showMessageModalSm = !showMessageModalSm"
+        >
           <div class="-mb-1">
             <!-- 訊息紅點 -->
-            <span class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"></span>
+            <span
+              class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
+            ></span>
             <span class="icon-mail text-3xl message-button"></span>
           </div>
           <div class="caption message-button">訊息</div>
         </BaseButton>
         <!-- 積分 sm md -->
-        <BaseButton v-if="isLogin" cate="text-sm"
-        class="point-button" @click="showPointModalSm = !showPointModalSm">
+        <BaseButton v-if="isLogin" cate="text-sm" class="point-button" @click="showPointModalSm = !showPointModalSm">
           <span class="icon-star-circle text-2xl mb-1 point-button"></span>
           <div class="caption point-button">{{ currentPoint }}</div>
         </BaseButton>
@@ -270,7 +305,12 @@ onClickOutside(messageModalSm, (e) => {
               <div class="bg-slate-200 w-[25px] h-[25px] rounded-full mb-1"></div>
             </div>
           </div>
-          <img v-else class="account-button w-[25px] h-[25px] rounded-full mb-1" :src="currentUser.profilePicture" alt="圖片" />
+          <img
+            v-else
+            class="account-button w-[25px] h-[25px] rounded-full mb-1"
+            :src="currentUser.profilePicture"
+            alt="圖片"
+          />
           <div class="caption account-button">帳號</div>
           <!-- <span class="icon-person-circle text-2xl mb-1"></span> -->
         </BaseButton>
@@ -427,12 +467,7 @@ onClickOutside(messageModalSm, (e) => {
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">訊息</div>
           <div class="flex">
-            <nuxt-link
-              to="/user/consult"
-              class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
-            >
-            總覽
-            </nuxt-link>
+            <nuxt-link to="/user/consult" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"> 總覽 </nuxt-link>
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showMessageModalSm = false">
               <i class="icomoon icon-cross"></i>
             </button>
@@ -443,22 +478,18 @@ onClickOutside(messageModalSm, (e) => {
           <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
             <div class="flex flex-col">
               <div class="flex">
-                <div class="caption" >職務 | 公司名稱</div>
+                <div class="caption">職務 | 公司名稱</div>
               </div>
-              <p class="caption text-black-6">
-                訊息訊息訊息訊息訊息...
-              </p>
+              <p class="caption text-black-6">訊息訊息訊息訊息訊息...</p>
             </div>
             <span class="caption text-black-6">2023/04/12</span>
           </div>
           <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
             <div class="flex flex-col">
               <div class="flex">
-                <div class="caption" >職務 | 公司名稱</div>
+                <div class="caption">職務 | 公司名稱</div>
               </div>
-              <p class="caption text-black-6">
-                訊息訊息訊息...
-              </p>
+              <p class="caption text-black-6">訊息訊息訊息...</p>
             </div>
             <span class="caption text-black-6">2023/04/12</span>
           </div>
@@ -473,11 +504,8 @@ onClickOutside(messageModalSm, (e) => {
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">{{ currentPoint }} 積分</div>
           <div class="flex">
-            <nuxt-link
-              to="/user/credit-history"
-              class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
-            >
-            積分明細
+            <nuxt-link to="/user/credit-history" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
+              積分明細
             </nuxt-link>
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showPointModalSm = false">
               <i class="icomoon icon-cross"></i>
@@ -488,15 +516,14 @@ onClickOutside(messageModalSm, (e) => {
           <div class="flex justify-between border border-black-1 rounded mb-3 px-3 py-4">
             <div class="flex flex-col">
               <h5 class="mb-3 text-blue">加薪計畫</h5>
-              <p class="caption">6+6 個月薪水任你看、<br>贈送 2000 積分、無廣告體驗，<br>以及 10% 比薪水積分回饋！</p>
+              <p class="caption">
+                6+6 個月薪水任你看、<br />贈送 2000 積分、無廣告體驗，<br />以及 10% 比薪水積分回饋！
+              </p>
             </div>
             <div class="flex flex-col justify-center items-end">
               <BaseButton content="NT $ 699" to="/order/checkout?type=subscription" @click="checkReload"></BaseButton>
-              <nuxt-link
-                to="/order/offer"
-                class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3"
-              >
-              詳細資訊
+              <nuxt-link to="/order/offer" class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3">
+                詳細資訊
               </nuxt-link>
             </div>
           </div>
@@ -506,7 +533,12 @@ onClickOutside(messageModalSm, (e) => {
               <p class="caption">可兌換 1 則薪水情報</p>
             </div>
             <div class="flex flex-col justify-center items-end">
-              <BaseButton content="NT $ 150" cate="secondary" to="/order/checkout?type=single&point=100" @click="checkReload"></BaseButton>
+              <BaseButton
+                content="NT $ 150"
+                cate="secondary"
+                to="/order/checkout?type=single&point=100"
+                @click="checkReload"
+              ></BaseButton>
             </div>
           </div>
         </div>
@@ -635,10 +667,17 @@ onClickOutside(messageModalSm, (e) => {
           </div>
           <!-- 訊息 lg -->
           <div class="relative">
-            <BaseButton v-if="isLogin" cate="gray-text"  class="message-button" @click="showMessageModal = !showMessageModal">
+            <BaseButton
+              v-if="isLogin"
+              cate="gray-text"
+              class="message-button"
+              @click="showMessageModal = !showMessageModal"
+            >
               <div>
                 <!-- 訊息紅點 -->
-                <span class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"></span>
+                <span
+                  class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
+                ></span>
                 <span class="icon-mail text-2xl me-2 message-button"></span>
               </div>
               <h6 class="message-button">訊息</h6>
@@ -653,11 +692,8 @@ onClickOutside(messageModalSm, (e) => {
               <div class="flex justify-between pb-3 border-b border-b-black-5">
                 <div class="text-xl">訊息</div>
                 <div class="flex">
-                  <nuxt-link
-                    to="/user/consult"
-                    class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
-                  >
-                  總覽
+                  <nuxt-link to="/user/consult" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
+                    總覽
                   </nuxt-link>
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showMessageModal = false">
                     <i class="icomoon icon-cross"></i>
@@ -669,22 +705,18 @@ onClickOutside(messageModalSm, (e) => {
                 <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
                   <div class="flex flex-col">
                     <div class="flex">
-                      <div class="caption" >職務 | 公司名稱</div>
+                      <div class="caption">職務 | 公司名稱</div>
                     </div>
-                    <p class="caption text-black-6">
-                      訊息訊息訊息訊息訊息...
-                    </p>
+                    <p class="caption text-black-6">訊息訊息訊息訊息訊息...</p>
                   </div>
                   <span class="caption text-black-6">2023/04/12</span>
                 </div>
                 <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
                   <div class="flex flex-col">
                     <div class="flex">
-                      <div class="caption" >職務 | 公司名稱</div>
+                      <div class="caption">職務 | 公司名稱</div>
                     </div>
-                    <p class="caption text-black-6">
-                      訊息訊息訊息訊息訊息...
-                    </p>
+                    <p class="caption text-black-6">訊息訊息訊息訊息訊息...</p>
                   </div>
                   <span class="caption text-black-6">2023/04/12</span>
                 </div>
@@ -693,7 +725,12 @@ onClickOutside(messageModalSm, (e) => {
           </div>
           <!-- 積分 lg -->
           <div class="relative">
-            <BaseButton v-if="isLogin" cate="yellow-text"  class="me-5 point-button" @click="showPointModal = !showPointModal">
+            <BaseButton
+              v-if="isLogin"
+              cate="yellow-text"
+              class="me-5 point-button"
+              @click="showPointModal = !showPointModal"
+            >
               <span class="icon-star-circle text-xl me-2 point-button"></span>
               <h6 class="point-button">{{ currentPoint }} 積分</h6>
             </BaseButton>
@@ -707,11 +744,8 @@ onClickOutside(messageModalSm, (e) => {
               <div class="flex justify-between pb-3 border-b border-b-black-5">
                 <div class="text-xl">{{ currentPoint }} 積分</div>
                 <div class="flex">
-                  <nuxt-link
-                    to="/user/credit-history"
-                    class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
-                  >
-                  積分明細
+                  <nuxt-link to="/user/credit-history" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
+                    積分明細
                   </nuxt-link>
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showPointModal = false">
                     <i class="icomoon icon-cross"></i>
@@ -722,15 +756,18 @@ onClickOutside(messageModalSm, (e) => {
                 <div class="flex justify-between border border-black-1 rounded mb-3 px-4 py-4">
                   <div class="flex flex-col">
                     <h5 class="mb-3 text-blue">加薪計畫</h5>
-                    <p class="caption">6+6 個月薪水任你看、<br>贈送 2000 積分、無廣告體驗，<br>以及 10% 比薪水積分回饋！</p>
+                    <p class="caption">
+                      6+6 個月薪水任你看、<br />贈送 2000 積分、無廣告體驗，<br />以及 10% 比薪水積分回饋！
+                    </p>
                   </div>
                   <div class="flex flex-col justify-center items-end">
-                    <BaseButton content="NT $ 699" to="/order/checkout?type=subscription" @click="checkReload"></BaseButton>
-                    <nuxt-link
-                      to="/order/offer"
-                      class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3"
-                    >
-                    詳細資訊
+                    <BaseButton
+                      content="NT $ 699"
+                      to="/order/checkout?type=subscription"
+                      @click="checkReload"
+                    ></BaseButton>
+                    <nuxt-link to="/order/offer" class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3">
+                      詳細資訊
                     </nuxt-link>
                   </div>
                 </div>
@@ -740,7 +777,12 @@ onClickOutside(messageModalSm, (e) => {
                     <p class="caption">可兌換 1 則薪水情報</p>
                   </div>
                   <div class="flex flex-col justify-center items-end">
-                    <BaseButton content="NT $ 150" cate="secondary" to="/order/checkout?type=single&point=100" @click="checkReload"></BaseButton>
+                    <BaseButton
+                      content="NT $ 150"
+                      cate="secondary"
+                      to="/order/checkout?type=single&point=100"
+                      @click="checkReload"
+                    ></BaseButton>
                   </div>
                 </div>
               </div>

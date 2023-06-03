@@ -131,9 +131,38 @@ export const useSearchStore = defineStore('search', () => {
     limit: number,
   ) => {
     const { result } = await searchApi.getCompanySalaries(taxId, sortOption, titleOption, page, limit);
-    // FIXME假資料
     companyPostCount.value = 10;
-    companyPost.value = result;
+    companyPost.value = result.map((el: IShareSalary) => {
+      return {
+        postId: el?.postId || '',
+        companyType: el?.companyType || '',
+        taxId: el?.taxId || '',
+        companyName: el?.companyName || '',
+        title: el?.title || '',
+        employmentType: el?.employmentType || '',
+        inService: el?.inService || false,
+        city: el?.city || '',
+        workYears: el?.workYears || '',
+        totalWorkYears: el?.totalWorkYears || '',
+        monthlySalary: el?.monthlySalary ?? '',
+        dailySalary: el?.dailySalary ?? '',
+        avgWorkingDaysPerMonth: el?.avgWorkingDaysPerMonth ?? '',
+        hourlySalary: el?.hourlySalary ?? '',
+        avgHoursPerDay: el?.avgHoursPerDay ?? '',
+        yearEndBonus: el?.yearEndBonus ?? '',
+        holidayBonus: el?.holidayBonus ?? '',
+        profitSharingBonus: el?.profitSharingBonus ?? '',
+        otherBonus: el?.otherBonus ?? '',
+        yearlySalary: el?.yearlySalary ?? '',
+        overtime: el?.overtime || '',
+        feeling: el?.feeling || '',
+        jobDescription: el?.jobDescription || '',
+        suggestion: el?.suggestion || '',
+        tags: el?.tags || [],
+        customTags: el?.customTags || [],
+        createDate: el?.createDate || '',
+      };
+    });
   };
 
   // call api 308 查詢熱門產業
