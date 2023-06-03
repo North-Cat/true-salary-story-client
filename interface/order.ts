@@ -23,3 +23,17 @@ export interface IMyOrdersListResponse {
   result: IMyOrdersList[];
   totalCount: number;
 }
+
+export interface IPointsList {
+  _id: string;
+  user: string;
+  point: number;
+  remark: string;
+  startDate: Date;
+  createdAt: Date;
+}
+
+export interface IPointsListRespose {
+  result: IPointsList[];
+  totalCount: number;
+}

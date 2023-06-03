@@ -1,111 +1,27 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/user';
+import { IPointsList } from '~/interface/order';
 useHead({
   title: '積分明細',
 });
 definePageMeta({
   middleware: 'auth',
 });
-interface IPointDetails {
-  userId: string;
-  updatePoint: number;
-  remark: string;
-  startDate: string;
-  endDate: string;
-}
+const useStore = useUserStore();
 const limit = ref(10);
 const page = ref(1);
 const paginationButton = ref();
 const loading = ref(false);
 loading.value = true;
-const data = {
-  result: [
-    {
-      userId: 'User1234',
-      updatePoint: 699,
-      remark: '購買加薪計畫699',
-      startDate: '2023/5/27',
-      endDate: '2024/5/27',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: -100,
-      remark: '兌換薪水情報：版塊創意有限公司 工程師',
-      startDate: '2023/4/12',
-      endDate: null,
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 200,
-      remark: '分享薪水情報：統一超商股份有限公司 PT',
-      startDate: '2022/04/10',
-      endDate: '2023/04/10',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 150,
-      remark: '購買加薪計畫150',
-      startDate: '2023/04/05',
-      endDate: '2024/04/05',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 10,
-      remark: '完成每日任務',
-      startDate: '2024/04/03',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 200,
-      remark: '分享薪水情報：統一超商股份有限公司 PT',
-      startDate: '2022/04/10',
-      endDate: '2023/4/10',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 699,
-      remark: '購買加薪計畫699',
-      startDate: '2023/5/27',
-      endDate: '2024/5/27',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: -100,
-      remark: '兌換薪水情報：版塊創意有限公司 工程師',
-      startDate: '2023/4/12',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 200,
-      remark: '分享薪水情報：統一超商股份有限公司 PT',
-      startDate: '2022/04/10',
-      endDate: '2023/4/10',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 699,
-      remark: '購買加薪計畫699',
-      startDate: '2023/5/27',
-      endDate: '2024/5/27',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: -100,
-      remark: '兌換薪水情報：版塊創意有限公司 工程師',
-      startDate: '2023/4/12',
-    },
-    {
-      userId: 'User1234',
-      updatePoint: 200,
-      remark: '分享薪水情報：統一超商股份有限公司 PT',
-      startDate: '2022/04/10',
-      endDate: '2023/4/10',
-    },
-  ],
-  totalCount: 12,
-};
+const { pointsList } = storeToRefs(useStore);
 loading.value = false;
+loading.value = true;
+useStore.tryToFetchPointsList().finally(() => {
+  loading.value = false;
+});
 /**
- * 搜尋相關
+ * tab
  */
 const curSearchType = ref('all');
 enum SearchType {
@@ -128,32 +44,32 @@ const tabClass = computed(() => (tab: SearchType) => {
 const filterListCount = (tab: string): number => {
   switch (tab) {
     case 'get':
-      return data.result.filter((item) => {
-        return item.updatePoint >= 0;
+      return pointsList.value.result.filter((item) => {
+        return item.point >= 0;
       }).length;
     case 'used':
-      return data.result.filter((item) => {
-        return item.updatePoint < 0;
+      return pointsList.value.result.filter((item) => {
+        return item.point < 0;
       }).length;
     default:
-      return data.result.length;
+      return pointsList.value.result.length;
   }
 };
 const currentResultsList = computed(() => {
-  let currentTabList: IPointDetails[] = [];
+  let currentTabList: IPointsList[] = [];
   switch (curSearchType.value) {
     case 'get':
-      currentTabList = data.result.filter((item) => {
-        return item.updatePoint > 0;
-      }) as IPointDetails[];
+      currentTabList = pointsList.value.result.filter((item) => {
+        return item.point > 0;
+      }) as IPointsList[];
       break;
     case 'used':
-      currentTabList = data.result.filter((item) => {
-        return item.updatePoint < 0;
-      }) as IPointDetails[];
+      currentTabList = pointsList.value.result.filter((item) => {
+        return item.point < 0;
+      }) as IPointsList[];
       break;
     default:
-      currentTabList = data.result as IPointDetails[];
+      currentTabList = pointsList.value.result as IPointsList[];
       break;
   }
   const startIndex = (page.value - 1) * limit.value;
@@ -165,8 +81,8 @@ const totalPage = computed(() => {
   return Math.ceil(filterListCount(curSearchType.value) / limit.value);
 });
 watch(totalPage, (newTotalPage, oldTotalPage) => {
-  if (newTotalPage !== oldTotalPage) {
-    paginationButton.value.totalPagesComponent = newTotalPage;
+  if (newTotalPage !== oldTotalPage && paginationButton.value) {
+    paginationButton.value.totalPagesComponent = newTotalPage || 1;
   }
 });
 const onChangePage = (val: number) => {
@@ -176,11 +92,16 @@ const onChangePage = (val: number) => {
     behavior: 'smooth',
   });
 };
+const formatData = (createdAt: Date) => {
+  const date = new Date(createdAt);
+  const localDate = date.toLocaleDateString('zh-TW');
+  return localDate;
+};
 </script>
 <template>
   <userLayouts>
     <template v-if="!loading">
-      <template v-if="data.result.length > 0">
+      <template v-if="pointsList.result.length > 0">
         <!-- 切換 -->
         <div class="w-full flex mb-2">
           <div v-for="(item, $index) in SearchType" :key="$index" class="py-3 pe-6">
@@ -198,30 +119,30 @@ const onChangePage = (val: number) => {
             </button>
           </div>
         </div>
-        <div class="w-full min-h-[240px]">
+        <div v-if="currentResultsList.length > 0" class="w-full min-h-[330px]">
           <table class="table-auto w-full" aria-describedby="積分明細">
             <thead class="">
               <tr>
                 <th align="left">項目</th>
-                <th>積分</th>
+                <th class="w-20">積分</th>
                 <th align="left">時間</th>
-                <th align="left">期限</th>
+                <!-- <th align="left">期限</th> -->
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, $index) in currentResultsList" :key="$index">
                 <td>{{ item.remark }}</td>
                 <td>
-                  <span :class="item.updatePoint > 0 ? 'text-green' : item.updatePoint < 0 ? 'text-red' : ''">{{
-                    item.updatePoint
+                  <span :class="item.point > 0 ? 'text-green' : item.point < 0 ? 'text-red' : ''">{{
+                    item.point
                   }}</span>
                 </td>
-                <td>{{ item.startDate }}</td>
-                <td>{{ item.endDate || '' }}</td>
+                <td>{{ formatData(item.startDate) }}</td>
               </tr>
             </tbody>
           </table>
         </div>
+        <BaseNull v-else content="此頁沒有資料" />
         <PaginationButton
           v-show="totalPage > 0"
           ref="paginationButton"

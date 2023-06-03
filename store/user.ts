@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ILoginUserInfo } from '~/interface/user';
 import { IMySalaryResponse } from '~/interface/salaryData';
 import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
-import { IMyOrdersListResponse } from '~/interface/order';
+import { IPointsListRespose, IMyOrdersListResponse } from '~/interface/order';
 const { userApi, subscribeApi, orderApi } = useApi();
 export const useUserStore = defineStore('user', () => {
   // 登入相關
@@ -67,6 +67,22 @@ export const useUserStore = defineStore('user', () => {
     };
   };
 
+  const openedSalary = ref({
+    result: [],
+    totalCount: 0,
+  } as IMySalaryResponse);
+  const tryToFetchOpenedSalary = async (data: {
+    keyword: string | number | undefined;
+    limit?: number | undefined;
+    page: number;
+  }) => {
+    const result = await userApi.getOpenedSalary(data);
+    mySalary.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
   const subscribeCompaniesList = ref({
     result: [],
     totalCount: 0,
@@ -85,6 +101,18 @@ export const useUserStore = defineStore('user', () => {
 
   const deleteSubscribeCompany = async (id: string) => {
     await subscribeApi.deleteSubscribeCompany(id);
+  };
+
+  const pointsList = ref({
+    result: [],
+    totalCount: 0,
+  } as IPointsListRespose);
+  const tryToFetchPointsList = async () => {
+    const result = await orderApi.getPointList();
+    pointsList.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
   };
 
   const myOrdersList = ref({
@@ -115,5 +143,9 @@ export const useUserStore = defineStore('user', () => {
     myOrdersList,
     tryToFetchMyOrdersList,
     currentPoint,
+    pointsList,
+    tryToFetchPointsList,
+    tryToFetchOpenedSalary,
+    openedSalary,
   };
 });

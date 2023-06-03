@@ -1,4 +1,5 @@
 export interface ILoginUserInfo {
+  value: ILoginUserInfo;
   displayName: string;
   email: string;
   profilePicture: string;
