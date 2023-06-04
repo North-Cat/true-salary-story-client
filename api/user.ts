@@ -5,14 +5,14 @@ export default new (class user extends Http {
    * 取得使用人資料
    */
   public getUserProfile() {
-    return this.get(`/user/profile`);
+    return this.get(`/api/user/profile`);
   }
 
   /**
    * 登出
    */
   public postLogout() {
-    return this.post(`/auth/logout`);
+    return this.post(`/api/auth/logout`);
   }
 
   /**
@@ -67,5 +67,13 @@ export default new (class user extends Http {
     page: number;
   }) {
     return this.get(`/api/account/salary/unlocked/list?keyword=${keyword}&limit=${limit}&page=${page}`);
+  }
+
+  /**
+   * 每日簽到獲取積分
+   * 滿 7 天獲得 50 積分，滿 14 天獲得 100 積分，第 15 天開始新的輪迴
+   */
+  public postDailyCheckIn() {
+    return this.post(`/api/user/checkIn`);
   }
 })();
