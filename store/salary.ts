@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { ISalary, IShareSalary } from '~/interface/salaryData';
+import { useUserStore } from '@/store/user';
 export const useSalaryStore = defineStore('salary', () => {
+  const user = useUserStore();
   const tempSalaryFormData = ref<IShareSalary>({});
   const tempSalary = ref<ISalary>({});
   const keywords = ref([]);
@@ -49,16 +51,16 @@ export const useSalaryStore = defineStore('salary', () => {
       city: result?.city || '',
       workYears: result?.workYears || '',
       totalWorkYears: result?.totalWorkYears || '',
-      monthlySalary: result?.monthlySalary ?? '',
-      dailySalary: result?.dailySalary ?? '',
-      avgWorkingDaysPerMonth: result?.avgWorkingDaysPerMonth ?? '',
-      hourlySalary: result?.hourlySalary ?? '',
-      avgHoursPerDay: result?.avgHoursPerDay ?? '',
-      yearEndBonus: result?.yearEndBonus ?? '',
-      holidayBonus: result?.holidayBonus ?? '',
-      profitSharingBonus: result?.profitSharingBonus ?? '',
-      otherBonus: result?.otherBonus ?? '',
-      yearlySalary: result?.yearlySalary ?? '',
+      monthlySalary: result?.monthlySalary ?? '-',
+      dailySalary: result?.dailySalary ?? '-',
+      avgWorkingDaysPerMonth: result?.avgWorkingDaysPerMonth ?? '-',
+      hourlySalary: result?.hourlySalary ?? '-',
+      avgHoursPerDay: result?.avgHoursPerDay ?? '-',
+      yearEndBonus: result?.yearEndBonus ?? '-',
+      holidayBonus: result?.holidayBonus ?? '-',
+      profitSharingBonus: result?.profitSharingBonus ?? '-',
+      otherBonus: result?.otherBonus ?? '-',
+      yearlySalary: result?.yearlySalary ?? '-',
       overtime: result?.overtime || '',
       feeling: result?.feeling || '',
       jobDescription: result?.jobDescription || '',
@@ -78,7 +80,8 @@ export const useSalaryStore = defineStore('salary', () => {
   const fetchPermission = async (id: string) => {
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
-      fetchSalaryInfo(result.postId);
+      await fetchSalaryInfo(result.postId);
+      user.tryToFetchProfile();
     }
   };
   return {
