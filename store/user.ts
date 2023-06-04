@@ -11,6 +11,7 @@ export const useUserStore = defineStore('user', () => {
   const token = ref('');
   const isFetchProfileLoading = ref(false);
   const currentPoint = ref(0);
+  const checkTodayCheckedIn = ref(false);
   const loginWithGoogle = () => {
     const {
       public: { apiBase },
@@ -22,10 +23,11 @@ export const useUserStore = defineStore('user', () => {
     isFetchProfileLoading.value = true;
     await userApi
       .getUserProfile()
-      .then(({ data: { user } }) => {
+      .then(({ data: { user, hasCheckedInToday } }) => {
         currentUser.value = user as unknown as ILoginUserInfo;
         isLogin.value = true;
         currentPoint.value = user && user.points ? user.points.point : 0;
+        checkTodayCheckedIn.value = hasCheckedInToday as boolean;
         isFetchProfileLoading.value = false;
       })
       .catch(() => {
@@ -143,6 +145,7 @@ export const useUserStore = defineStore('user', () => {
     myOrdersList,
     tryToFetchMyOrdersList,
     currentPoint,
+    checkTodayCheckedIn,
     pointsList,
     tryToFetchPointsList,
     tryToFetchOpenedSalary,
