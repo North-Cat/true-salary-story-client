@@ -3077,7 +3077,7 @@
         <!-- md lg carousel -->
         <div v-if="popularPosts && popularPosts.length != 0" class="sm:hidden md:hidden lg:block lg:w-full">
           <carousel ref="postCarousel" class="w-full" :items-to-show="1" wrap-around>
-            <slide v-for="slide in popularPosts.length / 3" :key="slide" style="margin-top: 25px; margin-bottom: 25px">
+            <slide v-for="slide in Math.ceil(popularPosts.length / 3)" :key="slide" style="margin-top: 25px; margin-bottom: 25px">
               <div class="w-full flex flex-col">
                 <div class="w-full flex flex-row mb-6">
                   <div v-for="(post, index) in popularPosts" :key="post.postId">
@@ -3237,7 +3237,7 @@
             >
               <div class="w-full">
                 <carousel ref="comCarousel" class="w-full" :items-to-show="1" wrap-around>
-                  <slide v-for="slide in popularCompanies.length / 5" :key="slide">
+                  <slide v-for="slide in Math.ceil(popularCompanies.length / 5)" :key="slide">
                     <div class="w-full flex flex-col">
                       <div v-for="(com, index) in popularCompanies" :key="com.taxId + index">
                         <TextLink
