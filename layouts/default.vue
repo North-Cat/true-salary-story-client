@@ -11,24 +11,16 @@ const showUserList = ref(false);
 const userListModal = ref(null);
 onClickOutside(userListModal, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('account-button') == -1
-  ) {
-    showUserList.value = false;
+  if (isClickOutsideArea(e, 'account-button')) {
+    closeUserModal();
   }
 });
 const showUserListSm = ref(false);
 const userListModalSm = ref(null);
 onClickOutside(userListModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('account-button') == -1
-  ) {
-    showUserListSm.value = false;
+  if (isClickOutsideArea(e, 'account-button')) {
+    closeUserModal();
   }
 });
 const user = useUserStore();
@@ -36,7 +28,7 @@ const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRef
 const { logout } = user;
 const loginOut = () => {
   logout();
-  showUserList.value = false;
+  closeUserModal();
 };
 const userList = ref([
   {
@@ -89,8 +81,12 @@ const userList = ref([
 ]);
 const goToPage = (to: RouteLocationRaw) => {
   router.push(to);
-  showUserList.value = false;
+  closeUserModal();
 };
+function closeUserModal() {
+  showUserListSm.value = false;
+  showUserList.value = false;
+}
 
 /**
  * 搜尋相關
@@ -119,24 +115,16 @@ const showSearchModal = ref(false);
 const searchModal = ref(null);
 onClickOutside(searchModal, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('search-button') == -1
-  ) {
-    showSearchModal.value = false;
+  if (isClickOutsideArea(e, 'search-button')) {
+    closeSearchModal();
   }
 });
 const showSearchModalSm = ref(false);
 const searchModalSm = ref(null);
 onClickOutside(searchModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('search-button') == -1
-  ) {
-    showSearchModalSm.value = false;
+  if (isClickOutsideArea(e, 'search-button')) {
+    closeSearchModal();
   }
 });
 // 搜尋參數
@@ -192,6 +180,11 @@ async function search() {
       window.location.reload();
     }, 1);
   }
+  closeSearchModal();
+}
+function closeSearchModal() {
+  showSearchModalSm.value = false;
+  showSearchModal.value = false;
 }
 
 /**
@@ -202,33 +195,37 @@ const showPointModal = ref(false);
 const pointModal = ref(null);
 onClickOutside(pointModal, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('point-button') == -1
-  ) {
-    showPointModal.value = false;
+  if (isClickOutsideArea(e, 'point-button')) {
+    closePointModal();
   }
 });
 const showPointModalSm = ref(false);
 const pointModalSm = ref(null);
 onClickOutside(pointModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('point-button') == -1
-  ) {
-    showPointModalSm.value = false;
+  if (isClickOutsideArea(e, 'point-button')) {
+    closePointModal();
   }
 });
-// 若已經在積分頁面，則重新整理
-function checkReload() {
+async function goToCheckout(isSingle: boolean) {
+  // 跳轉至積分頁面
+  if (isSingle) {
+    await navigateTo('/order/checkout?type=single&point=100');
+  } else {
+    await navigateTo('/order/checkout?type=subscription');
+  }
+  // 若已經在積分頁面，則重新整理
   if (route.path === '/order/checkout') {
     setTimeout(() => {
       window.location.reload();
     }, 1);
   }
+  // 關閉視窗
+  closePointModal();
+}
+function closePointModal() {
+  showPointModalSm.value = false;
+  showPointModal.value = false;
 }
 
 /**
@@ -239,26 +236,30 @@ const showMessageModal = ref(false);
 const messageModal = ref(null);
 onClickOutside(messageModal, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('message-button') == -1
-  ) {
-    showMessageModal.value = false;
+  if (isClickOutsideArea(e, 'message-button')) {
+    closeMessageModal();
   }
 });
 const showMessageModalSm = ref(false);
 const messageModalSm = ref(null);
 onClickOutside(messageModalSm, (e) => {
   // 點到按鈕以外才觸發
-  if (
-    e.target.nodeName == 'svg' ||
-    e.target.parentNode?.nodeName == 'svg' ||
-    e.target.className.indexOf('message-button') == -1
-  ) {
-    showMessageModalSm.value = false;
+  if (isClickOutsideArea(e, 'message-button')) {
+    closeMessageModal();
   }
 });
+function closeMessageModal() {
+  showMessageModalSm.value = false;
+  showMessageModal.value = false;
+}
+
+function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
+  return (
+    e?.target?.nodeName === 'svg' ||
+    e?.target?.parentNode?.nodeName === 'svg' ||
+    e?.target?.className.indexOf(ignoreClass) === -1
+  );
+}
 </script>
 
 <template>
@@ -337,7 +338,7 @@ onClickOutside(messageModalSm, (e) => {
           <div>
             <!-- FIX: 複製UID -->
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserListSm = false">
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
               <i class="icomoon icon-cross"></i>
             </button>
           </div>
@@ -378,7 +379,7 @@ onClickOutside(messageModalSm, (e) => {
       >
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">搜尋</div>
-          <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showSearchModalSm = false">
+          <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeSearchModal">
             <i class="icomoon icon-cross"></i>
           </button>
         </div>
@@ -467,8 +468,14 @@ onClickOutside(messageModalSm, (e) => {
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">訊息</div>
           <div class="flex">
-            <nuxt-link to="/user/consult" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"> 總覽 </nuxt-link>
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showMessageModalSm = false">
+            <nuxt-link
+              to="/user/consult"
+              class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+              @click="closeMessageModal"
+            >
+              總覽
+            </nuxt-link>
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeMessageModal">
               <i class="icomoon icon-cross"></i>
             </button>
           </div>
@@ -504,10 +511,14 @@ onClickOutside(messageModalSm, (e) => {
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">{{ currentPoint }} 積分</div>
           <div class="flex">
-            <nuxt-link to="/user/credit-history" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
+            <nuxt-link
+              to="/user/credit-history"
+              class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+              @click="closePointModal"
+            >
               積分明細
             </nuxt-link>
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showPointModalSm = false">
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closePointModal">
               <i class="icomoon icon-cross"></i>
             </button>
           </div>
@@ -521,8 +532,12 @@ onClickOutside(messageModalSm, (e) => {
               </p>
             </div>
             <div class="flex flex-col justify-center items-end">
-              <BaseButton content="NT $ 699" to="/order/checkout?type=subscription" @click="checkReload"></BaseButton>
-              <nuxt-link to="/order/offer" class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3">
+              <BaseButton content="NT $ 699" @click="goToCheckout(false)"></BaseButton>
+              <nuxt-link
+                to="/order/offer"
+                class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3"
+                @click="closePointModal"
+              >
                 詳細資訊
               </nuxt-link>
             </div>
@@ -533,12 +548,7 @@ onClickOutside(messageModalSm, (e) => {
               <p class="caption">可兌換 1 則薪水情報</p>
             </div>
             <div class="flex flex-col justify-center items-end">
-              <BaseButton
-                content="NT $ 150"
-                cate="secondary"
-                to="/order/checkout?type=single&point=100"
-                @click="checkReload"
-              ></BaseButton>
+              <BaseButton content="NT $ 150" cate="secondary" @click="goToCheckout(true)"></BaseButton>
             </div>
           </div>
         </div>
@@ -578,7 +588,7 @@ onClickOutside(messageModalSm, (e) => {
             >
               <div class="flex justify-between pb-3 border-b border-b-black-5">
                 <div class="text-xl">搜尋</div>
-                <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showSearchModal = false">
+                <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeSearchModal">
                   <i class="icomoon icon-cross"></i>
                 </button>
               </div>
@@ -692,10 +702,14 @@ onClickOutside(messageModalSm, (e) => {
               <div class="flex justify-between pb-3 border-b border-b-black-5">
                 <div class="text-xl">訊息</div>
                 <div class="flex">
-                  <nuxt-link to="/user/consult" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
+                  <nuxt-link
+                    to="/user/consult"
+                    class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                    @click="closeMessageModal"
+                  >
                     總覽
                   </nuxt-link>
-                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showMessageModal = false">
+                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeMessageModal">
                     <i class="icomoon icon-cross"></i>
                   </button>
                 </div>
@@ -744,7 +758,11 @@ onClickOutside(messageModalSm, (e) => {
               <div class="flex justify-between pb-3 border-b border-b-black-5">
                 <div class="text-xl">{{ currentPoint }} 積分</div>
                 <div class="flex">
-                  <nuxt-link to="/user/credit-history" class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">
+                  <nuxt-link
+                    to="/user/credit-history"
+                    class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                    @click="closePointModal"
+                  >
                     積分明細
                   </nuxt-link>
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showPointModal = false">
@@ -761,12 +779,12 @@ onClickOutside(messageModalSm, (e) => {
                     </p>
                   </div>
                   <div class="flex flex-col justify-center items-end">
-                    <BaseButton
-                      content="NT $ 699"
-                      to="/order/checkout?type=subscription"
-                      @click="checkReload"
-                    ></BaseButton>
-                    <nuxt-link to="/order/offer" class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3">
+                    <BaseButton content="NT $ 699" @click="goToCheckout(false)"></BaseButton>
+                    <nuxt-link
+                      to="/order/offer"
+                      class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3"
+                      @click="closePointModal"
+                    >
                       詳細資訊
                     </nuxt-link>
                   </div>
@@ -777,12 +795,7 @@ onClickOutside(messageModalSm, (e) => {
                     <p class="caption">可兌換 1 則薪水情報</p>
                   </div>
                   <div class="flex flex-col justify-center items-end">
-                    <BaseButton
-                      content="NT $ 150"
-                      cate="secondary"
-                      to="/order/checkout?type=single&point=100"
-                      @click="checkReload"
-                    ></BaseButton>
+                    <BaseButton content="NT $ 150" cate="secondary" @click="goToCheckout(true)"></BaseButton>
                   </div>
                 </div>
               </div>
@@ -818,7 +831,7 @@ onClickOutside(messageModalSm, (e) => {
                 <div>
                   <!-- FIX: 複製UID -->
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
-                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserList = false">
+                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
                     <i class="icomoon icon-cross"></i>
                   </button>
                 </div>

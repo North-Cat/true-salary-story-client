@@ -7,7 +7,7 @@ export default new (class order extends Http {
    * @params amount: 購買金額
    */
   public postLinePayOrder(data: object) {
-    return this.post('/api/linepay/order', data);
+    return this.post('/linepay/order', data);
   }
 
   /**
@@ -15,7 +15,7 @@ export default new (class order extends Http {
    * @params transactionId: 從 postLinePay() 取得的訂單編號
    */
   public postLinePayTransaction(transactionId: string) {
-    return this.post(`/api/linepay/${transactionId}`);
+    return this.post(`/linepay/${transactionId}`);
   }
 
   /**
