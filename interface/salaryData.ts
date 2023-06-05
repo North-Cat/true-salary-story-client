@@ -47,14 +47,14 @@ export interface ISalaryResult {
 export interface IMySalary {
   postId: string;
   companyName: string;
-  city: string;
+  city?: string;
   title: string;
-  monthlySalary: number;
-  hourlySalary: number;
-  dailySalary: number;
-  yearlySalary: number;
+  monthlySalary?: number;
+  hourlySalary?: number;
+  dailySalary?: number;
+  yearlySalary?: number;
   createDate: number;
-  seen: number;
+  seen?: number;
   employmentType: string;
 }
 

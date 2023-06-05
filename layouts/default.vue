@@ -46,6 +46,15 @@ const userList = ref([
     },
   },
   {
+    title: '已解鎖薪水',
+    icon: 'icon-sparkle-checked',
+    type: 'link',
+    id: 'user-opened-salary',
+    to: {
+      name: 'user-opened-salary',
+    },
+  },
+  {
     title: '薪水訂閱',
     icon: 'icon-plus-circle',
     to: {

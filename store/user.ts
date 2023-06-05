@@ -79,7 +79,7 @@ export const useUserStore = defineStore('user', () => {
     page: number;
   }) => {
     const result = await userApi.getOpenedSalary(data);
-    mySalary.value = {
+    openedSalary.value = {
       result: result.result || [],
       totalCount: result.totalCount || 0,
     };
