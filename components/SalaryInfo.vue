@@ -4,7 +4,6 @@ import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables
 
 defineProps<{
   post: IShareSalary;
-  isLocked: boolean;
 }>();
 const emit = defineEmits(['view']);
 </script>
@@ -40,7 +39,7 @@ const emit = defineEmits(['view']);
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6>{{ isLocked ? '兌換後顯示' : useNumberRange(post.monthlySalary) }}</h6>
+                    <h6>{{ post.isLocked ? '兌換後顯示' : useNumberRange(post.monthlySalary) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -49,7 +48,7 @@ const emit = defineEmits(['view']);
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年薪</div>
-                    <h6>{{ isLocked ? '兌換後顯示' : useNumberRange(post.yearlySalary) }}</h6>
+                    <h6>{{ post.isLocked ? '兌換後顯示' : useNumberRange(post.yearlySalary) }}</h6>
                   </div>
                 </div>
               </div>
@@ -57,25 +56,25 @@ const emit = defineEmits(['view']);
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年終</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.yearEndBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.yearEndBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">三節</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.holidayBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.holidayBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">分紅</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.profitSharingBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.profitSharingBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">其他</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.otherBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.otherBonus) }}</h6>
                   </div>
                 </div>
               </div>
@@ -150,7 +149,7 @@ const emit = defineEmits(['view']);
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <BaseButton v-if="isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
+            <BaseButton v-if="post.isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
           </div>
         </div>
       </div>

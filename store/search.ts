@@ -140,7 +140,7 @@ export const useSearchStore = defineStore('search', () => {
         companyName: el?.companyName || '',
         title: el?.title || '',
         employmentType: el?.employmentType || '',
-        inService: el?.inService || false,
+        inService: el?.inService !== undefined ? el.inService : false,
         city: el?.city || '',
         workYears: el?.workYears || '',
         totalWorkYears: el?.totalWorkYears || '',
@@ -161,6 +161,7 @@ export const useSearchStore = defineStore('search', () => {
         tags: el?.tags || [],
         customTags: el?.customTags || [],
         createDate: el?.createDate || '',
+        isLocked: el?.isLocked !== undefined ? el.isLocked : true
       };
     });
   };

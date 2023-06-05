@@ -29,7 +29,6 @@ const { companiesId } = useRoute().params as { companiesId: string };
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
-const { isLocked } = storeToRefs(salaryStore);
 const isShowModal = ref(false);
 const selectedPostId = ref();
 const redirect = (postId: string) => {
@@ -317,7 +316,7 @@ init();
               </div>
               <div v-if="companyPost && companyPost.length != 0">
                 <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
-                  <SalaryInfo :post="post" :is-locked="isLocked" @view="redirect" />
+                  <SalaryInfo :post="post" @view="redirect" />
                 </div>
               </div>
               <div

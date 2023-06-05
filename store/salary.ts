@@ -1,8 +1,11 @@
 import { defineStore } from 'pinia';
 import { ISalary, IShareSalary } from '~/interface/salaryData';
 import { useUserStore } from '@/store/user';
+import { useSearchStore } from '@/store/search';
 export const useSalaryStore = defineStore('salary', () => {
+  const route = useRoute();
   const user = useUserStore();
+  const search = useSearchStore();
   const tempSalaryFormData = ref<IShareSalary>({});
   const tempSalary = ref<ISalary>({});
   const keywords = ref([]);
@@ -34,8 +37,8 @@ export const useSalaryStore = defineStore('salary', () => {
     tags: [],
     customTags: [],
     createDate: '',
+    isLocked: true
   });
-  const isLocked = ref(true);
   const { shareSalaryApi } = useApi();
 
   const fetchSalaryInfo = async (id: string) => {
@@ -47,7 +50,7 @@ export const useSalaryStore = defineStore('salary', () => {
       companyName: result?.companyName || '',
       title: result?.title || '',
       employmentType: result?.employmentType || '',
-      inService: result?.inService || false,
+      inService: result?.inService !== undefined ? result.inService : false,
       city: result?.city || '',
       workYears: result?.workYears || '',
       totalWorkYears: result?.totalWorkYears || '',
@@ -68,8 +71,8 @@ export const useSalaryStore = defineStore('salary', () => {
       tags: result?.tags || [],
       customTags: result?.customTags || [],
       createDate: result?.createDate || '',
+      isLocked: result?.isLocked !== undefined ? result.isLocked : true
     };
-    isLocked.value = result.isLocked;
   };
 
   const fetchKeywords = async () => {
@@ -80,7 +83,11 @@ export const useSalaryStore = defineStore('salary', () => {
   const fetchPermission = async (id: string) => {
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
-      await fetchSalaryInfo(result.postId);
+      if (route.name === 'companies-companiesId') {
+        await search.fetchSearchCompanySalary(route.params.companiesId)
+      } else {
+        await fetchSalaryInfo(result.postId);
+      }
       user.tryToFetchProfile();
     }
   };
@@ -88,7 +95,6 @@ export const useSalaryStore = defineStore('salary', () => {
     tempSalaryFormData,
     tempSalary,
     post,
-    isLocked,
     keywords,
     fetchSalaryInfo,
     fetchKeywords,
