@@ -130,8 +130,8 @@ export const useSearchStore = defineStore('search', () => {
     page: number,
     limit: number,
   ) => {
-    const { result } = await searchApi.getCompanySalaries(taxId, sortOption, titleOption, page, limit);
-    companyPostCount.value = 10;
+    const { result, totalCount } = await searchApi.getCompanySalaries(taxId, sortOption, titleOption, page, limit);
+    companyPostCount.value = totalCount;
     companyPost.value = result.map((el: IShareSalary) => {
       return {
         postId: el?.postId || '',
