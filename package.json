@@ -23,6 +23,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.11.0",
+    "lottie-web": "^5.12.0",
     "nuxt": "^3.5.2",
     "nuxt-gtag": "^0.5.7",
     "pinia": "^2.0.35",
