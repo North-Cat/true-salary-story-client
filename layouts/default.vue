@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { RouteLocationRaw, useRoute } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
+import { useWSStore } from '@/store/ws';
 
 const route = useRoute();
 const router = useRouter();
@@ -24,12 +25,19 @@ onClickOutside(userListModalSm, (e) => {
   }
 });
 const user = useUserStore();
+const wsStore = useWSStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
+  wsStore.ws.close();
+
   logout();
   closeUserModal();
 };
+onUnmounted(() => {
+  wsStore.ws.close();
+});
+
 const userList = ref([
   {
     title: '關於我',
