@@ -177,18 +177,24 @@ async function search() {
     showInfo('提示', '請輸入搜尋條件');
     return;
   }
-  // 帶著參數導頁至搜尋頁面
-  await navigateTo({
-    path: '/search',
-    query: paramObj,
-  });
-
+  
   // 若已經在搜尋頁面，則重新整理
   if (route.path === '/search') {
+    await router.replace({
+      query: paramObj,
+    });
     setTimeout(() => {
       window.location.reload();
     }, 1);
+  }else {
+    // 帶著參數導頁至搜尋頁面
+    await router.push({
+      path: '/search',
+      query: paramObj,
+    });
   }
+
+  // 關閉視窗
   closeSearchModal();
 }
 function closeSearchModal() {

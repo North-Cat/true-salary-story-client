@@ -52,6 +52,7 @@ export const useSearchStore = defineStore('search', () => {
    * 單一公司所有薪水
    */
   const companyName = ref(); // 公司名稱
+  const companyType = ref(); // 公司產業
   const companyFeeling = ref(); // 公司概況 : 上班心情
   const companyOvertime = ref(); // 公司概況 : 加班頻率
   const companyAvgMonthlySalary = ref(); // 公司概況 : 平均月薪
@@ -187,6 +188,7 @@ export const useSearchStore = defineStore('search', () => {
   const fetchCompanyInfo = async (taxId: string) => {
     const { result } = await searchApi.getCompanyInfo(taxId);
     companyName.value = result.companyName;
+    companyType.value = result.companyType;
     companyFeeling.value = result.feeling;
     companyOvertime.value = result.overtime;
     companyAvgMonthlySalary.value = result.avgMonthlySalary;
@@ -209,6 +211,7 @@ export const useSearchStore = defineStore('search', () => {
     postCount,
     userCount,
     companyName,
+    companyType,
     companyFeeling,
     companyOvertime,
     companyAvgMonthlySalary,
