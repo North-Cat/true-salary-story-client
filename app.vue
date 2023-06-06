@@ -4,10 +4,17 @@ useHead({
     return titleChunk ? `${titleChunk} - 真薪話` : '真薪話';
   },
 });
+
+const pwaEnv = ref('');
+
+const runtimeConfig = useRuntimeConfig();
+pwaEnv.value = runtimeConfig.public.pwaEnv;
+
+onMounted(() => {});
 </script>
 <template>
   <div>
-    <VitePwaManifest />
+    <VitePwaManifest v-if="pwaEnv !== 'local'" />
     <!-- modal -->
     <default-modal></default-modal>
     <!-- message -->

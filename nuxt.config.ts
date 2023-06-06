@@ -6,8 +6,10 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-gtag', '@vite-pwa/nuxt'],
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules'] },
   runtimeConfig: {
+    apiSecret: '123',
     public: {
       apiBase: 'https://client-api-dev.up.railway.app',
+      pwaEnv: process.env.PWA_ENV || 'local',
     },
   },
   telemetry: false,
@@ -66,14 +68,8 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      runtimeCaching: [
-        {
-          urlPattern: /.*\.(?:css|js)/,
-          handler: 'NetworkFirst',
-        },
-      ],
       navigateFallback: '/',
-      globPatterns: ['**/*.{js,ts,vue,css,html,png,svg,ico}'],
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
     },
     // TODO: Temp Test for PWA
     // client: {
@@ -82,6 +78,7 @@ export default defineNuxtConfig({
     // },
     devOptions: {
       enabled: true,
+      navigateFallbackAllowlist: [/^\/$/],
       type: 'module',
     },
   },
