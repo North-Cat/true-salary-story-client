@@ -4,9 +4,12 @@ export interface ILoginUserInfo {
   email: string;
   profilePicture: string;
   _id: string;
-  points: object;
+  points: IPoint;
 }
 
+interface IPoint {
+  checkInStreak: number
+}
 export interface IRequestHeaders extends Headers {
   Authorization?: string;
 }
