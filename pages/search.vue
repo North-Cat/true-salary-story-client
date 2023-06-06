@@ -81,14 +81,14 @@ const keywordTotalPages = ref(1); // 總頁數
  * UI function
  */
 // 點擊搜尋
-async function clickSearch(page?: number) {
+function clickSearch(page?: number) {
   if (!searchParam.value) {
     showInfo('提示', '請輸入搜尋條件');
     return;
   }
 
   // 換頁
-  await changePageByTab(page);
+  changePageByTab(page);
 
   // 更新 URL 參數，這樣重新整理就會是正確的參數
   const paramObj = {
@@ -97,12 +97,12 @@ async function clickSearch(page?: number) {
     page,
   };
   const router = useRouter();
-  await router.replace({
+  router.replace({
     query: paramObj,
   });
 
   // 搜尋
-  await search();
+  search();
 }
 // 換頁搜尋
 function changePage(page: number) {

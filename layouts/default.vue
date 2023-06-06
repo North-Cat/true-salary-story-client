@@ -177,7 +177,7 @@ async function search() {
     showInfo('提示', '請輸入搜尋條件');
     return;
   }
-  
+
   // 若已經在搜尋頁面，則重新整理
   if (route.path === '/search') {
     await router.replace({
@@ -186,7 +186,7 @@ async function search() {
     setTimeout(() => {
       window.location.reload();
     }, 1);
-  }else {
+  } else {
     // 帶著參數導頁至搜尋頁面
     await router.push({
       path: '/search',
