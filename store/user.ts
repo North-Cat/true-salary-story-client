@@ -128,10 +128,16 @@ export const useUserStore = defineStore('user', () => {
       totalCount: result.totalCount || 0,
     };
   };
+
   const checkInStreak = ref(0);
+  const isCheckInLoading = ref(false);
   const tryToFetchPostDailyCheckIn = async () => {
+    isCheckInLoading.value = true;
     const result = await userApi.postDailyCheckIn();
-    checkInStreak.value = result.data.checkInStreak;
+    if (result && result.data){
+      checkInStreak.value = result.data.checkInStreak;
+      isCheckInLoading.value = false;
+    }
   };
 
   return {
@@ -157,5 +163,6 @@ export const useUserStore = defineStore('user', () => {
     openedSalary,
     tryToFetchPostDailyCheckIn,
     checkInStreak,
+    isCheckInLoading
   };
 });
