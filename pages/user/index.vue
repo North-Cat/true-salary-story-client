@@ -96,8 +96,50 @@ const forceRender = () => {
             <h5 class="me-3">每日簽到：已連續簽到<span class="text-blue px-1">{{ currentCheckInStreak }}</span>天</h5>
           </div>
           <div class="flex flex-col w-full">
-            <div class="w-full flex flex-row-reverse border border-black-1 rounded px-2 py-5 mb-6">
-              <div class="w-1/2 flex flex-col p-5">
+            <div class="w-full flex flex-col lg:flex-row border border-black-1 rounded px-0 py-5">
+              <div class="w-full lg:w-1/2 flex justify-center p-5 pb-0 lg:pl-10">
+                <div class="flex flex-wrap">
+                  <div v-for="count in checkInLastlyRewardCount" :key="count" class="">
+  
+                    <!-- 一般天數 -->
+                    <div v-if="count != checkInFirstRewardCount && count != checkInLastlyRewardCount" 
+                    class="flex flex-col items-center justify-center me-4 mb-5">
+                      <div class="caption text-sm text-black-6 mb-2"><span class="pe-[2px]">{{ count }}</span>天</div>
+                      <!-- 已簽到樣式 -->
+                      <div v-if="count <= currentCheckInStreak" class="flex justify-center items-center w-12 h-12" :key="componentKey">
+                        <Lottie :options="checkInOptions" class="absolute -top-[23px] w-[96px] h-[96px]"/>
+                      </div>
+                      <!-- 未簽到樣式 -->
+                      <div v-if="count > currentCheckInStreak" class="flex justify-center items-center rounded-full w-12 h-12 bg-gray border border-black-1">
+                        <div class="caption text-md font-medium">+10</div>
+                      </div>
+                    </div>
+  
+                    <!-- 特別天數 -->
+                    <div v-if="count == checkInFirstRewardCount || count == checkInLastlyRewardCount" 
+                    class="flex flex-col items-center justify-center me-4 mb-5">
+                      <div class="caption text-sm text-black-6 mb-2"><span class="pe-[2px]">{{ count }}</span>天</div>
+                      <!-- 已簽到樣式 -->
+                      <div v-if="count <= currentCheckInStreak" class="flex justify-center items-center w-12 h-12" :key="componentKey">
+                        <Lottie :options="checkInSpOptions" class="absolute -top-[23px] w-[96px] h-[96px]"/>
+                      </div>
+                      <!-- 未簽到樣式 -->
+                      <div v-if="count == checkInFirstRewardCount && count > currentCheckInStreak" class="flex justify-center items-center rounded-full w-12 h-12 bg-gray border border-yellow">
+                        <div class="caption text-md font-medium text-yellow">+50</div>
+                      </div>
+                      <div v-if="count == checkInLastlyRewardCount && count > currentCheckInStreak" class="flex justify-center items-center rounded-full w-12 h-12 bg-gray border border-yellow">
+                        <div class="caption text-md font-medium text-yellow">+100</div>
+                      </div>
+                    </div>
+                  </div> 
+                </div>
+
+              </div>
+              
+              
+              <div class="hidden lg:flex :w-[1px] h-full py-48 border-r border-black-1"></div>
+
+              <div class="w-full lg:w-1/2 flex flex-col p-5">
                 <div class="pb-5 mb-5 border-b border-black-1">
                   <BaseButton 
                   class="w-full  h-[48px]" 
@@ -134,44 +176,6 @@ const forceRender = () => {
                     
               </div>
               
-              <div class="w-[1px] h-full py-48 border-r border-black-1"></div>
-
-              <div class="w-1/2 flex flex-wrap p-5">
-                <div v-for="count in checkInLastlyRewardCount" :key="count" class="">
-
-                  <!-- 一般天數 -->
-                  <div v-if="count != checkInFirstRewardCount && count != checkInLastlyRewardCount" 
-                  class="flex flex-col items-center justify-center me-4">
-                    <div class="caption text-sm text-black-6 mb-3"><span class="pe-[2px]">{{ count }}</span>天</div>
-                    <!-- 已簽到樣式 -->
-                    <div v-if="count <= currentCheckInStreak" class="flex justify-center items-center w-12 h-12" :key="componentKey">
-                      <Lottie :options="checkInOptions" class="absolute -top-[23px] w-[96px] h-[96px]"/>
-                    </div>
-                    <!-- 未簽到樣式 -->
-                    <div v-if="count > currentCheckInStreak" class="flex justify-center items-center rounded-full w-12 h-12 bg-gray border border-black-1">
-                      <div class="caption text-md font-medium">+10</div>
-                    </div>
-                  </div>
-
-                  <!-- 特別天數 -->
-                  <div v-if="count == checkInFirstRewardCount || count == checkInLastlyRewardCount" 
-                  class="flex flex-col items-center justify-center me-4">
-                    <div class="caption text-sm text-black-6 mb-3"><span class="pe-[2px]">{{ count }}</span>天</div>
-                    <!-- 已簽到樣式 -->
-                    <div v-if="count <= currentCheckInStreak" class="flex justify-center items-center w-12 h-12" :key="componentKey">
-                      <Lottie :options="checkInSpOptions" class="absolute -top-[23px] w-[96px] h-[96px]"/>
-                    </div>
-                    <!-- 未簽到樣式 -->
-                    <div v-if="count == checkInFirstRewardCount && count > currentCheckInStreak" class="flex justify-center items-center rounded-full w-12 h-12 bg-gray border border-yellow">
-                      <div class="caption text-md font-medium text-yellow">+50</div>
-                    </div>
-                    <div v-if="count == checkInLastlyRewardCount && count > currentCheckInStreak" class="flex justify-center items-center rounded-full w-12 h-12 bg-gray border border-yellow">
-                      <div class="caption text-md font-medium text-yellow">+100</div>
-                    </div>
-                  </div>
-                </div> 
-
-              </div>
             </div>
           </div>
         </div>
