@@ -131,7 +131,7 @@ export const useUserStore = defineStore('user', () => {
   const checkInStreak = ref(0);
   const tryToFetchPostDailyCheckIn = async () => {
     const result = await userApi.postDailyCheckIn();
-    checkInStreak.value = result.checkInStreak;
+    checkInStreak.value = result.data.checkInStreak;
   };
 
   return {
