@@ -156,6 +156,6 @@ export const useUserStore = defineStore('user', () => {
     tryToFetchOpenedSalary,
     openedSalary,
     tryToFetchPostDailyCheckIn,
-    checkInStreak
+    checkInStreak,
   };
 });

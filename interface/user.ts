@@ -1,3 +1,6 @@
+interface IPoint {
+  checkInStreak: number;
+}
 export interface ILoginUserInfo {
   value: ILoginUserInfo;
   displayName: string;
@@ -5,10 +8,6 @@ export interface ILoginUserInfo {
   profilePicture: string;
   _id: string;
   points: IPoint;
-}
-
-interface IPoint {
-  checkInStreak: number
 }
 export interface IRequestHeaders extends Headers {
   Authorization?: string;
