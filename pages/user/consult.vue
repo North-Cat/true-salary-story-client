@@ -1,5 +1,9 @@
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 import { useWindowSize } from '@vueuse/core';
+
+import { useConsultStore } from '@/store/consult';
+import { IConsult } from '@/interface/consult';
 
 useHead({
   title: '請教記錄',
@@ -11,121 +15,16 @@ interface Requester {
   isRead: boolean;
 }
 const { width } = useWindowSize();
-const isActive = ref('');
+const consultStore = useConsultStore();
+
 const search = ref('');
 const message = ref<HTMLInputElement | null>(null);
 const room = ref<HTMLInputElement | null>(null);
 const step = ref(1);
-const rightSide = [
-  {
-    consultId: '111',
-    requester: {
-      userId: '64578009c6b3b228ccd5fcc3',
-      name: 'Chen Yu',
-      title: '工程師',
-      createDate: '2023/5/20',
-      message: '我覺得你可以...',
-      companyName: '台灣塑膠工業府份有限公司',
-      isRead: false,
-    },
-  },
-  {
-    consultId: '222',
-    requester: {
-      userId: '6j4589j2dd6b3b334ad5fdd8',
-      name: '王曉明',
-      title: '前端工程師',
-      createDate: '2023/4/14',
-      message: '您好,我想問...',
-      companyName: '台灣塑膠工業府份有限公司',
-      isRead: false,
-    },
-  },
-  {
-    consultId: '333',
-    requester: {
-      userId: '6jdfg89jssdd133b894as5fdcs',
-      name: '吳大米',
-      title: 'PT',
-      createDate: '2023/03/14',
-      message: '前輩你好，請問...',
-      companyName: '統一超商有限公司',
-      isRead: true,
-    },
-  },
-  {
-    consultId: '444',
-    requester: {
-      userId: '9024g89jss00933b89aas5fdcs',
-      name: 'Jordan',
-      title: 'PT',
-      createDate: '2023/02/20',
-      message: '好的，謝謝',
-      companyName: '統一超商有限公司',
-      isRead: false,
-    },
-  },
-  {
-    consultId: '555',
-    requester: {
-      userId: '90lo119jss00933b0012s5f008',
-      name: 'Rose',
-      title: '',
-      createDate: '2023/02/20',
-      message: '那我了解了，我覺得還是要這樣比較好',
-      companyName: '六角學院股份有限公司',
-      isRead: true,
-    },
-  },
-  {
-    consultId: '666',
-    requester: {
-      userId: '6j4589j2dd6b3b334ad5fdd8',
-      name: '王曉明',
-      title: '前端工程師',
-      createDate: '2023/4/14',
-      message: '您好,我想問...',
-      companyName: '台灣塑膠工業府份有限公司',
-      isRead: false,
-    },
-  },
-  {
-    consultId: '777',
-    requester: {
-      userId: '6jdfg89jssdd133b894as5fdcs',
-      name: '吳大米',
-      title: 'PT',
-      createDate: '2023/03/14',
-      message: '前輩你好，請問...',
-      companyName: '統一超商有限公司',
-      isRead: true,
-    },
-  },
-  {
-    consultId: '888',
-    requester: {
-      userId: '9024g89jss00933b89aas5fdcs',
-      name: 'Jordan',
-      title: 'PT',
-      createDate: '2023/02/20',
-      message: '好的，謝謝',
-      companyName: '統一超商有限公司',
-      isRead: false,
-    },
-  },
-  {
-    consultId: '999',
-    requester: {
-      userId: '90lo119jss00933b0012s5f008',
-      name: 'Rose',
-      title: '',
-      createDate: '2023/02/20',
-      message: '那我了解了，我覺得還是要這樣比較好',
-      companyName: '六角學院股份有限公司',
-      isRead: true,
-    },
-  },
-];
+
+const consultList = computed(() => consultStore.consultList);
+const isActive = computed(() => consultStore.isActive);
+
 const chatRooms = {
   consultId: '111',
   title: '前端工程師',
@@ -169,13 +68,11 @@ const chatRooms = {
     },
   ],
 };
-const onClick = (item: { requester: Requester; consultId: string }) => {
-  isActive.value = item.consultId;
-  rightSide.forEach((rightSideItem) => {
-    if (item.consultId === rightSideItem.consultId) {
-      item.requester.isRead = true;
-    }
-  });
+const onClick = (item: IConsult) => {
+  consultStore.currentConsult = item;
+  consultStore.isActive = item._id;
+
+  consultStore.currentConsult.isRead = true;
   step.value = 2;
 };
 const tempIsSend = ref(false);
@@ -211,11 +108,23 @@ const scrollToBottom = () => {
 };
 const goBack = () => {
   step.value = 1;
-  isActive.value = '';
+  consultStore.isActive = '';
 };
-onMounted(() => {
-  scrollToBottom();
+onMounted(async () => {
+  try {
+    await consultStore.fetchConsultList();
+
+    scrollToBottom();
+  } catch (error) {
+    console.error(error);
+  }
 });
+
+const formatData = (createdAt: Date) => {
+  const date = new Date(createdAt);
+  const localDate = date.toLocaleDateString('zh-TW');
+  return localDate;
+};
 </script>
 <template>
   <userLayouts>
@@ -225,21 +134,18 @@ onMounted(() => {
         :class="{ isMobile: width < 678, isActive: step === 1 }"
       >
         <div class="divide-y divide-black-3">
-          <div v-for="(item, $index) in rightSide" :key="$index" class="">
-            <button :class="{ 'bg-black-1': isActive === item.consultId }" class="p-3 w-full" @click="onClick(item)">
+          <div v-for="(item, $index) in consultList" :key="$index" class="">
+            <button :class="{ 'bg-black-1': isActive === item._id }" class="p-3 w-full" @click="onClick(item)">
               <div>
-                <h5
-                  class="text-lg text-blue text-base text-left"
-                  :class="{ 'text-blue-dark': isActive === item.consultId }"
-                >
-                  {{ '職務' }}
+                <h5 class="text-lg text-blue text-base text-left" :class="{ 'text-blue-dark': isActive === item._id }">
+                  {{ item.activePost.title }}
                 </h5>
-                <p class="text-sm text-left">{{ '公司名稱' }}</p>
+                <p class="text-sm text-left">{{ item.activePost.companyName }}</p>
                 <div class="flex justify-between text-sm">
-                  <p class="truncate pr-2" :class="{ 'text-black-5': item.requester.isRead }">
-                    {{ item.requester.message }}
+                  <p class="truncate pr-2" :class="{ 'text-black-5': item.isRead }">
+                    {{ item.messages.length ? item.messages[item.messages.length - 1].content : '暫無對話' }}
                   </p>
-                  <span class="shirnk">{{ '2023/04/12' }}</span>
+                  <span class="shirnk">{{ formatData(item.updateDate) }}</span>
                 </div>
               </div>
             </button>
