@@ -16,7 +16,7 @@ definePageMeta({
 
 const user = useUserStore();
 const { tryToFetchProfile, tryToFetchPostDailyCheckIn } = user;
-const { currentUser, checkTodayCheckedIn, checkInStreak } = storeToRefs(user);
+const { currentUser, checkTodayCheckedIn, checkInStreak, isCheckInLoading } = storeToRefs(user);
 const checkInFirstRewardCount = ref(7);
 const checkInLastlyRewardCount = ref(14);
 const currentCheckInStreak = ref(0); // 簽到連續天數
@@ -98,13 +98,13 @@ const forceRender = () => {
           </div>
           <div class="flex flex-col w-full">
             <div class="w-full flex flex-col lg:flex-row border border-black-1 rounded px-0 py-5">
-              <div class="w-full lg:w-1/2 flex justify-center p-5 pb-0 lg:pl-10">
-                <div class="flex flex-wrap">
+              <div class="w-full lg:w-1/2 flex justify-center p-5 ">
+                <div class="grid grid-cols-5 md:grid-cols-7 lg:grid-cols-5 gap-x-4 gap-y-5 lg:gap-y-0">
                   <div v-for="count in checkInLastlyRewardCount" :key="count" class="">
                     <!-- 一般天數 -->
                     <div
                       v-if="count != checkInFirstRewardCount && count != checkInLastlyRewardCount"
-                      class="flex flex-col items-center justify-center me-4 mb-5"
+                      class="flex flex-col items-center justify-center"
                     >
                       <div class="caption text-sm text-black-6 mb-2">
                         <span class="pe-[2px]">{{ count }}</span
@@ -130,7 +130,7 @@ const forceRender = () => {
                     <!-- 特別天數 -->
                     <div
                       v-if="count == checkInFirstRewardCount || count == checkInLastlyRewardCount"
-                      class="flex flex-col items-center justify-center me-4 mb-5"
+                      class="flex flex-col items-center justify-center"
                     >
                       <div class="caption text-sm text-black-6 mb-2">
                         <span class="pe-[2px]">{{ count }}</span
@@ -165,15 +165,21 @@ const forceRender = () => {
               <div class="hidden lg:flex :w-[1px] h-full py-48 border-r border-black-1"></div>
 
               <div class="w-full lg:w-1/2 flex flex-col p-5">
-                <div class="pb-5 mb-5 border-b border-black-1">
+                <div class="pb-5 mb-5 border-b border-black-1">            
                   <BaseButton
                     class="w-full h-[48px]"
-                    :class="{ 'pointer-events-none': checkTodayCheckedIn }"
+                    :class="{ 'pointer-events-none': checkTodayCheckedIn || isCheckInLoading, 'opacity-80': isCheckInLoading }"
                     :content="checkInText"
                     :cate="checkTodayCheckedIn ? 'gray' : 'primary'"
                     @click="checkIn"
                   >
-                    <div class="icon-checked text-lg me-1"></div>
+                    <div v-if="isCheckInLoading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    </div>
+                    <div v-else class="icon-checked text-lg me-1"></div>
                   </BaseButton>
                 </div>
                 <div class="flex flex-col">
