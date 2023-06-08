@@ -6,6 +6,10 @@
   letter-spacing: 0.03em;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 /* 首頁輪播套件調整 */
 .carousel__slide.carousel__slide--prev > div {
   margin-right: 88px;
