@@ -38,7 +38,7 @@ function checkIsShow() {
         </div>
       </div>
       <!-- sm -->
-      <div class="fixed lg:hidden w-full bottom-[84px] shadow-lg bg-white rounded py-5 px-5 z-10">
+      <div class="fixed lg:hidden w-full bottom-[84px] drop-shadow-modal bg-white rounded py-5 px-5 z-10">
         <div class="flex justify-between items-center mb-3">
           <h6>每日簽到，取得積分！</h6>
           <button class="text-black-6 text-sm pt-[3px] pl-3" @click="showModal = false">
