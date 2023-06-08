@@ -86,7 +86,7 @@ const forceRender = () => {
         </ul>
         <div class="border-b border-black-1 py-4 mb-6"></div>
         <!-- 每日簽到 -->
-        <div v-if="currentUser && currentUser.points && currentUser.points.checkInStreak" class="mb-5 flex flex-col">
+        <div v-if="currentUser && currentUser.points" class="mb-5 flex flex-col">
           <div class="flex mb-5">
             <h5 class="me-3">
               每日簽到：已連續簽到<span class="text-blue px-1">{{ currentUser.points.checkInStreak }}</span
