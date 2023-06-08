@@ -14,6 +14,8 @@ useHead({
     <client-only>
       <notifications position="top right" class="my-notification" :duration="3000" :max="5" />
     </client-only>
+    <!-- 簽到提示 -->
+    <RemindCheckIn></RemindCheckIn>
 
     <!-- 套用共通 layout (nav 跟 footer)-->
     <NuxtLayout>
