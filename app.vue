@@ -26,7 +26,7 @@ onMounted(() => {});
 
     <!-- 套用共通 layout (nav 跟 footer)-->
     <NuxtLayout>
-      <!-- <NuxtPage /> 用於路由設定，會根據 pages/ 資料夾底下的檔案名稱作為路由，例如 "/about" 會載入 "pages/about.vue"，而 "/" 預設載入 "pages/index.vue" -->
+      <NuxtLoadingIndicator :throttle="0" color="repeating-linear-gradient(to right,#34cdfe 0%,#366BAB 100%)"/>
       <NuxtPage />
     </NuxtLayout>
   </div>
