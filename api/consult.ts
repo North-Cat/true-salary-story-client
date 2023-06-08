@@ -13,6 +13,6 @@ export default new (class consult extends Http {
    *
    */
   public getConsultList() {
-    return this.get(`/api/account/consult/list`);
+    return this.get('/api/account/consult/list');
   }
 })();

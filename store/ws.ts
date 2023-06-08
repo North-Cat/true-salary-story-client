@@ -1,16 +1,16 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/store/user';
+import { useConsultStore } from '@/store/consult';
 
 export const useWSStore = defineStore('ws', () => {
   const {
     public: { wssBase },
   } = useRuntimeConfig();
   const userStore = useUserStore();
+  const consultStore = useConsultStore();
 
   const url = wssBase;
   const ws = ref();
-
-  const historyMessage = ref<any[]>([]);
 
   const init = () => {
     ws.value = new WebSocket(url);
@@ -34,7 +34,26 @@ export const useWSStore = defineStore('ws', () => {
       const res = JSON.parse(event.data);
       console.log('res: ', res);
 
-      historyMessage.value = [...historyMessage.value, res];
+      if (res.type === 'chat') {
+        const { consultId, content, senderId: sender, createDate } = res;
+
+        const target = consultStore.consultList.find((o) => o._id === consultId);
+
+        if (target) {
+          target.messages = [
+            ...target.messages,
+            {
+              sender,
+              content,
+              createDate,
+            },
+          ];
+
+          if (target._id !== consultStore.currentConsult._id) {
+            target.isRead = false;
+          }
+        }
+      }
     };
   };
 

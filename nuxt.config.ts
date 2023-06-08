@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: 'https://client-api-dev.up.railway.app',
       pwaEnv: process.env.PWA_ENV || 'local',
-      wssBase: 'ws://localhost:3000',
+      wssBase: 'wss://client-api-dev.up.railway.app',
     },
   },
   telemetry: false,

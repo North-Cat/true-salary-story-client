@@ -3,6 +3,8 @@ import { ref, onMounted } from 'vue';
 import { useWindowSize } from '@vueuse/core';
 
 import { useConsultStore } from '@/store/consult';
+import { useWSStore } from '@/store/ws';
+import { useUserStore } from '@/store/user';
 import { IConsult } from '@/interface/consult';
 
 useHead({
@@ -16,6 +18,8 @@ interface Requester {
 }
 const { width } = useWindowSize();
 const consultStore = useConsultStore();
+const wsStore = useWSStore();
+const userStore = useUserStore();
 
 const search = ref('');
 const message = ref<HTMLInputElement | null>(null);
@@ -23,51 +27,10 @@ const room = ref<HTMLInputElement | null>(null);
 const step = ref(1);
 
 const consultList = computed(() => consultStore.consultList);
+const currentConsult = computed(() => consultStore.currentConsult);
 const isActive = computed(() => consultStore.isActive);
+const messageList = computed(() => (currentConsult.value ? currentConsult.value.messages : []));
 
-const chatRooms = {
-  consultId: '111',
-  title: '前端工程師',
-  ompanyName: '台灣塑膠工業府份有限公司',
-  messages: [
-    {
-      messageId: '11111',
-      userId: '64578009c6b3b228ccd5fcc3',
-      content: '你好，我想請教你在這邊的如果進去的話有教育訓練嗎',
-      post: 'get',
-      createDate: '2023/04/12',
-    },
-    {
-      messageId: '22222',
-      userId: '64578009c6b3b228ccd5fcc3',
-      content:
-        '因為我看他的104上面寫的好像會有教育訓練，然後我還蠻重視這個\n剛好您的職業是我所想要得，所以想跟您確認一下謝謝。',
-      post: 'get',
-      createDate: '2023/04/12',
-    },
-    {
-      messageId: '33333',
-      userId: '64578009c6b3b228ccd5fcc3',
-      content: '你好，我之前進來的時候是有的哦，會派一個人交你工作事項，然後公司會有一天是全體教育訓練',
-      post: 'send',
-      createDate: '2023/04/15',
-    },
-    {
-      messageId: '44444',
-      userId: '64578009c6b3b228ccd5fcc3',
-      content: '所以不用擔心~',
-      post: 'send',
-      createDate: '2023/04/15',
-    },
-    {
-      messageId: '55555',
-      userId: '64578009c6b3b228ccd5fcc3',
-      content: '好的，謝謝你的回覆',
-      post: 'get',
-      createDate: '2023/04/15',
-    },
-  ],
-};
 const onClick = (item: IConsult) => {
   consultStore.currentConsult = item;
   consultStore.isActive = item._id;
@@ -95,6 +58,19 @@ const sendMessage = (e: { key: string; preventDefault: () => void }) => {
     return;
   }
   // 在此處執行傳送訊息的相關操作
+  const payload = {
+    type: 'chat',
+    consultId: currentConsult.value._id,
+    content: search.value,
+    receiverId:
+      currentConsult.value.sender === userStore.currentUser._id
+        ? currentConsult.value.receiver
+        : currentConsult.value.sender,
+  };
+
+  if (wsStore.ws) {
+    wsStore.ws.send(JSON.stringify(payload));
+  }
 
   console.log('傳送訊息:', search.value);
 
@@ -110,14 +86,11 @@ const goBack = () => {
   step.value = 1;
   consultStore.isActive = '';
 };
-onMounted(async () => {
-  try {
-    await consultStore.fetchConsultList();
 
-    scrollToBottom();
-  } catch (error) {
-    console.error(error);
-  }
+consultStore.fetchConsultList();
+
+onMounted(() => {
+  scrollToBottom();
 });
 
 const formatData = (createdAt: Date) => {
@@ -157,23 +130,30 @@ const formatData = (createdAt: Date) => {
           ><i class="icon-left-arrow pr-3"></i>返回</BaseButton
         >
         <div>
-          <h5 class="text-lg text-blue text-base text-left">{{ '職務' }}</h5>
-          <p class="text-sm text-left">{{ '公司名稱' }}</p>
+          <h5 v-if="currentConsult && currentConsult.activePost" class="text-lg text-blue text-base text-left">
+            {{ currentConsult.activePost.title }}
+          </h5>
+          <p v-if="currentConsult && currentConsult.activePost" class="text-sm text-left">
+            {{ currentConsult.activePost.companyName }}
+          </p>
         </div>
         <hr class="text-black-3 my-3" />
         <div ref="room" class="h-[400px] overflow-y-scroll pr-2">
-          <template v-for="item in chatRooms.messages" :key="item.messageId">
-            <div v-if="item.post === 'get'" class="max-w-[14rem] flex justify-start mb-3">
-              <div class="bg-black-1 p-3 rounded-r-lg rounded-bl-lg text-black-10">
-                <p class="text-sm">{{ item.content }}</p>
+          <template v-if="messageList.length">
+            <template v-for="item in messageList" :key="item.messageId">
+              <div v-if="item.sender !== userStore.currentUser._id" class="max-w-[14rem] flex justify-start mb-3">
+                <div class="bg-black-1 p-3 rounded-r-lg rounded-bl-lg text-black-10">
+                  <p class="text-sm">{{ item.content }}</p>
+                </div>
               </div>
-            </div>
-            <div v-if="item.post === 'send'" class="max-w-[14rem] flex justify-end ml-auto mb-3">
-              <div class="bg-blue text-white p-3 rounded-l-lg rounded-br-lg">
-                <p class="text-sm">{{ item.content }}</p>
+              <div v-if="item.sender === userStore.currentUser._id" class="max-w-[14rem] flex justify-end ml-auto mb-3">
+                <div class="bg-blue text-white p-3 rounded-l-lg rounded-br-lg">
+                  <p class="text-sm">{{ item.content }}</p>
+                </div>
               </div>
-            </div>
+            </template>
           </template>
+          <template v-else>暫無對話紀錄</template>
         </div>
         <div class="flex">
           <textarea
