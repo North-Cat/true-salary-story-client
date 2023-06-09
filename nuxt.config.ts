@@ -8,9 +8,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: '123',
     public: {
-      apiBase: 'https://client-api-dev.up.railway.app',
+      apiBase: 'https://true-salary-story-client-api-deploy.onrender.com',
+      // apiBase: 'https://client-api-dev.up.railway.app',
       pwaEnv: process.env.PWA_ENV || 'local',
-      wssBase: 'wss://client-api-dev.up.railway.app',
+      // wssBase: 'wss://client-api-dev.up.railway.app',
+      wssBase: 'wss://true-salary-story-client-api-deploy.onrender.com',
     },
   },
   telemetry: false,
