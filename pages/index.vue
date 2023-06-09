@@ -2296,7 +2296,7 @@
           >
             <carousel ref="postCarousel" class="w-full" :items-to-show="1" wrap-around>
               <slide
-                v-for="slide in popularPosts.length / 3"
+                v-for="slide in Math.ceil(popularPosts.length / 3)"
                 :key="slide"
                 style="margin-top: 25px; margin-bottom: 25px"
               >
@@ -2459,7 +2459,7 @@
               >
                 <div class="w-full">
                   <carousel ref="comCarousel" class="w-full" :items-to-show="1" wrap-around>
-                    <slide v-for="slide in popularCompanies.length / 5" :key="slide">
+                    <slide v-for="slide in Math.ceil(popularCompanies.length / 5)" :key="slide">
                       <div class="w-full flex flex-col">
                         <div v-for="(com, index) in popularCompanies" :key="com.taxId + index">
                           <TextLink

@@ -3,8 +3,9 @@
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
-import { useSalaryStore } from '@/store/salary';
 import { useSearchStore } from '@/store/search';
+import { useSalaryStore } from '@/store/salary';
+import { useOvertimeClass, useFeelingClass } from '@/composables/post';
 
 const searchStore = useSearchStore();
 // TODO 取得 store 的公司資訊
@@ -12,6 +13,7 @@ const {
   companyPost,
   companyPostCount,
   companyName,
+  companyType,
   companyFeeling,
   companyOvertime,
   companyAvgMonthlySalary,
@@ -28,6 +30,7 @@ const { companiesId } = useRoute().params as { companiesId: string };
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
+const { isLocked } = storeToRefs(salaryStore);
 const isShowModal = ref(false);
 const selectedPostId = ref();
 const redirect = (postId: string) => {
@@ -38,43 +41,11 @@ const redirect = (postId: string) => {
   }
   isShowModal.value = true;
 };
-// 對照該薪水是否解鎖
-// TODO: 在 api 取得所有 post 的時候 gen
-// key : salaryId, value :isLocked
-// const salaryLockMap = ref<{ postId: string; isLocked: boolean }[]>([
-//   {
-//     postId: '6468c348abb6863c8509cfee',
-//     isLocked: false,
-//   },
-//   {
-//     postId: 'xxxx2',
-//     isLocked: false,
-//   },
-//   {
-//     postId: 'xxxx3',
-//     isLocked: false,
-//   },
-//   {
-//     postId: 'xxxx4',
-//     isLocked: false,
-//   },
-// ]);
-const unlockPost = async () => {
-  // FIXME 改接 API
-  // const isLocked = await salaryStore.fetchPermission(selectedPostId.value);
-  const isLocked = true;
-  if (typeof isLocked === 'boolean' && companyPost && companyPost.value) {
-    for (const item of companyPost.value) {
-      item.postId === selectedPostId.value ? (item.isLocked = isLocked) : undefined;
-    }
-  }
+
+const unlockPost = () => {
+  salaryStore.fetchPermission(selectedPostId.value);
   isShowModal.value = false;
 };
-
-// const checkIsLocked = computed(() => (postId: string) => {
-//   const salary = salaryLockMap.value.find((item) => item.postId === postId);
-//   return salary?.isLocked;
-// });
 
 /**
  * 篩選相關
@@ -85,10 +56,10 @@ const titleConditions = ref<string[]>([]);
 titleConditions.value = ['全部']; // 預設全部
 // 排序
 const sortOptions = [
-  { text: '分享時間 近→遠', value: 1 },
-  { text: '分享年薪 高→低', value: 2 },
-  { text: '在職年資 長→短', value: 3 },
-  { text: '心情 好→壞', value: 4 },
+  { text: '分享時間 近→遠', value: '1' },
+  { text: '分享年薪 高→低', value: '2' },
+  { text: '在職年資 長→短', value: '3' },
+  { text: '心情 好→壞', value: '4' },
 ];
 const sortConditions = ref();
 sortConditions.value = sortOptions[0].value; // 預設依時間排序
@@ -114,7 +85,13 @@ async function getCompanyTitles() {
 // 依條件查詢公司薪資資訊
 async function getCompanySalary(page: number) {
   // call search 單一公司全部薪水 api
-  await searchStore.fetchSearchCompanySalary(companiesId, page, limit.value);
+  await searchStore.fetchSearchCompanySalary(
+    companiesId,
+    sortConditions.value,
+    titleConditions.value,
+    page,
+    limit.value,
+  );
   // 計算總頁數
   totalPages.value = Math.ceil(companyPostCount.value / limit.value);
   curPage.value = page;
@@ -161,48 +138,6 @@ const filterModal = ref(null);
 const computedMonthlySalary = computed(() => {
   return `${Math.floor(companyAvgMonthlySalary.value / 1000)} k`;
 });
-const computedFeelingClass = computed(() => {
-  let className = '';
-  switch (companyFeeling.value) {
-    case '非常開心':
-      className = 'text-green';
-      break;
-    case '還算愉快':
-      className = 'text-green';
-      break;
-    case '平常心':
-      className = 'text-yellow';
-      break;
-    case '有苦說不出':
-      className = 'text-red';
-      break;
-    case '想換工作了':
-      className = 'text-red';
-      break;
-  }
-  return className;
-});
-const computedOvertimeClass = computed(() => {
-  let className = '';
-  switch (companyOvertime.value) {
-    case '準時上下班':
-      className = 'text-green';
-      break;
-    case '很少加班':
-      className = 'text-green';
-      break;
-    case '偶爾加班':
-      className = 'text-yellow';
-      break;
-    case '常常加班':
-      className = 'text-red';
-      break;
-    case '賣肝拼經濟':
-      className = 'text-red';
-      break;
-  }
-  return className;
-});
 
 /**
  * 初始化
@@ -218,7 +153,7 @@ init();
         <div class="hidden w-full lg:flex justify-start caption text-black-6 mb-15">
           <nuxt-link to="/">真薪話</nuxt-link>
           <div class="mx-3">|</div>
-          <nuxt-link to="/search?searchType=type&param=資訊科技&page=1">資訊科技</nuxt-link>
+          <nuxt-link :to="`/search?searchType=type&param=${companyType}&page=1`">{{ companyType }}</nuxt-link>
           <div class="mx-3">></div>
           <nuxt-link to="/companies/98765432">{{ companyName }}</nuxt-link>
         </div>
@@ -257,17 +192,18 @@ init();
             </svg>
             <h2 class="hidden lg:flex ms-5 leading-[46px]">{{ companyName }}</h2>
           </div>
-          <div class="w-full lg:w-2/6 flex items-center">
-            <div class="w-1/2 me-3 lg:me-5">
+          <div class="w-full lg:w-2/6 flex items-center justify-end">
+            <div class="w-1/2">
               <BaseButton content="請教所有前輩" class="w-full">
                 <div class="icon-message me-2 -mb-1"></div>
               </BaseButton>
             </div>
-            <div class="w-1/2">
+            <!-- 先不做訂閱情報功能 -->
+            <!-- <div class="w-1/2">
               <BaseButton content="訂閱情報" cate="secondary" class="w-full">
                 <div class="icon-plus-circle me-2 -mb-1"></div>
               </BaseButton>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -290,12 +226,12 @@ init();
                 <div class="flex flex-wrap justify-between items-center">
                   <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">上班心情</div>
-                    <h4 :class="computedFeelingClass" class="text-">{{ companyFeeling }}</h4>
+                    <h4 :class="useFeelingClass(companyFeeling)" class="text-">{{ companyFeeling }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
                   <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
-                    <h4 :class="computedOvertimeClass">{{ companyOvertime }}</h4>
+                    <h4 :class="useOvertimeClass(companyOvertime)">{{ companyOvertime }}</h4>
                   </div>
                   <div class="hidden lg:block border-e h-[18px] text-black-3"></div>
                   <div class="w-1/2 md:w-1/4 lg:w-1/5 flex flex-col items-center py-2">
@@ -383,7 +319,7 @@ init();
               </div>
               <div v-if="companyPost && companyPost.length != 0">
                 <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
-                  <SalaryInfo :post="post" @view="redirect" />
+                  <SalaryInfo :post="post" :is-locked="isLocked" @view="redirect" />
                 </div>
               </div>
               <div
@@ -489,8 +425,6 @@ init();
         </BaseButton>
       </div>
     </div>
-    <teleport to="body">
-      <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
-    </teleport>
+    <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
   </section>
 </template>

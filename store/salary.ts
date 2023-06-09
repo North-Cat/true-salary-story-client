@@ -1,29 +1,30 @@
 import { defineStore } from 'pinia';
-import { IShareSalaryFormData, ISalary, ISalaryDisplayInfo } from '~/interface/salaryData';
+import { ISalary, IShareSalary } from '~/interface/salaryData';
 export const useSalaryStore = defineStore('salary', () => {
-  const tempSalaryFormData = ref<IShareSalaryFormData>({});
+  const tempSalaryFormData = ref<IShareSalary>({});
   const tempSalary = ref<ISalary>({});
   const keywords = ref([]);
-  const post = ref<ISalaryDisplayInfo>({
+  const post = ref<IShareSalary>({
     postId: '',
+    companyType: '',
     taxId: '',
     companyName: '',
     title: '',
     employmentType: '',
     inService: false,
     city: '',
-    workYears: 0,
-    totalWorkYears: 0,
-    monthlySalary: 0,
-    dailySalary: 0,
-    avgWorkingDaysPerMonth: 0,
-    hourlySalary: 0,
-    avgHoursPerDay: 0,
-    yearEndBonus: 0,
-    holidayBonus: 0,
-    profitSharingBonus: 0,
-    otherBonus: 0,
-    yearlySalary: 0,
+    workYears: '',
+    totalWorkYears: '',
+    monthlySalary: '',
+    dailySalary: '',
+    avgWorkingDaysPerMonth: '',
+    hourlySalary: '',
+    avgHoursPerDay: '',
+    yearEndBonus: '',
+    holidayBonus: '',
+    profitSharingBonus: '',
+    otherBonus: '',
+    yearlySalary: '',
     overtime: '',
     feeling: '',
     jobDescription: '',
@@ -31,15 +32,44 @@ export const useSalaryStore = defineStore('salary', () => {
     tags: [],
     customTags: [],
     createDate: '',
-    isLocked: false,
+    createUser: '',
   });
-  // TODO
-  const isLocked = ref(false);
+  const isLocked = ref(true);
   const { shareSalaryApi } = useApi();
 
   const fetchSalaryInfo = async (id: string) => {
     const { result } = await shareSalaryApi.getSalaryInfo(id);
-    post.value = result;
+    post.value = {
+      postId: result?.postId || '',
+      companyType: result?.companyType || '',
+      taxId: result?.taxId || '',
+      companyName: result?.companyName || '',
+      title: result?.title || '',
+      employmentType: result?.employmentType || '',
+      inService: result?.inService || false,
+      city: result?.city || '',
+      workYears: result?.workYears || '',
+      totalWorkYears: result?.totalWorkYears || '',
+      monthlySalary: result?.monthlySalary ?? '',
+      dailySalary: result?.dailySalary ?? '',
+      avgWorkingDaysPerMonth: result?.avgWorkingDaysPerMonth ?? '',
+      hourlySalary: result?.hourlySalary ?? '',
+      avgHoursPerDay: result?.avgHoursPerDay ?? '',
+      yearEndBonus: result?.yearEndBonus ?? '',
+      holidayBonus: result?.holidayBonus ?? '',
+      profitSharingBonus: result?.profitSharingBonus ?? '',
+      otherBonus: result?.otherBonus ?? '',
+      yearlySalary: result?.yearlySalary ?? '',
+      overtime: result?.overtime || '',
+      feeling: result?.feeling || '',
+      jobDescription: result?.jobDescription || '',
+      suggestion: result?.suggestion || '',
+      tags: result?.tags || [],
+      customTags: result?.customTags || [],
+      createDate: result?.createDate || '',
+      createUser: result?.createUser || '',
+    };
+    isLocked.value = result.isLocked;
   };
 
   const fetchKeywords = async () => {
@@ -47,18 +77,17 @@ export const useSalaryStore = defineStore('salary', () => {
     keywords.value = data.keywords;
   };
 
-  const fetchPermission = async (id: string): Promise<boolean> => {
-    const { message } = await shareSalaryApi.requestSalaryInfo(id);
+  const fetchPermission = async (id: string) => {
+    const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
-      post.value.isLocked = true;
-      return post.value.isLocked;
+      fetchSalaryInfo(result.postId);
     }
-    return false;
   };
   return {
     tempSalaryFormData,
     tempSalary,
     post,
+    isLocked,
     keywords,
     fetchSalaryInfo,
     fetchKeywords,

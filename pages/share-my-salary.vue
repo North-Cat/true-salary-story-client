@@ -19,7 +19,7 @@ import {
 } from '~/utilities/options';
 import { useUserStore } from '@/store/user';
 // import { useSalaryStore } from '@/store/salary';
-import { IShareSalaryFormData, ISalary, ISalaryResult } from '~/interface/salaryData';
+import { IShareSalary, ISalary, ISalaryResult } from '~/interface/salaryData';
 useHead({
   title: '匿名分享',
 });
@@ -27,7 +27,8 @@ definePageMeta({
   middleware: 'auth',
 });
 const { shareSalaryApi } = useApi();
-const submitData = reactive<IShareSalaryFormData>({
+const router = useRouter();
+const submitData = reactive<IShareSalary>({
   taxId: '',
   companyName: '',
   title: '',
@@ -40,7 +41,7 @@ const submitData = reactive<IShareSalaryFormData>({
   dailySalary: '',
   avgWorkingDaysPerMonth: '',
   hourlySalary: '',
-  dailyAverageWorkingHours: '',
+  avgHoursPerDay: '',
   yearEndBonus: '',
   holidayBonus: '',
   profitSharingBonus: '',
@@ -168,7 +169,7 @@ const salaryTypesField: ISalary = reactive({
   },
   hourly: {
     salary: '',
-    dailyAverageWorkingHours: '',
+    avgHoursPerDay: '',
     avgWorkingDaysPerMonth: '',
     total: '',
     tempTotal: '',
@@ -180,7 +181,7 @@ watch(
     salaryTypesField.daily.salary,
     salaryTypesField.daily.avgWorkingDaysPerMonth,
     salaryTypesField.hourly.salary,
-    salaryTypesField.hourly.dailyAverageWorkingHours,
+    salaryTypesField.hourly.avgHoursPerDay,
     salaryTypesField.hourly.avgWorkingDaysPerMonth,
   ],
   () => {
@@ -256,7 +257,7 @@ const resetSubmitData = () => {
     dailySalary: '',
     avgWorkingDaysPerMonth: '',
     hourlySalary: '',
-    dailyAverageWorkingHours: '',
+    avgHoursPerDay: '',
     yearEndBonus: '',
     holidayBonus: '',
     profitSharingBonus: '',
@@ -282,7 +283,7 @@ const resetSubmitData = () => {
     },
     hourly: {
       salary: '',
-      dailyAverageWorkingHours: '',
+      avgHoursPerDay: '',
       avgWorkingDaysPerMonth: '',
       total: '',
       tempTotal: '',
@@ -299,14 +300,14 @@ const onConfirm = async () => {
   }
 };
 const onSubmit = async () => {
-  const { salary, total, avgWorkingDaysPerMonth, dailyAverageWorkingHours } = salaryTypesField[salaryTypes.value];
+  const { salary, total, avgWorkingDaysPerMonth, avgHoursPerDay } = salaryTypesField[salaryTypes.value];
   const data = {
     ...submitData,
     monthlySalary: salaryTypes.value === 'monthly' ? salary : undefined,
     dailySalary: salaryTypes.value === 'daily' ? salary : undefined,
     hourlySalary: salaryTypes.value === 'hourly' ? salary : undefined,
     avgWorkingDaysPerMonth,
-    dailyAverageWorkingHours,
+    avgHoursPerDay,
     yearlySalary: total,
   };
   await shareSalaryApi
@@ -340,7 +341,7 @@ const chnagSalaryTotal = () => {
   const dailySalary = Number(salaryTypesField.daily.salary);
   const dailyAvgWorkingDays = Number(salaryTypesField.daily.avgWorkingDaysPerMonth);
   const hourlySalary = Number(salaryTypesField.hourly.salary);
-  const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.dailyAverageWorkingHours);
+  const hourlyAvgWorkingHours = Number(salaryTypesField.hourly.avgHoursPerDay);
   const hourlyAvgWorkingDays = Number(salaryTypesField.hourly.avgWorkingDaysPerMonth);
   if (isNumber(monthlySalary)) {
     salaryTypesField.monthly.total = calculateTotal(monthlySalary, 12) + othersBouns();
@@ -589,9 +590,10 @@ const rightSideList = reactive([
                             placeholder="月薪 EX: 35000"
                             oninput="value=value.replace('-','')"
                           />
-                          <span class="absolute inset-y-0 right-4 flex items-center pt-2 text-black-6 text-sm">
+                          <span class="absolute top-2 right-4 flex items-center pt-2 text-black-6 text-sm">
                             x12月
                           </span>
+                          <span class="text-black-6 text-sm">單位為元</span>
                         </div>
                         <VErrorMessage name="monthlySalary" as="div" class="text-red" />
                       </template>
@@ -611,9 +613,10 @@ const rightSideList = reactive([
                               :class="{ 'border-red': errors.dailySalary }"
                               :rules="salaryTypes === 'daily' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
-                              placeholder="日薪 EX:1000"
+                              placeholder="日薪 EX: 1000"
                               oninput="value=value.replace('-','')"
                             />
+                            <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
@@ -646,14 +649,15 @@ const rightSideList = reactive([
                             <VField
                               v-model.number="salaryTypesField[salaryTypes].salary"
                               name="hourlySalary"
-                              label="時薪 EX:176"
+                              label="時薪"
                               type="number"
                               :class="{ 'border-red': errors.hourlySalary }"
                               :rules="salaryTypes === 'hourly' ? 'required|numeric' : 'numeric'"
                               class="w-full border border-black-1 rounded py-2 pl-4 pr-9 mt-2"
-                              placeholder="時薪"
+                              placeholder="時薪 EX: 176"
                               oninput="value=value.replace('-','')"
                             />
+                            <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="hourlySalary" as="div" class="text-red" />
                           </div>
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
@@ -661,9 +665,9 @@ const rightSideList = reactive([
                           </div>
                           <div class="shrink w-full">
                             <BaseFormSelect
-                              v-model="salaryTypesField[salaryTypes].dailyAverageWorkingHours"
+                              v-model="salaryTypesField[salaryTypes].avgHoursPerDay"
                               :options="workingHoursOptions"
-                              name="dailyAverageWorkingHours"
+                              name="avgHoursPerDay"
                               placeholder="日均工時"
                               :required="salaryTypes === 'hourly' ? 'required' : ''"
                               label="日均工時"

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { ILoginUserInfo } from '~/interface/user';
 import { IMySalaryResponse } from '~/interface/salaryData';
 import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
-import { IMyOrdersListResponse } from '~/interface/order';
+import { IPointsListRespose, IMyOrdersListResponse } from '~/interface/order';
 const { userApi, subscribeApi, orderApi } = useApi();
 export const useUserStore = defineStore('user', () => {
   // 登入相關
@@ -11,6 +11,7 @@ export const useUserStore = defineStore('user', () => {
   const token = ref('');
   const isFetchProfileLoading = ref(false);
   const currentPoint = ref(0);
+  const checkTodayCheckedIn = ref(true); // 預設為已遷到，避免剛載入頁面有一瞬間可以點擊簽到
   const loginWithGoogle = () => {
     const {
       public: { apiBase },
@@ -22,10 +23,11 @@ export const useUserStore = defineStore('user', () => {
     isFetchProfileLoading.value = true;
     await userApi
       .getUserProfile()
-      .then(({ data: { user } }) => {
+      .then(({ data: { user, hasCheckedInToday } }) => {
         currentUser.value = user as unknown as ILoginUserInfo;
         isLogin.value = true;
         currentPoint.value = user && user.points ? user.points.point : 0;
+        checkTodayCheckedIn.value = hasCheckedInToday as boolean;
         isFetchProfileLoading.value = false;
       })
       .catch(() => {
@@ -67,6 +69,22 @@ export const useUserStore = defineStore('user', () => {
     };
   };
 
+  const openedSalary = ref({
+    result: [],
+    totalCount: 0,
+  } as IMySalaryResponse);
+  const tryToFetchOpenedSalary = async (data: {
+    keyword: string | number | undefined;
+    limit?: number | undefined;
+    page: number;
+  }) => {
+    const result = await userApi.getOpenedSalary(data);
+    openedSalary.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
   const subscribeCompaniesList = ref({
     result: [],
     totalCount: 0,
@@ -87,6 +105,18 @@ export const useUserStore = defineStore('user', () => {
     await subscribeApi.deleteSubscribeCompany(id);
   };
 
+  const pointsList = ref({
+    result: [],
+    totalCount: 0,
+  } as IPointsListRespose);
+  const tryToFetchPointsList = async () => {
+    const result = await orderApi.getPointList();
+    pointsList.value = {
+      result: result.result || [],
+      totalCount: result.totalCount || 0,
+    };
+  };
+
   const myOrdersList = ref({
     result: [],
     totalCount: 0,
@@ -97,6 +127,13 @@ export const useUserStore = defineStore('user', () => {
       result: result.result || [],
       totalCount: result.totalCount || 0,
     };
+  };
+
+  const isCheckInLoading = ref(false);
+  const tryToFetchPostDailyCheckIn = async () => {
+    isCheckInLoading.value = true;
+    await userApi.postDailyCheckIn();
+    isCheckInLoading.value = false;
   };
 
   return {
@@ -115,5 +152,12 @@ export const useUserStore = defineStore('user', () => {
     myOrdersList,
     tryToFetchMyOrdersList,
     currentPoint,
+    checkTodayCheckedIn,
+    pointsList,
+    tryToFetchPointsList,
+    tryToFetchOpenedSalary,
+    openedSalary,
+    tryToFetchPostDailyCheckIn,
+    isCheckInLoading,
   };
 });

@@ -1,11 +1,44 @@
 <script setup lang="ts">
-import { ISalaryDisplayInfo } from '@/interface/salaryData';
-import { useNumberRange, useTruncateText, useOvertimeClass, useFeelingClass } from '@/composables/post';
+import { useRoute, useRouter } from 'vue-router';
 
-defineProps<{
-  post: ISalaryDisplayInfo;
+import { IShareSalary } from '@/interface/salaryData';
+import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
+import { useConsultStore } from '@/store/consult';
+
+const props = defineProps<{
+  post: IShareSalary;
+  isLocked: boolean;
 }>();
 const emit = defineEmits(['view']);
+
+const consultStore = useConsultStore();
+const route = useRoute();
+const router = useRouter();
+
+const loading = ref(false);
+
+const handleCreateConsult = async () => {
+  try {
+    loading.value = true;
+
+    const payload = {
+      receiverId: props.post.createUser,
+      postId: route.params.salaryId as string,
+    };
+
+    await consultStore.createConsult(payload);
+    await router.push({
+      path: '/user/consult',
+      query: {
+        post: route.params.salaryId,
+      },
+    });
+  } catch (error) {
+    console.error('create consult error: ', error);
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -39,7 +72,7 @@ const emit = defineEmits(['view']);
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6>{{ post.isLocked ? useNumberRange(post.monthlySalary) : '兌換後顯示' }}</h6>
+                    <h6>{{ isLocked ? '兌換後顯示' : useNumberRange(post.monthlySalary) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -48,7 +81,7 @@ const emit = defineEmits(['view']);
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年薪</div>
-                    <h6>{{ post.isLocked ? useNumberRange(post.yearlySalary) : '兌換後顯示' }}</h6>
+                    <h6>{{ isLocked ? '兌換後顯示' : useNumberRange(post.yearlySalary) }}</h6>
                   </div>
                 </div>
               </div>
@@ -56,25 +89,25 @@ const emit = defineEmits(['view']);
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年終</div>
-                    <h6>{{ post.isLocked ? useNumberRange(post.yearEndBonus) : '??' }}</h6>
+                    <h6>{{ isLocked ? '??' : useNumberRange(post.yearEndBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">三節</div>
-                    <h6>{{ post.isLocked ? useNumberRange(post.holidayBonus) : '??' }}</h6>
+                    <h6>{{ isLocked ? '??' : useNumberRange(post.holidayBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">分紅</div>
-                    <h6>{{ post.isLocked ? useNumberRange(post.profitSharingBonus) : '??' }}</h6>
+                    <h6>{{ isLocked ? '??' : useNumberRange(post.profitSharingBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">其他</div>
-                    <h6>{{ post.isLocked ? useNumberRange(post.otherBonus) : '??' }}</h6>
+                    <h6>{{ isLocked ? '??' : useNumberRange(post.otherBonus) }}</h6>
                   </div>
                 </div>
               </div>
@@ -83,7 +116,7 @@ const emit = defineEmits(['view']);
               <div class="lg:w-1/2 flex justify-between items-center">
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                    <span :class="['text-2xl', useFeelingClass(post.feeling)]"></span>
+                    <span :class="['text-2xl', useFeelingClass(post.feeling, true)]"></span>
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">上班心情</div>
@@ -92,7 +125,7 @@ const emit = defineEmits(['view']);
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="w-[22px] h-[22px] flex justify-center items-center mr-3">
-                    <span :class="['text-2xl', useOvertimeClass(post.overtime)]"></span>
+                    <span :class="['text-2xl', useOvertimeClass(post.overtime, true)]"></span>
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">加班頻率</div>
@@ -131,15 +164,13 @@ const emit = defineEmits(['view']);
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">工作內容</div>
             <p class="body-sm">
-              {{
-                post.isLocked ? post.jobDescription : post.jobDescription && useTruncateText(post.jobDescription, 20)
-              }}
+              {{ post.jobDescription }}
             </p>
           </div>
           <div class="flex flex-col mb-5">
             <div class="caption text-black-5 mb-1">其他建議</div>
             <p v-show="post.suggestion" class="body-sm">
-              {{ post.isLocked ? post.suggestion : post.suggestion && useTruncateText(post.suggestion, 20) }}
+              {{ post.suggestion }}
             </p>
           </div>
           <div class="flex flex-wrap mb-5">
@@ -151,7 +182,10 @@ const emit = defineEmits(['view']);
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <BaseButton v-if="!post.isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
+            <BaseButton v-if="isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
+            <BaseButton content="我要請教" @click="handleCreateConsult">
+              <span v-show="loading">...</span>
+            </BaseButton>
           </div>
         </div>
       </div>

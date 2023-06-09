@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { useUserStore } from '@/store/user';
+import { useWSStore } from '@/store/ws';
 
 const user = useUserStore();
 const route = useRoute();
+const wsStore = useWSStore();
+
 const { tryToFetchProfile } = user;
 definePageMeta({
   layout: false,
@@ -33,8 +36,12 @@ const checkLoginStatus = () => {
       redirectUrl = redirectToCookie.value;
     }
     navigateTo(redirectUrl);
-    nextTick(() => {
-      tryToFetchProfile();
+    nextTick(async () => {
+      await tryToFetchProfile();
+
+      if (!import.meta.env.SSR) {
+        wsStore.init();
+      }
     });
   }
 };

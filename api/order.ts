@@ -19,10 +19,18 @@ export default new (class order extends Http {
   }
 
   /**
-   * GET 積分明細
+   * GET 訂單總覽
    *
    */
   public getOrdersList() {
     return this.get(`/api/account/order/list`);
+  }
+
+  /**
+   * GET 積分明細
+   *
+   */
+  public getPointList() {
+    return this.get(`/api/account/point/list`);
   }
 })();

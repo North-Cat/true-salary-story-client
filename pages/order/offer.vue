@@ -41,7 +41,7 @@ function clickOffer(type: offerType) {
   });
 }
 
-// 常見問題
+// 常見問答
 const questionIndex = ref(0);
 function open(index: number) {
   questionIndex.value === index ? (questionIndex.value = 0) : (questionIndex.value = index);
@@ -74,7 +74,7 @@ const tabClass = computed(() => (tab: Tab) => {
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
     <div
-      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center mt-5 lg:mt-10"
+      class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center mt-5 md:mt-24 lg:mt-10"
     >
       <div class="w-full flex flex-col lg:justify-between sm:mb-10 lg:mb-20">
         <!-- 頁籤 -->
@@ -185,23 +185,29 @@ const tabClass = computed(() => (tab: Tab) => {
         </div>
 
         <!-- 常見問答 -->
-        <div v-if="isTab(Tab.QUESTION)" class="w-full flex flex-col border-2 border-black-10 py-6 px-20 bg-white">
-          <div class="flex flex-col border border-black-1 me-3 rounded">
+        <div
+          v-if="isTab(Tab.QUESTION)"
+          class="w-full flex flex-col border-2 border-black-10 py-6 px-5 lg:px-20 bg-white"
+        >
+          <div class="flex flex-col border border-black-1 rounded">
             <div class="w-full flex justify-between items-center py-5 px-6 cursor-pointer" @click="open(1)">
               <h6>付款方式有哪些？</h6>
-              <div v-if="!isOpen(1)" class="icon-plus text-black-5"></div>
-              <div v-else class="icon-minus text-xl text-black-5"></div>
+              <div v-if="!isOpen(1)" class="icon-plus text-black-5 ms-1"></div>
+              <div v-else class="icon-minus text-xl text-black-5 ms-1"></div>
             </div>
-            <p :class="{ hidden: !isOpen(1), block: isOpen(1) }" class="caption pb-5 px-6">
+            <p
+              :class="{ hidden: !isOpen(1), block: isOpen(1) }"
+              class="caption pb-5 px-6 transition duration-1300 ease-in-out"
+            >
               目前加薪計畫的付款方式僅開放使用LINE Pay。
             </p>
           </div>
 
-          <div class="flex flex-col border border-black-1 me-3 rounded">
+          <div class="flex flex-col border border-black-1 rounded">
             <div class="w-full flex justify-between items-center py-5 px-6 cursor-pointer" @click="open(2)">
               <h6>可以打統編嗎？</h6>
-              <div v-if="!isOpen(2)" class="icon-plus text-black-5"></div>
-              <div v-else class="icon-minus text-xl text-black-5"></div>
+              <div v-if="!isOpen(2)" class="icon-plus text-black-5 ms-1"></div>
+              <div v-else class="icon-minus text-xl text-black-5 ms-1"></div>
             </div>
             <p :class="{ hidden: !isOpen(2), block: isOpen(2) }" class="caption pb-5 px-6">
               加薪計畫是為個人用戶推出的 VIP 專屬方案。<br />
@@ -209,11 +215,11 @@ const tabClass = computed(() => (tab: Tab) => {
             </p>
           </div>
 
-          <div class="flex flex-col border border-black-1 me-3 rounded">
+          <div class="flex flex-col border border-black-1 rounded">
             <div class="w-full flex justify-between items-center py-5 px-6 cursor-pointer" @click="open(3)">
               <h6>VIP 會員的生效日期是如何判定的？</h6>
-              <div v-if="!isOpen(3)" class="icon-plus text-black-5"></div>
-              <div v-else class="icon-minus text-xl text-black-5"></div>
+              <div v-if="!isOpen(3)" class="icon-plus text-black-5 ms-1"></div>
+              <div v-else class="icon-minus text-xl text-black-5 ms-1"></div>
             </div>
             <p :class="{ hidden: !isOpen(3), block: isOpen(3) }" class="caption pb-5 px-6">
               訂閱加薪計畫，付款成功後即刻獲得 VIP 會員資格，生效日以付款當下的日期起算。<br />
@@ -222,11 +228,11 @@ const tabClass = computed(() => (tab: Tab) => {
             </p>
           </div>
 
-          <div class="flex flex-col border border-black-1 me-3 rounded">
+          <div class="flex flex-col border border-black-1 rounded">
             <div class="w-full flex justify-between items-center py-5 px-6 cursor-pointer" @click="open(4)">
               <h6>訂閱方案到期後網站會自動幫我續約嗎？</h6>
-              <div v-if="!isOpen(4)" class="icon-plus text-black-5"></div>
-              <div v-else class="icon-minus text-xl text-black-5"></div>
+              <div v-if="!isOpen(4)" class="icon-plus text-black-5 ms-1"></div>
+              <div v-else class="icon-minus text-xl text-black-5 ms-1"></div>
             </div>
             <p :class="{ hidden: !isOpen(4), block: isOpen(4) }" class="caption pb-5 px-6">
               加薪計畫到期後，VIP 會員權限將會即刻中止，若想持續升級，請到方案説明頁再次下單即可。<br />
@@ -234,15 +240,17 @@ const tabClass = computed(() => (tab: Tab) => {
             </p>
           </div>
 
-          <div class="flex justify-between items-center border border-black-1 me-3 py-5 px-6 rounded mt-20">
-            <div class="flex items-center">
+          <div
+            class="flex flex-col md:flex-row justify-between items-center border border-black-1 py-5 px-6 rounded mt-20"
+          >
+            <div class="flex items-center mb-5">
               <div class="icon-info text-3xl me-5"></div>
               <div class="flex flex-col">
                 <div class="caption">若有其他需求或疑問</div>
                 <div class="caption">請聯繫客服，我們將於上班日回覆您。</div>
               </div>
             </div>
-            <BaseButton cate="secondary">聯繫客服</BaseButton>
+            <BaseButton cate="gray" class="w-full md:w-fit">聯繫客服</BaseButton>
           </div>
         </div>
       </div>

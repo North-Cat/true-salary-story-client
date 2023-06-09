@@ -25,7 +25,7 @@ curSearchType.value = searchType; // 取得 URL 上的 searchType
  * 參數宣告
  */
 // 每頁顯示幾筆
-const limit = ref(6);
+const limit = ref(10);
 // 搜尋參數
 const searchParam = ref();
 searchParam.value = param;

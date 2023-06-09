@@ -2,13 +2,13 @@
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 useHead({
-  title: '我的薪水',
+  title: '已解鎖薪水',
 });
 definePageMeta({
   middleware: 'auth',
 });
 const useStore = useUserStore();
-const { mySalary } = storeToRefs(useStore);
+const { openedSalary } = storeToRefs(useStore);
 const paginationButton = ref();
 const limit = ref(5);
 const loading = ref(false);
@@ -19,12 +19,12 @@ const searchParam = reactive({
   keyword: '',
   page: 1,
 });
-useStore.tryToFetchMySalary(searchParam).finally(() => {
+useStore.tryToFetchOpenedSalary(searchParam).finally(() => {
   loading.value = false;
 });
 const search = () => {
   loading.value = true;
-  useStore.tryToFetchMySalary(searchParam).finally(() => {
+  useStore.tryToFetchOpenedSalary(searchParam).finally(() => {
     loading.value = false;
   });
   if (searchParam.keyword) {
@@ -42,12 +42,12 @@ const onChangePage = (val: number) => {
     behavior: 'smooth',
   });
   loading.value = true;
-  useStore.tryToFetchMySalary(searchParam).finally(() => {
+  useStore.tryToFetchOpenedSalary(searchParam).finally(() => {
     loading.value = false;
   });
 };
 const totalPage = computed(() => {
-  return Math.ceil(mySalary.value.totalCount / limit.value);
+  return Math.ceil(openedSalary.value.totalCount / limit.value);
 });
 </script>
 <template>
@@ -66,34 +66,25 @@ const totalPage = computed(() => {
             @keyup.enter="search"
           />
         </div>
-        <span v-if="mySalary.totalCount" class="text-black-5 text-sm"
-          >第{{ searchParam.page }}頁,共{{ mySalary.totalCount }}筆</span
+        <span v-if="openedSalary.totalCount" class="text-black-5 text-sm"
+          >第{{ searchParam.page }}頁,共{{ openedSalary.totalCount }}筆</span
         >
       </div>
-      <template v-if="mySalary.result.length > 0 || isSearch">
-        <BaseNull v-if="mySalary.result.length === 0 && isSearch" content="查無資料" />
+      <template v-if="openedSalary.result.length > 0 || isSearch">
+        <BaseNull v-if="openedSalary.result.length === 0 && isSearch" content="查無資料" />
         <template v-else>
           <div class="divide-y divide-black-3 min-h-[255px]">
-            <div v-for="(item, $index) in mySalary.result" :key="$index" class="py-5">
+            <div v-for="(item, $index) in openedSalary.result" :key="$index" class="py-5">
               <nuxt-link :to="`/salary/${item.postId}`">
                 <div class="flex justify-between mb-4 items-center">
                   <h4 class="text-lg text-blue">{{ item.title }}</h4>
-                  <span class="text-black-5">{{ item.seen > 0 ? `${item.seen}人已看過` : '尚未被人發掘' }}</span>
+                  <!-- <span class="text-black-5">{{ item.seen > 0 ? `${item.seen}人已看過` : '尚未被人發掘' }}</span> -->
                 </div>
                 <div class="md:flex justify-between">
                   <div>
                     <div class="mb-3">{{ item.companyName }}</div>
                     <div class="mb-2">
-                      <span class="mr-5">{{ item.city }}</span>
                       <span>{{ item.employmentType }}</span>
-                    </div>
-                    <div>
-                      <span class="mr-5">
-                        <template v-if="!!item.monthlySalary"> 月薪: {{ item.monthlySalary }} </template>
-                        <template v-else-if="!!item.hourlySalary"> 時薪: {{ item.hourlySalary }} </template>
-                        <template v-else> 日薪: {{ item.dailySalary }} </template>
-                      </span>
-                      <span>年薪: {{ item.yearlySalary }}</span>
                     </div>
                   </div>
                   <div class="self-end md:mt-0 mt-3">{{ item.createDate }} 分享</div>
@@ -112,7 +103,7 @@ const totalPage = computed(() => {
           </PaginationButton>
         </template>
       </template>
-      <BaseNull v-else content="沒有資料" />
+      <BaseNull v-else content="沒有解鎖的薪水" />
     </template>
     <div v-else class="min-h-[330px] flex items-center justify-center">
       <BaseLoading />

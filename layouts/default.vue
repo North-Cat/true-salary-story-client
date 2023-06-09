@@ -3,17 +3,41 @@ import { storeToRefs } from 'pinia';
 import { RouteLocationRaw, useRoute } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
+import { useWSStore } from '@/store/ws';
 
 const route = useRoute();
 const router = useRouter();
+// 帳號視窗
 const showUserList = ref(false);
+const userListModal = ref(null);
+onClickOutside(userListModal, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'account-button')) {
+    closeUserModal();
+  }
+});
+const showUserListSm = ref(false);
+const userListModalSm = ref(null);
+onClickOutside(userListModalSm, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'account-button')) {
+    closeUserModal();
+  }
+});
 const user = useUserStore();
+const wsStore = useWSStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
+  wsStore.ws.close();
+
   logout();
-  showUserList.value = false;
+  closeUserModal();
 };
+onUnmounted(() => {
+  wsStore.ws.close();
+});
+
 const userList = ref([
   {
     title: '關於我',
@@ -27,6 +51,15 @@ const userList = ref([
     icon: 'icon-edit',
     to: {
       name: 'user-my-salary',
+    },
+  },
+  {
+    title: '已解鎖薪水',
+    icon: 'icon-sparkle-checked',
+    type: 'link',
+    id: 'user-opened-salary',
+    to: {
+      name: 'user-opened-salary',
     },
   },
   {
@@ -65,8 +98,12 @@ const userList = ref([
 ]);
 const goToPage = (to: RouteLocationRaw) => {
   router.push(to);
-  showUserList.value = false;
+  closeUserModal();
 };
+function closeUserModal() {
+  showUserListSm.value = false;
+  showUserList.value = false;
+}
 
 /**
  * 搜尋相關
@@ -90,17 +127,22 @@ const tabClass = computed(() => (tab: SearchType) => {
   const className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
   return className;
 });
-// 開啟搜尋視窗 (PC)
+// 開啟搜尋視窗
 const showSearchModal = ref(false);
 const searchModal = ref(null);
-onClickOutside(searchModal, () => {
-  showSearchModal.value = false;
+onClickOutside(searchModal, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'search-button')) {
+    closeSearchModal();
+  }
 });
-// 開啟搜尋視窗 (Moblie)
-const searchModalSm = ref(null);
 const showSearchModalSm = ref(false);
-onClickOutside(searchModalSm, () => {
-  showSearchModalSm.value = false;
+const searchModalSm = ref(null);
+onClickOutside(searchModalSm, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'search-button')) {
+    closeSearchModal();
+  }
 });
 // 搜尋參數
 const searchParam = ref({
@@ -143,56 +185,175 @@ async function search() {
     showInfo('提示', '請輸入搜尋條件');
     return;
   }
-  // 帶著參數導頁至搜尋頁面
-  await navigateTo({
-    path: '/search',
-    query: paramObj,
-  });
 
   // 若已經在搜尋頁面，則重新整理
   if (route.path === '/search') {
+    await router.replace({
+      query: paramObj,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1);
+  } else {
+    // 帶著參數導頁至搜尋頁面
+    await router.push({
+      path: '/search',
+      query: paramObj,
+    });
+  }
+
+  // 關閉視窗
+  closeSearchModal();
+}
+function closeSearchModal() {
+  showSearchModalSm.value = false;
+  showSearchModal.value = false;
+}
+
+/**
+ * 積分相關
+ */
+// 開啟積分視窗
+const showPointModal = ref(false);
+const pointModal = ref(null);
+onClickOutside(pointModal, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'point-button')) {
+    closePointModal();
+  }
+});
+const showPointModalSm = ref(false);
+const pointModalSm = ref(null);
+onClickOutside(pointModalSm, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'point-button')) {
+    closePointModal();
+  }
+});
+async function goToCheckout(isSingle: boolean) {
+  // 跳轉至積分頁面
+  if (isSingle) {
+    await navigateTo('/order/checkout?type=single&point=100');
+  } else {
+    await navigateTo('/order/checkout?type=subscription');
+  }
+  // 若已經在積分頁面，則重新整理
+  if (route.path === '/order/checkout') {
     setTimeout(() => {
       window.location.reload();
     }, 1);
   }
+  // 關閉視窗
+  closePointModal();
+}
+function closePointModal() {
+  showPointModalSm.value = false;
+  showPointModal.value = false;
+}
+
+/**
+ * 訊息相關
+ */
+// 開啟訊息視窗
+const showMessageModal = ref(false);
+const messageModal = ref(null);
+onClickOutside(messageModal, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'message-button')) {
+    closeMessageModal();
+  }
+});
+const showMessageModalSm = ref(false);
+const messageModalSm = ref(null);
+onClickOutside(messageModalSm, (e) => {
+  // 點到按鈕以外才觸發
+  if (isClickOutsideArea(e, 'message-button')) {
+    closeMessageModal();
+  }
+});
+function closeMessageModal() {
+  showMessageModalSm.value = false;
+  showMessageModal.value = false;
+}
+
+function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
+  return (
+    e?.target?.nodeName === 'svg' ||
+    e?.target?.parentNode?.nodeName === 'svg' ||
+    e?.target?.className.indexOf(ignoreClass) === -1
+  );
 }
 </script>
 
 <template>
-  <div class="default-layout">
-    <!-- sm nav -->
+  <div class="default-layout max-[1920px]:overflow-x-hidden">
+    <!-- sm md nav -->
     <nav
-      class="z-10 fixed md:hidden bg-white/80 w-full h-[77px] bottom-0 left-0 pb-2 px-4 shadow-nav backdrop-blur-sm"
+      class="z-10 fixed lg:hidden bg-white/80 w-full h-[85px] bottom-0 left-0 px-4 md:px-24 shadow-nav backdrop-blur-sm"
       aria-label="行動版選單"
     >
       <div class="flex justify-between">
-        <BaseButton cate="text-sm" content="分享">
+        <!-- 匿名分享 sm md -->
+        <BaseButton cate="text-sm" content="分享" to="/share-my-salary">
           <span class="icon-edit text-2xl mb-1"></span>
         </BaseButton>
-        <BaseButton cate="text-sm" content="搜尋" @click="showSearchModalSm = !showSearchModalSm">
-          <span class="icon-search text-2xl mb-1"></span>
+        <!-- 搜尋 sm md -->
+        <BaseButton cate="text-sm" content="搜尋" class="search-button" @click="showSearchModalSm = !showSearchModalSm">
+          <span class="icon-search text-2xl mb-1 search-button"></span>
         </BaseButton>
-        <BaseButton v-if="isLogin" cate="text-sm" content="訊息">
+        <!-- 訊息 sm md -->
+        <BaseButton
+          v-if="isLogin"
+          cate="text-sm"
+          class="message-button"
+          @click="showMessageModalSm = !showMessageModalSm"
+        >
           <div class="-mb-1">
             <!-- 訊息紅點 -->
-            <span class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
-            <span class="icon-mail text-3xl"></span>
+            <span
+              class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
+            ></span>
+            <span class="icon-mail text-3xl message-button"></span>
           </div>
+          <div class="caption message-button">訊息</div>
         </BaseButton>
-        <BaseButton v-if="isLogin" cate="text-sm" :content="currentPoint.toString()">
-          <span class="icon-star-circle text-2xl mb-1"></span>
+        <!-- 積分 sm md -->
+        <BaseButton v-if="isLogin" cate="text-sm" class="point-button" @click="showPointModalSm = !showPointModalSm">
+          <span class="icon-star-circle text-2xl mb-1 point-button"></span>
+          <div class="caption point-button">{{ currentPoint }}</div>
         </BaseButton>
-        <BaseButton v-if="isLogin" cate="text-sm" content="帳號" @click="showUserList = !showUserList">
-          <span class="icon-person-circle text-2xl mb-1"></span>
+        <!-- 帳號 sm md -->
+        <BaseButton v-if="isLogin" cate="text-sm" class="account-button" @click="showUserListSm = !showUserListSm">
+          <div v-if="isFetchProfileLoading">
+            <div class="animate-pulse flex space-x-4">
+              <div class="bg-slate-200 w-[25px] h-[25px] rounded-full mb-1"></div>
+            </div>
+          </div>
+          <img
+            v-else
+            class="account-button w-[25px] h-[25px] rounded-full mb-1"
+            :src="currentUser.profilePicture"
+            alt="圖片"
+          />
+          <div class="caption account-button">帳號</div>
+          <!-- <span class="icon-person-circle text-2xl mb-1"></span> -->
         </BaseButton>
+        <!-- 登入 sm md -->
         <BaseButton v-if="!isLogin" to="/login" cate="text-sm" content="登入">
           <span class="icon-person text-2xl mb-1"></span>
         </BaseButton>
+        <!-- 加薪計畫 sm md -->
         <BaseButton v-if="!isLogin" to="/order/offer" cate="text-sm" content="加薪計畫">
           <span class="icon-star text-3xl"></span>
         </BaseButton>
       </div>
-      <div v-if="showUserList" class="fixed shadow bg-white w-full p-5 rounded left-0 right-0 top-[-544px]" style="">
+      <!-- 帳號 Modal sm md -->
+      <div
+        v-if="showUserListSm"
+        ref="userListModalSm"
+        class="fixed drop-shadow-modal bg-white w-full p-5 rounded left-0 right-0 bottom-[84px]"
+        style=""
+      >
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">
             {{ currentUser.displayName }}
@@ -200,7 +361,7 @@ async function search() {
           <div>
             <!-- FIX: 複製UID -->
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserList = false">
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
               <i class="icomoon icon-cross"></i>
             </button>
           </div>
@@ -232,15 +393,16 @@ async function search() {
           </li>
         </ul>
       </div>
+      <!-- 搜尋 Modal sm md -->
       <div
         v-if="showSearchModalSm"
         ref="searchModalSm"
-        class="fixed shadow bg-white w-full p-5 rounded left-0 right-0 bottom-[77px]"
+        class="fixed drop-shadow-modal bg-white w-full p-5 rounded left-0 right-0 bottom-[84px]"
         style=""
       >
         <div class="flex justify-between pb-3 border-b border-b-black-5">
           <div class="text-xl">搜尋</div>
-          <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showSearchModalSm = false">
+          <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeSearchModal">
             <i class="icomoon icon-cross"></i>
           </button>
         </div>
@@ -320,8 +482,102 @@ async function search() {
           <BaseButton cate="secondary" class="w-full" @click="search"> 搜尋 </BaseButton>
         </div>
       </div>
+      <!-- 訊息 Modal sm md -->
+      <div
+        v-if="showMessageModalSm"
+        ref="messageModalSm"
+        class="fixed drop-shadow-modal bg-white w-full p-5 rounded left-0 right-0 bottom-[84px]"
+      >
+        <div class="flex justify-between pb-3 border-b border-b-black-5">
+          <div class="text-xl">訊息</div>
+          <div class="flex">
+            <nuxt-link
+              to="/user/consult"
+              class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+              @click="closeMessageModal"
+            >
+              總覽
+            </nuxt-link>
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeMessageModal">
+              <i class="icomoon icon-cross"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex flex-col pt-5 pb-2">
+          <!-- 訊息內容 -->
+          <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
+            <div class="flex flex-col">
+              <div class="flex">
+                <div class="caption">職務 | 公司名稱</div>
+              </div>
+              <p class="caption text-black-6">訊息訊息訊息訊息訊息...</p>
+            </div>
+            <span class="caption text-black-6">2023/04/12</span>
+          </div>
+          <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
+            <div class="flex flex-col">
+              <div class="flex">
+                <div class="caption">職務 | 公司名稱</div>
+              </div>
+              <p class="caption text-black-6">訊息訊息訊息...</p>
+            </div>
+            <span class="caption text-black-6">2023/04/12</span>
+          </div>
+        </div>
+      </div>
+      <!-- 積分 Modal sm md -->
+      <div
+        v-if="showPointModalSm"
+        ref="pointModalSm"
+        class="fixed drop-shadow-modal bg-white w-full p-5 rounded left-0 right-0 bottom-[84px]"
+      >
+        <div class="flex justify-between pb-3 border-b border-b-black-5">
+          <div class="text-xl">{{ currentPoint }} 積分</div>
+          <div class="flex">
+            <nuxt-link
+              to="/user/credit-history"
+              class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+              @click="closePointModal"
+            >
+              積分明細
+            </nuxt-link>
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closePointModal">
+              <i class="icomoon icon-cross"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex flex-col pt-5 pb-2">
+          <div class="flex justify-between border border-black-1 rounded mb-3 px-3 py-4">
+            <div class="flex flex-col">
+              <h5 class="mb-3 text-blue">加薪計畫</h5>
+              <p class="caption">
+                6+6 個月薪水任你看、<br />贈送 2000 積分、無廣告體驗，<br />以及 10% 比薪水積分回饋！
+              </p>
+            </div>
+            <div class="flex flex-col justify-center items-end">
+              <BaseButton content="NT $ 699" @click="goToCheckout(false)"></BaseButton>
+              <nuxt-link
+                to="/order/offer"
+                class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3"
+                @click="closePointModal"
+              >
+                詳細資訊
+              </nuxt-link>
+            </div>
+          </div>
+          <div class="flex justify-between border border-black-1 rounded mb-3 px-3 py-4">
+            <div class="flex flex-col">
+              <h5 class="mb-3">100 積分</h5>
+              <p class="caption">可兌換 1 則薪水情報</p>
+            </div>
+            <div class="flex flex-col justify-center items-end">
+              <BaseButton content="NT $ 150" cate="secondary" @click="goToCheckout(true)"></BaseButton>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
-    <!-- md lg nav -->
+    <!-- lg nav -->
     <nav
       class="z-10 fixed top-0 left-0 bg-white/80 w-full sm:py-3 sm:px-3 md:py-6 md:px-10 lg:py-6 lg:px-10 shadow-nav backdrop-blur-sm"
       aria-label="平板電腦版選單"
@@ -330,28 +586,32 @@ async function search() {
         <nuxt-link to="/" class="sm:w-[80px] md:w-[150px] lg:w-[150px]">
           <img src="../assets/img/LOGO.png" alt="LOGO" />
         </nuxt-link>
-        <div class="sm:hidden md:flex flex-row justify-center items-center">
+        <div class="hidden lg:flex flex-row justify-center items-center">
+          <!-- 匿名分享 lg -->
           <BaseButton cate="blue-text" content="匿名分享" class="me-0" to="/share-my-salary">
             <span class="icon-edit text-lg me-2"></span>
           </BaseButton>
+          <!-- 搜尋 lg -->
           <div class="relative">
             <BaseButton
               cate="gray-text"
-              content="搜尋"
-              :class="{ 'me-8': !isLogin }"
+              :class="{ 'me-5': !isLogin }"
+              class="search-button"
               @click="showSearchModal = !showSearchModal"
             >
-              <span class="icon-search text-lg me-2"></span>
+              <span class="icon-search text-lg me-2 search-button"></span>
+              <h6 class="search-button">搜尋</h6>
             </BaseButton>
+            <!-- 搜尋 Modal lg -->
             <div
               v-if="showSearchModal"
               ref="searchModal"
-              class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
+              class="absolute shadow-xl bg-white top-[90px] w-[400px] p-5 rounded"
               style="right: -100%"
             >
               <div class="flex justify-between pb-3 border-b border-b-black-5">
                 <div class="text-xl">搜尋</div>
-                <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showSearchModal = false">
+                <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeSearchModal">
                   <i class="icomoon icon-cross"></i>
                 </button>
               </div>
@@ -438,16 +698,133 @@ async function search() {
               </div>
             </div>
           </div>
-          <BaseButton v-if="isLogin" cate="gray-text" content="訊息">
-            <div>
-              <!-- 訊息紅點 -->
-              <span class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"></span>
-              <span class="icon-mail text-2xl me-2"></span>
+          <!-- 訊息 lg -->
+          <div class="relative">
+            <BaseButton
+              v-if="isLogin"
+              cate="gray-text"
+              class="message-button"
+              @click="showMessageModal = !showMessageModal"
+            >
+              <div>
+                <!-- 訊息紅點 -->
+                <span
+                  class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
+                ></span>
+                <span class="icon-mail text-2xl me-2 message-button"></span>
+              </div>
+              <h6 class="message-button">訊息</h6>
+            </BaseButton>
+            <!-- 訊息 Modal lg -->
+            <div
+              v-if="showMessageModal"
+              ref="messageModal"
+              class="absolute shadow-xl bg-white top-[90px] w-[400px] p-5 rounded"
+              style="right: -100%"
+            >
+              <div class="flex justify-between pb-3 border-b border-b-black-5">
+                <div class="text-xl">訊息</div>
+                <div class="flex">
+                  <nuxt-link
+                    to="/user/consult"
+                    class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                    @click="closeMessageModal"
+                  >
+                    總覽
+                  </nuxt-link>
+                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeMessageModal">
+                    <i class="icomoon icon-cross"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex flex-col pt-5 pb-2">
+                <!-- 訊息內容 -->
+                <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
+                  <div class="flex flex-col">
+                    <div class="flex">
+                      <div class="caption">職務 | 公司名稱</div>
+                    </div>
+                    <p class="caption text-black-6">訊息訊息訊息訊息訊息...</p>
+                  </div>
+                  <span class="caption text-black-6">2023/04/12</span>
+                </div>
+                <div class="flex justify-between items-center border border-black-1 rounded mb-3 px-3 py-4">
+                  <div class="flex flex-col">
+                    <div class="flex">
+                      <div class="caption">職務 | 公司名稱</div>
+                    </div>
+                    <p class="caption text-black-6">訊息訊息訊息訊息訊息...</p>
+                  </div>
+                  <span class="caption text-black-6">2023/04/12</span>
+                </div>
+              </div>
             </div>
-          </BaseButton>
-          <BaseButton v-if="isLogin" cate="yellow-text" :content="`${currentPoint} 積分`" class="me-8">
-            <span class="icon-star-circle text-xl me-2"></span>
-          </BaseButton>
+          </div>
+          <!-- 積分 lg -->
+          <div class="relative">
+            <BaseButton
+              v-if="isLogin"
+              cate="yellow-text"
+              class="me-5 point-button"
+              @click="showPointModal = !showPointModal"
+            >
+              <span class="icon-star-circle text-xl me-2 point-button"></span>
+              <h6 class="point-button">{{ currentPoint }} 積分</h6>
+            </BaseButton>
+            <!-- 積分 Modal lg -->
+            <div
+              v-if="showPointModal"
+              ref="pointModal"
+              class="absolute shadow-xl bg-white top-[90px] w-[400px] p-5 rounded"
+              style="right: -100%"
+            >
+              <div class="flex justify-between pb-3 border-b border-b-black-5">
+                <div class="text-xl">{{ currentPoint }} 積分</div>
+                <div class="flex">
+                  <nuxt-link
+                    to="/user/credit-history"
+                    class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                    @click="closePointModal"
+                  >
+                    積分明細
+                  </nuxt-link>
+                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showPointModal = false">
+                    <i class="icomoon icon-cross"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex flex-col pt-5 pb-2">
+                <div class="flex justify-between border border-black-1 rounded mb-3 px-4 py-4">
+                  <div class="flex flex-col">
+                    <h5 class="mb-3 text-blue">加薪計畫</h5>
+                    <p class="caption">
+                      6+6 個月薪水任你看、<br />贈送 2000 積分、無廣告體驗，<br />以及 10% 比薪水積分回饋！
+                    </p>
+                  </div>
+                  <div class="flex flex-col justify-center items-end">
+                    <BaseButton content="NT $ 699" @click="goToCheckout(false)"></BaseButton>
+                    <nuxt-link
+                      to="/order/offer"
+                      class="bg-black-1 px-2 py-1 text-sm tracking-widest w-fit mt-3"
+                      @click="closePointModal"
+                    >
+                      詳細資訊
+                    </nuxt-link>
+                  </div>
+                </div>
+                <div class="flex justify-between border border-black-1 rounded mb-3 px-4 py-4">
+                  <div class="flex flex-col">
+                    <h5 class="mb-3">100 積分</h5>
+                    <p class="caption">可兌換 1 則薪水情報</p>
+                  </div>
+                  <div class="flex flex-col justify-center items-end">
+                    <BaseButton content="NT $ 150" cate="secondary" @click="goToCheckout(true)"></BaseButton>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 帳號 lg -->
           <div class="relative">
             <BaseButton
               v-if="isLogin"
@@ -461,11 +838,13 @@ async function search() {
                   <div class="bg-slate-200 w-12 h-12 rounded-full"></div>
                 </div>
               </div>
-              <img v-else class="w-12 h-12 rounded-full" :src="currentUser.profilePicture" alt="圖片" />
+              <img v-else class="account-button w-12 h-12 rounded-full" :src="currentUser.profilePicture" alt="圖片" />
             </BaseButton>
+            <!-- 帳號 Modal lg -->
             <div
               v-if="showUserList"
-              class="absolute shadow bg-white top-[90px] w-[400px] p-5 rounded"
+              ref="userListModal"
+              class="absolute shadow-xl bg-white top-[90px] w-[400px] p-5 rounded"
               style="right: -100%"
             >
               <div class="flex justify-between pb-3 border-b border-b-black-5">
@@ -475,7 +854,7 @@ async function search() {
                 <div>
                   <!-- FIX: 複製UID -->
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
-                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="showUserList = false">
+                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
                     <i class="icomoon icon-cross"></i>
                   </button>
                 </div>
@@ -510,9 +889,11 @@ async function search() {
               </ul>
             </div>
           </div>
+          <!-- 登入 lg -->
           <BaseButton v-if="!isLogin" to="/login" cate="secondary" content="登入" class="me-5">
             <span class="icon-person text-xl me-2 mt-1"></span>
           </BaseButton>
+          <!-- 加薪計畫 -->
           <BaseButton cate="primary" content="加薪計畫" to="/order/offer">
             <span class="icon-star text-2xl me-2"></span>
           </BaseButton>
@@ -521,7 +902,7 @@ async function search() {
     </nav>
 
     <!-- 各頁面內容 -->
-    <slot />
+    <slot></slot>
 
     <footer class="bg-white sm:py-10 sm:px-3 sm:mb-20 md:mb-0 lg:py-20 max-[1920px]:overflow-x-hidden">
       <div

@@ -104,7 +104,11 @@ async function clickPay() {
   // 接著 call api 801 送出 transactionId
   if (transactionId) {
     const paymentUrl = await order.fetchLinePayTransaction(transactionId);
-    window.open(paymentUrl);
+    if (paymentUrl) {
+      window.location.href = paymentUrl;
+    } else {
+      showError('提示', '付款失敗，請重新操作。');
+    }
   }
 }
 </script>
