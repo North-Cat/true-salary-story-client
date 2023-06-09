@@ -23,6 +23,8 @@ onMounted(() => {});
     </client-only>
     <!-- 簽到提示 -->
     <RemindCheckIn></RemindCheckIn>
+    <!-- 全畫面 loading -->
+    <PageLoading></PageLoading>
 
     <!-- 套用共通 layout (nav 跟 footer)-->
     <NuxtLayout>
