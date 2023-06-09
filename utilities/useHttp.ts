@@ -1,8 +1,8 @@
 // import { hash } from 'ohash';
+import { storeToRefs } from 'pinia';
 import { showError } from '@/utilities/message';
 import { IRequestHeaders } from '~/interface/user';
 import { useLoadingStore } from '@/store/loading';
-import { storeToRefs } from 'pinia';
 
 // export interface ResOptions<T> {
 //   data: T;
@@ -16,12 +16,12 @@ import { storeToRefs } from 'pinia';
  * @param { Object } options useFtech第二个参数
  * @param { Object } headers 自定义header头, 单独设置headers区分请求参数，也好设置类型
  */
-const fetch = async (url: string, options?: any, headers?: any, isShowLoading: boolean = true) => {
+const fetch = async (url: string, options?: any, headers?: any, isShowLoading = true) => {
   // 開啟 loading
-  if (isShowLoading){
+  if (isShowLoading) {
     showLoadingMask();
   }
-  
+
   try {
     const {
       public: { apiBase },
@@ -115,7 +115,7 @@ function hideLoadingMask() {
   const { loadingCount } = storeToRefs(loading);
 
   setLoadingCount(loadingCount.value - 1);
-  if (loadingCount.value <= 0){
+  if (loadingCount.value <= 0) {
     setLoadingCount(0);
     hideLoading();
   }
