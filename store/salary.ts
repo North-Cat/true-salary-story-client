@@ -37,11 +37,8 @@ export const useSalaryStore = defineStore('salary', () => {
     tags: [],
     customTags: [],
     createDate: '',
-<<<<<<< HEAD
-    isLocked: true
-=======
+    isLocked: true,
     createUser: '',
->>>>>>> develop
   });
   const { shareSalaryApi } = useApi();
 
