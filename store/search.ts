@@ -143,13 +143,13 @@ export const useSearchStore = defineStore('search', () => {
         employmentType: el?.employmentType || '',
         inService: el?.inService !== undefined ? el.inService : false,
         city: el?.city || '',
-        workYears: el?.workYears || '',
-        totalWorkYears: el?.totalWorkYears || '',
-        monthlySalary: el?.monthlySalary ?? '-',
-        dailySalary: el?.dailySalary ?? '-',
+        workYears: el?.workYears || 0,
+        totalWorkYears: el?.totalWorkYears || 0,
+        monthlySalary: el.monthlySalary,
+        dailySalary: el.dailySalary,
         avgWorkingDaysPerMonth: el?.avgWorkingDaysPerMonth ?? '-',
-        hourlySalary: el?.hourlySalary ?? '-',
-        avgHoursPerDay: el?.avgHoursPerDay ?? '-',
+        hourlySalary: el.hourlySalary,
+        avgHoursPerDay: el?.avgHoursPerDay ?? 8,
         yearEndBonus: el?.yearEndBonus ?? '-',
         holidayBonus: el?.holidayBonus ?? '-',
         profitSharingBonus: el?.profitSharingBonus ?? '-',
@@ -162,7 +162,8 @@ export const useSearchStore = defineStore('search', () => {
         tags: el?.tags || [],
         customTags: el?.customTags || [],
         createDate: el?.createDate || '',
-        isLocked: el?.isLocked !== undefined ? el.isLocked : true
+        isLocked: el?.isLocked !== undefined ? el.isLocked : true,
+        createUser: el?.createUser || '',
       };
     });
   };

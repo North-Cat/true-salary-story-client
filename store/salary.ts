@@ -53,13 +53,13 @@ export const useSalaryStore = defineStore('salary', () => {
       employmentType: result?.employmentType || '',
       inService: result?.inService !== undefined ? result.inService : false,
       city: result?.city || '',
-      workYears: result?.workYears || '',
-      totalWorkYears: result?.totalWorkYears || '',
-      monthlySalary: result?.monthlySalary ?? '-',
-      dailySalary: result?.dailySalary ?? '-',
+      workYears: result?.workYears || 0,
+      totalWorkYears: result?.totalWorkYears || 0,
+      monthlySalary: result.monthlySalary,
+      dailySalary: result.dailySalary,
       avgWorkingDaysPerMonth: result?.avgWorkingDaysPerMonth ?? '-',
-      hourlySalary: result?.hourlySalary ?? '-',
-      avgHoursPerDay: result?.avgHoursPerDay ?? '-',
+      hourlySalary: result.hourlySalary,
+      avgHoursPerDay: result?.avgHoursPerDay ?? 8,
       yearEndBonus: result?.yearEndBonus ?? '-',
       holidayBonus: result?.holidayBonus ?? '-',
       profitSharingBonus: result?.profitSharingBonus ?? '-',
@@ -86,7 +86,7 @@ export const useSalaryStore = defineStore('salary', () => {
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
       if (route.name === 'companies-companiesId') {
-        await search.fetchSearchCompanySalary(route.params.companiesId)
+        await search.fetchSearchCompanySalary(route.params.companiesId);
       } else {
         await fetchSalaryInfo(result.postId);
       }
