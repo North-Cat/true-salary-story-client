@@ -136,13 +136,13 @@ const handleCreateConsult = async () => {
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">在職年資</div>
-                    <h6>{{ post.workYears + ' 年' }}</h6>
+                    <h6>{{ post.workYears > 0 ?  `${post.workYears}年`: '未滿1年' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">個人總年資</div>
-                    <h6>{{ post.totalWorkYears + ' 年' }}</h6>
+                    <h6>{{ post.totalWorkYears > 0 ?  `${post.totalWorkYears}年`: '未滿1年' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
