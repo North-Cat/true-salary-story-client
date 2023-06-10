@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
   const token = ref('');
   const isFetchProfileLoading = ref(false);
   const currentPoint = ref(0);
-  const checkTodayCheckedIn = ref(false);
+  const checkTodayCheckedIn = ref(true); // 預設為已遷到，避免剛載入頁面有一瞬間可以點擊簽到
   const loginWithGoogle = () => {
     const {
       public: { apiBase },
@@ -79,7 +79,7 @@ export const useUserStore = defineStore('user', () => {
     page: number;
   }) => {
     const result = await userApi.getOpenedSalary(data);
-    mySalary.value = {
+    openedSalary.value = {
       result: result.result || [],
       totalCount: result.totalCount || 0,
     };
@@ -129,6 +129,13 @@ export const useUserStore = defineStore('user', () => {
     };
   };
 
+  const isCheckInLoading = ref(false);
+  const tryToFetchPostDailyCheckIn = async () => {
+    isCheckInLoading.value = true;
+    await userApi.postDailyCheckIn();
+    isCheckInLoading.value = false;
+  };
+
   return {
     tryToFetchProfile,
     isLogin,
@@ -150,5 +157,7 @@ export const useUserStore = defineStore('user', () => {
     tryToFetchPointsList,
     tryToFetchOpenedSalary,
     openedSalary,
+    tryToFetchPostDailyCheckIn,
+    isCheckInLoading,
   };
 });

@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { RouteLocationRaw, useRoute } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
+import { useWSStore } from '@/store/ws';
 
 const route = useRoute();
 const router = useRouter();
@@ -24,12 +25,19 @@ onClickOutside(userListModalSm, (e) => {
   }
 });
 const user = useUserStore();
+const wsStore = useWSStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
+  wsStore.ws.close();
+
   logout();
   closeUserModal();
 };
+onUnmounted(() => {
+  wsStore.ws.close();
+});
+
 const userList = ref([
   {
     title: '關於我',
@@ -43,6 +51,15 @@ const userList = ref([
     icon: 'icon-edit',
     to: {
       name: 'user-my-salary',
+    },
+  },
+  {
+    title: '已解鎖薪水',
+    icon: 'icon-sparkle-checked',
+    type: 'link',
+    id: 'user-opened-salary',
+    to: {
+      name: 'user-opened-salary',
     },
   },
   {
@@ -168,18 +185,24 @@ async function search() {
     showInfo('提示', '請輸入搜尋條件');
     return;
   }
-  // 帶著參數導頁至搜尋頁面
-  await navigateTo({
-    path: '/search',
-    query: paramObj,
-  });
 
   // 若已經在搜尋頁面，則重新整理
   if (route.path === '/search') {
+    await router.replace({
+      query: paramObj,
+    });
     setTimeout(() => {
       window.location.reload();
     }, 1);
+  } else {
+    // 帶著參數導頁至搜尋頁面
+    await router.push({
+      path: '/search',
+      query: paramObj,
+    });
   }
+
+  // 關閉視窗
   closeSearchModal();
 }
 function closeSearchModal() {
@@ -263,7 +286,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
 </script>
 
 <template>
-  <div class="default-layout">
+  <div class="default-layout max-[1920px]:overflow-x-hidden">
     <!-- sm md nav -->
     <nav
       class="z-10 fixed lg:hidden bg-white/80 w-full h-[85px] bottom-0 left-0 px-4 md:px-24 shadow-nav backdrop-blur-sm"

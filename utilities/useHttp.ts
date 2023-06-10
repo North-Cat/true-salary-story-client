@@ -1,6 +1,8 @@
 // import { hash } from 'ohash';
+import { storeToRefs } from 'pinia';
 import { showError } from '@/utilities/message';
 import { IRequestHeaders } from '~/interface/user';
+import { useLoadingStore } from '@/store/loading';
 
 // export interface ResOptions<T> {
 //   data: T;
@@ -14,7 +16,12 @@ import { IRequestHeaders } from '~/interface/user';
  * @param { Object } options useFtech第二个参数
  * @param { Object } headers 自定义header头, 单独设置headers区分请求参数，也好设置类型
  */
-const fetch = async (url: string, options?: any, headers?: any) => {
+const fetch = async (url: string, options?: any, headers?: any, isShowLoading = true) => {
+  // 開啟 loading
+  if (isShowLoading) {
+    showLoadingMask();
+  }
+
   try {
     const {
       public: { apiBase },
@@ -45,14 +52,17 @@ const fetch = async (url: string, options?: any, headers?: any) => {
       },
       onRequestError() {},
       onResponse({ response }) {
+        hideLoadingMask(); // 關閉 loading
         return response._data;
       },
       onResponseError({ response }) {
+        hideLoadingMask(); // 關閉 loading
         return response._data;
       },
     });
     const result = data.value;
     if (error.value || !result) {
+      hideLoadingMask(); // 關閉 loading
       showError('error', error?.value?.data?.message || '系統錯誤');
       return Promise.reject(error?.value?.data?.message || '系統錯誤');
       // throw createError({
@@ -62,26 +72,51 @@ const fetch = async (url: string, options?: any, headers?: any) => {
       // });
       // console.log(error);
     }
+    hideLoadingMask(); // 關閉 loading
     return JSON.parse(JSON.stringify(data))._value; // 这里直接返回data或者其他的
   } catch (err) {
+    hideLoadingMask(); // 關閉 loading
     return Promise.reject(err);
   }
 };
 
 export default class Http {
-  get(url: string, params?: any, headers?: any) {
-    return fetch(url, { method: 'get', params }, headers);
+  get(url: string, params?: any, headers?: any, isShowLoading?: boolean) {
+    return fetch(url, { method: 'get', params }, headers, isShowLoading);
   }
 
-  post(url: string, body?: any, headers?: any) {
-    return fetch(url, { method: 'post', body }, headers);
+  post(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
+    return fetch(url, { method: 'post', body }, headers, isShowLoading);
   }
 
-  put(url: string, body?: any, headers?: any) {
-    return fetch(url, { method: 'put', body }, headers);
+  put(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
+    return fetch(url, { method: 'put', body }, headers, isShowLoading);
   }
 
-  delete(url: string, body?: any, headers?: any) {
-    return fetch(url, { method: 'delete', body }, headers);
+  delete(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
+    return fetch(url, { method: 'delete', body }, headers, isShowLoading);
+  }
+}
+
+/* 開啟 Loading 圈圈 */
+function showLoadingMask() {
+  const loading = useLoadingStore();
+  const { setLoadingCount, showLoading } = loading;
+  const { loadingCount } = storeToRefs(loading);
+
+  setLoadingCount(loadingCount.value + 1);
+  showLoading();
+}
+
+/* 關掉 Loading 圈圈 */
+function hideLoadingMask() {
+  const loading = useLoadingStore();
+  const { setLoadingCount, hideLoading } = loading;
+  const { loadingCount } = storeToRefs(loading);
+
+  setLoadingCount(loadingCount.value - 1);
+  if (loadingCount.value <= 0) {
+    setLoadingCount(0);
+    hideLoading();
   }
 }

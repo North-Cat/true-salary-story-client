@@ -3,6 +3,7 @@ import userApi from '@/api/user';
 import searchApi from '@/api/search';
 import orderApi from '@/api/order';
 import subscribeApi from '@/api/subscribe';
+import consultApi from '@/api/consult';
 
 export default {
   shareSalaryApi,
@@ -10,4 +11,5 @@ export default {
   searchApi,
   orderApi,
   subscribeApi,
+  consultApi,
 };

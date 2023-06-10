@@ -1,11 +1,43 @@
 <script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router';
+
 import { IShareSalary } from '@/interface/salaryData';
 import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
+import { useConsultStore } from '@/store/consult';
 
-defineProps<{
+const props = defineProps<{
   post: IShareSalary;
 }>();
 const emit = defineEmits(['view']);
+
+const consultStore = useConsultStore();
+const route = useRoute();
+const router = useRouter();
+
+const loading = ref(false);
+
+const handleCreateConsult = async () => {
+  try {
+    loading.value = true;
+
+    const payload = {
+      receiverId: props.post.createUser,
+      postId: route.params.salaryId as string,
+    };
+
+    await consultStore.createConsult(payload);
+    await router.push({
+      path: '/user/consult',
+      query: {
+        post: route.params.salaryId,
+      },
+    });
+  } catch (error) {
+    console.error('create consult error: ', error);
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -150,6 +182,9 @@ const emit = defineEmits(['view']);
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
             <BaseButton v-if="post.isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
+            <BaseButton content="我要請教" @click="handleCreateConsult">
+              <span v-show="loading">...</span>
+            </BaseButton>
           </div>
         </div>
       </div>

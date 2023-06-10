@@ -13,6 +13,7 @@ const {
   companyPost,
   companyPostCount,
   companyName,
+  companyType,
   companyFeeling,
   companyOvertime,
   companyAvgMonthlySalary,
@@ -151,7 +152,7 @@ init();
         <div class="hidden w-full lg:flex justify-start caption text-black-6 mb-15">
           <nuxt-link to="/">真薪話</nuxt-link>
           <div class="mx-3">|</div>
-          <nuxt-link to="/search?searchType=type&param=資訊科技&page=1">資訊科技</nuxt-link>
+          <nuxt-link :to="`/search?searchType=type&param=${companyType}&page=1`">{{ companyType }}</nuxt-link>
           <div class="mx-3">></div>
           <nuxt-link to="/companies/98765432">{{ companyName }}</nuxt-link>
         </div>
@@ -190,17 +191,18 @@ init();
             </svg>
             <h2 class="hidden lg:flex ms-5 leading-[46px]">{{ companyName }}</h2>
           </div>
-          <div class="w-full lg:w-2/6 flex items-center">
-            <div class="w-1/2 me-3 lg:me-5">
+          <div class="w-full lg:w-2/6 flex items-center justify-end">
+            <div class="w-1/2">
               <BaseButton content="請教所有前輩" class="w-full">
                 <div class="icon-message me-2 -mb-1"></div>
               </BaseButton>
             </div>
-            <div class="w-1/2">
+            <!-- 先不做訂閱情報功能 -->
+            <!-- <div class="w-1/2">
               <BaseButton content="訂閱情報" cate="secondary" class="w-full">
                 <div class="icon-plus-circle me-2 -mb-1"></div>
               </BaseButton>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

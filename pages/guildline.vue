@@ -287,6 +287,10 @@
                 <span class="text-2xl icon-info me-2"></span>
                 <p>icon-info</p>
               </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-checked me-2"></span>
+                <p>icon-checked</p>
+              </div>
             </div>
           </div>
         </div>
