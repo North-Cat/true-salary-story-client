@@ -187,7 +187,9 @@ const handleCreateConsult = async () => {
             <span v-for="tag in post.tags" :key="tag" class="body-sm text-black-5 me-5"> #{{ tag }} </span>
           </div>
           <div class="flex flex-wrap mb-5" v-if="post.customTags.length">
-            <span v-for="customTag in post.customTags" :key="customTag" class="body-sm text-black-5 me-5"> #{{ customTag }} </span>
+            <span v-for="customTag in post.customTags" :key="customTag" class="body-sm text-black-5 me-5">
+              #{{ customTag }}
+            </span>
           </div>
           <div class="flex justify-between p-4 bg-blue-light">
             <div class="text-blue">

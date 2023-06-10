@@ -2,6 +2,7 @@
 // import { onClickOutside } from '@vueuse/core';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ISearch } from '@/interface/search';
 import { useUserStore } from '@/store/user';
 import { useSearchStore } from '@/store/search';
 import { useSalaryStore } from '@/store/salary';
@@ -83,14 +84,16 @@ async function getCompanyTitles() {
 }
 // 依條件查詢公司薪資資訊
 async function getCompanySalary(page: number) {
-  // call search 單一公司全部薪水 api
-  await searchStore.fetchSearchCompanySalary(
-    companiesId,
-    sortConditions.value,
-    titleConditions.value,
+  const params: ISearch = {
+    taxId: companiesId,
+    sortOption: sortConditions.value,
+    titleOption: titleConditions.value,
     page,
-    limit.value,
-  );
+    limit: limit.value,
+  };
+  searchStore.saveSearchParams(params);
+  // call search 單一公司全部薪水 api
+  await searchStore.fetchSearchCompanySalary(params);
   // 計算總頁數
   totalPages.value = Math.ceil(companyPostCount.value / limit.value);
   curPage.value = page;

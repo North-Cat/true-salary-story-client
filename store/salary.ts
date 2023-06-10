@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ISalary, IShareSalary } from '~/interface/salaryData';
+import { ISalary, IShareSalary } from '@/interface/salaryData';
 import { useUserStore } from '@/store/user';
 import { useSearchStore } from '@/store/search';
 export const useSalaryStore = defineStore('salary', () => {
@@ -86,7 +86,7 @@ export const useSalaryStore = defineStore('salary', () => {
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
       if (route.name === 'companies-companiesId') {
-        await search.fetchSearchCompanySalary(route.params.companiesId);
+        await search.fetchSearchCompanySalary(search.searchParams);
       } else {
         await fetchSalaryInfo(result.postId);
       }
