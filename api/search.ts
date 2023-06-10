@@ -5,21 +5,21 @@ export default new (class search extends Http {
    * 300 取得首頁初始化資訊
    */
   public getHomeInit() {
-    return this.get('/api/public/statistics');
+    return this.get('/api/public/statistics', undefined, undefined, false);
   }
 
   /**
    * 302 取得熱門薪資資訊
    */
   public getTopPost() {
-    return this.get('/api/salary/getTopPost');
+    return this.get('/api/salary/getTopPost', undefined, undefined, false);
   }
 
   /**
    * 303 取得熱門公司資訊
    */
   public getTopCompany() {
-    return this.get('/api/salary/getTopCompany');
+    return this.get('/api/salary/getTopCompany', undefined, undefined, false);
   }
 
   /**
@@ -55,7 +55,7 @@ export default new (class search extends Http {
    * @params id
    */
   public getTopCompanyType() {
-    return this.get('/api/salary/getTopCompanyType');
+    return this.get('/api/salary/getTopCompanyType', undefined, undefined, false);
   }
 
   /**

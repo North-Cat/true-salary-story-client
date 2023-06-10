@@ -22,7 +22,7 @@ export default new (class postShare extends Http {
   }
 
   public getKeywords() {
-    return this.get(`/api/salary/getTopKeyword`);
+    return this.get(`/api/salary/getTopKeyword`, undefined, undefined, false);
   }
 
   public requestSalaryInfo(id: string) {

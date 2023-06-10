@@ -1,5 +1,10 @@
 <template>
   <div ref="home">
+    <div v-if="isInit" class="loading fixed top-0 left-0 w-screen h-screen bg-white z-[999]">
+      <div class="w-full h-full flex justify-center items-center">
+        <img src="@/assets/img/LOGO.png" alt="logo" />
+      </div>
+    </div>
     <div class="homePage">
       <header ref="header" class="bg-gray h-auto max-[1920px]:overflow-x-hidden">
         <div class="w-full h-full bg-white sm:rounded-b-[60px] lg:rounded-b-[200px]">
@@ -286,7 +291,7 @@
                         fill="#D1D3D4"
                       />
                     </g>
-                    <g id="banner-paper-back">
+                    <g id="banner-paper">
                       <path
                         id="Vector_33"
                         d="M1.9736 217.107C1.9736 217.107 -1.28597 181.455 63.2536 181.455L61.324 317.599L9.6662 294.743L1.9736 217.107Z"
@@ -312,8 +317,6 @@
                         d="M11.1005 285.596C10.7568 285.589 10.429 285.449 10.1859 285.207C9.94281 284.964 9.80331 284.636 9.79663 284.292C9.79663 283.954 10.5007 250.413 54.1269 243.012C54.4685 242.958 54.8175 243.04 55.0998 243.24C55.3822 243.439 55.5757 243.741 55.6393 244.08C55.6692 244.25 55.6652 244.423 55.6276 244.591C55.59 244.759 55.5194 244.918 55.42 245.059C55.3206 245.199 55.1943 245.319 55.0484 245.41C54.9026 245.502 54.74 245.563 54.5702 245.592C13.1344 252.68 12.4564 283.98 12.4564 284.292C12.4566 284.468 12.4212 284.642 12.3524 284.803C12.2837 284.965 12.183 285.111 12.0563 285.233C11.9297 285.355 11.7797 285.449 11.6154 285.512C11.4512 285.574 11.276 285.603 11.1005 285.596Z"
                         fill="#231F20"
                       />
-                    </g>
-                    <g id="banner-paper-front">
                       <path
                         id="Vector_38"
                         d="M85.7055 263.756C85.7055 263.756 19.3145 267.848 1.97351 217.107L12.4042 349.497C12.4042 349.497 26.2248 376.679 88.3914 382.621L85.7055 263.756Z"
@@ -2480,11 +2483,13 @@
           </div>
           <div class="w-full">
             <!-- 熱門關鍵字 -->
-            <div class="keyword-block flex flex-col justify-center items-start">
+            <div class="keyword-block w-full flex flex-col justify-center items-start">
               <div class="bg-black-10 text-white py-3 px-5 rounded-t">
                 <h5>#熱門關鍵字</h5>
               </div>
-              <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-10 lg:px-16 bg-white rounded-b rounded-tr">
+              <div
+                class="w-full border-2 border-black-10 sm:py-5 sm:px-7 lg:py-10 lg:px-16 bg-white rounded-b rounded-tr"
+              >
                 <div class="flex flex-col">
                   <!-- 重點關鍵字 (顯示六個) -->
                   <div class="flex flex-wrap justify-start items-center sm:mb-2 lg:mb-7">
@@ -2529,6 +2534,7 @@ import { useSalaryStore } from '@/store/salary';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { useAnimationStore } from '@/store/animation';
 
 const salaryStore = useSalaryStore();
 const { keywords } = storeToRefs(salaryStore);
@@ -2636,6 +2642,9 @@ init();
 /**
  * 動畫
  */
+const animation = useAnimationStore();
+const { isInit } = storeToRefs(animation);
+
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const header = ref();
 const home = ref();
@@ -2644,8 +2653,12 @@ onMounted(() => {
   ctx = gsap.context((self: gsap.Context) => {
     if (self && self.selector) {
       // 解決開頭閃現問題 (FOUC)
-      const home = self.selector('.homePage');
-      gsap.to(home, { visibility: 'visible', opacity: 1 });
+      const homePage = self.selector('.homePage');
+      gsap.to(homePage, { visibility: 'visible', opacity: 1 });
+      const loading = self.selector('.loading');
+      if (loading && loading.length != 0) {
+        gsap.to(loading, { display: 'none', opacity: 0, duration: 1 });
+      }
 
       // 標題動畫
       const titles = self.selector('.title');
@@ -2688,7 +2701,7 @@ onMounted(() => {
           value: 0,
         },
         {
-          duration: 3,
+          duration: 1,
           value: postCount.value,
           onUpdate() {
             postCount.value = postCount.value | 0;
@@ -2701,7 +2714,7 @@ onMounted(() => {
           value: 0,
         },
         {
-          duration: 3,
+          duration: 1,
           value: userCount.value,
           onUpdate() {
             userCount.value = userCount.value | 0;
@@ -2823,14 +2836,13 @@ onMounted(() => {
       // 人物浮動
       bannerTl.to('#banner-person', { yPercent: -30, duration: 10 });
       // 第一組物件浮動，幅度比較大
-      bannerTl.to('#banner-paper-front', { yPercent: -45, duration: 2 }, '<');
-      bannerTl.to('#banner-paper-back', { yPercent: -45, duration: 2 }, '<');
+      bannerTl.to('#banner-paper', { yPercent: -45, duration: 2 }, '<');
       bannerTl.to('#banner-gear', { yPercent: -45, duration: 2 }, '<');
       bannerTl.to('#banner-message', { yPercent: -45, duration: 2 }, '<');
       // 第一組物件浮動，幅度比較小
-      bannerTl.to('#banner-pie', { yPercent: -20, duration: 2 }, '<');
-      bannerTl.to('#banner-chart', { yPercent: -20, duration: 2 }, '<');
-      bannerTl.to('#banner-target', { yPercent: -20, duration: 2 }, '<');
+      bannerTl.to('#banner-pie', { yPercent: -45, duration: 2 }, '<');
+      bannerTl.to('#banner-chart', { yPercent: -45, duration: 2 }, '<');
+      bannerTl.to('#banner-target', { yPercent: -45, duration: 2 }, '<');
     }
   }, home.value);
 });
@@ -2853,6 +2865,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   ctx.revert();
+});
+
+definePageMeta({
+  middleware: 'animation',
 });
 </script>
 
