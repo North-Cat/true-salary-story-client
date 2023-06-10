@@ -55,9 +55,9 @@ const handleCreateConsult = async () => {
   <section
     class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
   >
-    <div class="w-full flex flex-col p-6">
+    <div class="w-full flex flex-col sm:p-3 md:p-6">
       <div class="flex flex-col">
-        <div class="p-6 flex flex-col">
+        <div class="sm:p-3 md:p-6 flex flex-col">
           <div class="flex mb-5">
             <div class="w-[48px] h-[48px] flex justify-center items-center rounded bg-blue-light mr-[18px]">
               <span class="icon-sparkle-checked text-3xl text-blue-dark"></span>
@@ -191,8 +191,8 @@ const handleCreateConsult = async () => {
               #{{ customTag }}
             </span>
           </div>
-          <div class="flex justify-between p-4 bg-blue-light">
-            <div class="text-blue">
+          <div class="flex sm:flex-col sm:justify-center md:flex-row md:justify-between p-4 bg-blue-light">
+            <div class="text-blue sm:pb-3">
               <span>想了解只有員工才知道的職場心聲？</span>
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
