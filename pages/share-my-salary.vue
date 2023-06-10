@@ -52,6 +52,11 @@ const submitData = reactive<IShareSalary>({
   suggestion: '',
   tags: [],
   customTags: [],
+  postId: '',
+  companyType: '',
+  yearlySalary: '',
+  createDate: '',
+  createUser: '',
 });
 configure({
   validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
@@ -63,7 +68,7 @@ configure({
 setLocale('zh_TW');
 const form = ref();
 // === 驗證 === //
-// FIXME:  onBlur form.value.setFieldError('taxID', '查無此統編')
+const tempTaxid = ref('');
 defineRule('validationTaxId', async (taxId: string) => {
   const reg = /^[0-9]{8}$/;
   const matchResult = typeof taxId === 'string' ? taxId?.match(reg) : submitData.taxId.toString().match(reg);
@@ -88,12 +93,17 @@ defineRule('validationTaxId', async (taxId: string) => {
   if (!isLegal) {
     return '統編驗證錯誤';
   }
+  if (tempTaxid.value === taxId) {
+    return true;
+  }
   const { isExist, companyName } = await throttledFn();
   if (!isExist) {
     submitData.companyName = '';
+    tempTaxid.value = taxId;
     return '查無此統編';
   } else {
     submitData.companyName = companyName;
+    tempTaxid.value = taxId;
   }
   return true;
 });
@@ -204,8 +214,9 @@ const onNext = async () => {
     nextTick(() => {
       step.value = step.value + 1;
     });
-    scrollTop();
+    // scrollTop();
   }
+  scrollTop();
 };
 const onPrev = () => {
   nextTick(() => {
@@ -240,8 +251,8 @@ const reset = () => {
   resetSubmitData();
   nextTick(() => {
     step.value = 1;
+    scrollTop();
   });
-  scrollTop();
 };
 const resetSubmitData = () => {
   Object.assign(submitData, {
@@ -316,10 +327,10 @@ const onSubmit = async () => {
       successResult.value = result[0];
       nextTick(() => {
         step.value = 3;
+        scrollTop();
       });
       resetSubmitData();
       tryToFetchProfile();
-      scrollTop();
     })
     .catch((error) => {
       if (error.value.data.message === 'No token provided') {
@@ -330,10 +341,11 @@ const onSubmit = async () => {
     });
 };
 const scrollTop = () => {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  });
+  window.scrollTo(0, 0);
+  // window.scrollTo({
+  //   top: 0,
+  //   behavior: 'smooth',
+  // });
 };
 // 監聽 salaryTypesField 的變化
 const chnagSalaryTotal = () => {
@@ -373,8 +385,9 @@ const calculateTotal = (salary: number, multiplier: number): number => {
   return salary ? Number(salary * multiplier) : 0;
 };
 
-const addCustomTags = (tag: string) => {
-  submitData.customTags?.push(tag);
+const addCustomTags = () => {
+  if (customTagsText.value.trim() === '') return;
+  submitData.customTags?.push(customTagsText.value);
   customTagsText.value = '';
 };
 const removeCustomTag = (tag: string) => {
@@ -437,23 +450,23 @@ const rightSideList = reactive([
 </script>
 <template>
   <section class="bg-gray md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
-    <div class="sharemysalary mx-auto px-14 md:max-w-full lg:max-w-7xl lg:mt-10">
-      <h2 class="text-3xl mb-5">匿名分享</h2>
+    <div class="sharemysalary mx-auto md:px-14 md:max-w-full lg:max-w-7xl mt-15 lg:mt-10">
+      <h2 class="text-3xl mb-5 md:px-0 px-5">匿名分享</h2>
       <div class="block" :class="step === 3 ? ' ' : 'lg:flex'">
         <div
-          class="w-full border-2 border-black-10 mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br"
+          class="w-full md:border-2 md:border-black-10 md:mt-10 lg:mt-0 md:rounded-bl md:rounded-br"
           :class="step === 3 ? 'lg:w-full ' : 'lg:w-4/6 '"
         >
           <div class="w-100 p-6 bg-black-10 text-white">
             <template v-if="step !== 3">
-              <h4>{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
+              <h4 class="fs-xl">{{ currentUser.displayName || 'Hi' }}，讓我們開始這趟奇妙旅程吧！</h4>
               <p class="opacity-70 mt-2">在真薪話站上提供的資訊完全不會揭露你的任何個資，請安心分享。</p>
             </template>
             <template v-else>
               <h4>成功分享，獲得{{ successResult?.point }}!</h4>
             </template>
           </div>
-          <VForm v-slot="{ errors, meta }" ref="form" class="p-6" @submit="onConfirm">
+          <VForm v-slot="{ errors, meta }" ref="form" class="px-3 py-6 md:p-6 bg-white" @submit="onConfirm">
             <div v-if="step === 1">
               <!-- 公司統編 -->
               <div class="mb-10">
@@ -575,7 +588,7 @@ const rightSideList = reactive([
                   is-button-style
                 />
                 <div class="mt-4">
-                  <div class="pl-12">
+                  <div class="md:pl-12">
                     <keep-alive>
                       <template v-if="salaryTypes === 'monthly'">
                         <div class="relativ">
@@ -600,7 +613,7 @@ const rightSideList = reactive([
                     </keep-alive>
                     <keep-alive>
                       <template v-if="salaryTypes === 'daily'">
-                        <div class="flex">
+                        <div class="flex flex-wrap md:flex-nowrap">
                           <div class="shrink w-full">
                             <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
                               placeholder="日薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
@@ -619,10 +632,10 @@ const rightSideList = reactive([
                             <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
-                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
+                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1 shrink">
                             <i class="icomoon icon-cross text-black-6"></i>
                           </div>
-                          <div class="shrink w-full">
+                          <div class="md:shrink grow md:w-full">
                             <BaseFormSelect
                               v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
                               :options="monthOptions"
@@ -642,7 +655,7 @@ const rightSideList = reactive([
                     </keep-alive>
                     <keep-alive>
                       <template v-if="salaryTypes === 'hourly'">
-                        <div class="flex">
+                        <div class="flex flex-wrap md:flex-nowrap">
                           <div class="shrink w-full">
                             <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
                               placeholder="時薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
@@ -663,7 +676,7 @@ const rightSideList = reactive([
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
                           </div>
-                          <div class="shrink w-full">
+                          <div class="md:shrink grow md:w-full">
                             <BaseFormSelect
                               v-model="salaryTypesField[salaryTypes].avgHoursPerDay"
                               :options="workingHoursOptions"
@@ -678,7 +691,7 @@ const rightSideList = reactive([
                           <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
                             <i class="icomoon icon-cross text-black-6"></i>
                           </div>
-                          <div class="shrink w-full">
+                          <div class="md:shrink grow md:w-full">
                             <BaseFormSelect
                               v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
                               :required="salaryTypes === 'hourly' ? 'required' : ''"
@@ -913,13 +926,13 @@ const rightSideList = reactive([
                   </li>
                 </ul>
                 <ul v-if="submitData.customTags && submitData.customTags[0]" class="flex flex-wrap list-none">
-                  <li v-for="(customTagsItem, $index) in submitData.customTags" :key="$index">
-                    <button
-                      class="cursor-pointer p-2 block text-black-10 bg-white border border-black-6 rounded text-sm mr-3 mb-3 peer-checked:text-white hover:bg-black-1"
-                      @click.stop.prevent="removeCustomTag(customTagsItem)"
-                    >
-                      <span class="text-sm"><i class="icomoon icon-cross text-xs mr-2"></i>{{ customTagsItem }}</span>
-                    </button>
+                  <li
+                    v-for="(customTagsItem, $index) in submitData.customTags"
+                    :key="$index"
+                    class="cursor-pointer p-2 block text-black-10 bg-white border border-black-6 rounded text-sm mr-3 mb-3 peer-checked:text-white hover:bg-black-1"
+                    @click="removeCustomTag(customTagsItem)"
+                  >
+                    <span class="text-sm"><i class="icomoon icon-cross text-xs mr-2"></i>{{ customTagsItem }}</span>
                   </li>
                 </ul>
                 <div class="relative">
@@ -930,12 +943,13 @@ const rightSideList = reactive([
                     name="customTagsText"
                     placeholder="自訂評價(每個最多10字)"
                     class="w-full border border-black-1 rounded py-2 pl-4 pr-9"
+                    @keydown.enter.exact.prevent="addCustomTags()"
                   />
                   <BaseButton
                     :disabled="!customTagsText"
                     cate="gray-text"
-                    class="absolute inset-y-0 right-0 flex items-center"
-                    @click="addCustomTags(customTagsText)"
+                    class="absolute inset-y-0 right-0 flex items-center disabled:opacity-25"
+                    @click.self="addCustomTags()"
                   >
                     <i class="icomoon icon-plus"></i>
                   </BaseButton>

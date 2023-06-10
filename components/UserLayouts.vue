@@ -135,7 +135,7 @@ const userList = ref([
           </div>
         </div>
         <!-- 頁面內容 -->
-        <div class="lg:w-4/6 md:border-2 border-black-10 mt-0 md:mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
+        <div class="lg:w-4/6 md:border-2 border-black-10 mt-0 md:mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br bg-white">
           <!-- 切頁 -->
           <div class="w-100 p-6 bg-black-10 text-white">
             <template v-if="$route.name === 'user'">
@@ -148,7 +148,7 @@ const userList = ref([
               {{ userList.find((item) => item.id === $route.name)?.title || '會員資訊' }}
             </template>
           </div>
-          <div class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6">
+          <div class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6 bg-white">
             <slot />
           </div>
           <!-- <PostManagement v-if="isPage(Page.POST)"/>
