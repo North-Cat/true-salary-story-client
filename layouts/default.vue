@@ -65,13 +65,13 @@ const userList = ref([
       name: 'user-opened-salary',
     },
   },
-  {
-    title: '薪水訂閱',
-    icon: 'icon-plus-circle',
-    to: {
-      name: 'user-subscribed-companies',
-    },
-  },
+  // {
+  //   title: '薪水訂閱',
+  //   icon: 'icon-plus-circle',
+  //   to: {
+  //     name: 'user-subscribed-companies',
+  //   },
+  // },
   {
     title: '請教紀錄',
     icon: 'icon-message',
@@ -362,8 +362,8 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
             {{ currentUser.displayName }}
           </div>
           <div>
-            <!-- FIX: 複製UID -->
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
+            <!-- FIX: 複製UID
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button> -->
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
               <i class="icomoon icon-cross"></i>
             </button>
@@ -856,7 +856,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
                 </div>
                 <div>
                   <!-- FIX: 複製UID -->
-                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
+                  <!-- <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button> -->
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
                     <i class="icomoon icon-cross"></i>
                   </button>
