@@ -193,8 +193,5 @@ const formatData = (createdAt: Date) => {
       </template>
       <BaseNull v-else content="目前沒有訂單" />
     </template>
-    <div v-else class="min-h-[330px] flex items-center justify-center">
-      <BaseLoading />
-    </div>
   </userLayouts>
 </template>

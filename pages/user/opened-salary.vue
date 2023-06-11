@@ -105,8 +105,5 @@ const totalPage = computed(() => {
       </template>
       <BaseNull v-else content="沒有解鎖的薪水" />
     </template>
-    <div v-else class="min-h-[330px] flex items-center justify-center">
-      <BaseLoading />
-    </div>
   </userLayouts>
 </template>
