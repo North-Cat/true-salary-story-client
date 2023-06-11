@@ -23,6 +23,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.11.0",
+    "gsap": "^3.11.5",
     "lottie-web": "^5.12.0",
     "nuxt": "^3.5.2",
     "nuxt-gtag": "^0.5.7",
