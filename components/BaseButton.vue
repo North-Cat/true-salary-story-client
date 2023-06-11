@@ -69,7 +69,7 @@ const btnClasses = computed(() => {
       className = 'py-3 px-5 flex-row text-yellow fill-yellow hover:text-blue hover:fill-blue';
       break;
     case 'text-sm':
-      className = 'py-3 px-2 flex-col text-black-6 fill-black-6 hover:text-black-10 hover:fill-black-10';
+      className = 'py-3 px-2 flex-col text-black-6 fill-black-6 hover:text-black-10 hover:fill-black-10 bg-transparent';
       break;
     default:
       className = 'flex-row text-white fill-white bg-blue hover:bg-black-10';

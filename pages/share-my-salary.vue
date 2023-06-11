@@ -810,9 +810,9 @@ const rightSideList = reactive([
               <div class="mb-10">
                 <BaseFormRadio v-model="submitData.feeling" :options="feelingOptions" label="上班心情" name="feeling" />
               </div>
-              <hr class="my-10" />
-              <div class="flex justify-between">
-                <p class="text-blue">
+              <hr class="md:my-10 my-5 text-black-1" />
+              <div class="flex justify-between md:flex-row flex-col-reverse">
+                <p class="text-blue md:mt-0 mt-4">
                   接著分享你的職場經歷
                   <br />
                   成為他人的職場貴人！
@@ -949,15 +949,15 @@ const rightSideList = reactive([
                     :disabled="!customTagsText"
                     cate="gray-text"
                     class="absolute inset-y-0 right-0 flex items-center disabled:opacity-25"
-                    @click.self="addCustomTags()"
+                    @click="addCustomTags()"
                   >
                     <i class="icomoon icon-plus"></i>
                   </BaseButton>
                 </div>
               </div>
-              <hr class="my-10" />
-              <div class="flex justify-between">
-                <BaseButton cate="white" @click="onPrev">上一步</BaseButton>
+              <hr class="md:my-10 my-5 text-black-1" />
+              <div class="flex justify-between md:flex-row flex-col">
+                <BaseButton cate="white" class="md:mb-0 mb-4" @click="onPrev">上一步</BaseButton>
                 <button
                   class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 disabled:bg-black-3 disabled:text-black-6"
                   type="submit"
@@ -1030,13 +1030,13 @@ const rightSideList = reactive([
                   >
                 </div>
               </div>
-              <div class="flex space-x-4 mt-7 border border-black-10 rounded p-6 bg-white">
-                <div class="self-center w-3/6">
+              <div class="md:flex space-x-4 mt-7 border border-black-10 rounded p-6 bg-white">
+                <div class="self-center md:w-3/6 w-full">
                   <p class="mb-5 text-xl">想知道加薪的秘訣是什麼嗎?好薪的前輩親自告訴你!</p>
                   <p class="mb-9 text-xl">取得產業前輩專業意見，快速擴展職場人脈!</p>
-                  <BaseButton cate="primary" class="w-full mt-auto">了解如何請教前輩</BaseButton>
+                  <!-- <BaseButton cate="primary" class="w-full mt-auto">了解如何請教前輩</BaseButton> -->
                 </div>
-                <div class="w-3/6">
+                <div class="md:w-3/6 w-full">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 400 300"
@@ -1346,13 +1346,17 @@ const rightSideList = reactive([
             </div>
           </VForm>
         </div>
-        <div v-if="step === 3" class="mt-4 flex">
-          <BaseButton cate="white" to="/" class="w-full mr-5">回首頁</BaseButton>
+        <div v-if="step === 3" class="mt-4 flex md:mx-0 md:mb-0 mx-3 mb-10 md:flex-row flex-col">
+          <BaseButton cate="white" to="/" class="w-full md:mr-5 md:mb-0 mb-4">回首頁</BaseButton>
           <BaseButton cate="primary" class="w-full" @click="reset">再次分享</BaseButton>
         </div>
         <div v-if="step !== 3" class="w-full lg:w-2/6 ml-0 lg:ml-[30px] lg:mt-0 md:mt-15">
-          <div v-for="(rightSideBlock, $index) in rightSideList" :key="$index" class="mb-4 bg-white rounded p-6">
-            <h4 class="text-blue text-2xl" :class="{ 'mb-5': !rightSideBlock.description }">
+          <div
+            v-for="(rightSideBlock, $index) in rightSideList"
+            :key="$index"
+            class="md:m-0 md:mb-4 m-3 mb-4 bg-white rounded p-6"
+          >
+            <h4 class="text-blue text-xl" :class="{ 'mb-5': !rightSideBlock.description }">
               {{ rightSideBlock.title }}
             </h4>
             <p class="text-sm text-black-6 mt-3">
