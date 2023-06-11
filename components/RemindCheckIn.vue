@@ -5,6 +5,8 @@ import { useUserStore } from '@/store/user';
 const user = useUserStore();
 const { currentUser, checkTodayCheckedIn } = storeToRefs(user);
 const showModal = ref(false);
+checkIsShow();
+
 // 已登入且未簽到，就顯示
 watch(currentUser, () => {
   checkIsShow();
