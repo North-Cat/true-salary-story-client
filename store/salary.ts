@@ -85,7 +85,7 @@ export const useSalaryStore = defineStore('salary', () => {
   const fetchPermission = async (id: string) => {
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
-      if (route.name === 'companies-companiesId') {
+      if (route.path.includes('companies')) {
         await search.fetchSearchCompanySalary(search.searchParams);
       } else {
         await fetchSalaryInfo(result.postId);
