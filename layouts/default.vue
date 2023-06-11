@@ -289,7 +289,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
 </script>
 
 <template>
-  <div class="default-layout max-[1920px]:overflow-x-hidden" :class="{ 'h-screen overflow-hidden': isInit }">
+  <div class="default-layout max-[1920px]:overflow-x-hidden">
     <!-- sm md nav -->
     <nav
       class="z-10 fixed lg:hidden bg-white/80 w-full h-[85px] bottom-0 left-0 px-4 md:px-24 shadow-nav backdrop-blur-sm"
