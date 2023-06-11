@@ -3,7 +3,6 @@ import { ISalary, IShareSalary } from '@/interface/salaryData';
 import { useUserStore } from '@/store/user';
 import { useSearchStore } from '@/store/search';
 export const useSalaryStore = defineStore('salary', () => {
-  const route = useRoute();
   const user = useUserStore();
   const search = useSearchStore();
   const tempSalaryFormData = ref<IShareSalary>({});
@@ -83,6 +82,7 @@ export const useSalaryStore = defineStore('salary', () => {
   };
 
   const fetchPermission = async (id: string) => {
+    const route = useRoute();
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
       if (route.path.includes('companies')) {
