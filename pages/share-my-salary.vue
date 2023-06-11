@@ -632,10 +632,10 @@ const rightSideList = reactive([
                             <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
-                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1 shrink">
-                            <i class="icomoon icon-cross text-black-6"></i>
-                          </div>
-                          <div class="md:shrink grow md:w-full">
+                          <div class="md:shrink grow md:w-full flex">
+                            <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1 shrink">
+                              <i class="icomoon icon-cross text-black-6"></i>
+                            </div>
                             <BaseFormSelect
                               v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
                               :options="monthOptions"
@@ -673,10 +673,11 @@ const rightSideList = reactive([
                             <span class="text-black-6 text-sm">單位為元</span>
                             <VErrorMessage name="hourlySalary" as="div" class="text-red" />
                           </div>
-                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
-                            <i class="icomoon icon-cross text-black-6"></i>
-                          </div>
-                          <div class="md:shrink grow md:w-full">
+
+                          <div class="md:shrink grow md:w-full flex">
+                            <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
+                              <i class="icomoon icon-cross text-black-6"></i>
+                            </div>
                             <BaseFormSelect
                               v-model="salaryTypesField[salaryTypes].avgHoursPerDay"
                               :options="workingHoursOptions"
@@ -688,10 +689,11 @@ const rightSideList = reactive([
                             >
                             </BaseFormSelect>
                           </div>
-                          <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
-                            <i class="icomoon icon-cross text-black-6"></i>
-                          </div>
-                          <div class="md:shrink grow md:w-full">
+
+                          <div class="md:shrink grow md:w-full flex">
+                            <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1">
+                              <i class="icomoon icon-cross text-black-6"></i>
+                            </div>
                             <BaseFormSelect
                               v-model="salaryTypesField[salaryTypes].avgWorkingDaysPerMonth"
                               :required="salaryTypes === 'hourly' ? 'required' : ''"
