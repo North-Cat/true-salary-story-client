@@ -28,6 +28,7 @@ export interface IShareSalary {
   createDate: string;
   isLocked?: boolean;
   createUser: string;
+  type: string;
 }
 
 export interface ISalary {

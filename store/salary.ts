@@ -38,6 +38,7 @@ export const useSalaryStore = defineStore('salary', () => {
     createDate: '',
     isLocked: true,
     createUser: '',
+    type: '',
   });
   const { shareSalaryApi } = useApi();
 
@@ -73,6 +74,7 @@ export const useSalaryStore = defineStore('salary', () => {
       createDate: result?.createDate || '',
       isLocked: result?.isLocked !== undefined ? result.isLocked : true,
       createUser: result?.createUser || '',
+      type: result.type,
     };
   };
 

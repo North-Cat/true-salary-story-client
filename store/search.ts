@@ -169,6 +169,7 @@ export const useSearchStore = defineStore('search', () => {
         createDate: el?.createDate || '',
         isLocked: el?.isLocked !== undefined ? el.isLocked : true,
         createUser: el?.createUser || '',
+        type: el.type,
       };
     });
   };

@@ -16,16 +16,16 @@ const router = useRouter();
 
 const loading = ref(false);
 
-const resultSalaryTitle = computed(() =>
-  props.post.monthlySalary ? '月薪' : props.post.dailySalary ? '日薪' : '時薪',
-);
-const resultSalary = computed(() =>
-  props.post.monthlySalary
-    ? props.post.monthlySalary
-    : props.post.dailySalary
-    ? props.post.dailySalary
-    : props.post.hourlySalary,
-);
+const resultSalaryTitle = computed(() => {
+  if (props.post.type === 'monthly') return '月薪';
+  if (props.post.type === 'daily') return '日薪';
+  return '時薪';
+});
+const resultSalary = computed(() => {
+  if (props.post.type === 'monthly') return props.post.monthlySalary;
+  if (props.post.type === 'daily') return props.post.dailySalary;
+  return hourlySalary;
+});
 
 const handleCreateConsult = async () => {
   try {
