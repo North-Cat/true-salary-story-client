@@ -32,13 +32,17 @@ const wsStore = useWSStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
-  wsStore.ws.close();
+  if (wsStore.ws) {
+    wsStore.ws.close();
+  }
 
   logout();
   closeUserModal();
 };
 onUnmounted(() => {
-  wsStore.ws.close();
+  if (wsStore.ws) {
+    wsStore.ws.close();
+  }
 });
 
 const userList = ref([

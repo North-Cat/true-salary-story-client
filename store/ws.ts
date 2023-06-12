@@ -10,7 +10,7 @@ export const useWSStore = defineStore('ws', () => {
   const consultStore = useConsultStore();
 
   const url = wssBase;
-  const ws = ref();
+  const ws = ref<WebSocket>();
 
   const init = () => {
     ws.value = new WebSocket(url);
@@ -18,12 +18,14 @@ export const useWSStore = defineStore('ws', () => {
     ws.value.onopen = () => {
       console.log('open connection', userStore.currentUser._id);
 
-      ws.value.send(
-        JSON.stringify({
-          type: 'userId',
-          userId: userStore.currentUser._id,
-        }),
-      );
+      if (ws.value) {
+        ws.value.send(
+          JSON.stringify({
+            type: 'userId',
+            userId: userStore.currentUser._id,
+          }),
+        );
+      }
     };
 
     ws.value.onclose = () => {
