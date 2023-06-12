@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiSecret: '123',
     public: {
-      apiBase: 'https://client-api-dev.up.railway.app',
+      apiBase: 'http://localhost:3000',
       pwaEnv: process.env.PWA_ENV || 'local',
       wssBase: 'wss://client-api-dev.up.railway.app',
     },

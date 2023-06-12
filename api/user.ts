@@ -76,4 +76,17 @@ export default new (class user extends Http {
   public postDailyCheckIn() {
     return this.post(`/api/user/checkIn`);
   }
+
+  public postEmailVerificationCode(email) {
+    // newEmail
+    return this.post(`/api/user/sendEmailVerificationCode`, email);
+  }
+
+  public postNewEmail(params) {
+    // {
+    //   verificationCode,
+    //   newEmail
+    // }
+    return this.post(`/api/user/updateEmail`, params);
+  }
 })();
