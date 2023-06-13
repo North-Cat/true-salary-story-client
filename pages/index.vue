@@ -2,8 +2,9 @@
   <div ref="home">
     <div v-if="isInit" class="loading fixed top-0 left-0 w-screen h-screen bg-white z-[999]">
       <div class="w-full h-full flex justify-center items-center flex-col">
-        <!-- <img class="-mb-12" src="@/assets/img/logoLoading.gif" alt="logo" /> -->
-        <div class="w-[150px] h-auto">
+        <!-- <BaseLoading></BaseLoading> -->
+        <img class="-mb-12" src="@/assets/img/logoLoading.gif" alt="logo" />
+        <!-- <div class="w-[150px] h-auto">
           <div class="animation-logo">
             <div class="face absolute top-[33px] left-[38px] -rotate-[7deg]">
               <div class="eyes flex">
@@ -24,15 +25,15 @@
             <path d="M271.89 194.071C274.045 191.301 278.039 190.802 280.809 192.958L288.611 199.028C291.382 201.184 291.88 205.178 289.724 207.948C287.569 210.719 283.575 211.217 280.805 209.062L273.003 202.991C270.232 200.836 269.734 196.842 271.89 194.071Z" fill="#2B2B31"/>
             <path d="M245.012 204.47C247.168 201.7 251.161 201.201 253.932 203.357L261.733 209.427C264.504 211.583 265.002 215.576 262.847 218.347C260.691 221.118 256.697 221.616 253.927 219.46L246.125 213.39C243.355 211.234 242.856 207.241 245.012 204.47Z" fill="#2B2B31"/>
             <path fill-rule="evenodd" clip-rule="evenodd" d="M110.018 57.7677C86.915 70.1946 70.5033 98.049 71.7299 134.636C73.4758 186.713 123.594 234.203 190.912 232.553C194.422 232.467 197.422 238.752 197.422 238.752C197.422 238.752 194.733 245.176 191.224 245.262C118.093 247.054 61.0413 195.218 59.0245 135.062C57.6642 94.4889 75.942 61.662 103.995 46.5721C131.046 32.0215 165.737 34.7232 197.829 60.5117C215.523 45.6331 242.578 39.8709 266.107 45.7036C279.041 48.9101 291.196 55.6817 300.233 66.6706C309.297 77.6922 314.892 92.5517 315.353 111.329C315.439 114.839 312.663 117.753 309.154 117.839C305.645 117.925 302.73 115.15 302.644 111.641C302.244 95.3061 297.44 83.2877 290.415 74.7455C283.363 66.1706 273.737 60.6925 263.048 58.0427C241.353 52.6645 216.441 59.1858 202.59 73.4174L198.381 77.7419L193.844 73.7628C163.857 47.4634 132.882 45.4687 110.018 57.7677Z" fill="#2B2B31"/>
-            <!-- <g class="face">
+            <g class="face">
               <path d="M117.579 137.892C119.735 135.121 123.728 134.623 126.499 136.778L134.3 142.848C137.071 145.004 137.569 148.998 135.414 151.768C133.258 154.539 129.264 155.037 126.494 152.882L118.692 146.812C115.922 144.656 115.423 140.662 117.579 137.892Z" fill="#2B2B31"/>
               <g class="eyes">
                 <path d="M109.678 94.7381C113.162 94.3033 116.338 96.7748 116.773 100.258L119.37 121.066C119.805 124.549 117.334 127.726 113.85 128.16C110.367 128.595 107.19 126.124 106.755 122.64L104.158 101.833C103.724 98.3493 106.195 95.1729 109.678 94.7381Z" fill="#2B2B31"/>
                 <path d="M137.422 91.2752C140.905 90.8405 144.081 93.3119 144.516 96.7953L147.113 117.603C147.548 121.086 145.077 124.263 141.593 124.698C138.11 125.132 134.933 122.661 134.499 119.177L131.902 98.3698C131.467 94.8864 133.938 91.71 137.422 91.2752Z" fill="#2B2B31"/>
               </g>
-            </g> -->
+            </g>
           </svg>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -298,14 +299,56 @@ definePageMeta({
 }
 .loading-logo .face {
   /* transform: translate(20px, -20px); */
-  /* animation: faceMove 1s linear infinite; */
+  animation: faceMove 2.5s linear infinite;
 }
 .loading-logo .eyes {
-  /* transform: translate(20px, -20px); */
-  /* transform-origin: center; */
+  /* transform: translate(20px, -20px);  */
+  transform-origin: center;
   /* transform: scaleY(0.5); */
-  /* animation: eyesBlink 1s linear infinite; */
+  animation: eyesBlink 2.5s linear infinite;
 }
+@keyframes faceMove {
+  0%,
+  85%,
+  100% {
+    transform: translate(0, 0)
+  }
+
+  15%,
+  70% {
+    transform: translate(20px, -20px)
+  }
+}
+@keyframes eyesBlink {
+  0%,
+	18%,
+  40%,
+  58%,
+	100% {
+		transform: scaleY(1);
+	}
+
+	9%,
+	49% {
+		transform: translate(0, -20px) scaleY(0.05);
+    /* border-radius: 100%; */
+	}
+}
+@keyframes mouthOpen {
+  0%,
+  85%,
+  100% {
+    transform: scaleY(1);
+  }
+
+  15%,
+  70% {
+    transform: scaleY(0.8);
+    border-radius: 50%;
+  }
+}
+
+
 
 .animation-logo .face {
   /* top: 30px;
@@ -323,46 +366,5 @@ definePageMeta({
   /* transform: scaleY(0.5) rotate(-1deg); */
   animation: eyesBlink 2.5s linear infinite;
 }
-@keyframes faceMove {
-  0%,
-  85%,
-  100% {
-    top: 33px;
-    left: 38px;
-  }
 
-  15%,
-  70% {
-    top: 30px;
-    left: 46px;
-  }
-}
-@keyframes eyesBlink {
-  0%,
-	18%,
-  40%,
-  58%,
-	100% {
-		transform: scaleY(1);
-	}
-
-	9%,
-	49% {
-		transform: translate(0, -0.5px) scaleY(0.05);
-    /* border-radius: 100%; */
-	}
-}
-@keyframes mouthOpen {
-  0%,
-  85%,
-  100% {
-    transform: scaleY(1);
-  }
-
-  15%,
-  70% {
-    transform: scaleY(0.8);
-    border-radius: 50%;
-  }
-}
 </style>
