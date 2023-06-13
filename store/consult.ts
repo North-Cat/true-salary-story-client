@@ -4,12 +4,13 @@ import { useRoute } from 'vue-router';
 import { IConsult } from '@/interface/consult';
 
 export const useConsultStore = defineStore('consult', () => {
-  const { consultApi } = useApi();
   const route = useRoute();
+  const { consultApi } = useApi();
 
   const consultList = ref<IConsult[]>([]);
   const currentConsult = ref();
   const isActive = ref('');
+  const loading2 = ref(false);
 
   const createConsult = async (payload: { receiverId: string; postId: string }) => {
     try {
@@ -21,22 +22,25 @@ export const useConsultStore = defineStore('consult', () => {
   };
 
   const fetchConsultList = async () => {
-    try {
-      const { result } = await consultApi.getConsultList();
+    loading2.value = true;
+    const { result } = await consultApi.getConsultList();
 
-      const data = result.map((o: any) => ({ ...o, isRead: false }));
+    const data = result.map((o: any) => ({ ...o, isRead: false }));
 
-      consultList.value = data;
-      const target = consultList.value.find((o) => o.activePost.postId === route.query.post);
+    consultList.value = data;
+    loading2.value = false;
 
-      if (target) {
-        target.isRead = true;
-        currentConsult.value = target;
-        isActive.value = target._id;
-      }
-    } catch (error) {
-      console.error('get consult list error: ', error);
-      throw error;
+    const target = consultList.value.find((o) => o.activePost.postId === route.query.post);
+
+    if (target) {
+      target.isRead = true;
+      currentConsult.value = target;
+      isActive.value = target._id;
+    } else {
+      const [first] = consultList.value;
+      first.isRead = true;
+      currentConsult.value = first;
+      isActive.value = first._id;
     }
   };
 
@@ -48,6 +52,7 @@ export const useConsultStore = defineStore('consult', () => {
     createConsult,
 
     fetchConsultList,
+    loading2,
     updateCurrentConsult,
     consultList,
     currentConsult,
