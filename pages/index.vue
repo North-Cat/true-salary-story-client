@@ -3,7 +3,7 @@
     <div v-if="isInit" class="loading fixed top-0 left-0 w-screen h-screen bg-white z-[999]">
       <div class="w-full h-full flex justify-center items-center flex-col">
         <!-- <BaseLoading></BaseLoading> -->
-        <img class="-mb-12" src="@/assets/img/logoLoading.gif" alt="logo" />
+        <img class="-mb-12" src="@/assets/img/logoLoading.webp" alt="logo" />
         <!-- <div class="w-[150px] h-auto">
           <div class="animation-logo">
             <div class="face absolute top-[33px] left-[38px] -rotate-[7deg]">
