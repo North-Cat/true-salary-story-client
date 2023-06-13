@@ -53,7 +53,7 @@
 
       </div>
     </div>
-    <div class="homePage">
+    <div class="homePage" :class="{'invisible':isAnimaActive, }">
       <!-- banner -->
       <BannerBlock></BannerBlock>
 
@@ -118,12 +118,15 @@ const { isInit } = storeToRefs(animation);
 
 const home = ref();
 let ctx: gsap.Context;
-if(isAnimaActive && curScreen.value === Screen.LG){
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-}
 
 onMounted(() => {
-  if (isAnimaActive && curScreen.value === Screen.LG) {
+  checkCurScreen(width.value);
+  if (curScreen.value !== Screen.LG){
+    isAnimaActive = false;
+  }
+  
+  if (isAnimaActive) {
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     ctx = gsap.context((self: gsap.Context) => {
       if (self && self.selector) {
         // 解決開頭閃現問題 (FOUC)
@@ -137,7 +140,6 @@ onMounted(() => {
           isInit.value = false;
         }, 500);
 
-        checkCurScreen(width.value);
         // 標題動畫
         const titles = self.selector('.title');
         titles.forEach((item: gsap.DOMTarget) => {
@@ -342,9 +344,7 @@ definePageMeta({
 </script>
 
 <style>
-.homePage {
-  visibility: hidden;
-}
+
 .loading-logo .face {
   /* transform: translate(20px, -20px); */
   animation: faceMove 2.5s linear infinite;
