@@ -3,8 +3,8 @@
     <div v-if="isInit" class="loading fixed top-0 left-0 w-screen h-screen bg-white z-[999]">
       <div class="w-full h-full flex justify-center items-center flex-col">
         <!-- <BaseLoading></BaseLoading> -->
-        <img class="block lg:hidden -mb-12" src="@/assets/img/logoLoadingSm.gif" alt="logo" />
-        <img class="hidden lg:block -mb-12" src="@/assets/img/logoLoading.webp" alt="logo" />
+        <div class="sm-loading block lg:hidden h-10 w-10 rounded-full bg-blue"></div>
+        <img class="hidden lg:block -mb-12" src="@/assets/img/logoLoading.webp" alt="logo"/>
         <!-- <div class="w-[150px] h-auto">
           <div class="animation-logo">
             <div class="face absolute top-[33px] left-[38px] -rotate-[7deg]">
@@ -349,6 +349,19 @@ definePageMeta({
   }
 }
 
+.sm-loading {
+  animation: animaMove 2s linear infinite;
+}
+@keyframes animaMove {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.1);
+  }
+}
 
 
 .animation-logo .face {
