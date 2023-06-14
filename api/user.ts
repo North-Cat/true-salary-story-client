@@ -77,7 +77,7 @@ export default new (class user extends Http {
     return this.post(`/api/user/checkIn`);
   }
 
-  public postEmailVerificationCode(email) {
+  public postEmailVerificationCode(email: string) {
     // newEmail
     return this.post(`/api/user/sendEmailVerificationCode`, email);
   }

@@ -136,6 +136,16 @@ export const useUserStore = defineStore('user', () => {
     isCheckInLoading.value = false;
   };
 
+  const fetchVerificationCode = async (email: string) => {
+    const result = await userApi.postEmailVerificationCode;
+    // if (result.status === 'success')
+  };
+
+  const updateEmail = async (params) => {
+    const result = await userApi.postNewEmail(params);
+    // if (result.status === 'success')
+  };
+
   return {
     tryToFetchProfile,
     isLogin,
@@ -159,5 +169,6 @@ export const useUserStore = defineStore('user', () => {
     openedSalary,
     tryToFetchPostDailyCheckIn,
     isCheckInLoading,
+    fetchVerificationCode,
   };
 });

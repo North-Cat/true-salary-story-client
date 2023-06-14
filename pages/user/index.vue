@@ -60,7 +60,7 @@ const componentKey = ref(0);
 const forceRender = () => {
   componentKey.value += 1;
 };
-const isShowModal = ref(false)
+const isShowModal = ref(false);
 </script>
 
 <template>
@@ -76,7 +76,7 @@ const isShowModal = ref(false)
             <span class="w-[130px]">姓名:</span>
             <span>{{ currentUser.displayName }}</span>
           </li>
-          <li class="mb-2 flex align-center">
+          <li class="mb-2 flex items-center">
             <span class="w-[130px]">註冊信箱:</span>
             <span>{{ currentUser.email }}</span>
             <BaseButton content="變更" to="/user" class="ml-6" @click="isShowModal = true"></BaseButton>
@@ -227,6 +227,6 @@ const isShowModal = ref(false)
         </div>
       </div>
     </div>
-    <EmailModal :is-visible="isShowModal" @close="isShowModal = false"/>
+    <EmailModal :is-visible="isShowModal" @close="isShowModal = false" />
   </userLayouts>
 </template>
