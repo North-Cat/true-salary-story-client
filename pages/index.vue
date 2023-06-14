@@ -2,12 +2,11 @@
   <div ref="home">
     <div v-if="isInit" class="loading fixed top-0 left-0 w-screen h-screen bg-white z-[999]">
       <div class="w-full h-full flex justify-center items-center flex-col">
-        <img class="-mb-12" src="@/assets/img/logoLoading.gif" alt="logo"/>
-        <!-- <img class="hidden lg:block -mb-12" src="@/assets/img/logoLoading.gif" alt="logo"/> -->
+        <img class="hidden lg:block -mb-12" src="@/assets/img/logoLoading.gif" alt="logo"/>
         
         <!-- <div class="sm-loading block lg:hidden h-10 w-10 rounded-full bg-blue"></div> -->
         
-        <div class="hidden sm-loading block lg:hidden w-[100px]">
+        <div class="sm-loading block lg:hidden w-[100px]">
           <div></div>
           <svg class="w-full" width="192" height="161" viewBox="0 0 192 161" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M38.3684 126.91C69.7303 196.606 220.616 125.857 183.323 54.1697C146.03 -17.5179 5.2891 53.3975 38.3684 126.91Z" fill="#8CB4E4"/>
@@ -120,10 +119,10 @@ const home = ref();
 let ctx: gsap.Context;
 
 onMounted(() => {
-  checkCurScreen(width.value);
-  if (curScreen.value !== Screen.LG){
-    isAnimaActive = false;
-  }
+  // checkCurScreen(width.value);
+  // if (curScreen.value !== Screen.LG){
+  //   isAnimaActive = false;
+  // }
   
   if (isAnimaActive) {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
