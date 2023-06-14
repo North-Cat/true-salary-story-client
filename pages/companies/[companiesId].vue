@@ -99,6 +99,8 @@ async function getCompanySalary(page: number) {
   curPage.value = page;
   // 重新選染頁數
   forceRender();
+  // 移到頁面頂端
+  scrollToTop();
 }
 function changeTitleConditions(condition: string) {
   if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
@@ -141,10 +143,21 @@ const computedMonthlySalary = computed(() => {
   return `${Math.floor(companyAvgMonthlySalary.value / 1000)} k`;
 });
 
+const scrollToTop = () => {
+  if (process.client) {
+    // 避免出現 window is not defined 問題，需確認目前已經到 client
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+};
+
 /**
  * 初始化
  */
 init();
+
 </script>
 <template>
   <section class="companies">
