@@ -32,6 +32,7 @@ const scrollToBottom = () => {
   }
 };
 
+wsStore.hasNewMessage = 0;
 consultStore.fetchConsultList().finally(() => {
   scrollToBottom();
 });

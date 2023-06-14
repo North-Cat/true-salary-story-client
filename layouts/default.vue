@@ -27,8 +27,9 @@ onClickOutside(userListModalSm, (e) => {
     closeUserModal();
   }
 });
-const user = useUserStore();
 const wsStore = useWSStore();
+const { hasNewMessage } = storeToRefs(wsStore);
+const user = useUserStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
@@ -42,6 +43,11 @@ const loginOut = () => {
 onUnmounted(() => {
   if (wsStore.ws) {
     wsStore.ws.close();
+  }
+});
+watch(hasNewMessage, () => {
+  if (route.name === 'user-consult') {
+    hasNewMessage.value = 0;
   }
 });
 
@@ -318,6 +324,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <div class="-mb-1">
             <!-- 訊息紅點 -->
             <span
+              v-show="hasNewMessage"
               class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
             ></span>
             <span class="icon-mail text-3xl message-button"></span>
@@ -716,6 +723,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
               <div>
                 <!-- 訊息紅點 -->
                 <span
+                  v-show="hasNewMessage"
                   class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
                 ></span>
                 <span class="icon-mail text-2xl me-2 message-button"></span>

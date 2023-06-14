@@ -11,6 +11,7 @@ export const useWSStore = defineStore('ws', () => {
 
   const url = wssBase;
   const ws = ref<WebSocket>();
+  const hasNewMessage = ref(0);
 
   const init = () => {
     ws.value = new WebSocket(url);
@@ -55,9 +56,13 @@ export const useWSStore = defineStore('ws', () => {
             target.isRead = false;
           }
         }
+
+        if (sender !== userStore.currentUser._id) {
+          hasNewMessage.value = hasNewMessage.value + 1;
+        }
       }
     };
   };
 
-  return { ws, init };
+  return { ws, init, hasNewMessage };
 });
