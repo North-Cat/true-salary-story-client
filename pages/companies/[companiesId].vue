@@ -157,7 +157,6 @@ const scrollToTop = () => {
  * 初始化
  */
 init();
-
 </script>
 <template>
   <section class="companies">
