@@ -24,7 +24,7 @@ const resultSalaryTitle = computed(() => {
 const resultSalary = computed(() => {
   if (props.post.type === 'monthly') return props.post.monthlySalary;
   if (props.post.type === 'daily') return props.post.dailySalary;
-  return hourlySalary;
+  return props.post.hourlySalary;
 });
 
 const handleCreateConsult = async () => {

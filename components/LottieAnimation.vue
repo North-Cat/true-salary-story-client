@@ -18,7 +18,9 @@ onMounted(() => {
   const anim = lottie.loadAnimation({
     container: lavContainer.value,
     renderer: 'svg',
-    // progressiveLoad: true,
+    rendererSettings: {
+      progressiveLoad: true,
+    },
     loop: props.options?.loop !== false,
     autoplay: props.options?.autoplay !== false,
     animationData: props.options?.animationData,
