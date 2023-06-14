@@ -60,18 +60,18 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
                 class="flex flex-col justify-center sm:items-center lg:items-start sm:mt-16 md:mt-32 lg:mt-64 lg:mb-[277px]"
               >
                 <!-- sm text-->
-                <div class="md:hidden lg:hidden flex flex-col items-center">
+                <div class="banner-info md:hidden lg:hidden flex flex-col items-center">
                   <h4 class="title text-black-5 mb-3">有比較才有進步</h4>
                   <h3 class="title text-blue">最真實的薪水行情</h3>
                   <h3 class="title text-black-10 mb-10">前輩親自告訴你</h3>
                 </div>
                 <!-- lg md text-->
-                <div class="sm:hidden md:flex md:flex-col md:items-center lg:block">
+                <div class="banner-info sm:hidden md:flex md:flex-col md:items-center lg:block">
                   <h2 class="title text-black-5 mb-5">有比較才有進步</h2>
                   <h1 class="title text-blue">最真實的薪水行情</h1>
                   <h1 class="title text-black-10 mb-10">前輩親自告訴你</h1>
                 </div>
-                <div class="search-input sm:w-[300px] sm:h-full md:w-[500px] md:h-full lg:w-[416px] lg:h-full">
+                <div class="banner-info search-input sm:w-[300px] sm:h-full md:w-[500px] md:h-full lg:w-[416px] lg:h-full">
                   <!-- Search Input -->
                   <div
                     class="w-full h-full flex border-2 rounded hover:shadow-search transition duration-150 ease-in-out sm:mb-8 lg:mb-20"
@@ -91,7 +91,7 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
                     </button>
                   </div>
                   <!-- lg 薪水/前輩數量 -->
-                  <div class="count-number flex-row justify-between sm:hidden md:hidden lg:flex">
+                  <div class="banner-info count-number flex-row justify-between sm:hidden md:hidden lg:flex">
                     <div class="flex flex-col justify-center items-start sm:mb-10">
                       <div class="bg-black-10 text-white py-2 px-4">
                         <h6>薪水情報</h6>
@@ -754,7 +754,7 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
               </div>
             </div>
             <!-- sm md 薪水/前輩數量 -->
-            <div class="count-number w-10/12 flex sm:flex-col sm:items-center md:flex-row lg:hidden">
+            <div class="banner-info count-number w-10/12 flex sm:flex-col sm:items-center md:flex-row lg:hidden">
               <div class="md:w-full flex flex-col md:flex-row items-start md:justify-between">
                 <div class="flex flex-col justify-center items-start sm:mb-10">
                   <div class="bg-black-10 text-white py-2 px-4">

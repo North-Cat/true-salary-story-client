@@ -155,7 +155,7 @@ init();
           <div class="mx-3">|</div>
           <nuxt-link :to="`/search?searchType=type&param=${companyType}&page=1`">{{ companyType }}</nuxt-link>
           <div class="mx-3">></div>
-          <nuxt-link to="/companies/98765432">{{ companyName }}</nuxt-link>
+          <div>{{ companyName }}</div>
         </div>
         <div class="w-full flex flex-col lg:flex-row lg:justify-between">
           <div class="w-full lg:w-3/5 flex me-6 mb-5 lg:mb-0">

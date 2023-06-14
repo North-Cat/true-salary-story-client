@@ -2,12 +2,12 @@
   <div ref="home">
     <div v-if="isInit" class="loading fixed top-0 left-0 w-screen h-screen bg-white z-[999]">
       <div class="w-full h-full flex justify-center items-center flex-col">
-        <!-- <BaseLoading></BaseLoading> -->
-        <img class="hidden lg:block -mb-12" src="@/assets/img/logoLoading.gif" alt="logo"/>
+        <img class="-mb-12" src="@/assets/img/logoLoading.gif" alt="logo"/>
+        <!-- <img class="hidden lg:block -mb-12" src="@/assets/img/logoLoading.gif" alt="logo"/> -->
         
         <!-- <div class="sm-loading block lg:hidden h-10 w-10 rounded-full bg-blue"></div> -->
         
-        <div class="sm-loading block lg:hidden w-[100px]">
+        <div class="hidden sm-loading block lg:hidden w-[100px]">
           <div></div>
           <svg class="w-full" width="192" height="161" viewBox="0 0 192 161" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M38.3684 126.91C69.7303 196.606 220.616 125.857 183.323 54.1697C146.03 -17.5179 5.2891 53.3975 38.3684 126.91Z" fill="#8CB4E4"/>
@@ -128,10 +128,12 @@ onMounted(() => {
   if (isAnimaActive) {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     ctx = gsap.context((self: gsap.Context) => {
-      if (self && self.selector) {
+      if (self?.selector) {
         // 解決開頭閃現問題 (FOUC)
         const homePage = self.selector('.homePage');
         gsap.to(homePage, { visibility: 'visible', opacity: 1 });
+
+        // 隱藏 loading
         const loading = self.selector('.loading');
         if (loading && loading.length != 0) {
           gsap.to(loading, { display: 'none', opacity: 0, duration: 1 });
@@ -140,39 +142,17 @@ onMounted(() => {
           isInit.value = false;
         }, 500);
 
-        // 標題動畫
-        const titles = self.selector('.title');
-        titles.forEach((item: gsap.DOMTarget) => {
-          gsap.from(item, {
-            y: -100,
-            ease: 'expo',
-            duration: 1,
-            opacity: 0,
-            scrollTrigger: {
-              trigger: item,
-              start: 'top bottom',
-              end: 'top 20%',
-              // scrub: true,
-              // markers: true,
-            },
-          });
-        });
-
-        // 輸入框動畫
-        const input = self.selector('.search-input');
-        gsap.from(input, {
-          y: -100,
-          // ease: "expo",
-          duration: 1,
-          // opacity: 0,
+        // banner 資訊出現的動畫
+        const bannerInfosTl = gsap.timeline({
           scrollTrigger: {
-            trigger: input,
+            trigger: '.banner-info',
             start: 'top bottom',
             end: 'top 20%',
-            // scrub: true,
-            // markers: true,
           },
         });
+        bannerInfosTl.from('.title', { y: -100, duration: 1 });
+        bannerInfosTl.from('.search-input', { y: -100, duration: 1 }, '<');
+        bannerInfosTl.from('.count-number', { y: -100, duration: 1 }, '<');
 
         // 數字動畫
         gsap.fromTo(
@@ -202,22 +182,6 @@ onMounted(() => {
           },
         );
 
-        // 顯示前輩/薪水數量動畫
-        const countNumber = self.selector('.count-number');
-        gsap.from(countNumber, {
-          y: -100,
-          // ease: "expo",
-          duration: 1,
-          // opacity: 0,
-          scrollTrigger: {
-            trigger: countNumber,
-            start: 'top bottom',
-            end: 'top 20%',
-            // scrub: true,
-            // markers: true,
-          },
-        });
-
         // 資訊區動畫
         const infoBlocks: gsap.DOMTarget[] = self.selector('.info-block');
         infoBlocks.forEach((item: gsap.DOMTarget) => {
@@ -230,8 +194,6 @@ onMounted(() => {
               trigger: item,
               start: 'top 80%',
               end: 'top 20%',
-              // scrub: true,
-              // markers: true,
             },
           });
         });
@@ -248,8 +210,6 @@ onMounted(() => {
               trigger: item,
               start: 'top 80%',
               end: 'top 20%',
-              // scrub: true,
-              // markers: true,
             },
           });
         });
@@ -266,8 +226,6 @@ onMounted(() => {
               trigger: item,
               start: 'top 70%',
               end: 'top 20%',
-              // scrub: true,
-              // markers: true,
             },
           });
         });
@@ -283,8 +241,6 @@ onMounted(() => {
             trigger: keywordBlock,
             start: 'top 80%',
             end: 'top 20%',
-            // scrub: true,
-            // markers: true,
           },
         });
 
@@ -292,9 +248,7 @@ onMounted(() => {
         const bannerBlock = self.selector('.banner');
         gsap.from(bannerBlock, {
           y: -100,
-          ease: 'expo',
           duration: 1,
-          opacity: 0,
           scrollTrigger: {
             trigger: bannerBlock,
             start: 'top 80%',
