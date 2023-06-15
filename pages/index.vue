@@ -132,7 +132,7 @@ function checkCurScreen(widthInput?: number) {
 /**
  * 動畫
  */
-const isAnimaActive = true;
+let isAnimaActive = true;
 const animation = useAnimationStore();
 const { isInit } = storeToRefs(animation);
 
@@ -155,7 +155,7 @@ onMounted(() => {
 
         // 隱藏 loading
         const loading = self.selector('.loading');
-        if (loading && loading.length != 0) {
+        if (loading && loading.length !== 0) {
           gsap.to(loading, { display: 'none', opacity: 0, duration: 1 });
         }
         setTimeout(() => {

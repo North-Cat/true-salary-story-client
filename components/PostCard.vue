@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex sm:flex-col md:flex-row border border-black-1 sm:w-[257px] min-w-[257px] md:w-[410px] max-w-[416px] cursor-pointer hover:shadow-card transition duration-150 ease-in-out"
+    class="flex sm:flex-col md:flex-row border border-black-1 sm:w-[318px] min-w-[257px] md:w-[572px] lg:w-[408px] lg:max-w-[416px] cursor-pointer hover:shadow-card transition duration-150 ease-in-out"
   >
     <!-- 精選 左側 -->
     <div

@@ -30,13 +30,6 @@ function comPrev() {
   comCarousel.value.prev();
 }
 
-// 搜尋參數
-const searchParam = ref({
-  keyword: '', // 關鍵字
-  company: '', // 公司
-  jobTitle: '', // 職位
-  companyType: '', // 產業
-});
 // 點擊關鍵字搜尋
 function searchKeyword(keyword: string) {
   const paramObj = !keyword.trim()
