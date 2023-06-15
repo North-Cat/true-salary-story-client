@@ -52,7 +52,7 @@
 
       </div>
     </div>
-    <div class="homePage" :class="{'invisible':isAnimaActive, }">
+    <div class="homePage">
       <!-- banner -->
       <BannerBlock></BannerBlock>
 
@@ -119,18 +119,18 @@ const home = ref();
 let ctx: gsap.Context;
 
 onMounted(() => {
-  // checkCurScreen(width.value);
-  // if (curScreen.value !== Screen.LG){
-  //   isAnimaActive = false;
-  // }
+  checkCurScreen(width.value);
+  if (curScreen.value !== Screen.LG){
+    isAnimaActive = false;
+  }
   
   if (isAnimaActive) {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     ctx = gsap.context((self: gsap.Context) => {
       if (self?.selector) {
         // 解決開頭閃現問題 (FOUC)
-        const homePage = self.selector('.homePage');
-        gsap.to(homePage, { visibility: 'visible', opacity: 1 });
+        // const homePage = self.selector('.homePage');
+        // gsap.to(homePage, { visibility: 'visible', opacity: 1 });
 
         // 隱藏 loading
         const loading = self.selector('.loading');
