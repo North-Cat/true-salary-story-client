@@ -1,4 +1,5 @@
 import Http from '@/utilities/useHttp';
+import { ISearch } from '@/interface/search';
 
 export default new (class search extends Http {
   /**
@@ -44,7 +45,8 @@ export default new (class search extends Http {
    * 307 查詢單一公司全部薪水資訊
    * @params id
    */
-  public getCompanySalaries(taxId: string, sortOption: string, titleOption: string[], page: number, limit: number) {
+  public getCompanySalaries(params: ISearch) {
+    const { taxId, sortOption, titleOption, page, limit } = params;
     return this.get(
       `/api/salary/company/${taxId}?sortOption=${sortOption}&titleOption=${titleOption}&page=${page}&limit=${limit}`,
     );

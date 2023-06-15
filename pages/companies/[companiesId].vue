@@ -2,6 +2,7 @@
 // import { onClickOutside } from '@vueuse/core';
 import { ref, computed } from 'vue';
 import { storeToRefs } from 'pinia';
+import { ISearch } from '@/interface/search';
 import { useUserStore } from '@/store/user';
 import { useSearchStore } from '@/store/search';
 import { useSalaryStore } from '@/store/salary';
@@ -30,7 +31,6 @@ const { companiesId } = useRoute().params as { companiesId: string };
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
-const { isLocked } = storeToRefs(salaryStore);
 const isShowModal = ref(false);
 const selectedPostId = ref();
 const redirect = (postId: string) => {
@@ -84,19 +84,23 @@ async function getCompanyTitles() {
 }
 // 依條件查詢公司薪資資訊
 async function getCompanySalary(page: number) {
-  // call search 單一公司全部薪水 api
-  await searchStore.fetchSearchCompanySalary(
-    companiesId,
-    sortConditions.value,
-    titleConditions.value,
+  const params: ISearch = {
+    taxId: companiesId,
+    sortOption: sortConditions.value,
+    titleOption: titleConditions.value,
     page,
-    limit.value,
-  );
+    limit: limit.value,
+  };
+  searchStore.saveSearchParams(params);
+  // call search 單一公司全部薪水 api
+  await searchStore.fetchSearchCompanySalary(params);
   // 計算總頁數
   totalPages.value = Math.ceil(companyPostCount.value / limit.value);
   curPage.value = page;
   // 重新選染頁數
   forceRender();
+  // 移到頁面頂端
+  scrollToTop();
 }
 function changeTitleConditions(condition: string) {
   if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
@@ -138,6 +142,16 @@ const filterModal = ref(null);
 const computedMonthlySalary = computed(() => {
   return `${Math.floor(companyAvgMonthlySalary.value / 1000)} k`;
 });
+
+const scrollToTop = () => {
+  if (process.client) {
+    // 避免出現 window is not defined 問題，需確認目前已經到 client
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+};
 
 /**
  * 初始化
@@ -319,7 +333,7 @@ init();
               </div>
               <div v-if="companyPost && companyPost.length != 0">
                 <div v-for="(post, index) in companyPost" :key="index" class="sm:mb-0 lg:mb-6">
-                  <SalaryInfo :post="post" :is-locked="isLocked" @view="redirect" />
+                  <SalaryInfo :post="post" @view="redirect" />
                 </div>
               </div>
               <div

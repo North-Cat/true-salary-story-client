@@ -4,7 +4,7 @@ import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   // when open pwa add this module '@vite-pwa/nuxt'
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-gtag', '@vite-pwa/nuxt'],
-  build: { transpile: ['yup', 'lodash', '@vee-validate/rules'] },
+  build: { transpile: ['yup', 'lodash', '@vee-validate/rules', 'gsap'] },
   runtimeConfig: {
     apiSecret: '123',
     public: {

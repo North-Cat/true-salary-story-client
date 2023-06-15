@@ -128,8 +128,5 @@ const onCheckUnSubscribe = (id: string) => {
       </template>
       <BaseNull v-else content="沒有訂閱內容" />
     </template>
-    <div v-else class="min-h-[330px] flex items-center justify-center">
-      <BaseLoading />
-    </div>
   </userLayouts>
 </template>

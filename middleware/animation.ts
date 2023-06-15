@@ -4,10 +4,10 @@ import { useAnimationStore } from '@/store/animation';
 export default defineNuxtRouteMiddleware((to, from) => {
   const animation = useAnimationStore();
   const { isInit } = storeToRefs(animation);
-  
+
   if (to.path !== from.path) {
     isInit.value = false;
-  }else {
+  } else {
     isInit.value = true;
   }
 });

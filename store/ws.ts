@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useConsultStore } from '@/store/consult';
+import { showSuccess } from '@/utilities/message';
 
 export const useWSStore = defineStore('ws', () => {
   const {
@@ -10,7 +11,8 @@ export const useWSStore = defineStore('ws', () => {
   const consultStore = useConsultStore();
 
   const url = wssBase;
-  const ws = ref();
+  const ws = ref<WebSocket>();
+  const hasNewMessage = ref(0);
 
   const init = () => {
     ws.value = new WebSocket(url);
@@ -18,12 +20,14 @@ export const useWSStore = defineStore('ws', () => {
     ws.value.onopen = () => {
       console.log('open connection', userStore.currentUser._id);
 
-      ws.value.send(
-        JSON.stringify({
-          type: 'userId',
-          userId: userStore.currentUser._id,
-        }),
-      );
+      if (ws.value) {
+        ws.value.send(
+          JSON.stringify({
+            type: 'userId',
+            userId: userStore.currentUser._id,
+          }),
+        );
+      }
     };
 
     ws.value.onclose = () => {
@@ -53,9 +57,18 @@ export const useWSStore = defineStore('ws', () => {
             target.isRead = false;
           }
         }
+
+        if (sender !== userStore.currentUser._id) {
+          hasNewMessage.value = hasNewMessage.value + 1;
+        }
+      } else if (res.type === 'create') {
+        showSuccess('', '有一筆新的"向你請教"加入');
+
+        const { data } = res;
+        consultStore.consultList = data;
       }
     };
   };
 
-  return { ws, init };
+  return { ws, init, hasNewMessage };
 });

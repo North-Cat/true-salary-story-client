@@ -27,18 +27,28 @@ onClickOutside(userListModalSm, (e) => {
     closeUserModal();
   }
 });
-const user = useUserStore();
 const wsStore = useWSStore();
+const { hasNewMessage } = storeToRefs(wsStore);
+const user = useUserStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
-  wsStore.ws.close();
+  if (wsStore.ws) {
+    wsStore.ws.close();
+  }
 
   logout();
   closeUserModal();
 };
 onUnmounted(() => {
-  wsStore.ws.close();
+  if (wsStore.ws) {
+    wsStore.ws.close();
+  }
+});
+watch(hasNewMessage, () => {
+  if (route.name === 'user-consult') {
+    hasNewMessage.value = 0;
+  }
 });
 
 const userList = ref([
@@ -65,13 +75,13 @@ const userList = ref([
       name: 'user-opened-salary',
     },
   },
-  {
-    title: '薪水訂閱',
-    icon: 'icon-plus-circle',
-    to: {
-      name: 'user-subscribed-companies',
-    },
-  },
+  // {
+  //   title: '薪水訂閱',
+  //   icon: 'icon-plus-circle',
+  //   to: {
+  //     name: 'user-subscribed-companies',
+  //   },
+  // },
   {
     title: '請教紀錄',
     icon: 'icon-message',
@@ -314,6 +324,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <div class="-mb-1">
             <!-- 訊息紅點 -->
             <span
+              v-show="hasNewMessage"
               class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
             ></span>
             <span class="icon-mail text-3xl message-button"></span>
@@ -362,8 +373,8 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
             {{ currentUser.displayName }}
           </div>
           <div>
-            <!-- FIX: 複製UID -->
-            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
+            <!-- FIX: 複製UID
+            <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button> -->
             <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
               <i class="icomoon icon-cross"></i>
             </button>
@@ -712,6 +723,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
               <div>
                 <!-- 訊息紅點 -->
                 <span
+                  v-show="hasNewMessage"
                   class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
                 ></span>
                 <span class="icon-mail text-2xl me-2 message-button"></span>
@@ -856,7 +868,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
                 </div>
                 <div>
                   <!-- FIX: 複製UID -->
-                  <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button>
+                  <!-- <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest">複製UID</button> -->
                   <button class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest" @click="closeUserModal">
                     <i class="icomoon icon-cross"></i>
                   </button>

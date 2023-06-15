@@ -1,4 +1,5 @@
 import Http from '@/utilities/useHttp';
+import { IEmail } from '@/interface/user';
 
 export default new (class user extends Http {
   /**
@@ -75,5 +76,15 @@ export default new (class user extends Http {
    */
   public postDailyCheckIn() {
     return this.post(`/api/user/checkIn`);
+  }
+
+  public postEmailVerificationCode(email: string) {
+    return this.post(`/api/user/sendEmailVerificationCode`, {
+      newEmail: email,
+    });
+  }
+
+  public postNewEmail(params: IEmail) {
+    return this.post(`/api/user/updateEmail`, params);
   }
 })();

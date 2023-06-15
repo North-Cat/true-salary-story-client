@@ -113,7 +113,7 @@ const tabClass = computed(() => (tab: Tab) => {
               <div class="w-full mb-2 lg:mb-0 lg:me-2">
                 <BaseFormSelect v-model="selectedSingleOfferPoint" class="" :options="offerPointOption" name="offer" />
               </div>
-              <BaseButton class="w-full lg:w-1/4 h-[48px]" cate="secondary" @click="clickOffer(offerType.SINGLE)"
+              <BaseButton class="w-full lg:w-1/2 h-[48px]" cate="secondary" @click="clickOffer(offerType.SINGLE)"
                 >購買
               </BaseButton>
             </div>

@@ -56,7 +56,7 @@ const totalPage = computed(() => {
       <div class="md:flex justify-between items-center md:mb-4 mb-0">
         <div class="flex items-center border border-black-1 rounded md:mb-0 mb-1">
           <div
-            class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-10"
+            class="icon-search text-black-5 pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 z-[1]"
           ></div>
           <input
             v-model="searchParam.keyword"
@@ -105,8 +105,5 @@ const totalPage = computed(() => {
       </template>
       <BaseNull v-else content="沒有解鎖的薪水" />
     </template>
-    <div v-else class="min-h-[330px] flex items-center justify-center">
-      <BaseLoading />
-    </div>
   </userLayouts>
 </template>

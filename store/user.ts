@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import { ILoginUserInfo } from '~/interface/user';
-import { IMySalaryResponse } from '~/interface/salaryData';
-import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
-import { IPointsListRespose, IMyOrdersListResponse } from '~/interface/order';
+import { ILoginUserInfo, IEmail } from '@/interface/user';
+import { IMySalaryResponse } from '@/interface/salaryData';
+import { ISubscribeCompaniesResponse } from '@/interface/subscribe';
+import { IPointsListRespose, IMyOrdersListResponse } from '@/interface/order';
 const { userApi, subscribeApi, orderApi } = useApi();
 export const useUserStore = defineStore('user', () => {
   // 登入相關
@@ -136,6 +136,23 @@ export const useUserStore = defineStore('user', () => {
     isCheckInLoading.value = false;
   };
 
+  const isCodeSent = ref(false);
+  const isEmailUpdated = ref(false);
+  const fetchVerificationCode = async (email: string) => {
+    const { status } = await userApi.postEmailVerificationCode(email);
+    if (status === 'success') {
+      isCodeSent.value = true;
+    }
+  };
+
+  const updateEmail = async (params: IEmail) => {
+    const { status } = await userApi.postNewEmail(params);
+    if (status === 'success') {
+      isEmailUpdated.value = true;
+      tryToFetchProfile();
+    }
+  };
+
   return {
     tryToFetchProfile,
     isLogin,
@@ -159,5 +176,9 @@ export const useUserStore = defineStore('user', () => {
     openedSalary,
     tryToFetchPostDailyCheckIn,
     isCheckInLoading,
+    fetchVerificationCode,
+    isCodeSent,
+    updateEmail,
+    isEmailUpdated,
   };
 });

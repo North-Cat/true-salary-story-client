@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { IShareSalary } from '@/interface/salaryData';
+import { ISearch } from '@/interface/search';
 
 export const useSearchStore = defineStore('search', () => {
   const { searchApi } = useApi();
@@ -75,6 +76,16 @@ export const useSearchStore = defineStore('search', () => {
   const userCount = ref<number>(0); // 使用者總數量
   const postCount = ref<number>(0); // 分享薪水總數量
 
+  const searchParams = ref<ISearch>({
+    taxId: '',
+    sortOption: '',
+    titleOption: [],
+    page: 0,
+    limit: 0,
+  });
+  const saveSearchParams = (params: ISearch) => {
+    searchParams.value = params;
+  };
   /**
    * function
    */
@@ -124,14 +135,8 @@ export const useSearchStore = defineStore('search', () => {
   };
 
   // call api 307 依統編搜尋公司所有薪資資訊
-  const fetchSearchCompanySalary = async (
-    taxId: string,
-    sortOption: string,
-    titleOption: string[],
-    page: number,
-    limit: number,
-  ) => {
-    const { result, totalCount } = await searchApi.getCompanySalaries(taxId, sortOption, titleOption, page, limit);
+  const fetchSearchCompanySalary = async (params: ISearch) => {
+    const { result, totalCount } = await searchApi.getCompanySalaries(params);
     companyPostCount.value = totalCount;
     companyPost.value = result.map((el: IShareSalary) => {
       return {
@@ -141,20 +146,20 @@ export const useSearchStore = defineStore('search', () => {
         companyName: el?.companyName || '',
         title: el?.title || '',
         employmentType: el?.employmentType || '',
-        inService: el?.inService || false,
+        inService: el?.inService !== undefined ? el.inService : false,
         city: el?.city || '',
-        workYears: el?.workYears || '',
-        totalWorkYears: el?.totalWorkYears || '',
-        monthlySalary: el?.monthlySalary ?? '',
-        dailySalary: el?.dailySalary ?? '',
-        avgWorkingDaysPerMonth: el?.avgWorkingDaysPerMonth ?? '',
-        hourlySalary: el?.hourlySalary ?? '',
-        avgHoursPerDay: el?.avgHoursPerDay ?? '',
-        yearEndBonus: el?.yearEndBonus ?? '',
-        holidayBonus: el?.holidayBonus ?? '',
-        profitSharingBonus: el?.profitSharingBonus ?? '',
-        otherBonus: el?.otherBonus ?? '',
-        yearlySalary: el?.yearlySalary ?? '',
+        workYears: el?.workYears || 0,
+        totalWorkYears: el?.totalWorkYears || 0,
+        monthlySalary: el.monthlySalary,
+        dailySalary: el.dailySalary,
+        avgWorkingDaysPerMonth: el?.avgWorkingDaysPerMonth ?? '-',
+        hourlySalary: el.hourlySalary,
+        avgHoursPerDay: el?.avgHoursPerDay ?? 8,
+        yearEndBonus: el?.yearEndBonus ?? '-',
+        holidayBonus: el?.holidayBonus ?? '-',
+        profitSharingBonus: el?.profitSharingBonus ?? '-',
+        otherBonus: el?.otherBonus ?? '-',
+        yearlySalary: el?.yearlySalary ?? '-',
         overtime: el?.overtime || '',
         feeling: el?.feeling || '',
         jobDescription: el?.jobDescription || '',
@@ -162,6 +167,9 @@ export const useSearchStore = defineStore('search', () => {
         tags: el?.tags || [],
         customTags: el?.customTags || [],
         createDate: el?.createDate || '',
+        isLocked: el?.isLocked !== undefined ? el.isLocked : true,
+        createUser: el?.createUser || '',
+        type: el.type,
       };
     });
   };
@@ -217,6 +225,7 @@ export const useSearchStore = defineStore('search', () => {
     companyAvgMonthlySalary,
     companyTotalPostCount,
     companyTitles,
+    searchParams,
     fetchHomeInit,
     fetchSearch,
     fetchSearchCompanySalary,
@@ -225,5 +234,6 @@ export const useSearchStore = defineStore('search', () => {
     fetchTopCompanyType,
     fetchCompanyInfo,
     fetchCompanyTitles,
+    saveSearchParams,
   };
 });

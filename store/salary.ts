@@ -1,6 +1,10 @@
 import { defineStore } from 'pinia';
-import { ISalary, IShareSalary } from '~/interface/salaryData';
+import { ISalary, IShareSalary } from '@/interface/salaryData';
+import { useUserStore } from '@/store/user';
+import { useSearchStore } from '@/store/search';
 export const useSalaryStore = defineStore('salary', () => {
+  const user = useUserStore();
+  const search = useSearchStore();
   const tempSalaryFormData = ref<IShareSalary>({});
   const tempSalary = ref<ISalary>({});
   const keywords = ref([]);
@@ -32,9 +36,10 @@ export const useSalaryStore = defineStore('salary', () => {
     tags: [],
     customTags: [],
     createDate: '',
+    isLocked: true,
     createUser: '',
+    type: '',
   });
-  const isLocked = ref(true);
   const { shareSalaryApi } = useApi();
 
   const fetchSalaryInfo = async (id: string) => {
@@ -46,20 +51,20 @@ export const useSalaryStore = defineStore('salary', () => {
       companyName: result?.companyName || '',
       title: result?.title || '',
       employmentType: result?.employmentType || '',
-      inService: result?.inService || false,
+      inService: result?.inService !== undefined ? result.inService : false,
       city: result?.city || '',
-      workYears: result?.workYears || '',
-      totalWorkYears: result?.totalWorkYears || '',
-      monthlySalary: result?.monthlySalary ?? '',
-      dailySalary: result?.dailySalary ?? '',
-      avgWorkingDaysPerMonth: result?.avgWorkingDaysPerMonth ?? '',
-      hourlySalary: result?.hourlySalary ?? '',
-      avgHoursPerDay: result?.avgHoursPerDay ?? '',
-      yearEndBonus: result?.yearEndBonus ?? '',
-      holidayBonus: result?.holidayBonus ?? '',
-      profitSharingBonus: result?.profitSharingBonus ?? '',
-      otherBonus: result?.otherBonus ?? '',
-      yearlySalary: result?.yearlySalary ?? '',
+      workYears: result?.workYears || 0,
+      totalWorkYears: result?.totalWorkYears || 0,
+      monthlySalary: result.monthlySalary,
+      dailySalary: result.dailySalary,
+      avgWorkingDaysPerMonth: result?.avgWorkingDaysPerMonth ?? '-',
+      hourlySalary: result.hourlySalary,
+      avgHoursPerDay: result?.avgHoursPerDay ?? 8,
+      yearEndBonus: result?.yearEndBonus ?? '-',
+      holidayBonus: result?.holidayBonus ?? '-',
+      profitSharingBonus: result?.profitSharingBonus ?? '-',
+      otherBonus: result?.otherBonus ?? '-',
+      yearlySalary: result?.yearlySalary ?? '-',
       overtime: result?.overtime || '',
       feeling: result?.feeling || '',
       jobDescription: result?.jobDescription || '',
@@ -67,9 +72,10 @@ export const useSalaryStore = defineStore('salary', () => {
       tags: result?.tags || [],
       customTags: result?.customTags || [],
       createDate: result?.createDate || '',
+      isLocked: result?.isLocked !== undefined ? result.isLocked : true,
       createUser: result?.createUser || '',
+      type: result.type,
     };
-    isLocked.value = result.isLocked;
   };
 
   const fetchKeywords = async () => {
@@ -78,16 +84,21 @@ export const useSalaryStore = defineStore('salary', () => {
   };
 
   const fetchPermission = async (id: string) => {
+    const route = useRoute();
     const { message, result } = await shareSalaryApi.requestSalaryInfo(id);
     if (message === 'success') {
-      fetchSalaryInfo(result.postId);
+      if (route.path.includes('companies')) {
+        await search.fetchSearchCompanySalary(search.searchParams);
+      } else {
+        await fetchSalaryInfo(result.postId);
+      }
+      user.tryToFetchProfile();
     }
   };
   return {
     tempSalaryFormData,
     tempSalary,
     post,
-    isLocked,
     keywords,
     fetchSalaryInfo,
     fetchKeywords,

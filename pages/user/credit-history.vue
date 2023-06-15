@@ -121,23 +121,33 @@ const formatData = (createdAt: Date) => {
         </div>
         <div v-if="currentResultsList.length > 0" class="w-full min-h-[330px]">
           <table class="table-auto w-full" aria-describedby="積分明細">
-            <thead class="">
-              <tr>
+            <thead>
+              <tr class="md:table-row hidden">
                 <th align="left">項目</th>
                 <th class="w-20">積分</th>
                 <th align="left">時間</th>
                 <!-- <th align="left">期限</th> -->
               </tr>
             </thead>
-            <tbody>
+            <tbody class="md:border-0 divide-y divide-slate-200">
               <tr v-for="(item, $index) in currentResultsList" :key="$index">
-                <td>{{ item.remark }}</td>
-                <td>
+                <td
+                  class="md:before:hidden before:content-['項目:'] before:mr-2 md:w-auto w-full md:table-cell block border-0 md:py-5 p-0 md:first:pt-5 first:pt-3 md:last:pb-5 last:pb-5"
+                >
+                  {{ item.remark }}
+                </td>
+                <td
+                  class="md:before:hidden before:content-['積分:'] before:mr-2 md:w-auto w-full md:table-cell block border-0 md:py-5 p-0 md:first:pt-5 first:pt-3 md:last:pb-5 last:pb-5"
+                >
                   <span :class="item.point > 0 ? 'text-green' : item.point < 0 ? 'text-red' : ''">{{
                     item.point
                   }}</span>
                 </td>
-                <td>{{ formatData(item.startDate) }}</td>
+                <td
+                  class="md:before:hidden before:content-['時間:'] before:mr-2 md:w-auto w-full md:table-cell block border-0 md:py-5 p-0 md:first:pt-5 first:pt-3 md:last:pb-5 last:pb-5"
+                >
+                  {{ formatData(item.startDate) }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -155,8 +165,5 @@ const formatData = (createdAt: Date) => {
       </template>
       <BaseNull v-else content="目前沒有使用/購買積分" />
     </template>
-    <div v-else class="min-h-[330px] flex items-center justify-center">
-      <BaseLoading />
-    </div>
   </userLayouts>
 </template>

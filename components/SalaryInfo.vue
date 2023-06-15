@@ -4,18 +4,30 @@ import { useRoute, useRouter } from 'vue-router';
 import { IShareSalary } from '@/interface/salaryData';
 import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
 import { useConsultStore } from '@/store/consult';
+import { useWSStore } from '@/store/ws';
 
 const props = defineProps<{
   post: IShareSalary;
-  isLocked: boolean;
 }>();
 const emit = defineEmits(['view']);
 
 const consultStore = useConsultStore();
 const route = useRoute();
 const router = useRouter();
+const wsStore = useWSStore();
 
 const loading = ref(false);
+
+const resultSalaryTitle = computed(() => {
+  if (props.post.type === 'monthly') return '月薪';
+  if (props.post.type === 'daily') return '日薪';
+  return '時薪';
+});
+const resultSalary = computed(() => {
+  if (props.post.type === 'monthly') return props.post.monthlySalary;
+  if (props.post.type === 'daily') return props.post.dailySalary;
+  return props.post.hourlySalary;
+});
 
 const handleCreateConsult = async () => {
   try {
@@ -27,6 +39,15 @@ const handleCreateConsult = async () => {
     };
 
     await consultStore.createConsult(payload);
+
+    const wsPayload = {
+      type: 'create',
+      receiverId: props.post.createUser,
+    };
+    if (wsStore.ws) {
+      wsStore.ws.send(JSON.stringify(wsPayload));
+    }
+
     await router.push({
       path: '/user/consult',
       query: {
@@ -45,9 +66,9 @@ const handleCreateConsult = async () => {
   <section
     class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
   >
-    <div class="w-full flex flex-col p-6">
+    <div class="w-full flex flex-col sm:p-3 md:p-6">
       <div class="flex flex-col">
-        <div class="p-6 flex flex-col">
+        <div class="sm:p-3 md:p-6 flex flex-col">
           <div class="flex mb-5">
             <div class="w-[48px] h-[48px] flex justify-center items-center rounded bg-blue-light mr-[18px]">
               <span class="icon-sparkle-checked text-3xl text-blue-dark"></span>
@@ -71,8 +92,8 @@ const handleCreateConsult = async () => {
                     <span class="icon-coin text-2xl text-blue"></span>
                   </div>
                   <div class="flex flex-col">
-                    <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6>{{ isLocked ? '兌換後顯示' : useNumberRange(post.monthlySalary) }}</h6>
+                    <div class="caption text-black-5 mb-1">{{ resultSalaryTitle }}</div>
+                    <h6>{{ post.isLocked ? '兌換後顯示' : useNumberRange(resultSalary) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -81,7 +102,7 @@ const handleCreateConsult = async () => {
                   </div>
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年薪</div>
-                    <h6>{{ isLocked ? '兌換後顯示' : useNumberRange(post.yearlySalary) }}</h6>
+                    <h6>{{ post.isLocked ? '兌換後顯示' : useNumberRange(post.yearlySalary) }}</h6>
                   </div>
                 </div>
               </div>
@@ -89,25 +110,25 @@ const handleCreateConsult = async () => {
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">年終</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.yearEndBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.yearEndBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">三節</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.holidayBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.holidayBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">分紅</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.profitSharingBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.profitSharingBonus) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">其他</div>
-                    <h6>{{ isLocked ? '??' : useNumberRange(post.otherBonus) }}</h6>
+                    <h6>{{ post.isLocked ? '??' : useNumberRange(post.otherBonus) }}</h6>
                   </div>
                 </div>
               </div>
@@ -137,19 +158,19 @@ const handleCreateConsult = async () => {
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">在職年資</div>
-                    <h6>{{ post.workYears + ' 年' }}</h6>
+                    <h6>{{ post.workYears > 0 ? `${post.workYears}年` : '未滿1年' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">個人總年資</div>
-                    <h6>{{ post.totalWorkYears + ' 年' }}</h6>
+                    <h6>{{ post.totalWorkYears > 0 ? `${post.totalWorkYears}年` : '未滿1年' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">日均工時</div>
-                    <h6>{{ post.avgHoursPerDay + ' 小時' }}</h6>
+                    <h6>{{ post.avgHoursPerDay + '小時' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -173,17 +194,22 @@ const handleCreateConsult = async () => {
               {{ post.suggestion }}
             </p>
           </div>
-          <div class="flex flex-wrap mb-5">
+          <div v-if="post.tags.length" class="flex flex-wrap mb-5">
             <span v-for="tag in post.tags" :key="tag" class="body-sm text-black-5 me-5"> #{{ tag }} </span>
           </div>
-          <div class="flex justify-between p-4 bg-blue-light">
-            <div class="text-blue">
+          <div v-if="post.customTags.length" class="flex flex-wrap mb-5">
+            <span v-for="customTag in post.customTags" :key="customTag" class="body-sm text-black-5 me-5">
+              #{{ customTag }}
+            </span>
+          </div>
+          <div class="flex sm:flex-col sm:justify-center md:flex-row md:justify-between p-4 bg-blue-light">
+            <div class="text-blue sm:pb-3">
               <span>想了解只有員工才知道的職場心聲？</span>
               <br />
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
-            <BaseButton v-if="isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
-            <BaseButton content="我要請教" @click="handleCreateConsult">
+            <BaseButton v-if="post.isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
+            <BaseButton v-if="!post.isLocked" content="我要請教" @click="handleCreateConsult">
               <span v-show="loading">...</span>
             </BaseButton>
           </div>

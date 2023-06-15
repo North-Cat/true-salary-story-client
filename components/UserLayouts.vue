@@ -37,15 +37,15 @@ const userList = ref([
       name: 'user-opened-salary',
     },
   },
-  {
-    title: '薪水訂閱',
-    icon: 'icon-plus-circle',
-    type: 'link',
-    id: 'user-subscribed-companies',
-    to: {
-      name: 'user-subscribed-companies',
-    },
-  },
+  // {
+  //   title: '薪水訂閱',
+  //   icon: 'icon-plus-circle',
+  //   type: 'link',
+  //   id: 'user-subscribed-companies',
+  //   to: {
+  //     name: 'user-subscribed-companies',
+  //   },
+  // },
   {
     title: '請教紀錄',
     icon: 'icon-message',
@@ -86,13 +86,13 @@ const userList = ref([
 ]);
 </script>
 <template>
-  <section class="user bg-gray pt-[42px] md:pt-[130px] pb-10 md:py-20 max-[1920px]:overflow-x-hidden min-h-screen">
-    <div
-      class="md:container mx-auto max-w-full md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20"
-    >
-      <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between sm:mb-10 lg:mb-20">
+  <section
+    class="user bg-gray pt-[42px] lg:pt-[130px] lg:pb-10 md:py-20 max-[1920px]:overflow-x-hidden md:min-h-screen"
+  >
+    <div class="lg:container mx-auto max-w-full lg:max-w-7xl flex flex-col justify-center items-center lg:mt-20">
+      <div class="w-full flex sm:flex-col lg:flex-row lg:justify-between lg:mb-20">
         <!-- 側邊選單 -->
-        <div class="lg:w-2/6 lg:mr-[30px] lg:mt-0 md:mt-15 md:block hidden">
+        <div class="lg:w-2/6 lg:mr-[30px] lg:mt-0 md:mt-15 lg:block hidden">
           <div class="h-full">
             <div
               class="sticky top-[80px] border border-black-1 bg-white flex flex-col justify-start items-start py-6 px-3"
@@ -135,7 +135,7 @@ const userList = ref([
           </div>
         </div>
         <!-- 頁面內容 -->
-        <div class="lg:w-4/6 md:border-2 border-black-10 mt-0 md:mt-20 md:mt-10 lg:mt-0 rounded-bl rounded-br">
+        <div class="lg:w-4/6 lg:border-2 border-black-10 mt-0 rounded-bl rounded-br bg-white">
           <!-- 切頁 -->
           <div class="w-100 p-6 bg-black-10 text-white">
             <template v-if="$route.name === 'user'">
@@ -148,7 +148,7 @@ const userList = ref([
               {{ userList.find((item) => item.id === $route.name)?.title || '會員資訊' }}
             </template>
           </div>
-          <div class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6">
+          <div class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6 bg-white">
             <slot />
           </div>
           <!-- <PostManagement v-if="isPage(Page.POST)"/>

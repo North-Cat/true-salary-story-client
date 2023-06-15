@@ -59,23 +59,23 @@ const props = defineProps({
         @change="$emit('update:modelValue', item.value)"
       />
       <span
-        class="bg-dark releative items-center flex justify-center py-3 w-full"
+        class="bg-gray-light text-black-5 releative items-center flex justify-center py-3 w-full border border-dark"
         :class="{
           'rounded-l': Number($index) === 0,
           'rounded-r': Number($index) === options.length - 1,
-          'shadow-input bg-white text-blue': modelValue === item.value,
+          'shadow-input bg-white text-blue border-blue-light': modelValue === item.value,
         }"
       >
         {{ item.text }}
       </span>
     </label>
   </div>
-  <div v-else class="flex items-center justify-between">
+  <div v-else class="md:flex items-center justify-between">
     <label
       v-for="(item, $index) in options"
       :key="$index"
       :for="`${name}-${item.value}`"
-      class="flex-1 releative cursor-pointer items-center inline-flex justify-start"
+      class="w-full md:w-auto block md:flex-1 releative cursor-pointer items-center inline-flex justify-start md:mb-0 mb-5 last:mb-0"
     >
       <input
         :id="`${name}-${item.value}`"
