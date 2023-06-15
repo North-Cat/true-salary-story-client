@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import infoBlockChart from '@/assets/json/infoBlockChart.json';
-import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
-import infoBlockData from '@/assets/json/infoBlockData.json';
-import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
+// import infoBlockChart from '@/assets/json/infoBlockChart.json';
+// import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
+// import infoBlockData from '@/assets/json/infoBlockData.json';
+// import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 
-// 第一區塊
-const infoBlockChartOptions = ref({
-  animationData: infoBlockChart,
-  loop: true,
-  autoplay: true, // 要手動撥放的話，autoplay 必須為 false
-});
-// 第二區塊
-const infoBlockTalkOptions = ref({
-  animationData: infoBlockTalk,
-  loop: true,
-  autoplay: true, // 要手動撥放的話，autoplay 必須為 false
-});
-// 第三區塊
-const infoBlockDataOptions = ref({
-  animationData: infoBlockData,
-  loop: true,
-  autoplay: true, // 要手動撥放的話，autoplay 必須為 false
-});
-// 第四區塊
-const infoBlockCheersOptions = ref({
-  animationData: infoBlockCheers,
-  loop: true,
-  autoplay: true, // 要手動撥放的話，autoplay 必須為 false
-});
+// // 第一區塊
+// const infoBlockChartOptions = ref({
+//   animationData: infoBlockChart,
+//   loop: true,
+//   autoplay: true, // 要手動撥放的話，autoplay 必須為 false
+// });
+// // 第二區塊
+// const infoBlockTalkOptions = ref({
+//   animationData: infoBlockTalk,
+//   loop: true,
+//   autoplay: true, // 要手動撥放的話，autoplay 必須為 false
+// });
+// // 第三區塊
+// const infoBlockDataOptions = ref({
+//   animationData: infoBlockData,
+//   loop: true,
+//   autoplay: true, // 要手動撥放的話，autoplay 必須為 false
+// });
+// // 第四區塊
+// const infoBlockCheersOptions = ref({
+//   animationData: infoBlockCheers,
+//   loop: true,
+//   autoplay: true, // 要手動撥放的話，autoplay 必須為 false
+// });
 </script>
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
