@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 
 const userStore = useUserStore();
 const { currentPoint } = storeToRefs(userStore);
+const router = useRouter();
 withDefaults(
   defineProps<{
     isVisible: boolean;
@@ -32,8 +34,8 @@ const emit = defineEmits(['close', 'redeem']);
             <span class="caption">贈送 2000 積分、無廣告體驗，以及 10% 積分回饋！</span>
           </div>
           <div class="flex justify-between pb-5 px-16">
-            <BaseButton cate="secondary" content="詳細資訊" />
-            <BaseButton content="NT$699" />
+            <BaseButton cate="secondary" content="詳細資訊" @click="router.push('/order/offer')" />
+            <BaseButton content="NT$699" @click="router.push('/order/checkout?type=subscription')" />
           </div>
         </div>
         <div class="flex pb-5 border-b border-black-1 mb-5 justify-between">
@@ -41,14 +43,14 @@ const emit = defineEmits(['close', 'redeem']);
             <div class="icon-sparkle-checked text-blue text-md mr-3"></div>
             <span class="caption mb-1">每 100 積分可觀看 1 筆薪水情報</span>
           </div>
-          <BaseButton content="馬上訂閱" />
+          <BaseButton content="馬上訂閱" @click="router.push('/order/checkout?type=single&point=100')" />
         </div>
         <div class="flex pb-5 border-b border-black-1 mb-5 justify-between">
           <div class="flex items-center">
             <div class="icon-sparkle-checked text-blue text-md mr-3"></div>
             <span class="caption">分享薪水情報可獲得較多積分</span>
           </div>
-          <BaseButton content="開始分享" />
+          <BaseButton content="開始分享" @click="router.push('/share-my-salary')" />
         </div>
       </template>
       <template v-else>
