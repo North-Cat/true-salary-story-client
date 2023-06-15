@@ -34,7 +34,7 @@
   "dependencies": {
     "@vee-validate/i18n": "^4.9.3",
     "@vee-validate/rules": "^4.9.3",
-    "gsap": "^3.12.1",
+    "gsap": "3.11.5",
     "vee-validate": "^4.9.3",
     "yup": "^1.1.1"
   }
