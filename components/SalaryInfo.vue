@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { IShareSalary } from '@/interface/salaryData';
 import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
 import { useConsultStore } from '@/store/consult';
+import { useWSStore } from '@/store/ws';
 
 const props = defineProps<{
   post: IShareSalary;
@@ -13,6 +14,7 @@ const emit = defineEmits(['view']);
 const consultStore = useConsultStore();
 const route = useRoute();
 const router = useRouter();
+const wsStore = useWSStore();
 
 const loading = ref(false);
 
@@ -37,6 +39,15 @@ const handleCreateConsult = async () => {
     };
 
     await consultStore.createConsult(payload);
+
+    const wsPayload = {
+      type: 'create',
+      receiverId: props.post.createUser,
+    };
+    if (wsStore.ws) {
+      wsStore.ws.send(JSON.stringify(wsPayload));
+    }
+
     await router.push({
       path: '/user/consult',
       query: {

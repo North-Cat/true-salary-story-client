@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { useConsultStore } from '@/store/consult';
+import { showSuccess } from '@/utilities/message';
 
 export const useWSStore = defineStore('ws', () => {
   const {
@@ -60,6 +61,11 @@ export const useWSStore = defineStore('ws', () => {
         if (sender !== userStore.currentUser._id) {
           hasNewMessage.value = hasNewMessage.value + 1;
         }
+      } else if (res.type === 'create') {
+        showSuccess('', '有一筆新的"向你請教"加入');
+
+        const { data } = res;
+        consultStore.consultList = data;
       }
     };
   };
