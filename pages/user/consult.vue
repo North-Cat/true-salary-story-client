@@ -18,7 +18,7 @@ const { width } = useWindowSize();
 const userStore = useUserStore();
 const wsStore = useWSStore();
 const consultStore = useConsultStore();
-const { consultList, loading2 } = storeToRefs(consultStore);
+const { consultList, loading2, myConsultList, otherConsultList } = storeToRefs(consultStore);
 
 const search = ref('');
 const message = ref<HTMLInputElement | null>(null);
@@ -118,8 +118,13 @@ const formatData = (createdAt: Date) => {
           :class="{ isMobile: width < 678, isActive: step === 1 }"
         >
           <div class="divide-y divide-black-3">
-            <template v-if="consultList.length">
-              <div v-for="(item, $index) in consultList" :key="$index" class="">
+            <h6 class="mb-2 flex items-center">
+              <span class="icomoon icon-message text-blue text-2xl mr-2"></span>
+              <span>我的請教</span>
+              <span class="ml-auto">共{{ myConsultList.length }}筆</span>
+            </h6>
+            <template v-if="myConsultList.length">
+              <div v-for="(item, $index) in myConsultList" :key="$index" class="">
                 <button :class="{ 'bg-black-1': isActive === item._id }" class="p-3 w-full" @click="onClick(item)">
                   <div>
                     <h5
@@ -140,6 +145,38 @@ const formatData = (createdAt: Date) => {
               </div>
             </template>
             <template v-else>暫無請教紀錄</template>
+          </div>
+          <div class="group w-full">
+            <hr class="text-black-10 my-3" />
+          </div>
+          <div class="divide-y divide-black-3">
+            <h6 class="mb-2 flex items-center">
+              <span class="icomoon icon-message text-blue text-2xl mr-2"></span>
+              <span class="mb-2 block">向我請教</span>
+              <span class="ml-auto">共{{ otherConsultList.length }}筆</span>
+            </h6>
+            <template v-if="otherConsultList.length">
+              <div v-for="(item, $index) in otherConsultList" :key="$index" class="">
+                <button :class="{ 'bg-black-1': isActive === item._id }" class="p-3 w-full" @click="onClick(item)">
+                  <div>
+                    <h5
+                      class="text-lg text-blue text-base text-left"
+                      :class="{ 'text-blue-dark': isActive === item._id }"
+                    >
+                      {{ item.activePost.title }}
+                    </h5>
+                    <p class="text-sm text-left">{{ item.activePost.companyName }}</p>
+                    <div class="flex justify-between text-sm">
+                      <p class="truncate pr-2" :class="{ 'text-black-5': item.isRead }">
+                        {{ item.messages.length ? item.messages[item.messages.length - 1].content : '暫無對話' }}
+                      </p>
+                      <span class="shirnk">{{ formatData(item.updateDate) }}</span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+            </template>
+            <template v-else>目前沒有人向我請教</template>
           </div>
         </div>
         <div class="w-full lg:w-4/6 lg:pl-4" :class="{ isMobile: width < 678, isActive: step === 2 }">

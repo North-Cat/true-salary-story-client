@@ -2,15 +2,20 @@ import { defineStore } from 'pinia';
 import { useRoute } from 'vue-router';
 
 import { IConsult } from '@/interface/consult';
+import { useUserStore } from '@/store/user';
 
 export const useConsultStore = defineStore('consult', () => {
   const route = useRoute();
   const { consultApi } = useApi();
+  const userStore = useUserStore();
 
   const consultList = ref<IConsult[]>([]);
   const currentConsult = ref();
   const isActive = ref('');
   const loading2 = ref(false);
+
+  const myConsultList = computed(() => consultList.value.filter((o) => o.sender === userStore.currentUser._id));
+  const otherConsultList = computed(() => consultList.value.filter((o) => o.sender !== userStore.currentUser._id));
 
   const createConsult = async (payload: { receiverId: string; postId: string }) => {
     try {
@@ -37,7 +42,7 @@ export const useConsultStore = defineStore('consult', () => {
       currentConsult.value = target;
       isActive.value = target._id;
     } else {
-      const [first] = consultList.value;
+      const [first] = myConsultList.value.length ? myConsultList.value : consultList.value;
       first.isRead = true;
       currentConsult.value = first;
       isActive.value = first._id;
@@ -55,6 +60,8 @@ export const useConsultStore = defineStore('consult', () => {
     loading2,
     updateCurrentConsult,
     consultList,
+    myConsultList,
+    otherConsultList,
     currentConsult,
     isActive,
   };
