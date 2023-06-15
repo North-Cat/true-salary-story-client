@@ -78,15 +78,12 @@ export default new (class user extends Http {
   }
 
   public postEmailVerificationCode(email: string) {
-    // newEmail
-    return this.post(`/api/user/sendEmailVerificationCode`, email);
+    return this.post(`/api/user/sendEmailVerificationCode`, {
+      newEmail: email,
+    });
   }
 
   public postNewEmail(params) {
-    // {
-    //   verificationCode,
-    //   newEmail
-    // }
     return this.post(`/api/user/updateEmail`, params);
   }
 })();

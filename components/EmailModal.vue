@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 const user = useUserStore();
-const { fetchVerificationCode } = storeToRefs(user);
+const { fetchVerificationCode, isCodeSent, updateEmail, isEmailUpdated } = storeToRefs(user);
 withDefaults(
   defineProps<{
     isVisible: boolean;
@@ -28,9 +28,13 @@ const closeHandler = () => {
   hasError.value = false;
   emit('close');
 };
-const updateEmail = () => {
-  user.updateEmail(code.value);
-  emit('close');
+const updateHandler = async () => {
+  const params = {
+    verificationCode: code.value,
+    newEmail: email.value,
+  };
+  await user.updateEmail(params);
+  if (isEmailUpdated.value) emit('close');
 };
 </script>
 
@@ -58,9 +62,9 @@ const updateEmail = () => {
               <p class="text-red" v-show="hasError">Email 格式錯誤</p>
             </div>
             <div class="flex justify-end">
-              <BaseButton cate="secondary" @click="onNext">取得驗證碼</BaseButton>
+              <BaseButton cate="secondary" @click="onNext" :disabled="isCodeSent">取得驗證碼</BaseButton>
             </div>
-            <template v-if="true">
+            <template v-if="isCodeSent">
               <label for="code" class="text-black-10">驗證碼</label>
               <input
                 v-model.trim="code"
@@ -72,7 +76,7 @@ const updateEmail = () => {
                 class="text-center w-full border border-black-1 rounded py-2 px-4 mt-2 mb-4"
               />
               <div class="flex flex-col">
-                <BaseButton cate="primary" @click="updateEmail">變更通知信箱</BaseButton>
+                <BaseButton cate="primary" @click="updateHandler">變更通知信箱</BaseButton>
               </div>
             </template>
           </div>

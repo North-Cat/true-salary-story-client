@@ -136,14 +136,21 @@ export const useUserStore = defineStore('user', () => {
     isCheckInLoading.value = false;
   };
 
+  const isCodeSent = ref(false);
+  const isEmailUpdated = ref(false);
   const fetchVerificationCode = async (email: string) => {
-    const result = await userApi.postEmailVerificationCode;
-    // if (result.status === 'success')
+    const { status } = await userApi.postEmailVerificationCode(email);
+    if (status === 'success') {
+      isCodeSent.value = true;
+    }
   };
 
   const updateEmail = async (params) => {
-    const result = await userApi.postNewEmail(params);
-    // if (result.status === 'success')
+    const { status } = await userApi.postNewEmail(params);
+    if (status === 'success') {
+      isEmailUpdated.value = true;
+      tryToFetchProfile();
+    }
   };
 
   return {
@@ -170,5 +177,8 @@ export const useUserStore = defineStore('user', () => {
     tryToFetchPostDailyCheckIn,
     isCheckInLoading,
     fetchVerificationCode,
+    isCodeSent,
+    updateEmail,
+    isEmailUpdated,
   };
 });
