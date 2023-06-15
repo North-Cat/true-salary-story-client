@@ -48,7 +48,7 @@ const infoBlockCheersOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <LottieAnimation class="w-[280px]" :options="infoBlockChartOptions" />
+          <!-- <LottieAnimation class="w-[280px]" :options="infoBlockChartOptions" /> -->
         </div>
         <div class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15">
           <h5 class="md:hidden lg:hidden mb-3">不接地氣的「平均薪資」</h5>
@@ -75,7 +75,7 @@ const infoBlockCheersOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <LottieAnimation class="w-[350px]" :options="infoBlockTalkOptions" />
+          <!-- <LottieAnimation class="w-[350px]" :options="infoBlockTalkOptions" /> -->
         </div>
       </div>
 
@@ -85,7 +85,7 @@ const infoBlockCheersOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <LottieAnimation class="w-[280px]" :options="infoBlockDataOptions" />
+          <!-- <LottieAnimation class="w-[280px]" :options="infoBlockDataOptions" /> -->
         </div>
         <div class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15">
           <h5 class="md:hidden lg:hidden mb-3">為什麼薪資透明會是一件好事？</h5>
@@ -112,7 +112,7 @@ const infoBlockCheersOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <LottieAnimation class="w-[370px]" :options="infoBlockCheersOptions" />
+          <!-- <LottieAnimation class="w-[370px]" :options="infoBlockCheersOptions" /> -->
         </div>
       </div>
     </div>
