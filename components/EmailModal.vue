@@ -11,18 +11,22 @@ withDefaults(
     isVisible: false,
   },
 );
+const COUNT_DOWN_SECOND = 60;
+const countDown = ref(COUNT_DOWN_SECOND);
+const isTimerBtn = ref(false);
 const emit = defineEmits(['close']);
 const email = ref('');
 const code = ref('');
 const hasError = ref(false);
 const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-const onNext = () => {
+const onNext = async () => {
   if (!regex.test(email.value)) {
     hasError.value = true;
     return;
   }
   hasError.value = false;
-  user.fetchVerificationCode(email.value);
+  await user.fetchVerificationCode(email.value);
+  countDownTimer();
 };
 const closeHandler = () => {
   hasError.value = false;
@@ -35,6 +39,19 @@ const updateHandler = async () => {
   };
   await user.updateEmail(params);
   if (isEmailUpdated.value) emit('close');
+};
+const countDownTimer = () => {
+  if (countDown.value > 0) {
+    isTimerBtn.value = true;
+    setTimeout(() => {
+      countDown.value -= 1;
+      countDownTimer();
+    }, 1000);
+  }
+  if (countDown.value === 0) {
+    countDown.value = COUNT_DOWN_SECOND;
+    isTimerBtn.value = false;
+  }
 };
 </script>
 
@@ -62,7 +79,9 @@ const updateHandler = async () => {
               <p v-show="hasError" class="text-red">Email 格式錯誤</p>
             </div>
             <div class="flex justify-end">
-              <BaseButton cate="secondary" :disabled="isCodeSent" @click="onNext">取得驗證碼</BaseButton>
+              <BaseButton cate="secondary" :disabled="isTimerBtn" @click="onNext">{{
+                isCodeSent ? `取得驗證碼(${countDown})` : '取得驗證碼'
+              }}</BaseButton>
             </div>
             <template v-if="isCodeSent">
               <label for="code" class="text-black-10">驗證碼</label>
@@ -76,7 +95,7 @@ const updateHandler = async () => {
                 class="text-center w-full border border-black-1 rounded py-2 px-4 mt-2 mb-4"
               />
               <div class="flex flex-col">
-                <BaseButton cate="primary" @click="updateHandler">變更通知信箱</BaseButton>
+                <BaseButton cate="primary" :disabled="!code.length" @click="updateHandler">變更通知信箱</BaseButton>
               </div>
             </template>
           </div>
