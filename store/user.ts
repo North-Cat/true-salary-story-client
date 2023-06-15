@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
-import { ILoginUserInfo } from '~/interface/user';
-import { IMySalaryResponse } from '~/interface/salaryData';
-import { ISubscribeCompaniesResponse } from '~/interface/subscribe';
-import { IPointsListRespose, IMyOrdersListResponse } from '~/interface/order';
+import { ILoginUserInfo, IEmail } from '@/interface/user';
+import { IMySalaryResponse } from '@/interface/salaryData';
+import { ISubscribeCompaniesResponse } from '@/interface/subscribe';
+import { IPointsListRespose, IMyOrdersListResponse } from '@/interface/order';
 const { userApi, subscribeApi, orderApi } = useApi();
 export const useUserStore = defineStore('user', () => {
   // 登入相關
@@ -145,7 +145,7 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
-  const updateEmail = async (params) => {
+  const updateEmail = async (params: IEmail) => {
     const { status } = await userApi.postNewEmail(params);
     if (status === 'success') {
       isEmailUpdated.value = true;

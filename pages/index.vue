@@ -94,12 +94,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useSearchStore } from '@/store/search';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { useAnimationStore } from '@/store/animation';
 import { useWindowSize } from '@vueuse/core';
+import { useAnimationStore } from '@/store/animation';
+import { useSearchStore } from '@/store/search';
 
 const searchStore = useSearchStore();
 const { userCount, postCount } = storeToRefs(searchStore);
@@ -132,7 +132,7 @@ function checkCurScreen(widthInput?: number) {
 /**
  * 動畫
  */
-let isAnimaActive = true;
+const isAnimaActive = true;
 const animation = useAnimationStore();
 const { isInit } = storeToRefs(animation);
 

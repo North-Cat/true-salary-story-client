@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 const user = useUserStore();
-const { fetchVerificationCode, isCodeSent, updateEmail, isEmailUpdated } = storeToRefs(user);
+const { isCodeSent, isEmailUpdated } = storeToRefs(user);
 withDefaults(
   defineProps<{
     isVisible: boolean;
@@ -59,10 +59,10 @@ const updateHandler = async () => {
                 type="text"
                 class="w-full border border-black-1 rounded py-2 px-4 mt-2"
               />
-              <p class="text-red" v-show="hasError">Email 格式錯誤</p>
+              <p v-show="hasError" class="text-red">Email 格式錯誤</p>
             </div>
             <div class="flex justify-end">
-              <BaseButton cate="secondary" @click="onNext" :disabled="isCodeSent">取得驗證碼</BaseButton>
+              <BaseButton cate="secondary" :disabled="isCodeSent" @click="onNext">取得驗證碼</BaseButton>
             </div>
             <template v-if="isCodeSent">
               <label for="code" class="text-black-10">驗證碼</label>

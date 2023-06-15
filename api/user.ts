@@ -1,4 +1,5 @@
 import Http from '@/utilities/useHttp';
+import { IEmail } from '@/interface/user';
 
 export default new (class user extends Http {
   /**
@@ -83,7 +84,7 @@ export default new (class user extends Http {
     });
   }
 
-  public postNewEmail(params) {
+  public postNewEmail(params: IEmail) {
     return this.post(`/api/user/updateEmail`, params);
   }
 })();

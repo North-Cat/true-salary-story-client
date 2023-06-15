@@ -12,3 +12,8 @@ export interface ILoginUserInfo {
 export interface IRequestHeaders extends Headers {
   Authorization?: string;
 }
+
+export interface IEmail {
+  verificationCode: string;
+  newEmail: string;
+}
