@@ -35,7 +35,7 @@ const handleCreateConsult = async () => {
 
     const payload = {
       receiverId: props.post.createUser,
-      postId: route.params.salaryId as string,
+      postId: props.post.postId as string,
     };
 
     await consultStore.createConsult(payload);
