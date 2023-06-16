@@ -1,17 +1,15 @@
-<script lang="ts" setup>
-// import { ref } from 'vue';
-// import LottieAnimation from './LottieAnimation.vue';
-// import infoBlockChart from '@/assets/json/infoBlockChart.json';
+<script setup lang="ts">
+import infoBlockChart from '@/assets/json/infoBlockChart.json';
 // import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
 // import infoBlockData from '@/assets/json/infoBlockData.json';
 // import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 
-// // 第一區塊
-// const infoBlockChartOptions = ref({
-//   animationData: infoBlockChart,
-//   loop: true,
-//   autoplay: true, // 要手動撥放的話，autoplay 必須為 false
-// });
+// 第一區塊
+const infoBlockChartOptions = ref({
+  animationData: infoBlockChart,
+  loop: false,
+  autoplay: true, // 要手動撥放的話，autoplay 必須為 false
+});
 // // 第二區塊
 // const infoBlockTalkOptions = ref({
 //   animationData: infoBlockTalk,
@@ -50,7 +48,7 @@
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <!-- <LottieAnimation :options="infoBlockChartOptions" class="w-[280px]" /> -->
+          <LottieAnimation class="w-[280px]" :options="infoBlockChartOptions" />
         </div>
         <div class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15">
           <h5 class="md:hidden lg:hidden mb-3">不接地氣的「平均薪資」</h5>
