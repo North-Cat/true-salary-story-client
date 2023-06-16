@@ -15,6 +15,8 @@ import infoBlockData from '@/assets/json/infoBlockData.json';
 // 第三區塊
 const infoBlockDataOptions = ref({
   animationData: infoBlockData,
+  loop: true,
+  autoplay: true,
 });
 // // 第四區塊
 // const infoBlockCheersOptions = ref({
