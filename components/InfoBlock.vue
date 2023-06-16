@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import infoBlockChart from '@/assets/json/infoBlockChart.json';
-import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
+// import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
 import infoBlockData from '@/assets/json/infoBlockData.json';
 import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 
@@ -8,10 +8,10 @@ import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 const infoBlockChartOptions = ref({
   animationData: infoBlockChart,
 });
-// 第二區塊
-const infoBlockTalkOptions = ref({
-  animationData: infoBlockTalk,
-});
+// // 第二區塊
+// const infoBlockTalkOptions = ref({
+//   animationData: infoBlockTalk,
+// });
 // 第三區塊
 const infoBlockDataOptions = ref({
   animationData: infoBlockData,
@@ -67,7 +67,7 @@ const infoBlockCheersOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <LottieAnimation class="w-[350px]" :options="infoBlockTalkOptions" />
+          <!-- <LottieAnimation class="w-[350px]" :options="infoBlockTalkOptions" /> -->
         </div>
       </div>
 
