@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import lottie from 'lottie-web';
+import { ref, onMounted } from 'vue';
 
+import lottie from 'lottie-web';
 import infoBlockChart from '@/assets/json/infoBlockChart.json';
 import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
 import infoBlockData from '@/assets/json/infoBlockData.json';
@@ -9,30 +10,30 @@ import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 // import checkInAnimationData from '@/assets/json/checkIn.json';
 // import checkInSpAnimationData from '@/assets/json/checkInSpecial.json';
 
-// 第一區塊
-const infoBlockChartOptions = ref({
-  animationData: infoBlockChart,
-  loop: true,
-  autoplay: true,
-});
-// 第二區塊
-const infoBlockTalkOptions = ref({
-  animationData: infoBlockTalk,
-  loop: true,
-  autoplay: true,
-});
-// 第三區塊
-const infoBlockDataOptions = ref({
-  animationData: infoBlockData,
-  loop: true,
-  autoplay: true,
-});
-// 第四區塊
-const infoBlockCheersOptions = ref({
-  animationData: infoBlockCheers,
-  loop: true,
-  autoplay: true,
-});
+// // 第一區塊
+// const infoBlockChartOptions = ref({
+//   animationData: infoBlockChart,
+//   loop: true,
+//   autoplay: true,
+// });
+// // 第二區塊
+// const infoBlockTalkOptions = ref({
+//   animationData: infoBlockTalk,
+//   loop: true,
+//   autoplay: true,
+// });
+// // 第三區塊
+// const infoBlockDataOptions = ref({
+//   animationData: infoBlockData,
+//   loop: true,
+//   autoplay: true,
+// });
+// // 第四區塊
+// const infoBlockCheersOptions = ref({
+//   animationData: infoBlockCheers,
+//   loop: true,
+//   autoplay: true,
+// });
 
 const lavContainer1 = ref();
 const lavContainer2 = ref();
@@ -45,9 +46,9 @@ onMounted(() => {
     rendererSettings: {
       progressiveLoad: true,
     },
-    loop: infoBlockChartOptions.value.loop,
-    autoplay: infoBlockChartOptions.value.autoplay,
-    animationData: infoBlockChartOptions.value.animationData,
+    loop: true,
+    autoplay: true,
+    animationData: infoBlockChart,
   });
   lottie.loadAnimation({
     container: lavContainer2.value,
@@ -55,9 +56,9 @@ onMounted(() => {
     rendererSettings: {
       progressiveLoad: true,
     },
-    loop: infoBlockTalkOptions.value.loop,
-    autoplay: infoBlockTalkOptions.value.autoplay,
-    animationData: infoBlockTalkOptions.value.animationData,
+    loop: true,
+    autoplay: true,
+    animationData: infoBlockTalk,
   });
   lottie.loadAnimation({
     container: lavContainer3.value,
@@ -65,9 +66,9 @@ onMounted(() => {
     rendererSettings: {
       progressiveLoad: true,
     },
-    loop: infoBlockDataOptions.value.loop,
-    autoplay: infoBlockDataOptions.value.autoplay,
-    animationData: infoBlockDataOptions.value.animationData,
+    loop: true,
+    autoplay: true,
+    animationData: infoBlockData,
   });
   lottie.loadAnimation({
     container: lavContainer4.value,
@@ -75,9 +76,9 @@ onMounted(() => {
     rendererSettings: {
       progressiveLoad: true,
     },
-    loop: infoBlockCheersOptions.value.loop,
-    autoplay: infoBlockCheersOptions.value.autoplay,
-    animationData: infoBlockCheersOptions.value.animationData,
+    loop: true,
+    autoplay: true,
+    animationData: infoBlockCheers,
   });
 });
 
