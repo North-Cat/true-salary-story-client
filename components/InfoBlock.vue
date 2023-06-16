@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import infoBlockChart from '@/assets/json/infoBlockChart.json';
 // import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
-import infoBlockData from '@/assets/json/infoBlockData.json';
+// import infoBlockData from '@/assets/json/infoBlockData.json';
 import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 
 // 第一區塊
@@ -12,10 +12,10 @@ const infoBlockChartOptions = ref({
 // const infoBlockTalkOptions = ref({
 //   animationData: infoBlockTalk,
 // });
-// 第三區塊
-const infoBlockDataOptions = ref({
-  animationData: infoBlockData,
-});
+// // 第三區塊
+// const infoBlockDataOptions = ref({
+//   animationData: infoBlockData,
+// });
 // 第四區塊
 const infoBlockCheersOptions = ref({
   animationData: infoBlockCheers,
@@ -77,7 +77,7 @@ const infoBlockCheersOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <LottieAnimation class="w-[280px]" :options="infoBlockDataOptions" />
+          <!-- <LottieAnimation class="w-[280px]" :options="infoBlockDataOptions" /> -->
         </div>
         <div class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15">
           <h5 class="md:hidden lg:hidden mb-3">為什麼薪資透明會是一件好事？</h5>
