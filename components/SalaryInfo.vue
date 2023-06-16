@@ -51,7 +51,7 @@ const handleCreateConsult = async () => {
     await router.push({
       path: '/user/consult',
       query: {
-        post: route.params.salaryId,
+        post: props.post.postId,
       },
     });
   } catch (error) {
