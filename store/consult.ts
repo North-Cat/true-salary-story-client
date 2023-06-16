@@ -43,9 +43,11 @@ export const useConsultStore = defineStore('consult', () => {
       isActive.value = target._id;
     } else {
       const [first] = myConsultList.value.length ? myConsultList.value : consultList.value;
-      first.isRead = true;
-      currentConsult.value = first;
-      isActive.value = first._id;
+      if (first) {
+        first.isRead = true;
+        currentConsult.value = first;
+        isActive.value = first._id;
+      }
     }
   };
 
