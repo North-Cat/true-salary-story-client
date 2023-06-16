@@ -2,7 +2,7 @@
 // import infoBlockChart from '@/assets/json/infoBlockChart.json';
 import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
 // import infoBlockData from '@/assets/json/infoBlockData.json';
-// import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
+import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
 
 import checkInAnimationData from '@/assets/json/checkIn.json';
 import checkInSpAnimationData from '@/assets/json/checkInSpecial.json';
@@ -23,10 +23,10 @@ const infoBlockTalkOptions = ref({
 //   loop: true,
 //   autoplay: true,
 // });
-// // 第四區塊
-// const infoBlockCheersOptions = ref({
-//   animationData: infoBlockCheers,
-// });
+// 第四區塊
+const infoBlockCheersOptions = ref({
+  animationData: infoBlockCheers,
+});
 
 
 const checkInOptions = ref({
@@ -127,7 +127,7 @@ const checkInSpOptions = ref({
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <!-- <LottieAnimation class="w-[370px]" :options="infoBlockCheersOptions" /> -->
+          <LottieAnimation class="w-[370px]" :options="infoBlockCheersOptions" />
         </div>
       </div>
     </div>
