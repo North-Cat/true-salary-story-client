@@ -6,9 +6,7 @@ import infoBlockChart from '@/assets/json/infoBlockChart.json';
 
 // 第一區塊
 const infoBlockChartOptions = ref({
-  animationData: infoBlockChart,
-  loop: false,
-  autoplay: true, // 要手動撥放的話，autoplay 必須為 false
+  animationData: infoBlockChart
 });
 // // 第二區塊
 // const infoBlockTalkOptions = ref({
