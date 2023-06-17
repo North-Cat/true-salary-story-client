@@ -45,7 +45,10 @@ onMounted(() => {
   }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    console.log('test');
+    deferredPrompt.value = e as BeforeInstallPromptEvent;
+    setTimeout(() => {
+      isInstallable.value = true;
+    }, 500);
   });
 });
 </script>
