@@ -50,7 +50,7 @@ onMounted(() => {
     autoplay: true,
     // animationData: infoBlockChart,
     // path: 'https://assets4.lottiefiles.com/packages/lf20_Sjy4Vl.json',
-    path: 'https://assets10.lottiefiles.com/packages/lf20_w26ATyr8tQ.json'
+    path: 'https://assets10.lottiefiles.com/packages/lf20_w26ATyr8tQ.json',
   });
   lottie.loadAnimation({
     container: lavContainer2.value,
@@ -61,7 +61,7 @@ onMounted(() => {
     loop: true,
     autoplay: true,
     // animationData: infoBlockTalk,
-    path: 'https://assets8.lottiefiles.com/packages/lf20_GJNxMCcuht.json'
+    path: 'https://assets8.lottiefiles.com/packages/lf20_GJNxMCcuht.json',
   });
   lottie.loadAnimation({
     container: lavContainer3.value,
@@ -72,7 +72,7 @@ onMounted(() => {
     loop: true,
     autoplay: true,
     // animationData: infoBlockData,
-    path: 'https://assets3.lottiefiles.com/packages/lf20_ou21GsItxL.json'
+    path: 'https://assets3.lottiefiles.com/packages/lf20_ou21GsItxL.json',
   });
   lottie.loadAnimation({
     container: lavContainer4.value,
@@ -83,10 +83,9 @@ onMounted(() => {
     loop: true,
     autoplay: true,
     // animationData: infoBlockCheers,
-    path: 'https://assets8.lottiefiles.com/packages/lf20_SdB2AKU43Y.json'
+    path: 'https://assets8.lottiefiles.com/packages/lf20_SdB2AKU43Y.json',
   });
 });
-
 
 // const checkInOptions = ref({
 //   animationData: checkInAnimationData,
@@ -98,7 +97,6 @@ onMounted(() => {
 //   loop: true,
 //   autoplay: true,
 // });
-
 </script>
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">

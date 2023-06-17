@@ -43,7 +43,7 @@ async function clickPostCard(postId: string) {
         <!-- sm md text -->
         <h4 class="block lg:hidden">薪水檔案櫃</h4>
         <div class="flex lg:hidden flex-row justify-center items-start">
-          <NavButton :is-circle="true" :is-left="true" class="me-5" @click="smPostsPrev"></NavButton>
+          <NavButton :is-circle="true" :is-left="true" class="me-2" @click="smPostsPrev"></NavButton>
           <NavButton :is-circle="true" :is-left="false" @click="smPostsNext"></NavButton>
         </div>
         <!-- lg text -->
