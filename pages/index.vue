@@ -75,7 +75,7 @@
         </div> -->
       </div>
     </div>
-    <div class="homePage" :class="{ invisible: isAnimaActive }">
+    <div class="homePage">
       <!-- banner -->
       <BannerBlock></BannerBlock>
 
@@ -132,7 +132,7 @@ function checkCurScreen(widthInput?: number) {
 /**
  * 動畫
  */
-const isAnimaActive = true;
+let isAnimaActive = true;
 const animation = useAnimationStore();
 const { isInit } = storeToRefs(animation);
 
@@ -140,22 +140,22 @@ const home = ref();
 let ctx: gsap.Context;
 
 onMounted(() => {
-  // checkCurScreen(width.value);
-  // if (curScreen.value !== Screen.LG){
-  //   isAnimaActive = false;
-  // }
+  checkCurScreen(width.value);
+  if (curScreen.value !== Screen.LG) {
+    isAnimaActive = false;
+  }
 
   if (isAnimaActive) {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     ctx = gsap.context((self: gsap.Context) => {
       if (self?.selector) {
         // 解決開頭閃現問題 (FOUC)
-        const homePage = self.selector('.homePage');
-        gsap.to(homePage, { visibility: 'visible', opacity: 1 });
+        // const homePage = self.selector('.homePage');
+        // gsap.to(homePage, { visibility: 'visible', opacity: 1 });
 
         // 隱藏 loading
         const loading = self.selector('.loading');
-        if (loading && loading.length != 0) {
+        if (loading && loading.length !== 0) {
           gsap.to(loading, { display: 'none', opacity: 0, duration: 1 });
         }
         setTimeout(() => {

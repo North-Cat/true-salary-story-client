@@ -6,7 +6,6 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-gtag', '@vite-pwa/nuxt'],
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules', 'gsap'] },
   runtimeConfig: {
-    apiSecret: '123',
     public: {
       apiBase: 'https://client-api-dev.up.railway.app',
       pwaEnv: process.env.PWA_ENV || 'local',

@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.11.0",
     "lottie-web": "^5.12.0",
-    "nuxt": "^3.5.2",
+    "nuxt": "^3.5.3",
     "nuxt-gtag": "^0.5.7",
     "pinia": "^2.0.35",
     "prettier": "^2.8.8",
@@ -34,7 +34,7 @@
   "dependencies": {
     "@vee-validate/i18n": "^4.9.3",
     "@vee-validate/rules": "^4.9.3",
-    "gsap": "^3.12.1",
+    "gsap": "3.11.5",
     "vee-validate": "^4.9.3",
     "yup": "^1.1.1"
   }

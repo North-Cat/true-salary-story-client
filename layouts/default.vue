@@ -27,18 +27,28 @@ onClickOutside(userListModalSm, (e) => {
     closeUserModal();
   }
 });
-const user = useUserStore();
 const wsStore = useWSStore();
+const { hasNewMessage } = storeToRefs(wsStore);
+const user = useUserStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
 const loginOut = () => {
-  wsStore.ws.close();
+  if (wsStore.ws) {
+    wsStore.ws.close();
+  }
 
   logout();
   closeUserModal();
 };
 onUnmounted(() => {
-  wsStore.ws.close();
+  if (wsStore.ws) {
+    wsStore.ws.close();
+  }
+});
+watch(hasNewMessage, () => {
+  if (route.name === 'user-consult') {
+    hasNewMessage.value = 0;
+  }
 });
 
 const userList = ref([
@@ -314,6 +324,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <div class="-mb-1">
             <!-- 訊息紅點 -->
             <span
+              v-show="hasNewMessage"
               class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
             ></span>
             <span class="icon-mail text-3xl message-button"></span>
@@ -712,6 +723,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
               <div>
                 <!-- 訊息紅點 -->
                 <span
+                  v-show="hasNewMessage"
                   class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
                 ></span>
                 <span class="icon-mail text-2xl me-2 message-button"></span>
@@ -911,7 +923,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
       <div
         class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center"
       >
-        <div class="w-full flex flex-wrap">
+        <div class="w-full flex flex-wrap mb-5">
           <div class="w-full md:w-4/12 mb-10">
             <div class="w-[150px] lg:w-full">
               <img src="../assets/img/LOGO-lg.png" alt="LOGO" />
@@ -967,6 +979,9 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
               </a>
             </div>
           </div>
+        </div>
+        <div class="w-full flex">
+          <p class="caption text-black-6">Copyright © 2023 北方貓科技有限公司 版權所有</p>
         </div>
       </div>
     </footer>

@@ -25,6 +25,9 @@ onMounted(() => {});
     <RemindCheckIn />
     <!-- 全畫面 loading -->
     <PageLoading />
+    <!-- App 下載按鈕 -->
+    <AppButton />
+
     <!-- 套用共通 layout (nav 跟 footer)-->
     <NuxtLayout>
       <NuxtLoadingIndicator :throttle="0" color="repeating-linear-gradient(to right,#34cdfe 0%,#366BAB 100%)" />

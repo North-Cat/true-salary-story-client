@@ -3,9 +3,6 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/user';
 import { showSuccess } from '~/utilities/message';
-import LottieAnimation from '@/components/LottieAnimation.vue';
-import checkInAnimationData from '@/assets/json/checkIn.json';
-import checkInSpAnimationData from '@/assets/json/checkInSpecial.json';
 
 useHead({
   title: '關於我',
@@ -45,12 +42,12 @@ const checkInText = computed(() => {
 });
 
 const checkInOptions = ref({
-  animationData: checkInAnimationData,
+  path: 'https://assets9.lottiefiles.com/packages/lf20_LAsJBw9dnD.json',
   loop: false,
   autoplay: true,
 });
 const checkInSpOptions = ref({
-  animationData: checkInSpAnimationData,
+  path: 'https://assets7.lottiefiles.com/packages/lf20_lWFDMRUjYU.json',
   loop: false,
   autoplay: true,
 });
