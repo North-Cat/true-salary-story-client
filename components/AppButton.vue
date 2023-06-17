@@ -43,6 +43,10 @@ onMounted(() => {
   } else {
     console.log('PWA installation is not supported by this browser');
   }
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    console.log('test');
+  });
 });
 </script>
 
