@@ -52,6 +52,13 @@ export const useUserStore = defineStore('user', () => {
     navigateTo('/');
   };
 
+  const clearInfo = () => {
+    const tokenCookie = useCookie('token');
+    tokenCookie.value = null;
+    currentUser.value = {} as ILoginUserInfo;
+    currentPoint.value = 0;
+  };
+
   // 會員管理相關
   const mySalary = ref({
     result: [],
@@ -180,5 +187,6 @@ export const useUserStore = defineStore('user', () => {
     isCodeSent,
     updateEmail,
     isEmailUpdated,
+    clearInfo,
   };
 });

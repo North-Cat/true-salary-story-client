@@ -5,6 +5,7 @@ import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import { useThrottleFn } from '@vueuse/core';
 import { openConfirmModal } from '@/utilities/dialog';
+
 import {
   cityOptions,
   yearsOfServiceOptions,
@@ -26,8 +27,8 @@ useHead({
 definePageMeta({
   middleware: 'auth',
 });
+const route = useRoute();
 const { shareSalaryApi } = useApi();
-const router = useRouter();
 const submitData = reactive<IShareSalary>({
   taxId: '',
   companyName: '',
@@ -55,8 +56,7 @@ const submitData = reactive<IShareSalary>({
   postId: '',
   companyType: '',
   yearlySalary: '',
-  createDate: '',
-  createUser: '',
+  type: '',
 });
 configure({
   validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
@@ -157,6 +157,7 @@ const tryToGetUniformNumbers = async () => {
 // === 驗證結束 === //
 
 const user = useUserStore();
+// const salary = useSalaryStore();
 const { tryToFetchProfile } = user;
 // const salary = useSalaryStore();
 const { currentUser } = storeToRefs(user);
@@ -207,7 +208,16 @@ watch(
     chnagSalaryTotal();
   },
 );
+const initTempSalary = () => {
+  const localSubmitData = localStorage.getItem('submitData') || '';
+  const localTempSalaryFormData = localStorage.getItem('salaryTypesField') || '';
 
+  const formatSubmitData = localSubmitData ? JSON.parse(localSubmitData) : {};
+  const formatSalaryTypesField = localTempSalaryFormData ? JSON.parse(localTempSalaryFormData) : {};
+  Object.assign(submitData, formatSubmitData);
+
+  Object.assign(salaryTypesField, formatSalaryTypesField);
+};
 const onNext = async () => {
   const isRequiredSuccess = await validate();
   if (isRequiredSuccess) {
@@ -300,6 +310,8 @@ const resetSubmitData = () => {
       tempTotal: '',
     },
   });
+  localStorage.removeItem('submitData');
+  localStorage.removeItem('salaryTypesField');
 };
 const onConfirm = async () => {
   const isRequiredSuccess = await validate();
@@ -321,6 +333,8 @@ const onSubmit = async () => {
     avgHoursPerDay,
     yearlySalary: total,
   };
+  localStorage.setItem('submitData', JSON.stringify(submitData));
+  localStorage.setItem('salaryTypesField', JSON.stringify(salaryTypesField));
   await shareSalaryApi
     .postSalary(data)
     .then(({ result }) => {
@@ -334,9 +348,8 @@ const onSubmit = async () => {
     })
     .catch((error) => {
       if (error.value.data.message === 'No token provided') {
-        // salary.tempSalaryFormData = { ...submitData };
-        // salary.tempSalary = { ...salaryTypesField };
-        router.push('/login');
+        localStorage.setItem('submitData', JSON.stringify(submitData));
+        localStorage.setItem('salaryTypesField', JSON.stringify(salaryTypesField));
       }
     });
 };
@@ -447,6 +460,11 @@ const rightSideList = reactive([
     ],
   },
 ]);
+onMounted(() => {
+  if (route.query.is_temp) {
+    initTempSalary();
+  }
+});
 </script>
 <template>
   <section class="bg-gray md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
