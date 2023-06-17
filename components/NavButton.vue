@@ -10,9 +10,9 @@
     }"
   >
     <!-- 向左 -->
-    <span v-if="isLeft" class="icon-left-arrow text-2xl"></span>
+    <span v-if="isLeft" class="icon-left-arrow text-lg md:text-2xl"></span>
     <!-- 向右 -->
-    <span v-else-if="!isLeft" class="icon-right-arrow text-2xl"></span>
+    <span v-else-if="!isLeft" class="icon-right-arrow text-lg md:text-2xl"></span>
   </button>
 </template>
 

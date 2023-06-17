@@ -923,7 +923,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
       <div
         class="container mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center"
       >
-        <div class="w-full flex flex-wrap">
+        <div class="w-full flex flex-wrap mb-5">
           <div class="w-full md:w-4/12 mb-10">
             <div class="w-[150px] lg:w-full">
               <img src="../assets/img/LOGO-lg.png" alt="LOGO" />
@@ -979,6 +979,11 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
               </a>
             </div>
           </div>
+        </div>
+        <div class="w-full flex">
+          <p class="caption text-black-6">
+            Copyright © 2023 北方貓科技有限公司 版權所有
+          </p>
         </div>
       </div>
     </footer>
