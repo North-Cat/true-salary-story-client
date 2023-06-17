@@ -1,102 +1,31 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
-import lottie from 'lottie-web';
-import infoBlockChart from '@/assets/json/infoBlockChart.json';
-import infoBlockTalk from '@/assets/json/infoBlockTalk.json';
-import infoBlockData from '@/assets/json/infoBlockData.json';
-import infoBlockCheers from '@/assets/json/infoBlockCheers.json';
-
-// import checkInAnimationData from '@/assets/json/checkIn.json';
-// import checkInSpAnimationData from '@/assets/json/checkInSpecial.json';
-
-// // 第一區塊
-// const infoBlockChartOptions = ref({
-//   animationData: infoBlockChart,
-//   loop: true,
-//   autoplay: true,
-// });
-// // 第二區塊
-// const infoBlockTalkOptions = ref({
-//   animationData: infoBlockTalk,
-//   loop: true,
-//   autoplay: true,
-// });
-// // 第三區塊
-// const infoBlockDataOptions = ref({
-//   animationData: infoBlockData,
-//   loop: true,
-//   autoplay: true,
-// });
-// // 第四區塊
-// const infoBlockCheersOptions = ref({
-//   animationData: infoBlockCheers,
-//   loop: true,
-//   autoplay: true,
-// });
-
-const lavContainer1 = ref();
-const lavContainer2 = ref();
-const lavContainer3 = ref();
-const lavContainer4 = ref();
-onMounted(() => {
-  lottie.loadAnimation({
-    container: lavContainer1.value,
-    renderer: 'svg',
-    rendererSettings: {
-      progressiveLoad: true,
-    },
-    loop: true,
-    autoplay: true,
-    // animationData: infoBlockChart,
-    // path: 'https://assets4.lottiefiles.com/packages/lf20_Sjy4Vl.json',
-    path: 'https://assets10.lottiefiles.com/packages/lf20_w26ATyr8tQ.json',
-  });
-  lottie.loadAnimation({
-    container: lavContainer2.value,
-    renderer: 'svg',
-    rendererSettings: {
-      progressiveLoad: true,
-    },
-    loop: true,
-    autoplay: true,
-    // animationData: infoBlockTalk,
-    path: 'https://assets8.lottiefiles.com/packages/lf20_GJNxMCcuht.json',
-  });
-  lottie.loadAnimation({
-    container: lavContainer3.value,
-    renderer: 'svg',
-    rendererSettings: {
-      progressiveLoad: true,
-    },
-    loop: true,
-    autoplay: true,
-    // animationData: infoBlockData,
-    path: 'https://assets3.lottiefiles.com/packages/lf20_ou21GsItxL.json',
-  });
-  lottie.loadAnimation({
-    container: lavContainer4.value,
-    renderer: 'svg',
-    rendererSettings: {
-      progressiveLoad: true,
-    },
-    loop: true,
-    autoplay: true,
-    // animationData: infoBlockCheers,
-    path: 'https://assets8.lottiefiles.com/packages/lf20_SdB2AKU43Y.json',
-  });
+// 第一區塊
+const infoBlockChartOptions = ref({
+  path: 'https://assets10.lottiefiles.com/packages/lf20_w26ATyr8tQ.json',
+  loop: true,
+  autoplay: true,
+});
+// 第二區塊
+const infoBlockTalkOptions = ref({
+  path: 'https://assets8.lottiefiles.com/packages/lf20_GJNxMCcuht.json',
+  loop: true,
+  autoplay: true,
+});
+// 第三區塊
+const infoBlockDataOptions = ref({
+  path: 'https://assets3.lottiefiles.com/packages/lf20_ou21GsItxL.json',
+  loop: true,
+  autoplay: true,
+});
+// 第四區塊
+const infoBlockCheersOptions = ref({
+  path: 'https://assets8.lottiefiles.com/packages/lf20_SdB2AKU43Y.json',
+  loop: true,
+  autoplay: true,
 });
 
-// const checkInOptions = ref({
-//   animationData: checkInAnimationData,
-//   loop: true,
-//   autoplay: true,
-// });
-// const checkInSpOptions = ref({
-//   animationData: checkInSpAnimationData,
-//   loop: true,
-//   autoplay: true,
-// });
 </script>
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">
@@ -117,8 +46,7 @@ onMounted(() => {
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <!-- <LottieAnimation class="w-[280px]" :options="infoBlockChartOptions" /> -->
-          <div ref="lavContainer1"></div>
+          <LottieAnimation class="w-[280px]" :options="infoBlockChartOptions" />
         </div>
         <div class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15">
           <h5 class="md:hidden lg:hidden mb-3">不接地氣的「平均薪資」</h5>
@@ -145,10 +73,7 @@ onMounted(() => {
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <!-- <LottieAnimation class="w-[350px]" :options="infoBlockTalkOptions" /> -->
-          <!-- <LottieAnimation :options="checkInOptions" />
-          <LottieAnimation :options="checkInSpOptions" /> -->
-          <div ref="lavContainer2"></div>
+          <LottieAnimation class="w-[350px]" :options="infoBlockTalkOptions" />
         </div>
       </div>
 
@@ -158,8 +83,7 @@ onMounted(() => {
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <!-- <LottieAnimation class="w-[280px]" :options="infoBlockDataOptions" /> -->
-          <div ref="lavContainer3"></div>
+          <LottieAnimation class="w-[280px]" :options="infoBlockDataOptions" />
         </div>
         <div class="w-full lg:w-3/5 flex flex-col justify-center items-start sm:px-6 lg:px-15">
           <h5 class="md:hidden lg:hidden mb-3">為什麼薪資透明會是一件好事？</h5>
@@ -186,8 +110,7 @@ onMounted(() => {
         <div
           class="sm:w-[220px] md:w-[520px] lg:w-2/5 w-full mx-auto flex justify-center items-start sm:mb-8 md:mb-8 lg:mb-0"
         >
-          <!-- <LottieAnimation class="w-[370px]" :options="infoBlockCheersOptions" /> -->
-          <div ref="lavContainer4"></div>
+          <LottieAnimation class="w-[370px]" :options="infoBlockCheersOptions" />
         </div>
       </div>
     </div>
