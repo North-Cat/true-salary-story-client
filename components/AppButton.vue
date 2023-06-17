@@ -13,14 +13,6 @@ interface BeforeInstallPromptEvent extends Event {
 const isInstallable: Ref<boolean> = ref(false);
 const deferredPrompt: Ref<BeforeInstallPromptEvent | null> = ref(null);
 
-const beforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
-  e.preventDefault();
-  deferredPrompt.value = e;
-  setTimeout(() => {
-    isInstallable.value = true;
-  }, 500);
-};
-
 const installPWA = () => {
   if (!deferredPrompt.value) return;
   isInstallable.value = false;
@@ -37,12 +29,6 @@ const installPWA = () => {
 };
 
 onMounted(() => {
-  // Add the event listener if 'beforeinstallprompt' is in the window object
-  if ('beforeinstallprompt' in window) {
-    window.addEventListener('beforeinstallprompt', beforeInstallPrompt as any);
-  } else {
-    console.log('PWA installation is not supported by this browser');
-  }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt.value = e as BeforeInstallPromptEvent;
