@@ -23,7 +23,7 @@ onMounted(() => {
     },
     loop: props.options?.loop !== false,
     autoplay: props.options?.autoplay !== false,
-    animationData: props.options?.animationData,
+    path: props.options?.path,
   });
   emit('animCreated', anim);
 });
