@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-
+import { storeToRefs } from 'pinia';
 import { IShareSalary } from '@/interface/salaryData';
 import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
 import { useConsultStore } from '@/store/consult';
 import { useWSStore } from '@/store/ws';
+import { useUserStore } from '@/store/user';
+
 
 const props = defineProps<{
   post: IShareSalary;
@@ -15,6 +17,8 @@ const consultStore = useConsultStore();
 const route = useRoute();
 const router = useRouter();
 const wsStore = useWSStore();
+const user = useUserStore();
+const { currentUser } = storeToRefs(user);
 
 const loading = ref(false);
 
@@ -27,6 +31,9 @@ const resultSalary = computed(() => {
   if (props.post.type === 'monthly') return props.post.monthlySalary;
   if (props.post.type === 'daily') return props.post.dailySalary;
   return props.post.hourlySalary;
+});
+const isMySalary = computed(() => {
+  return props.post.createUser === currentUser.value._id;
 });
 
 const handleCreateConsult = async () => {
@@ -209,7 +216,7 @@ const handleCreateConsult = async () => {
               <span>兌換後馬上就能向前輩發問！</span>
             </div>
             <BaseButton v-if="post.isLocked" content="查看完整內容及薪水" @click="emit('view', post.postId)" />
-            <BaseButton v-if="!post.isLocked" content="我要請教" @click="handleCreateConsult">
+            <BaseButton v-if="!post.isLocked && !isMySalary" content="我要請教" @click="handleCreateConsult">
               <span v-show="loading">...</span>
             </BaseButton>
           </div>
