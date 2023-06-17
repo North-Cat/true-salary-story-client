@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { useWindowSize } from '@vueuse/core';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
 import { useUserStore } from '@/store/user';
 import { useWSStore } from '@/store/ws';
@@ -14,6 +15,7 @@ definePageMeta({
   middleware: 'auth',
 });
 
+const router = useRouter();
 const { width } = useWindowSize();
 const userStore = useUserStore();
 const wsStore = useWSStore();
@@ -101,6 +103,10 @@ const goBack = () => {
   step.value = 1;
   consultStore.isActive = '';
 };
+const goSalary = (postId: string) => {
+  const routeData = router.resolve({ path: `/salary/${postId}` });
+  window.open(routeData.href, '_blank');
+};
 
 const formatData = (createdAt: Date) => {
   const date = new Date(createdAt);
@@ -185,7 +191,11 @@ const formatData = (createdAt: Date) => {
               ><i class="icon-left-arrow pr-3"></i>返回</BaseButton
             >
             <div>
-              <h5 v-if="currentConsult && currentConsult.activePost" class="text-lg text-blue text-base text-left">
+              <h5
+                v-if="currentConsult && currentConsult.activePost"
+                class="text-lg text-blue text-base text-left cursor-pointer"
+                @click="goSalary(currentConsult.activePost.postId)"
+              >
                 {{ currentConsult.activePost.title }}
               </h5>
               <p v-if="currentConsult && currentConsult.activePost" class="text-sm text-left">
