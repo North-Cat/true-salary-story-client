@@ -981,9 +981,7 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           </div>
         </div>
         <div class="w-full flex">
-          <p class="caption text-black-6">
-            Copyright © 2023 北方貓科技有限公司 版權所有
-          </p>
+          <p class="caption text-black-6">Copyright © 2023 北方貓科技有限公司 版權所有</p>
         </div>
       </div>
     </footer>
