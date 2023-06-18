@@ -43,6 +43,17 @@ const currentConsult = computed(() => consultStore.currentConsult);
 const isActive = computed(() => consultStore.isActive);
 const messageList = computed(() => (currentConsult.value ? currentConsult.value.messages : []));
 
+watch(messageList, () => {
+  if (!room.value) return;
+
+  if (Math.abs(room.value.scrollTop + room.value.offsetHeight - room.value.scrollHeight) <= 10) {
+    nextTick(() => {
+      if (!room.value) return;
+      room.value.scrollTop = room.value.scrollHeight;
+    });
+  }
+});
+
 const onClick = async (item: IConsult) => {
   consultStore.currentConsult = item;
   consultStore.isActive = item._id;

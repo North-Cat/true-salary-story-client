@@ -323,10 +323,10 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
         >
           <div class="-mb-1">
             <!-- 訊息紅點 -->
-            <span
-              v-show="hasNewMessage"
-              class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
-            ></span>
+            <span v-show="hasNewMessage" class="absolute -right-1 flex h-3 w-3 message-button">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+            </span>
             <span class="icon-mail text-3xl message-button"></span>
           </div>
           <div class="caption message-button">訊息</div>
@@ -722,10 +722,12 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
             >
               <div>
                 <!-- 訊息紅點 -->
-                <span
-                  v-show="hasNewMessage"
-                  class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
-                ></span>
+                <span v-show="hasNewMessage" class="absolute right-1 flex h-3 w-3 message-button">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"
+                  ></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                </span>
                 <span class="icon-mail text-2xl me-2 message-button"></span>
               </div>
               <h6 class="message-button">訊息</h6>
