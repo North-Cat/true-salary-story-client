@@ -8,7 +8,7 @@ const searchStore = useSearchStore();
 const { latestPosts, popularPosts } = storeToRefs(searchStore);
 
 // 取得熱門薪水
-searchStore.fetchTopPost();
+await searchStore.fetchTopPost();
 
 // 薪水檔案櫃
 const postCarousel = ref(); // 輪播元件
