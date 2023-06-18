@@ -496,7 +496,7 @@ const rightSideList = reactive([
                 />
               </div>
               <!-- 應徵職務 -->
-              <div class="">
+              <div class="mb-10">
                 <label for="title" class="text-black-10">應徵職務</label>
                 <VField
                   v-model.trim="submitData.title"
@@ -510,7 +510,7 @@ const rightSideList = reactive([
                 />
                 <VErrorMessage name="title" as="div" class="text-red" />
               </div>
-              <div class="flex items-center mt-1 mb-10">
+              <!-- <div class="flex items-center mt-1 mb-10">
                 <input
                   id="inService"
                   v-model="isOfferJob"
@@ -521,7 +521,7 @@ const rightSideList = reactive([
                 <label for="inService" class="text-gray-700 ml-2 hover:text-blue"
                   >不提供職務名稱（將不會獲得精選）</label
                 >
-              </div>
+              </div> -->
 
               <!-- 職務類別 -->
               <div class="mb-10">

@@ -148,7 +148,9 @@ const userList = ref([
               {{ userList.find((item) => item.id === $route.name)?.title || '會員資訊' }}
             </template>
           </div>
-          <div class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6 bg-white">
+          <div
+            class="min-h-full md:min-h-[300px] px-3 py-6 md:p-6 bg-white md:border-0 border border-solid border-black-1"
+          >
             <slot />
           </div>
           <!-- <PostManagement v-if="isPage(Page.POST)"/>
