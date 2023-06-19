@@ -68,7 +68,7 @@ const isShowModal = ref(false);
         <div class="mb-5 flex items-center">
           <h5 class="mr-4">基本資料</h5>
         </div>
-        <ul class="list-none">
+        <ul class="list-none md:text-base text-sm">
           <li class="mb-2 flex">
             <span class="w-[130px]">姓名:</span>
             <span>{{ currentUser.displayName }}</span>
@@ -76,7 +76,12 @@ const isShowModal = ref(false);
           <li class="mb-2 flex items-center">
             <span class="w-[130px]">註冊信箱:</span>
             <span>{{ currentUser.email }}</span>
-            <BaseButton content="變更" to="/user" class="ml-6" @click="isShowModal = true"></BaseButton>
+            <BaseButton
+              content="變更"
+              to="/user"
+              class="md:ml-6 ml-3 md:scale-100 scale-75 shrink-0"
+              @click="isShowModal = true"
+            ></BaseButton>
           </li>
           <li class="flex">
             <span class="w-[130px]">註冊方式:</span>

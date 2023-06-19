@@ -8,7 +8,7 @@ const searchStore = useSearchStore();
 const { userCount, postCount } = storeToRefs(searchStore);
 
 // 取得首頁初始化資訊
-searchStore.fetchHomeInit();
+await searchStore.fetchHomeInit();
 
 // 使用者/薪水數量
 const postCountFormat = computed(() => {

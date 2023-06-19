@@ -296,6 +296,12 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
     e?.target?.className.indexOf(ignoreClass) === -1
   );
 }
+
+const goToConsult = () => {
+  router.push({
+    path: '/user/consult',
+  });
+};
 </script>
 
 <template>
@@ -315,18 +321,13 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <span class="icon-search text-2xl mb-1 search-button"></span>
         </BaseButton>
         <!-- 訊息 sm md -->
-        <BaseButton
-          v-if="isLogin"
-          cate="text-sm"
-          class="message-button"
-          @click="showMessageModalSm = !showMessageModalSm"
-        >
+        <BaseButton v-if="isLogin" cate="text-sm" class="message-button" @click="goToConsult">
           <div class="-mb-1">
             <!-- 訊息紅點 -->
-            <span
-              v-show="hasNewMessage"
-              class="z-10 absolute -right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
-            ></span>
+            <span v-show="hasNewMessage" class="absolute -right-1 flex h-3 w-3 message-button">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+            </span>
             <span class="icon-mail text-3xl message-button"></span>
           </div>
           <div class="caption message-button">訊息</div>
@@ -714,18 +715,15 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           </div>
           <!-- 訊息 lg -->
           <div class="relative">
-            <BaseButton
-              v-if="isLogin"
-              cate="gray-text"
-              class="message-button"
-              @click="showMessageModal = !showMessageModal"
-            >
+            <BaseButton v-if="isLogin" cate="gray-text" class="message-button" @click="goToConsult">
               <div>
                 <!-- 訊息紅點 -->
-                <span
-                  v-show="hasNewMessage"
-                  class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2 message-button"
-                ></span>
+                <span v-show="hasNewMessage" class="absolute right-1 flex h-3 w-3 message-button">
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"
+                  ></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+                </span>
                 <span class="icon-mail text-2xl me-2 message-button"></span>
               </div>
               <h6 class="message-button">訊息</h6>
@@ -943,13 +941,25 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <div class="w-1/2 md:w-2/12 mb-10">
             <div class="flex flex-col">
               <div class="caption mb-3">支援</div>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://salary.tw/terms"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 服務條款
               </a>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://salary.tw/privacy-policy"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 隱私權政策
               </a>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://salary.tw/help-center"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 幫助中心
               </a>
             </div>
@@ -957,13 +967,25 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <div class="w-1/2 md:w-2/12">
             <div class="flex flex-col">
               <div class="caption mb-3">友站連結</div>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://interview.tw/"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 面試趣
               </a>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://task.tw/"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 小任務
               </a>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://ibook.tw/combine-book/salary"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 ibook 知識健身房
               </a>
             </div>
@@ -971,10 +993,18 @@ function isClickOutsideArea(e: PointerEvent, ignoreClass: string): boolean {
           <div class="w-1/2 md:w-2/12">
             <div class="flex flex-col">
               <div class="caption mb-3">社群媒體</div>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 Facebook
               </a>
-              <a href="#" class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3">
+              <a
+                href="https://medium.com/"
+                target="_blank"
+                class="caption text-black-6 hover:text-black-10 transition duration-150 ease-in-out mb-3"
+              >
                 Medium
               </a>
             </div>
