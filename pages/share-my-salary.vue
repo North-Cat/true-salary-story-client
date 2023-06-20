@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { configure, defineRule } from 'vee-validate';
+import { configure, defineRule, Form, Field, ErrorMessage } from 'vee-validate';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import { useThrottleFn } from '@vueuse/core';
@@ -466,12 +466,12 @@ const rightSideList = reactive([
               <h4>成功分享，獲得{{ successResult?.point }}!</h4>
             </template>
           </div>
-          <VForm v-slot="{ errors, meta }" ref="form" class="px-3 py-6 md:p-6 bg-white" @submit="onConfirm">
+          <Form v-slot="{ errors, meta }" ref="form" class="px-3 py-6 md:p-6 bg-white" @submit="onConfirm">
             <div v-if="step === 1">
               <!-- 公司統編 -->
               <div class="mb-10">
                 <label for="taxId" class="text-black-10">公司統一編號</label>
-                <VField
+                <Field
                   v-model="submitData.taxId"
                   name="taxId"
                   label="統一編號"
@@ -480,7 +480,7 @@ const rightSideList = reactive([
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入公司統一編號"
                 />
-                <VErrorMessage name="taxId" as="div" class="text-red" />
+                <ErrorMessage name="taxId" as="div" class="text-red" />
               </div>
               <!-- 公司名稱 -->
               <div class="mb-10">
@@ -498,7 +498,7 @@ const rightSideList = reactive([
               <!-- 應徵職務 -->
               <div class="mb-10">
                 <label for="title" class="text-black-10">應徵職務</label>
-                <VField
+                <Field
                   v-model.trim="submitData.title"
                   name="title"
                   label="應徵職務"
@@ -508,7 +508,7 @@ const rightSideList = reactive([
                   class="w-full border border-black-1 rounded py-2 px-4 mt-2"
                   placeholder="請輸入應徵職務"
                 />
-                <VErrorMessage name="title" as="div" class="text-red" />
+                <ErrorMessage name="title" as="div" class="text-red" />
               </div>
               <!-- <div class="flex items-center mt-1 mb-10">
                 <input
@@ -592,7 +592,7 @@ const rightSideList = reactive([
                     <keep-alive>
                       <template v-if="salaryTypes === 'monthly'">
                         <div class="relativ">
-                          <VField
+                          <Field
                             v-model.number="salaryTypesField[salaryTypes].salary"
                             name="monthlySalary"
                             label="月薪"
@@ -608,7 +608,7 @@ const rightSideList = reactive([
                           </span>
                           <span class="text-black-6 text-sm">單位為元</span>
                         </div>
-                        <VErrorMessage name="monthlySalary" as="div" class="text-red" />
+                        <ErrorMessage name="monthlySalary" as="div" class="text-red" />
                       </template>
                     </keep-alive>
                     <keep-alive>
@@ -618,7 +618,7 @@ const rightSideList = reactive([
                             <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
                               placeholder="日薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
 
-                            <VField
+                            <Field
                               v-model.number="salaryTypesField[salaryTypes].salary"
                               name="dailySalary"
                               label="日薪"
@@ -630,7 +630,7 @@ const rightSideList = reactive([
                               oninput="value=value.replace('-','')"
                             />
                             <span class="text-black-6 text-sm">單位為元</span>
-                            <VErrorMessage name="dailySalary" as="div" class="text-red" />
+                            <ErrorMessage name="dailySalary" as="div" class="text-red" />
                           </div>
                           <div class="md:shrink grow md:w-full flex">
                             <div class="w-[48px] h-[48px] flex items-center justify-center px-5 mt-1 shrink">
@@ -659,7 +659,7 @@ const rightSideList = reactive([
                           <div class="shrink w-full">
                             <!-- <input v-model="salaryTypesField[salaryTypes].salary" type="text" name="salary"
                               placeholder="時薪" class="w-full border border-black-1 rounded py-2 pl-4 pr-9"> -->
-                            <VField
+                            <Field
                               v-model.number="salaryTypesField[salaryTypes].salary"
                               name="hourlySalary"
                               label="時薪"
@@ -671,7 +671,7 @@ const rightSideList = reactive([
                               oninput="value=value.replace('-','')"
                             />
                             <span class="text-black-6 text-sm">單位為元</span>
-                            <VErrorMessage name="hourlySalary" as="div" class="text-red" />
+                            <ErrorMessage name="hourlySalary" as="div" class="text-red" />
                           </div>
 
                           <div class="md:shrink grow md:w-full flex">
@@ -779,7 +779,7 @@ const rightSideList = reactive([
                   <!-- 總獎金 -->
                   <div class="mt-3">
                     <div class="shrink w-full">
-                      <VField
+                      <Field
                         v-model="salaryTypesField[salaryTypes].total"
                         type="number"
                         name="total"
@@ -788,7 +788,7 @@ const rightSideList = reactive([
                         rules="comfirnEditNumber"
                         oninput="value=value.replace('-','')"
                       />
-                      <VErrorMessage name="total" as="div" class="text-red" />
+                      <ErrorMessage name="total" as="div" class="text-red" />
                     </div>
                     <span class="text-sm text-black-6"
                       ><i class="icomoon icon-info text-sm mr-1"></i
@@ -833,7 +833,7 @@ const rightSideList = reactive([
                   >
                 </label>
 
-                <VField
+                <Field
                   v-slot="{ field }"
                   v-model="submitData.jobDescription"
                   name="jobDescription"
@@ -851,8 +851,8 @@ const rightSideList = reactive([
                   <span class="text-sm text-black-6"
                     ><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫60字以上</span
                   >
-                  <VErrorMessage name="jobDescription" as="div" class="text-red" />
-                </VField>
+                  <ErrorMessage name="jobDescription" as="div" class="text-red" />
+                </Field>
               </div>
 
               <!-- 建議與資訊 -->
@@ -865,7 +865,7 @@ const rightSideList = reactive([
                   >
                 </label>
 
-                <VField
+                <Field
                   v-slot="{ field }"
                   v-model="submitData.suggestion"
                   name="suggestion"
@@ -883,8 +883,8 @@ const rightSideList = reactive([
                   <span class="text-sm text-black-6"
                     ><i class="icomoon icon-info text-sm mr-1"></i>內容需填寫30字以上</span
                   >
-                  <VErrorMessage name="suggestion" as="div" class="text-red" />
-                </VField>
+                  <ErrorMessage name="suggestion" as="div" class="text-red" />
+                </Field>
               </div>
               <!-- 評價標籤 -->
               <div class="mb-10">
@@ -1346,7 +1346,7 @@ const rightSideList = reactive([
                 </div>
               </div>
             </div>
-          </VForm>
+          </Form>
         </div>
         <div v-if="step === 3" class="mt-4 flex md:mx-0 md:mb-0 mx-3 mb-10 md:flex-row flex-col">
           <BaseButton cate="white" to="/" class="w-full md:mr-5 md:mb-0 mb-4">回首頁</BaseButton>

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { Field, ErrorMessage } from 'vee-validate';
 import { onClickOutside } from '@vueuse/core';
 
 const emit = defineEmits(['update:modelValue']);
@@ -64,7 +65,7 @@ onClickOutside(target, () => {
     <span v-if="description" class="block mt-1 mb-2 text-sm text-black-6" v-text="description"></span>
     <div ref="target" class="relative">
       <div class="relative block" @click.stop="dropdown = !dropdown">
-        <VField
+        <Field
           :ref="name"
           v-model.trim="selectText"
           :name="name"
@@ -84,7 +85,7 @@ onClickOutside(target, () => {
           </span>
         </slot>
       </div>
-      <VErrorMessage :name="name" as="div" class="text-red" />
+      <ErrorMessage :name="name" as="div" class="text-red" />
       <ul
         v-if="dropdown"
         class="z-10 absolute mt-2 w-full rounded bg-gray shadow-input top-10 right-0 lefe-0 h-[336px] overflow-auto"
