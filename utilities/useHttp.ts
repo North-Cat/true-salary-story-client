@@ -62,7 +62,7 @@ const fetch = async (url: string, options?: any, headers?: any, isShowLoading = 
       },
     });
     const result = data.value;
-    if (error.value || !result) {
+    if (!!error.value && !result) {
       hideLoadingMask(); // 關閉 loading
       switch (error.value?.statusCode) {
         case 404:

@@ -7,9 +7,9 @@ import { useConsultStore } from '@/store/consult';
 import { useWSStore } from '@/store/ws';
 import { useUserStore } from '@/store/user';
 
-
 const props = defineProps<{
   post: IShareSalary;
+  initLoading: boolean;
 }>();
 const emit = defineEmits(['view']);
 
@@ -71,6 +71,7 @@ const handleCreateConsult = async () => {
 
 <template>
   <section
+    v-if="initLoading"
     class="lg:w-4/6 border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white sm:mb-8 lg:mb-0"
   >
     <div class="w-full flex flex-col sm:p-3 md:p-6">
@@ -224,4 +225,5 @@ const handleCreateConsult = async () => {
       </div>
     </div>
   </section>
+  <section v-else class="lg:w-4/6"></section>
 </template>

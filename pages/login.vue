@@ -36,10 +36,8 @@ const checkLoginStatus = () => {
     if (redirectToCookie.value) {
       let redirectToValue = redirectToCookie.value;
       const index = redirectToValue?.indexOf('&');
-      console.log(index, redirectToValue);
       redirectToValue =
         index > 1 ? redirectToValue?.slice(0, index) + '?' + redirectToValue?.slice(index + 1) : redirectToValue;
-      console.log(redirectToValue);
       redirectUrl = redirectToValue || redirectToCookie.value;
     }
     navigateTo(redirectUrl);

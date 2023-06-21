@@ -31,6 +31,7 @@ const { companiesId } = useRoute().params as { companiesId: string };
 const salaryStore = useSalaryStore();
 const userStore = useUserStore();
 const { isLogin } = storeToRefs(userStore);
+const loading = ref(true);
 const isShowModal = ref(false);
 const selectedPostId = ref();
 const redirect = (postId: string) => {
@@ -75,8 +76,8 @@ function init() {
   // 查詢
   getCompanySalary(1);
 }
-function getCompanyInfo() {
-  searchStore.fetchCompanyInfo(companiesId);
+async function getCompanyInfo() {
+  await searchStore.fetchCompanyInfo(companiesId);
 }
 async function getCompanyTitles() {
   await searchStore.fetchCompanyTitles(companiesId);
@@ -101,6 +102,7 @@ async function getCompanySalary(page: number) {
   forceRender();
   // 移到頁面頂端
   scrollToTop();
+  loading.value = false;
 }
 function changeTitleConditions(condition: string) {
   if (condition === '全部' || (condition !== '全部' && titleConditions.value.length === 0)) {
@@ -159,7 +161,8 @@ const scrollToTop = () => {
 init();
 </script>
 <template>
-  <section class="companies">
+  <div v-if="loading" class="min-h-screen bg-gray"></div>
+  <section v-else class="companies">
     <div class="max-[1920px]:overflow-x-hidden bg-white mt-[38px] lg:mt-[108px]">
       <div
         class="mx-auto sm:max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center py-5 md:py-20 lg:pb-10 lg:pt-6"
