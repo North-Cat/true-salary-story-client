@@ -17,36 +17,6 @@ export default defineNuxtConfig({
   nitro: {
     compressPublicAssets: true,
   },
-  // optimization: {
-  //   minimize: true,
-  //   splitChunks: {
-  //     chunks: 'all',
-  //     automaticNameDelimiter: '.',
-  //     name: true,
-  //     minSize: 10000,
-  //     maxSize: 244000,
-  //     cacheGroups: {
-  //       vendor: {
-  //         name: 'node_vendors',
-  //         test: /[\\/]node_modules[\\/]/,
-  //         chunks: 'all',
-  //         maxSize: 244000
-  //       },
-  //       styles: {
-  //         name: 'styles',
-  //         test: /\.(css|vue)$/,
-  //         chunks: 'all',
-  //         enforce: true
-  //       },
-  //       commons: {
-  //         test: /node_modules[\\/](vue|vue-loader|vue-router|vuex|vue-meta|core-js|@babel\/runtime|axios|webpack|setimmediate|timers-browserify|process|regenerator-runtime|cookie|js-cookie|is-buffer|dotprop|nuxt\.js)[\\/]/,
-  //         chunks: 'all',
-  //         priority: 10,
-  //         name: true
-  //       }
-  //     }
-  //   }
-  // },
   sourcemap: {
     server: true,
     client: true,
