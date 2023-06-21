@@ -32,8 +32,15 @@ const checkLoginStatus = () => {
     // 回到登入前的頁面
     const redirectToCookie = useCookie('redirectTo');
     let redirectUrl = '/';
+
     if (redirectToCookie.value) {
-      redirectUrl = redirectToCookie.value;
+      let redirectToValue = redirectToCookie.value;
+      const index = redirectToValue?.indexOf('&');
+      console.log(index, redirectToValue);
+      redirectToValue =
+        index > 1 ? redirectToValue?.slice(0, index) + '?' + redirectToValue?.slice(index + 1) : redirectToValue;
+      console.log(redirectToValue);
+      redirectUrl = redirectToValue || redirectToCookie.value;
     }
     navigateTo(redirectUrl);
     nextTick(async () => {

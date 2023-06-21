@@ -76,7 +76,13 @@ const fetch = async (url: string, options?: any, headers?: any, isShowLoading = 
           userStore.clearInfo();
           showError('error', '登入狀態已過期');
           // TODO 跳转到登录界面
-          navigateTo(`/login?redirect_to=${window.location.pathname}?is_temp=true`);
+          navigateTo({
+            path: `/login`,
+            query: {
+              redirect_to: window.location.pathname,
+              is_temp: window.location.pathname === '/share-my-salary' ? 1 : undefined,
+            },
+          });
           break;
         case 403:
           showError('error', '沒有權限訪問');
