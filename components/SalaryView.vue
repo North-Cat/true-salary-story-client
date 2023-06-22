@@ -16,6 +16,7 @@ const initLoading = ref(true);
 salaryStore.fetchSalaryInfo(salaryId).finally(() => {
   if (post.value.postId) {
     initLoading.value = false;
+    console.log(initLoading.value);
   } else {
     router.push('/404');
   }
@@ -32,6 +33,6 @@ const unlockPost = () => {
 };
 </script>
 <template>
-  <SalaryInfo :init-loading="!initLoading" :post="post" @view="redirect" />
+  <SalaryInfo :init-loading="initLoading" :post="post" @view="redirect" />
   <SalaryModal :is-visible="isShowModal" @close="isShowModal = false" @redeem="unlockPost" />
 </template>

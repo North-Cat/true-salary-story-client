@@ -76,8 +76,8 @@ function init() {
   // 查詢
   getCompanySalary(1);
 }
-async function getCompanyInfo() {
-  await searchStore.fetchCompanyInfo(companiesId);
+function getCompanyInfo() {
+  searchStore.fetchCompanyInfo(companiesId);
 }
 async function getCompanyTitles() {
   await searchStore.fetchCompanyTitles(companiesId);
