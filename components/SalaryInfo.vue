@@ -7,7 +7,6 @@ import { useConsultStore } from '@/store/consult';
 import { useWSStore } from '@/store/ws';
 import { useUserStore } from '@/store/user';
 
-
 const props = defineProps<{
   post: IShareSalary;
 }>();

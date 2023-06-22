@@ -25,7 +25,6 @@ const infoBlockCheersOptions = ref({
   loop: true,
   autoplay: true,
 });
-
 </script>
 <template>
   <section class="bg-gray sm:py-10 md:py-10 lg:py-20 max-[1920px]:overflow-x-hidden">

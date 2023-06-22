@@ -1,0 +1,40 @@
+name: Deploy to Render
+
+on:
+  pull_request:
+    branches:
+      - cicd/lint
+  push:
+    branches:
+      - cicd/lint
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: corepack enable
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn lint
+      - run: yarn format
+      - run: yarn generate
+        env:
+          NITRO_PRESET: render-com
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./.output/public
+
+  deploy:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
