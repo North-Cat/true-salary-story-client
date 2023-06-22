@@ -4,8 +4,15 @@ import { useSalaryStore } from '@/store/salary';
 const salaryStore = useSalaryStore();
 const { keywords } = storeToRefs(salaryStore);
 const initLoading = ref(true);
-salaryStore.fetchKeywords().finally(() => {
-  initLoading.value = false;
+const fetchKeywords = () => {
+  salaryStore.fetchKeywords().finally(() => {
+    initLoading.value = false;
+  });
+};
+onMounted(() => {
+  setTimeout(() => {
+    fetchKeywords();
+  }, 1);
 });
 </script>
 

@@ -16,7 +16,6 @@ const initLoading = ref(true);
 salaryStore.fetchSalaryInfo(salaryId).finally(() => {
   if (post.value.postId) {
     initLoading.value = false;
-    console.log(initLoading.value);
   } else {
     router.push('/404');
   }

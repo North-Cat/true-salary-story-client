@@ -10,7 +10,7 @@ import { useUserStore } from '@/store/user';
 const props = withDefaults(
   defineProps<{
     post: IShareSalary;
-    initLoading: boolean;
+    initLoading?: boolean;
   }>(),
   {
     initLoading: false,
