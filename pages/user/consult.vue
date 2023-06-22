@@ -20,7 +20,7 @@ const { width } = useWindowSize();
 const userStore = useUserStore();
 const wsStore = useWSStore();
 const consultStore = useConsultStore();
-const { consultList, loading2, myConsultList, otherConsultList } = storeToRefs(consultStore);
+const { loading2, myConsultList, otherConsultList } = storeToRefs(consultStore);
 
 const search = ref('');
 const message = ref<HTMLInputElement | null>(null);

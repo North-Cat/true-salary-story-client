@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { IShareSalary } from '@/interface/salaryData';
 import { useNumberRange, useOvertimeClass, useFeelingClass } from '@/composables/post';
@@ -13,7 +13,6 @@ const props = defineProps<{
 const emit = defineEmits(['view']);
 
 const consultStore = useConsultStore();
-const route = useRoute();
 const router = useRouter();
 const wsStore = useWSStore();
 const user = useUserStore();

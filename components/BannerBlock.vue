@@ -66,7 +66,7 @@ async function search(paramObj: { searchType: string; param: string; page: numbe
             </div>
             <!-- lg md text-->
             <div class="banner-info sm:hidden md:flex md:flex-col md:items-center lg:block">
-              <h2 class="title text-black-5 mb-5">有比較才有進步1</h2>
+              <h2 class="title text-black-5 mb-5">有比較才有進步2</h2>
               <h1 class="title text-blue">最真實的薪水行情</h1>
               <h1 class="title text-black-10 mb-10">前輩親自告訴你</h1>
             </div>

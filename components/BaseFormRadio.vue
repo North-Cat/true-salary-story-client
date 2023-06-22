@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-const emit = defineEmits(['update:modelValue']);
-const props = defineProps({
+defineEmits(['update:modelValue']);
+defineProps({
   modelValue: {
     type: [String, Number, Boolean],
     default: '',

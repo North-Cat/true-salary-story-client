@@ -4,10 +4,7 @@ import { RouteLocationRaw, useRoute } from 'vue-router';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
 import { useWSStore } from '@/store/ws';
-import { useAnimationStore } from '@/store/animation';
 
-const animation = useAnimationStore();
-const { isInit } = storeToRefs(animation);
 const route = useRoute();
 const router = useRouter();
 // 帳號視窗

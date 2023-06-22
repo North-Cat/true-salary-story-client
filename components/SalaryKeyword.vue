@@ -12,7 +12,7 @@ salaryStore.fetchKeywords();
     <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-6 lg:px-6 bg-white rounded-b rounded-tr w-full">
       <div class="flex flex-col">
         <div class="flex flex-wrap justify-between items-center">
-          <TextLink v-for="keyword in keywords" :key="keyword" :content="keyword" size="sm" @click=""> </TextLink>
+          <TextLink v-for="keyword in keywords" :key="keyword" :content="keyword" size="sm"> </TextLink>
         </div>
       </div>
     </div>
