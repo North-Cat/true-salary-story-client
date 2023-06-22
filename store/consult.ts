@@ -3,11 +3,13 @@ import { useRoute } from 'vue-router';
 
 import { IConsult } from '@/interface/consult';
 import { useUserStore } from '@/store/user';
+import { useWSStore } from '@/store/ws';
 
 export const useConsultStore = defineStore('consult', () => {
   const route = useRoute();
   const { consultApi } = useApi();
   const userStore = useUserStore();
+  const wsStore = useWSStore();
 
   const consultList = ref<IConsult[]>([]);
   const currentConsult = ref();
@@ -30,21 +32,35 @@ export const useConsultStore = defineStore('consult', () => {
     loading2.value = true;
     const { result } = await consultApi.getConsultList();
 
-    const data = result.map((o: any) => ({ ...o, isRead: false }));
-
-    consultList.value = data;
+    consultList.value = result;
     loading2.value = false;
 
     const target = consultList.value.find((o) => o.activePost.postId === route.query.post);
 
     if (target) {
+      const payload = {
+        type: 'read',
+        consultId: target._id,
+      };
+
       target.isRead = true;
+      if (wsStore.ws) {
+        wsStore.ws.send(JSON.stringify(payload));
+      }
       currentConsult.value = target;
       isActive.value = target._id;
     } else {
       const [first] = myConsultList.value.length ? myConsultList.value : consultList.value;
       if (first) {
+        const payload = {
+          type: 'read',
+          consultId: first._id,
+        };
+
         first.isRead = true;
+        if (wsStore.ws) {
+          wsStore.ws.send(JSON.stringify(payload));
+        }
         currentConsult.value = first;
         isActive.value = first._id;
       }

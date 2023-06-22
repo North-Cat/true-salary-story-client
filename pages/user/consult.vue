@@ -59,6 +59,14 @@ const onClick = async (item: IConsult) => {
   consultStore.isActive = item._id;
 
   consultStore.currentConsult.isRead = true;
+  const payload = {
+    type: 'read',
+    consultId: currentConsult.value._id,
+  };
+
+  if (wsStore.ws) {
+    wsStore.ws.send(JSON.stringify(payload));
+  }
   step.value = 2;
 
   await nextTick();
