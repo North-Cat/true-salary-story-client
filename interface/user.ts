@@ -8,6 +8,7 @@ export interface ILoginUserInfo {
   profilePicture: string;
   _id: string;
   points: IPoint;
+  biometricEnable: boolean;
 }
 export interface IRequestHeaders extends Headers {
   Authorization?: string;

@@ -16,6 +16,7 @@ const { tryToFetchProfile, tryToFetchPostDailyCheckIn } = user;
 const { currentUser, checkTodayCheckedIn, isCheckInLoading } = storeToRefs(user);
 const checkInFirstRewardCount = ref(7);
 const checkInLastlyRewardCount = ref(14);
+const biometricEnabled = ref(false);
 
 const checkIn = async () => {
   // false 代表尚未簽到
@@ -58,6 +59,17 @@ const forceRender = () => {
   componentKey.value += 1;
 };
 const isShowModal = ref(false);
+
+watch(
+  () => currentUser.value?.biometricEnable,
+  (value) => {
+    biometricEnabled.value = value;
+  },
+);
+
+onMounted(() => {
+  biometricEnabled.value = currentUser.value.biometricEnable;
+});
 </script>
 
 <template>
@@ -83,9 +95,17 @@ const isShowModal = ref(false);
               @click="isShowModal = true"
             ></BaseButton>
           </li>
-          <li class="flex">
+          <li class="flex mb-2">
             <span class="w-[130px]">註冊方式:</span>
             <span>{{ 'Google' }}</span>
+          </li>
+          <li class="flex mb-2 items-center">
+            <span class="w-[130px]">啟用生物註冊:</span>
+            <BiometricAuth></BiometricAuth>
+          </li>
+          <li v-if="biometricEnabled" class="flex mb-2 items-center">
+            <span class="w-[130px]">自動生物登入:</span>
+            <BiometricAutoLogin></BiometricAutoLogin>
           </li>
         </ul>
         <div class="border-b border-black-1 py-4 mb-6"></div>

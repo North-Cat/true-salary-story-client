@@ -113,7 +113,7 @@ export default class Http {
   }
 
   post(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'post', body }, headers, isShowLoading);
+    return fetch(url, { method: 'post', credentials: 'include', body }, headers, isShowLoading);
   }
 
   put(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
@@ -122,6 +122,10 @@ export default class Http {
 
   delete(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
     return fetch(url, { method: 'delete', body }, headers, isShowLoading);
+  }
+
+  patch(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
+    return fetch(url, { method: 'PATCH', body }, headers, isShowLoading);
   }
 }
 
