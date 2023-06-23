@@ -58,10 +58,17 @@ const onClick = async (item: IConsult) => {
   consultStore.currentConsult = item;
   consultStore.isActive = item._id;
 
-  consultStore.currentConsult.isRead = true;
+  const isSender = consultStore.currentConsult.sender === userStore.currentUser._id;
+  if (isSender) {
+    consultStore.currentConsult.isSenderRead = true;
+  } else {
+    consultStore.currentConsult.isReceiverRead = true;
+  }
+
   const payload = {
     type: 'read',
     consultId: currentConsult.value._id,
+    readerId: userStore.currentUser._id,
   };
 
   if (wsStore.ws) {
@@ -161,7 +168,12 @@ const formatData = (createdAt: Date) => {
                       </h5>
                       <p class="text-sm text-left">{{ item.activePost.companyName }}</p>
                       <div class="flex justify-between text-sm">
-                        <p class="truncate pr-2" :class="{ 'text-black-5': item.isRead }">
+                        <p
+                          class="truncate pr-2"
+                          :class="{
+                            'text-black-5': item.isSenderRead,
+                          }"
+                        >
                           {{ item.messages.length ? item.messages[item.messages.length - 1].content : '暫無對話' }}
                         </p>
                         <span class="shirnk">{{ formatData(item.updateDate) }}</span>
@@ -193,7 +205,12 @@ const formatData = (createdAt: Date) => {
                       </h5>
                       <p class="text-sm text-left">{{ item.activePost.companyName }}</p>
                       <div class="flex justify-between text-sm">
-                        <p class="truncate pr-2" :class="{ 'text-black-5': item.isRead }">
+                        <p
+                          class="truncate pr-2"
+                          :class="{
+                            'text-black-5': item.isReceiverRead,
+                          }"
+                        >
                           {{ item.messages.length ? item.messages[item.messages.length - 1].content : '暫無對話' }}
                         </p>
                         <span class="shirnk">{{ formatData(item.updateDate) }}</span>

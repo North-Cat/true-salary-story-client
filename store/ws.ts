@@ -54,7 +54,14 @@ export const useWSStore = defineStore('ws', () => {
           ];
 
           if (target._id !== consultStore.currentConsult._id) {
-            target.isRead = false;
+            const isMessageSenderIsSender = sender === target.sender;
+            if (isMessageSenderIsSender) {
+              target.isSenderRead = true;
+              target.isReceiverRead = false;
+            } else {
+              target.isSenderRead = false;
+              target.isReceiverRead = true;
+            }
           }
         }
 

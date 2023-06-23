@@ -41,9 +41,18 @@ export const useConsultStore = defineStore('consult', () => {
       const payload = {
         type: 'read',
         consultId: target._id,
+        readerId: userStore.currentUser._id,
       };
 
-      target.isRead = true;
+      const isSender = target.sender === userStore.currentUser._id;
+      const isReceiver = target.receiver === userStore.currentUser._id;
+      if (isSender) {
+        target.isSenderRead = true;
+      }
+      if (isReceiver) {
+        target.isReceiverRead = true;
+      }
+
       if (wsStore.ws) {
         wsStore.ws.send(JSON.stringify(payload));
       }
@@ -55,9 +64,18 @@ export const useConsultStore = defineStore('consult', () => {
         const payload = {
           type: 'read',
           consultId: first._id,
+          readerId: userStore.currentUser._id,
         };
 
-        first.isRead = true;
+        const isSender = first.sender === userStore.currentUser._id;
+        const isReceiver = first.receiver === userStore.currentUser._id;
+        if (isSender) {
+          first.isSenderRead = true;
+        }
+        if (isReceiver) {
+          first.isReceiverRead = true;
+        }
+
         if (wsStore.ws) {
           wsStore.ws.send(JSON.stringify(payload));
         }

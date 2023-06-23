@@ -15,5 +15,6 @@ export interface IConsult {
     postId: string;
   };
   updateDate: Date;
-  isRead: boolean;
+  isSenderRead: boolean;
+  isReceiverRead: boolean;
 }
