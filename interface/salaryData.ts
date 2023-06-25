@@ -25,9 +25,9 @@ export interface IShareSalary {
   suggestion: string;
   tags?: number[];
   customTags?: string[];
-  createDate: string;
+  createDate?: string;
   isLocked?: boolean;
-  createUser: string;
+  createUser?: string;
   type: string;
 }
 

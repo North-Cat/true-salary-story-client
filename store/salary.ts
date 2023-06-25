@@ -1,12 +1,10 @@
 import { defineStore } from 'pinia';
-import { ISalary, IShareSalary } from '@/interface/salaryData';
+import { IShareSalary } from '@/interface/salaryData';
 import { useUserStore } from '@/store/user';
 import { useSearchStore } from '@/store/search';
 export const useSalaryStore = defineStore('salary', () => {
   const user = useUserStore();
   const search = useSearchStore();
-  const tempSalaryFormData = ref<IShareSalary>({});
-  const tempSalary = ref<ISalary>({});
   const keywords = ref([]);
   const post = ref<IShareSalary>({
     postId: '',
@@ -96,8 +94,6 @@ export const useSalaryStore = defineStore('salary', () => {
     }
   };
   return {
-    tempSalaryFormData,
-    tempSalary,
     post,
     keywords,
     fetchSalaryInfo,

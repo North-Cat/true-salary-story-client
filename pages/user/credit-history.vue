@@ -15,8 +15,6 @@ const paginationButton = ref();
 const loading = ref(false);
 loading.value = true;
 const { pointsList } = storeToRefs(useStore);
-loading.value = false;
-loading.value = true;
 useStore.tryToFetchPointsList().finally(() => {
   loading.value = false;
 });

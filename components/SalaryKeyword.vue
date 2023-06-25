@@ -3,11 +3,21 @@ import { storeToRefs } from 'pinia';
 import { useSalaryStore } from '@/store/salary';
 const salaryStore = useSalaryStore();
 const { keywords } = storeToRefs(salaryStore);
-salaryStore.fetchKeywords();
+const initLoading = ref(true);
+const fetchKeywords = () => {
+  salaryStore.fetchKeywords().finally(() => {
+    initLoading.value = false;
+  });
+};
+onMounted(() => {
+  setTimeout(() => {
+    fetchKeywords();
+  }, 1);
+});
 </script>
 
 <template>
-  <section class="lg:w-2/6 flex flex-col justify-start items-start pb-6 lg:ml-[30px] h-fit w-full">
+  <section v-if="!initLoading" class="lg:w-2/6 flex flex-col justify-start items-start pb-6 lg:ml-[30px] h-fit w-full">
     <h5 class="text-white bg-black-10 py-3 px-5 rounded-t">#熱門關鍵字</h5>
     <div class="border-2 border-black-10 sm:py-5 sm:px-7 lg:py-6 lg:px-6 bg-white rounded-b rounded-tr w-full">
       <div class="flex flex-col">

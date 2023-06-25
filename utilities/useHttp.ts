@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { showError } from '@/utilities/message';
 import { IRequestHeaders } from '~/interface/user';
 import { useLoadingStore } from '@/store/loading';
+import { useUserStore } from '@/store/user';
 
 // export interface ResOptions<T> {
 //   data: T;
@@ -33,7 +34,7 @@ const fetch = async (url: string, options?: any, headers?: any, isShowLoading = 
 
     // 可以设置默认headers例如
     // const customHeaders = { token: useCookie('token').value, ...headers };
-
+    const userStore = useUserStore();
     const { data, error } = await useFetch(reqUrl, {
       // initialCache: false,
       ...options,
@@ -61,10 +62,36 @@ const fetch = async (url: string, options?: any, headers?: any, isShowLoading = 
       },
     });
     const result = data.value;
-    if (error.value || !result) {
+    if (!!error.value && !result) {
       hideLoadingMask(); // 關閉 loading
-      showError('error', error?.value?.data?.message || '系統錯誤');
-      return Promise.reject(error?.value?.data?.message || '系統錯誤');
+      switch (error.value?.statusCode) {
+        case 404:
+          showError('error', '頁面不存在');
+          navigateTo(`/404`);
+          break;
+        case 500:
+          showError('error', error?.value?.data?.message || '系統內部錯誤');
+          break;
+        case 401:
+          userStore.clearInfo();
+          showError('error', '登入狀態已過期');
+          // TODO 跳转到登录界面
+          navigateTo({
+            path: `/login`,
+            query: {
+              redirect_to: window.location.pathname,
+              is_temp: window.location.pathname === '/share-my-salary' ? 1 : undefined,
+            },
+          });
+          break;
+        case 403:
+          showError('error', '沒有權限訪問');
+          break;
+        default:
+          showError('error', error?.value?.data?.message || '系統錯誤');
+          return Promise.reject(error?.value?.data?.message || '系統錯誤');
+      }
+
       // throw createError({
       //   statusCode: 500,
       //   statusMessage: reqUrl,
