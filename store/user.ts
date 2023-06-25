@@ -216,6 +216,8 @@ export const useUserStore = defineStore('user', () => {
 
   const postRefreshToken = async () => {
     const refreshTokenCookie = useCookie('refreshToken');
+    console.log(1, refreshTokenCookie.value);
+
     if (typeof refreshTokenCookie.value !== 'string') {
       showError('提示', '生物登入失敗，請改用三方登入');
       return false;
