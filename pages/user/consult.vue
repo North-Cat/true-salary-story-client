@@ -235,17 +235,19 @@ const formatData = (createdAt: Date) => {
               <template v-else>暫無對話紀錄</template>
             </div>
             <div class="flex">
-              <textarea
-                id="chatInput"
-                ref="message"
-                v-model="search"
-                name="chatInput"
-                placeholder="輸入文字..."
-                rows="1"
-                class="resize-none w-full border border-black-1 rounded py-2 px-4 mt-2 max-h-[200px] min-h-[64px] resize-none overflow-y-auto"
-                @input="adjustTextareaHeight({ isSend: false })"
-                @keydown.enter.exact="sendMessage"
-              />
+              <form action="javascript:void 0">
+                <textarea
+                  id="chatInput"
+                  ref="message"
+                  v-model="search"
+                  name="chatInput"
+                  placeholder="輸入文字..."
+                  rows="1"
+                  class="resize-none w-full border border-black-1 rounded py-2 px-4 mt-2 max-h-[200px] min-h-[64px] resize-none overflow-y-auto"
+                  @input="adjustTextareaHeight({ isSend: false })"
+                  @keydown.enter.exact="sendMessage"
+                />
+              </form>
             </div>
           </div>
         </div>
