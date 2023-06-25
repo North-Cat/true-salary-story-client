@@ -150,6 +150,7 @@ const formatData = (createdAt: Date) => {
             class="w-full lg:w-2/6 h-[500px] overflow-y-scroll lg:overscroll-contain"
             :class="{ isMobile: width < 678, isActive: step === 1 }"
           >
+            <p>isOpen: {{ wsStore.isOpen }}</p>
             <div class="divide-y divide-black-3">
               <h6 class="mb-2 flex items-center">
                 <span class="icomoon icon-message text-blue text-2xl mr-2"></span>
@@ -223,6 +224,7 @@ const formatData = (createdAt: Date) => {
             </div>
           </div>
           <div class="w-full lg:w-4/6 lg:pl-4" :class="{ isMobile: width < 678, isActive: step === 2 }">
+            <p>isOpen: {{ wsStore.isOpen }}</p>
             <BaseButton cate="gray-text" class="px-0 py-0 mb-2 lg:hidden" @click="goBack"
               ><i class="icon-left-arrow pr-3"></i>返回</BaseButton
             >
@@ -269,7 +271,7 @@ const formatData = (createdAt: Date) => {
                 rows="1"
                 class="resize-none w-full border border-black-1 rounded py-2 px-4 mt-2 max-h-[200px] min-h-[64px] resize-none overflow-y-auto"
                 @input="adjustTextareaHeight({ isSend: false })"
-                @keydown.enter.exact="sendMessage"
+                @keydown.enter="sendMessage"
               />
             </div>
           </div>

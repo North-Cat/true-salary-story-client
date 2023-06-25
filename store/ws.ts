@@ -13,6 +13,7 @@ export const useWSStore = defineStore('ws', () => {
   const url = wssBase;
   const ws = ref<WebSocket>();
   const hasNewMessage = ref(0);
+  const isOpen = ref(false);
 
   const init = () => {
     ws.value = new WebSocket(url);
@@ -21,6 +22,7 @@ export const useWSStore = defineStore('ws', () => {
       console.log('open connection', userStore.currentUser._id);
 
       if (ws.value) {
+        isOpen.value = true;
         ws.value.send(
           JSON.stringify({
             type: 'userId',
@@ -77,5 +79,5 @@ export const useWSStore = defineStore('ws', () => {
     };
   };
 
-  return { ws, init, hasNewMessage };
+  return { ws, init, hasNewMessage, isOpen };
 });
