@@ -123,10 +123,6 @@ export default class Http {
   delete(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
     return fetch(url, { method: 'DELETE', credentials: 'include', body }, headers, isShowLoading);
   }
-
-  patch(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'PATCH', credentials: 'include', body }, headers, isShowLoading);
-  }
 }
 
 /* 開啟 Loading 圈圈 */

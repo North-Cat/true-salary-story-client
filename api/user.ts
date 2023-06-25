@@ -92,8 +92,8 @@ export default new (class user extends Http {
     Biometric API(生物註冊與生物登入相關功能)
   */
   // get biometric status
-  public patchToggleBiometric(enable: boolean) {
-    return this.patch(`/api/auth/toggleBiometric`, { enable });
+  public putToggleBiometric(enable: boolean) {
+    return this.put(`/api/auth/toggleBiometric`, { enable });
   }
 
   // 1. get biometric attestation data, for register
