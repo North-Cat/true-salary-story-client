@@ -166,7 +166,7 @@ export const useUserStore = defineStore('user', () => {
 
   const toggleBiometric = async (enable: boolean) => {
     // Step 1: call api to toggle biometric
-    const { data } = await userApi.putToggleBiometric(enable);
+    const { data } = await userApi.postToggleBiometric(enable);
 
     if (data.biometricEnable) {
       // Step 2: register biometric
