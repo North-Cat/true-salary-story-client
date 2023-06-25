@@ -97,15 +97,21 @@ export default new (class user extends Http {
   }
 
   // 1. get biometric attestation data, for register
-  public postGenerateAttestation(isAndroid: boolean) {
-    return this.post(`/api/auth/generateAttestation`, {
+  public async postGenerateAttestation(isAndroid: boolean) {
+    const response = await this.post(`/api/auth/generateAttestation`, {
       isAndroid,
     });
+    return response.data;
   }
 
   // 2. verify biometric attestation data, if success then register biometric
-  public postVerifyAttestation(credential: any) {
-    return this.post(`/api/auth/verifyAttestation`, credential);
+  public async postVerifyAttestation(credential: any, challenge: string, userId: string) {
+    const response = await this.post(`/api/auth/verifyAttestation`, {
+      ...credential,
+      challenge,
+      userId,
+    });
+    return response;
   }
 
   // refresh token

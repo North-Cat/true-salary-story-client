@@ -193,14 +193,19 @@ export const useUserStore = defineStore('user', () => {
     const isAndroid = clientType() === 'Android';
     try {
       // Request attestation options from the server
-      const attestationOptionsResponse = await userApi.postGenerateAttestation(isAndroid);
-      const attestationOptions = attestationOptionsResponse.data;
+      const attestationOptionsData = await userApi.postGenerateAttestation(isAndroid);
+      const attestationOptions = attestationOptionsData.options;
 
       // Begin the attestation with the provided options
       const credential = await startRegistration(attestationOptions);
 
       // Send the attestation response back to the server to be verified
-      const verifyResponse = await userApi.postVerifyAttestation(credential);
+      const verifyResponse = await userApi.postVerifyAttestation(
+        credential,
+        attestationOptionsData.challenge,
+        attestationOptionsData.userId,
+      );
+
       if (verifyResponse.status === 'success') {
         showSuccess('', '生物註冊成功');
       }
