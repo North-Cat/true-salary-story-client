@@ -26,16 +26,18 @@ const biometricLoginHandler = () => {
 };
 
 const checkLoginStatus = () => {
-  const jwtToken = route.query.token;
-  const refreshToken = route.query.refreshToken;
-  if (jwtToken) {
-    // user.isLogin = true;
+  const encodedTokens = route.query.tokens;
+  if (encodedTokens) {
+    // Base64 decode the `tokens` parameter
+    const tokens = JSON.parse(window.atob(encodedTokens as string));
+
     const tokenCookie = useCookie('token', { maxAge: 60 * 60 });
     const refreshTokenCookie = useCookie('refreshToken', { maxAge: 60 * 60 * 24 * 30 });
-    tokenCookie.value = jwtToken as string;
-    refreshTokenCookie.value = refreshToken as string;
-    // localStorage.setItem('token', jwtToken as string);
-    user.token = jwtToken as string;
+    tokenCookie.value = tokens.token;
+    refreshTokenCookie.value = tokens.refreshToken;
+
+    user.token = tokens.token;
+
     // 回到登入前的頁面
     const redirectToCookie = useCookie('redirectTo');
     let redirectUrl = '/';
