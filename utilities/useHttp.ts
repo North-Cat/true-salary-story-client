@@ -109,23 +109,23 @@ const fetch = async (url: string, options?: any, headers?: any, isShowLoading = 
 
 export default class Http {
   get(url: string, params?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'get', params }, headers, isShowLoading);
+    return fetch(url, { method: 'GET', credentials: 'include', params }, headers, isShowLoading);
   }
 
   post(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'post', credentials: 'include', body }, headers, isShowLoading);
+    return fetch(url, { method: 'POST', credentials: 'include', body }, headers, isShowLoading);
   }
 
   put(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'put', body }, headers, isShowLoading);
+    return fetch(url, { method: 'PUT', credentials: 'include', body }, headers, isShowLoading);
   }
 
   delete(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'delete', body }, headers, isShowLoading);
+    return fetch(url, { method: 'DELETE', credentials: 'include', body }, headers, isShowLoading);
   }
 
   patch(url: string, body?: any, headers?: any, isShowLoading?: boolean) {
-    return fetch(url, { method: 'PATCH', body }, headers, isShowLoading);
+    return fetch(url, { method: 'PATCH', credentials: 'include', body }, headers, isShowLoading);
   }
 }
 
