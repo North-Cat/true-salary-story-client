@@ -34,6 +34,7 @@ export const useWSStore = defineStore('ws', () => {
 
     ws.value.onclose = () => {
       console.log('close connection');
+      isOpen.value = false;
     };
 
     ws.value.onmessage = (event: any) => {
