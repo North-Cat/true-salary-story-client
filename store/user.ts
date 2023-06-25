@@ -215,7 +215,13 @@ export const useUserStore = defineStore('user', () => {
   };
 
   const postRefreshToken = async () => {
-    const result = await userApi.postRefreshToken();
+    const refreshTokenCookie = useCookie('refreshToken');
+    if (typeof refreshTokenCookie.value !== 'string') {
+      showError('提示', '生物登入失敗，請改用三方登入');
+      return false;
+    }
+
+    const result = await userApi.postRefreshToken(refreshTokenCookie.value);
     if (result.status === 'success') {
       const tokenCookie = useCookie('token', { maxAge: 60 * 60 });
       tokenCookie.value = result.data.token;

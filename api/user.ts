@@ -115,8 +115,8 @@ export default new (class user extends Http {
   }
 
   // refresh token
-  public postRefreshToken() {
-    return this.post(`/api/auth/refreshToken`);
+  public postRefreshToken(refreshToken: string) {
+    return this.post(`/api/auth/refreshToken`, { refreshToken });
   }
 
   // 3. get biometric assertion data, for login
