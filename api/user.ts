@@ -120,12 +120,17 @@ export default new (class user extends Http {
   }
 
   // 3. get biometric assertion data, for login
-  public postGenerateAssertion() {
-    return this.post(`/api/auth/generateAssertion`);
+  public async postGenerateAssertion() {
+    const response = await this.post(`/api/auth/generateAssertion`);
+    return response.data;
   }
 
   // 4. verify biometric assertion data, if success then login
-  public postVerifyAssertion(data: any) {
-    return this.post(`/api/auth/verifyAssertion`, data);
+  public postVerifyAssertion(credential: any, challenge: string, userId: string) {
+    return this.post(`/api/auth/verifyAssertion`, {
+      ...credential,
+      challenge,
+      userId,
+    });
   }
 })();
