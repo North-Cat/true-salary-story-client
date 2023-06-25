@@ -27,10 +27,13 @@ const biometricLoginHandler = () => {
 
 const checkLoginStatus = () => {
   const jwtToken = route.query.token;
+  const refreshToken = route.query.refreshToken;
   if (jwtToken) {
     // user.isLogin = true;
     const tokenCookie = useCookie('token', { maxAge: 60 * 60 });
+    const refreshTokenCookie = useCookie('refreshToken', { maxAge: 60 * 60 * 24 * 30 });
     tokenCookie.value = jwtToken as string;
+    refreshTokenCookie.value = refreshToken as string;
     // localStorage.setItem('token', jwtToken as string);
     user.token = jwtToken as string;
     // 回到登入前的頁面
