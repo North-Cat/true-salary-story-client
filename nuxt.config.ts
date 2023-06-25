@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules', 'gsap'] },
   runtimeConfig: {
     public: {
-      apiBase: 'http://localhost:3000',
+      apiBase: 'https://client-api-dev.up.railway.app',
       pwaEnv: process.env.PWA_ENV || 'local',
       wssBase: 'wss://client-api-dev.up.railway.app',
     },
