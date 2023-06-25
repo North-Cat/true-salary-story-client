@@ -5,7 +5,7 @@ import { ILoginUserInfo, IEmail } from '@/interface/user';
 import { IMySalaryResponse } from '@/interface/salaryData';
 import { ISubscribeCompaniesResponse } from '@/interface/subscribe';
 import { IPointsListRespose, IMyOrdersListResponse } from '@/interface/order';
-import { showSuccess } from '@/utilities/message';
+import { showSuccess, showError } from '@/utilities/message';
 const { userApi, subscribeApi, orderApi } = useApi();
 
 export const useUserStore = defineStore('user', () => {
@@ -207,7 +207,7 @@ export const useUserStore = defineStore('user', () => {
       );
 
       if (verifyResponse.status === 'success') {
-        showSuccess('', '生物註冊成功');
+        showSuccess('提示', '生物註冊成功');
       }
     } catch (error) {
       await toggleBiometric(false);
@@ -226,14 +226,20 @@ export const useUserStore = defineStore('user', () => {
 
   const loginBiometric = async () => {
     try {
-      const assertionOptionsResponse = await userApi.postGenerateAssertion();
-      const assertionOptions = assertionOptionsResponse.data;
-      console.log(1, assertionOptions);
+      const assertionOptionsData = await userApi.postGenerateAssertion();
+      const assertionOptions = assertionOptionsData.options;
       const credential = await startAuthentication(assertionOptions);
       console.log(2, credential);
-      const verifyResponse = await userApi.postVerifyAssertion(credential);
-      console.log(3, verifyResponse);
+      const verifyResponse = await userApi.postVerifyAssertion(
+        credential,
+        assertionOptionsData.challenge,
+        assertionOptionsData.userId,
+      );
+      if (verifyResponse.status === 'success') {
+        showSuccess('提示', '生物登入成功');
+      }
     } catch (error) {
+      showError('提示', '生物登入失敗，請改用三方登入');
       console.log('An error occurred during the login process:', error);
     }
   };
@@ -243,7 +249,7 @@ export const useUserStore = defineStore('user', () => {
     if (refreshSuccess) {
       loginBiometric();
     } else {
-      console.log('refresh token failed');
+      showError('提示', '超過 30 天未登入，請改用三方登入');
     }
   };
 
