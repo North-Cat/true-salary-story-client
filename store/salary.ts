@@ -49,7 +49,7 @@ export const useSalaryStore = defineStore('salary', () => {
       companyName: result?.companyName || '',
       title: result?.title || '',
       employmentType: result?.employmentType || '',
-      inService: result?.inService !== undefined ? result.inService : false,
+      inService: result?.inService !== undefined && result.inService,
       city: result?.city || '',
       workYears: result?.workYears || 0,
       totalWorkYears: result?.totalWorkYears || 0,

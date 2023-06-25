@@ -146,7 +146,7 @@ export const useSearchStore = defineStore('search', () => {
         companyName: el?.companyName || '',
         title: el?.title || '',
         employmentType: el?.employmentType || '',
-        inService: el?.inService !== undefined ? el.inService : false,
+        inService: el?.inService !== undefined && el.inService,
         city: el?.city || '',
         workYears: el?.workYears || 0,
         totalWorkYears: el?.totalWorkYears || 0,
