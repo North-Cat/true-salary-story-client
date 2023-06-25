@@ -21,6 +21,10 @@ const loginHandler = (params: string) => {
   }
 };
 
+const biometricLoginHandler = () => {
+  user.enableBiometricLogin();
+};
+
 const checkLoginStatus = () => {
   const jwtToken = route.query.token;
   if (jwtToken) {
@@ -69,6 +73,14 @@ onMounted(() => {
           @click="loginHandler('google')"
         >
           <img src="~/assets/img/google.svg" alt="" width="20" class="mr-2" /><span>使用 Google 繼續</span>
+        </div>
+      </div>
+      <div class="mt-5">
+        <div
+          class="bg-black-1 flex cursor-pointer justify-center items-center py-4 px-5 mt-3 w-full hover:text-black-6 rounded-lg"
+          @click="biometricLoginHandler()"
+        >
+          <span>使用生物登入</span>
         </div>
       </div>
       <div class="mt-10 text-sm text-black-5">

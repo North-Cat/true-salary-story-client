@@ -1,9 +1,13 @@
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
+import { startRegistration, startAuthentication } from '@simplewebauthn/browser';
 import { ILoginUserInfo, IEmail } from '@/interface/user';
 import { IMySalaryResponse } from '@/interface/salaryData';
 import { ISubscribeCompaniesResponse } from '@/interface/subscribe';
 import { IPointsListRespose, IMyOrdersListResponse } from '@/interface/order';
+import { showSuccess } from '@/utilities/message';
 const { userApi, subscribeApi, orderApi } = useApi();
+
 export const useUserStore = defineStore('user', () => {
   // 登入相關
   const isLogin = ref(false);
@@ -160,6 +164,84 @@ export const useUserStore = defineStore('user', () => {
     }
   };
 
+  const toggleBiometric = async (enable: boolean) => {
+    // Step 1: call api to toggle biometric
+    const { data } = await userApi.patchToggleBiometric(enable);
+
+    if (data.biometricEnable) {
+      // Step 2: register biometric
+      registerBiometric();
+    }
+
+    tryToFetchProfile();
+  };
+
+  // get system type from userAgent
+  const clientType = () => {
+    let client = '';
+    if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+      client = 'iOS';
+    } else if (/(Android)/i.test(navigator.userAgent)) {
+      client = 'Android';
+    } else {
+      client = 'PC';
+    }
+    return client;
+  };
+
+  const registerBiometric = async () => {
+    const isAndroid = clientType() === 'Android';
+    try {
+      // Request attestation options from the server
+      const attestationOptionsResponse = await userApi.postGenerateAttestation(isAndroid);
+      const attestationOptions = attestationOptionsResponse.data;
+
+      // Begin the attestation with the provided options
+      const credential = await startRegistration(attestationOptions);
+
+      // Send the attestation response back to the server to be verified
+      const verifyResponse = await userApi.postVerifyAttestation(credential);
+      if (verifyResponse.status === 'success') {
+        showSuccess('', '生物註冊成功');
+      }
+    } catch (error) {
+      await toggleBiometric(false);
+    }
+  };
+
+  const postRefreshToken = async () => {
+    const result = await userApi.postRefreshToken();
+    if (result.status === 'success') {
+      const tokenCookie = useCookie('token', { maxAge: 60 * 60 });
+      tokenCookie.value = result.data.token;
+      return true;
+    }
+    return false;
+  };
+
+  const loginBiometric = async () => {
+    try {
+      const assertionOptionsResponse = await userApi.postGenerateAssertion();
+      const assertionOptions = assertionOptionsResponse.data;
+      console.log(1, assertionOptions);
+      const credential = await startAuthentication(assertionOptions);
+      console.log(2, credential);
+      const verifyResponse = await userApi.postVerifyAssertion(credential);
+      console.log(3, verifyResponse);
+    } catch (error) {
+      console.log('An error occurred during the login process:', error);
+    }
+  };
+
+  const enableBiometricLogin = async () => {
+    const refreshSuccess = await postRefreshToken();
+    if (refreshSuccess) {
+      loginBiometric();
+    } else {
+      console.log('refresh token failed');
+    }
+  };
+
   return {
     tryToFetchProfile,
     isLogin,
@@ -188,5 +270,7 @@ export const useUserStore = defineStore('user', () => {
     updateEmail,
     isEmailUpdated,
     clearInfo,
+    toggleBiometric,
+    enableBiometricLogin,
   };
 });

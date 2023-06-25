@@ -2,12 +2,11 @@ import { defineNuxtConfig } from 'nuxt/config';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // when open pwa add this module '@vite-pwa/nuxt'
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-gtag', '@vite-pwa/nuxt'],
   build: { transpile: ['yup', 'lodash', '@vee-validate/rules', 'gsap'] },
   runtimeConfig: {
     public: {
-      apiBase: 'https://client-api-dev.up.railway.app',
+      apiBase: process.env.API_BASE || 'https://client-api-dev.up.railway.app',
       pwaEnv: process.env.PWA_ENV || 'local',
       wssBase: 'wss://client-api-dev.up.railway.app',
     },
