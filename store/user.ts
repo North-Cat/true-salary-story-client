@@ -216,7 +216,6 @@ export const useUserStore = defineStore('user', () => {
 
   const postRefreshToken = async () => {
     const refreshTokenCookie = useCookie('refreshToken');
-    console.log(1, refreshTokenCookie.value);
 
     if (typeof refreshTokenCookie.value !== 'string') {
       showError('提示', '生物登入失敗，請改用三方登入');
@@ -237,7 +236,6 @@ export const useUserStore = defineStore('user', () => {
       const assertionOptionsData = await userApi.postGenerateAssertion();
       const assertionOptions = assertionOptionsData.options;
       const credential = await startAuthentication(assertionOptions);
-      console.log(2, credential);
       const verifyResponse = await userApi.postVerifyAssertion(
         credential,
         assertionOptionsData.challenge,

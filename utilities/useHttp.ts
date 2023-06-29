@@ -97,7 +97,6 @@ const fetch = async (url: string, options?: any, headers?: any, isShowLoading = 
       //   statusMessage: reqUrl,
       //   message: error.value?.message || '服务器内部错误',
       // });
-      // console.log(error);
     }
     hideLoadingMask(); // 關閉 loading
     return JSON.parse(JSON.stringify(data))._value; // 这里直接返回data或者其他的

@@ -879,7 +879,6 @@ const totalPages1 = ref(6); // 所有頁數
 const initPage2 = ref(1); // 目前頁面
 const totalPages2 = ref(10); // 所有頁數
 function callSomeFunc(currentPageFromComponent) {
-  // console.log('目前頁數', currentPageFromComponent);
   showInfo('目前頁數', currentPageFromComponent);
 }
 </script>
