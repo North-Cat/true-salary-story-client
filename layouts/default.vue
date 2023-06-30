@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { RouteLocationRaw, useRoute } from 'vue-router';
+import { useDocumentVisibility } from '@vueuse/core';
 import { showInfo } from '@/utilities/message';
 import { useUserStore } from '@/store/user';
 import { useWSStore } from '@/store/ws';
@@ -28,7 +29,7 @@ onClickOutside(userListModalSm, (e) => {
   }
 });
 const wsStore = useWSStore();
-const { hasNewMessage } = storeToRefs(wsStore);
+const { hasNewMessage, isWSOpen } = storeToRefs(wsStore);
 const user = useUserStore();
 const { isLogin, currentUser, isFetchProfileLoading, currentPoint } = storeToRefs(user);
 const { logout } = user;
@@ -45,6 +46,18 @@ onUnmounted(() => {
     wsStore.ws.close();
   }
 });
+
+const visibility = useDocumentVisibility();
+
+watch(visibility, (current, previous) => {
+  if (current === 'visible' && previous === 'hidden' && isLogin.value && !isWSOpen.value) {
+    if (wsStore.ws) {
+      console.log('reconnect ws');
+      wsStore.init();
+    }
+  }
+});
+
 watch(hasNewMessage, () => {
   if (route.name === 'user-consult') {
     hasNewMessage.value = 0;
