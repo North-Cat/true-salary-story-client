@@ -35,7 +35,7 @@ async function clickPostCard(postId: string) {
 </script>
 
 <template>
-  <section class="bg-white py-10 lg:pt-20 lg:pb-1 max-[1920px]:overflow-x-hidden">
+  <section class="bg-white py-10 lg:pt-20 lg:pb-[53px] max-[1920px]:overflow-x-hidden">
     <div
       class="container mx-auto max-w-[350px] md:max-w-[600px] lg:max-w-7xl flex flex-col justify-center items-center"
     >
